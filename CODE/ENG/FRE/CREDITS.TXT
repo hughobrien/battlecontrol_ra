@@ -1,0 +1,246 @@
+		Producteur Ex‚cutif	Brett W. Sperry
+
+			 Producteur	Lewis S. Peterson
+
+			Programmeur	Barry Green
+
+		Direction Technique	Steve Wetherill, Eric Wang
+
+	Concepteurs Cartes Jeu Solo	John Archer, Patrick Connelly,
+					Adam Isgreen, Michael Lightner,
+					Erik Yeo
+
+    Concepteurs Cartes Multijoueurs	John Archer, Stuart Bailey,
+					Nigel Berryman, D'Andre Campbell,
+					Valerie Carpentier, Cathi Diet,
+					Keith Ditchburn, Gareth Eke,
+					Darren Esp, Simon Evers, Rod Gray,
+					Randy Greenback, Matthew Howe,
+					Levi Luke, Suzanne Maddison,
+					Iain McNeil, Graeme Miller,
+					Lee Morse, David Parsons,
+					Alex Scarrow, Robert Scheel,
+					Lawrence So, John Sweeney,
+					Matthew Tillett, Phillip Veale 
+
+			 Graphistes	Chris Demers, Matthew Hansel,
+					Joseph B. Hewitt IV
+
+		    Direction Audio	Paul S. Mudra
+
+			    Musique	Frank Klepacki
+
+		     Effets Sonores	Dwight K. Okahara
+
+		       Direction AQ	Glenn Sperry
+
+		  Assurance Qualit‚	Jim Adkins, Lloyd Bell,
+					Chris Blevens, D'Andre Campbell,
+					Errol Campbell, Shane Dietrich,
+					Randy Greenback, Jon Hix,
+					Mark Laity, Troy Leonard,
+					DeMarlo Lewis, Levi Luke,
+					Patrick Offord,	Richard Rasmussen,
+					Mike Ruppert, Steve Shockey,
+					Mike Smith, Albert Springfield
+
+	  Nouvelles Voix Fran‡aises	Emmanuel Curtil, Gilbert L‚vy
+
+
+				Alerte Rouge
+
+              Direction de production   Brett W. Sperry
+                           Producteur   Ed Del Castillo
+
+                     Concept original   Brett W. Sperry
+                                        Joe Bostic
+
+                   Histoire originale   Ron Smith
+                                        Ed Del Castillo
+
+              Programmeurs principaux   Joe Bostic
+                                        Barry Green
+                                        Steve Tall
+
+                         Programmeurs   Bill Randolph
+                                        Phil Gorrow
+                                        Maria del Mar McCready Legg
+
+                Programmeurs Internet   Jeff Brown
+                                        David Aldridge
+                                        Matt Thorn
+		
+               Programmeur traduction   Victor Grippi
+
+                  Direction technique   Steve Wetherill
+                                        Eric Wang
+
+                            Cr‚ateurs   Brett W. Sperry
+                                        Adam Isgreen
+                                        Michael Lightner
+                                        Erik Yeo
+
+                  Artistes principaux   Chris Demers
+                                        Matthew Hansel
+                                        Joseph B. Hewitt IV
+
+                             Artistes   Paul Wesberry
+                                        David T. Potter
+                                        Damon Redmond
+                                        Brian White
+
+                             Sc‚nario   Ron Smith
+                                        Adam Isgreen
+                                        John Scott Lewinski
+                      
+                     Post Prod. Vid‚o   Felix Kupis
+                                        Kevin Becquet
+
+                    Compression Vid‚o   Tim C. Fritz
+
+              Asst. Compression Vid‚o   Patrick Connelly
+                                                        
+                     Direction du son   Paul S. Mudra
+                              Musique   Frank Klepacki
+                       Effets sonores   Dwight K. Okahara
+
+                      Direction du CQ   Glenn Sperry
+
+                     Contr“le-qualit‚   Lloyd Bell
+                                        Kenny Dunne
+                                        Mike Smith
+                                        John Archer
+                                        Chris Rubyor
+                                        D'Andre Cambell
+                                        Robert Scheel
+                                        Chris Bleven
+                                        Levi Luke
+                                        Errol Campbell
+                                        Abe Hernandez
+                                        James Adkins
+                                        Richard Rasmussen
+                                        Troy Leonard
+                                        Ben Lublin
+                                        Chris Holloway
+                                        Isaiah Myers
+                                        Phillip Castro
+                                        Albert Springfield
+                                        Randy Greenback
+                                        Tyler Thackery
+
+                 Conception du manuel   Victoria Hart
+
+
+
+       Un grand merci … Danielle Woodyatt, Rosemarie Dalton,
+        et aux ‚quipes Virgin en Europe. Egalement un grand merci …
+        Tracy Chapman pour sa chanson "a new beginning".
+
+
+
+
+                                   Les  acteurs
+
+
+                                  camp  Alli‚s
+
+                           Von Esling   Arthur Roberts
+                              Stavros   Barry Kramer
+                                Tanya   Lynne Litteer
+                        Interrogateur   Dom Magwili
+                            Annonceur   Gwen Castaldi
+
+		...et John Milford pour Albert Einstein
+
+
+                        Soldats alli‚s   Ricky Russell
+					 Nick Paulos
+					 Scott Ryan Talley
+					 Joe Bostic
+					 Chris Demers
+					 Barry Green
+					 Matthew Hansel
+					 Adam Isgreen
+					 Frank Klepacki
+					 Mike Lightner
+					 Bill Randolph
+					 Philip E. Shelburne
+					 Eric Wang
+
+
+
+                                  camp Soviets
+
+                                 Kukov   Craig Cavanah
+                              Gradenko   Alan Terry
+                                 Nadia   Andrea Robinson
+                                  Kane   Joe Kucan
+
+		...et Eugene Dynarski pour Josef Stalin
+
+
+                   Soldats sovi‚tiques   Felix Kupis
+					 Erik Yeo
+                                         John Archer
+                                         Mike Grayford
+                                         Chris Rubyor
+
+
+                                Voix dans le jeu
+
+                                E.V.A.   Martin Alper
+                                 Tanya   Lanae Freeborn
+                            Infanterie   Mike Grayford
+					 Adam Isgreen
+                                         Troy Leonard
+					 Chris Rubyor
+                                         Dwight Okahara
+                                         Frank Klepacki
+                                         Eric Wang
+                                         
+                               Equipe de production
+
+
+                           R‚alisation   Joseph D. Kucan
+
+               Conception des costumes   Christie Moeller
+
+                 Maquillage & Coiffure   Cindy Cline
+
+                      Ing‚nieur du son   Paul S. Mudra
+
+                               Casting   Marilee Lear, C.S.A.
+
+                                 Vid‚o   Kevin Becquet
+
+                             Eclairage   Eric Gooch
+                               
+                             Production principale
+
+                     Premier Assistant   Paul Bastardo
+
+              Assistants de Production   Pat Connelly
+					 Richard Rasmussen
+					 Rick Appin
+					 Jeff Fillhaber
+					 Patience Becquet
+                                                                  
+                        Maquillage Sfx   Philip E. Shelburne
+                                 
+
+                             S‚quences sp‚ciales
+
+                  Avec la permission de NBC News Archives Films
+                               Fabulous Footage
+
+
+
+              
+              Pour obtenir les derniŠres informations, mises … jour
+              et plein d'autres surprises, visitez notre site Web :
+                               www.westwood.com
+
+
+
+
+

@@ -1,0 +1,104 @@
+;Codewright Project File (do not remove or modify this line)
+[ProjInit]
+ProjSetConfigFlags=0x00010140
+
+[State]
+SysSetCwd='C:\PROJECTS\C&C\CODE\AUDIOMAK'
+SrchSetFlags=0x20aa
+FileSortMode=0x13
+StateWindowFrame=-1,0,1020,690,0x0981f5fa
+_StateWindow=0,0,1024,657,0x00000108,'c:\projects\c&c\code\audiomak\audiomak.cpp',240,7,244,32,32,0,32,32,32,32,8,65535,65535,1,0,'8514oem',65518,255,49,0,4,243,14,15,241,252,249,560,28,400,0,246,252,245,242,0,0,0,0,0
+_StateBuffer='c:\projects\c&c\code\audiomak\audiomak.cpp',0x0400048e,560,28,25,'4 7','',0x0,''
+_StateBuffer='c:\projects\c&c\code\audiomak\scode.asm',0x0400048e,30,64,25,'9 17','',0x0,''
+WrapEnable=0
+_StateHistory=SEARCH,'UncompBuffer','saved','orig','FALSE','tasm','TASM','tasm','ASSEMBLER','Decom','.asm.'
+_StateHistory=REPLACE,'audiomak','desired','long','unsigned','unsigned char','int','source'
+_StateHistory=FILELIST,'c:\projects\c&c\code\audiomak\cointabl.voc','c:\projects\c&c\code\audiomak\cointabl.wav','c:\projects\c&c\code\audiomak\globals.cpp','c:\projects\c&c\code\audiomak\bfeared.aud','c:\projects\c&c\code\audiomak\audiomak.asm','d:\library\source\soundio.c','c:\projects\c&c\code\audiomak\scode.asm','d:\library\wwlib.i','c:\projects\c&c\code\audiomak\makefile','d:\library\source\makefile'
+_StateHistory=GOTOMARK,'1','2','1'
+_StateHistory=GOTOLINE,'364','398','424','431','465'
+
+[Editor]
+FilterDeleteList 
+FilterAdd='Source Files','*.c;*.h;*.asm;*.inc',-1
+FilterAdd='All Files','*.*',-1
+FilterAdd='C++ Source Files','*.cpp;*.h;*.asm;*.inc',-1
+StateSetMarkLevel=7
+ClipboardSetTermStr='\r\n',0
+ClipboardEnableTermStr=1
+ClipboardSetSepStr='\r\n',0
+ClipboardEnableSepStr=1
+ScrapSetCount=1
+ExtColorsAssoc='.cpp',1
+ExtIndentEnableAssoc='.cpp',1
+ExtSetDelimiters=.cpp,a-zA-Z_0-9
+ExtColorsAssoc='.h',1
+ExtIndentEnableAssoc='.h',1
+ExtSetDelimiters=.h,a-zA-Z_0-9
+ExtSetDelimiters=.*,a-zA-Z_0-9
+ExtColorsAssoc='.int',1
+ExtIndentEnableAssoc='.int',1
+ExtSetDelimiters=.int,a-zA-Z_0-9
+ExtColorsAssoc='.lst',1
+ExtIndentEnableAssoc='.lst',1
+ExtColorsAssoc='.asm',1
+ExtSetDelimiters=.asm,a-zA-Z_0-9
+ExtColorsAssoc='.scr',1
+ExtIndentEnableAssoc='.scr',1
+ExtSetDelimiters=.scr,a-zA-Z_0-9
+ExtColorsAssoc='.c',1
+ExtIndentEnableAssoc='.c',1
+ExtSetDelimiters=.c,a-zA-Z_0-9
+ExtColorsAssoc='.ash',1
+ExtSetDelimiters=.ash,a-zA-Z_0-9
+ExtColorsAssoc='.i',1
+ExtIndentEnableAssoc='.i',1
+ExtSetDelimiters=.i,a-zA-Z_0-9
+Autosave=15,15
+AutosaveDir=''
+ExtSetUpdateDelay=10
+ExtDelayedColoring=1
+ExtCommentSearchLimit=200
+KeyDelay=635
+KeyRepeat=190
+BufSetGlobalBackupSpec='%b.bak'
+_FontDefault=0,'8514oem',65513,255,49,400,0
+SysSetDefault=DEFAULT_WINDOW_LEFT_MARGIN,4
+SysSetDefault=DEFAULT_WINDOW_VIS_MARGIN_COL,0
+SysSetDefault=DEFAULT_WINDOW_HINC,8
+SysSetDefault=DEFAULT_WINDOW_VIS_VIRTSPACES,32
+SysSetDefault=DEFAULT_WINDOW_VIS_VIRTLINES,32
+SysSetDefault=DEFAULT_WINDOW_VIS_TABS,32
+SysSetDefault=DEFAULT_WINDOW_VIS_SPACES,32
+SysSetDefault=DEFAULT_WINDOW_VIS_ELISION,0
+SysSetDefault=DEFAULT_WINDOW_VIS_EOL,32
+SysSetDefault=DEFAULT_WINDOW_VIS_EOF,32
+SysSetDefault=DEFAULT_WINDOW_SYSFLAGS,0x118
+SysSetDefault=DEFAULT_BUFFER_AUTOINDENT_MODE,0x0
+SysSetDefault=DEFAULT_BUFFER_BACKUP_SPEC,''
+SysSetDefault=DEFAULT_BUFFER_TABS,'5 9'
+SysSetDefault=DEFAULT_BUFFER_MAX_TAB,200
+SysSetDefault=DEFAULT_BUFFER_MAX_VLINES,25
+SysSetDefault=DEFAULT_BUFFER_SYSFLAGS,0xc800048e
+_RestoreSysFlags=0x0991f5fa, 0xfffffffc
+
+[Compiler]
+BrowseSetFile='c:\projects\c&c\code\audiomak\audiomak.ptg'
+TagSetFile='c:\projects\c&c\code\audiomak\audiomak.tag'
+CompilerAddBuild='Microsoft Assembler',1073741880,'ftee masm -w2 -zi %r%e;','','','','','_MicrosoftErrorInfo','','%v%p','','','','','',0
+CompilerAddBuild='Borland C++',1073742089,'ftee make -DDEBUG=1 %r.obj','','','','','','','','ftee make -DDEBUG=1 %r.obj','','','','',49152
+CompilerAddBuild='Borland Turbo Assembler',1073741835,'ftee make -B %r.obj','','','','','','','','','','','','',16384
+CompilerAddBuild='$_cw_proj_hash_$',1073741875,'','ftee maker -B -DDEBUG=1 %r.obj','ftee maker -DDEBUG=1','','','_TasmErrorInfo','proj.err','c:\projects\c&c\code\audiomak','','_BorlandCppErrorInfo','','','',197376
+CompilerAddBuild='Default Project',1073741880,'','ftee make','ftee make','','','_ErrorInfoDefault','proj.err','%v%p','','','','','',0
+CompilerAddBuild='Microsoft C',1073741835,'ftee cl -c -AL -Gsw -Ow -Zpe  %r%e','','','','','','','','','','','','',0
+CompilerAddBuild='Script',1073741880,'ftee make %r.inf','ftee make','ftee make','','','_BorlandCppErrorInfo','','','','','','','',0
+CompilerAddBuild='Zortech C++',1073741880,'ftee ztc -a -b -c -g -ml -W %r%e','','','','','_ZortechCppErrorInfo','','%v%p','','','','','',0
+CompilerAssign='Borland C++','.scr'
+CompilerAssign='Borland C++','.int'
+CompilerAssign='Borland C++','.c'
+CompilerNewExt=.prg
+CompilerAssign='Microsoft C','.h'
+CompilerAssign='Borland C++','.cpp'
+CompilerAssign='Default Project','.*'
+CompilerAssign='Zortech C++','.cxx'
+CompilerAssign='Borland Turbo Assembler','.asm'
+CompilerAssign='Borland C++','.hpp'

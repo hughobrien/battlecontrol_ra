@@ -1,0 +1,1111 @@
+# TXT_NONE                
+%3d.%02d
+# TXT_CREDIT_FORMAT
+Temps:%02d:%02d:%02d
+# TXT_TIME_FORMAT_HOURS
+Temps:%02d:%02d
+# TXT_TIME_FORMAT_NO_HOURS
+Vente
+# TXT_BUTTON_SELL
+Vente structure
+# TXT_SELL
+R‚paration
+# TXT_BUTTON_REPAIR
+Vous :
+# TXT_YOU
+Ennemi :
+# TXT_ENEMY
+Bƒtiments d‚truits par
+# TXT_BUILD_DEST
+Unit‚s d‚truites par
+# TXT_UNIT_DEST
+Minerai r‚colt‚ par
+# TXT_TIB_HARV
+Score: %d
+# TXT_SCORE_1
+Oui
+# TXT_YES
+Non
+# TXT_NO
+Mission Accomplie
+# TXT_SCENARIO_WON
+Mission Echou‚e
+# TXT_SCENARIO_LOST
+Nouvelle partie
+# TXT_START_NEW_GAME
+Intro/Preview
+# TXT_INTRO
+Annuler
+# TXT_CANCEL
+Rocher
+# TXT_ROCK
+Civil
+# TXT_CIVILIAN
+Equipe de confinement
+# TXT_JP
+OK
+# TXT_OK
+Arbre
+# TXT_TREE
+\x011
+# TXT_LEFT
+\x010
+# TXT_RIGHT
+\x01E
+# TXT_UP
+\x01F
+# TXT_DOWN
+Effacer
+# TXT_CLEAR
+Eau
+# TXT_WATER
+Route
+# TXT_ROAD
+Pente
+# TXT_SLOPE
+Patch
+# TXT_PATCH
+RiviŠre
+# TXT_RIVER
+Charger Mission
+# TXT_LOAD_MISSION
+Sauvegarder Mission
+# TXT_SAVE_MISSION
+Effacer Mission
+# TXT_DELETE_MISSION
+Charger
+# TXT_LOAD_BUTTON
+Sauvegarder
+# TXT_SAVE_BUTTON
+Effacer
+# TXT_DELETE_BUTTON
+Contr“les
+# TXT_GAME_CONTROLS
+Son
+# TXT_SOUND_CONTROLS
+Reprendre Mission
+# TXT_RESUME_MISSION
+Affichage
+# TXT_VISUAL_CONTROLS
+Abandonner Mission
+# TXT_QUIT_MISSION
+Quitter le jeu
+# TXT_EXIT_GAME
+Options
+# TXT_OPTIONS
+D‚bris humains
+# TXT_SQUISH
+CratŠre
+# TXT_CRATER
+Marque de br–lure
+# TXT_SCORCH
+Luminosit‚ :
+# TXT_BRIGHTNESS
+Musique
+# TXT_MUSIC
+Effets sonores
+# TXT_VOLUME
+Teintes :
+# TXT_TINT
+Contraste :
+# TXT_CONTRAST
+Vitesse du jeu :
+# TXT_SPEED
+Vitesse d‚filement :
+# TXT_SCROLLRATE
+Couleur :
+# TXT_COLOR
+Revenir au jeu
+# TXT_RETURN_TO_GAME
+Soldat ennemi
+# TXT_ENEMY_SOLDIER
+V‚hicule ennemi
+# TXT_ENEMY_VEHICLE
+Structure ennemie
+# TXT_ENEMY_STRUCTURE
+Tank l‚ger
+# TXT_LTANK
+Tank lourd
+# TXT_MTANK
+Tank moyen
+# TXT_MTANK2
+Tank Mammouth
+# TXT_HTANK
+Missiles SAM
+# TXT_SAM
+Ranger
+# TXT_JEEP
+H‚licoptŠre Chinook
+# TXT_TRANS
+Collecteur minerai
+# TXT_HARVESTER
+Artillerie
+# TXT_ARTY
+Mitrailleurs
+# TXT_E1
+Grenadiers
+# TXT_E2
+Bazookas
+# TXT_E3
+Lance-flammes
+# TXT_E4
+H‚licoptŠre d'assaut
+# TXT_HELI
+Hind
+# TXT_ORCA
+VBT
+# TXT_APC
+Tour de garde
+# TXT_GUARD_TOWER
+D“me radar 
+# TXT_COMMAND
+H‚liport
+# TXT_HELIPAD
+Piste d'atterrissage
+# TXT_AIRSTRIP
+Silo minerai
+# TXT_STORAGE
+Chantier de construction
+# TXT_CONST_YARD
+Raffinerie de minerai
+# TXT_REFINERY
+Eglise
+# TXT_CIV1
+Chez Hans et Gretel
+# TXT_CIV2
+Manoir d'Hewitt
+# TXT_CIV3
+Maison de Ricktor
+# TXT_CIV4
+Maison de Gretchin
+# TXT_CIV5
+La grange
+# TXT_CIV6
+Pub Damon
+# TXT_CIV7
+Maison de Fran
+# TXT_CIV8
+Usine d'instruments
+# TXT_CIV9
+Fabricant de jouets
+# TXT_CIV10
+Maison de Ludwig
+# TXT_CIV11
+Meules de foin
+# TXT_CIV12
+Meule de foin
+# TXT_CIV13
+Champ de bl‚
+# TXT_CIV14
+Champ en friche
+# TXT_CIV15
+Champ de ma‹s
+# TXT_CIV16
+Champ de c‚leri
+# TXT_CIV17
+Champ de pommes de terre
+# TXT_CIV18
+Maison de Sala
+# TXT_CIV20
+Maison d'Abdul
+# TXT_CIV21
+Le Pub Barjo de Pablo
+# TXT_CIV22
+Puits du village
+# TXT_CIV23
+Marchand de chameaux
+# TXT_CIV24
+Eglise
+# TXT_CIV25
+Maison d'Ali
+# TXT_CIV26
+Ted le Marchand
+# TXT_CIV27
+Maison de Menelik
+# TXT_CIV28
+Maison du pasteur John
+# TXT_CIV29
+Puits du village
+# TXT_CIV30
+Hutte du gu‚risseur
+# TXT_CIV31
+Hutte de Rikitikitembo
+# TXT_CIV32
+Hutte de Roarke
+# TXT_CIV33
+Hutte de Moubasa'
+# TXT_CIV34
+Hutte d'Aksoum
+# TXT_CIV35
+Hutte de Mambo
+# TXT_CIV36
+Le studio
+# TXT_CIV37
+Centre technologique
+# TXT_CIVMISS
+Tourelle
+# TXT_TURRET
+Aviso-torpilleur
+# TXT_GUNBOAT
+V‚hicule de construction mobile
+# TXT_MCV
+Centrale ‚lectrique
+# TXT_POWER
+Centrale ‚lectrique avanc‚e
+# TXT_ADVANCED_POWER
+H“pital
+# TXT_HOSPITAL
+Caserne
+# TXT_BARRACKS
+Pompe
+# TXT_PUMP
+P‚trolier
+# TXT_TANKER
+Sacs de sable
+# TXT_SANDBAG_WALL
+Cl“ture grillag‚e
+# TXT_CYCLONE_WALL
+Mur de b‚ton
+# TXT_BRICK_WALL
+Cl“ture barbel‚e
+# TXT_BARBWIRE_WALL
+BarriŠre de bois
+# TXT_WOOD_WALL
+Usine d'armement
+# TXT_WEAPON_FACTORY
+Tour de garde avanc‚e
+# TXT_AGUARD_TOWER
+Laboratoire biologique
+# TXT_BIO_LAB
+Centre de service
+# TXT_FIX_IT
+Contr“les
+# TXT_TAB_SIDEBAR
+Options
+# TXT_TAB_BUTTON_CONTROLS
+Base de donn‚es
+# TXT_TAB_BUTTON_DATABASE
+Terrain inconnu
+# TXT_SHADOW
+Menu des options
+# TXT_OPTIONS_MENU
+Stop
+# TXT_STOP
+Lect
+# TXT_PLAY
+Al‚at.
+# TXT_SHUFFLE
+R‚p‚ter
+# TXT_REPEAT
+Musique :
+# TXT_MUSIC_VOLUME
+Effets sonores :
+# TXT_SOUND_VOLUME
+Oui
+# TXT_ON
+Non
+# TXT_OFF
+Jeu Multijoueurs
+# TXT_MULTIPLAYER_GAME
+Pas de fichiers disponibles
+# TXT_NO_FILES
+Voulez-vous effacer ce fichier ?
+# TXT_DELETE_SINGLE_FILE
+Voulez-vous effacer %d fichiers ?
+# TXT_DELETE_MULTIPLE_FILES
+D‚faut
+# TXT_RESET_MENU
+Voulez-vous abandonner la mission ?
+# TXT_CONFIRM_EXIT
+Description de la mission
+# TXT_MISSION_DESCRIPTION
+Joe
+# TXT_C1
+Barry
+# TXT_C2
+Shelly
+# TXT_C3
+Maria
+# TXT_C4
+Karen
+# TXT_C5
+Steve
+# TXT_C6
+Phil
+# TXT_C7
+Dwight
+# TXT_C8
+Erik
+# TXT_C9
+Prof. Einstein
+# TXT_EINSTEIN
+Cour
+# TXT_BIB
+Rapide
+# TXT_FASTER
+Lent
+# TXT_SLOWER
+Attaque a‚rienne
+# TXT_AIR_STRIKE
+Caisse d'acier
+# TXT_STEEL_CRATE
+Caisse de bois
+# TXT_WOOD_CRATE
+Caisse flottante
+# TXT_WATER_CRATE
+Emplacement du drapeau
+# TXT_FLAG_SPOT
+Lecture sc‚nario impossible !
+# TXT_UNABLE_READ_SCENARIO
+Erreur de chargement !
+# TXT_ERROR_LOADING_GAME
+Sauvegarde obsolŠte
+# TXT_OBSOLETE_SAVEGAME
+Vous devez entrer une description !
+# TXT_MUSTENTER_DESCRIPTION
+Erreur de sauvegarde !
+# TXT_ERROR_SAVING_GAME
+Effacer ce fichier ?
+# TXT_DELETE_FILE_QUERY
+[EMPLACEMENT VIDE]
+# TXT_EMPTY_SLOT
+Choix du jeu Multijoueurs
+# TXT_SELECT_MPLAYER_GAME
+Modem/S‚rie
+# TXT_MODEM_SERIAL
+R‚seau
+# TXT_NETWORK
+Initialisation r‚seau impossible !
+# TXT_INIT_NET_ERROR
+Rejoindre jeu en r‚seau
+# TXT_JOIN_NETWORK_GAME
+Nouveau
+# TXT_NEW
+Joindre
+# TXT_JOIN
+Envoi Message
+# TXT_SEND_MESSAGE
+Votre nom :
+# TXT_YOUR_NAME
+Camp :
+# TXT_SIDE_COLON
+Couleur :
+# TXT_COLOR_COLON
+Parties
+# TXT_GAMES
+Joueurs
+# TXT_PLAYERS
+Sc‚nario :
+# TXT_SCENARIO_COLON
+>> NON TROUVE <<
+# TXT_NOT_FOUND
+Cr‚dits :
+# TXT_START_CREDITS_COLON
+Bases :
+# TXT_BASES_COLON
+Minerai :
+# TXT_TIBERIUM_COLON
+Caisses :
+# TXT_CRATES_COLON
+Joueurs IA :
+# TXT_AI_PLAYERS_COLON
+Demande refus‚e.
+# TXT_REQUEST_DENIED
+Impossible de jouer, sc‚nario non trouv‚.
+# TXT_UNABLE_PLAY_WAAUGH
+Aucune partie disponible !
+# TXT_NOTHING_TO_JOIN
+Vous devez entrer un nom !
+# TXT_NAME_ERROR
+Les noms identiques ne sont pas autoris‚s.
+# TXT_DUPENAMES_NOTALLOWED
+La version de votre jeu est trop ancienne.
+# TXT_YOURGAME_OUTDATED
+Version du jeu de destination trop ancienne.
+# TXT_DESTGAME_OUTDATED
+Partie de %s
+# TXT_THATGUYS_GAME
+[Partie de %s]
+# TXT_THATGUYS_GAME_BRACKET
+Configuration du jeu en r‚seau
+# TXT_NETGAME_SETUP
+Rejeter
+# TXT_REJECT
+Vous ne pouvez pas vous rejeter vous-mˆme ! Vous risquez des conflits d'ego !
+# TXT_CANT_REJECT_SELF
+Vous devez s‚lectionner un joueur … rejeter.
+# TXT_SELECT_PLAYER_REJECT
+Bases
+# TXT_BASES
+Caisses
+# TXT_CRATES
+Joueur IA
+# TXT_AI_PLAYERS
+Sc‚narios
+# TXT_SCENARIOS
+Cr‚dits :
+# TXT_CREDITS_COLON
+Un seul joueur ?
+# TXT_ONLY_ONE
+Oops !
+# TXT_OOPS
+Pour %s :
+# TXT_TO
+Pour tous
+# TXT_TO_ALL
+Message :
+# TXT_MESSAGE
+Perte de connexion avec %s !
+# TXT_CONNECTION_LOST
+%s a quitt‚ le jeu.
+# TXT_LEFT_GAME
+%s a ‚t‚ vaincu !
+# TXT_PLAYER_DEFEATED
+Attente de connexion...
+# TXT_WAITING_CONNECT
+Erreur de connexion ! V‚rifiez vos branchements. Nouvel essai de connexion...
+# TXT_NULL_CONNERR_CHECK_CABLES
+Erreur de connexion ! Rappel du num‚ro...
+# TXT_MODEM_CONNERR_REDIALING
+Erreur de connexion ! Attente de connexion...
+# TXT_MODEM_CONNERR_WAITING
+Choix du jeu en s‚rie
+# TXT_SELECT_SERIAL_GAME
+Appel
+# TXT_DIAL_MODEM
+Attente appel
+# TXT_ANSWER_MODEM
+Null Modem
+# TXT_NULL_MODEM
+ParamŠtres
+# TXT_SETTINGS
+Port :
+# TXT_PORT_COLON
+IRQ :
+# TXT_IRQ_COLON
+Bauds :
+# TXT_BAUD_COLON
+ChaŒne d'initialisation
+# TXT_INIT_STRING
+ChaŒne d'attente d'appel
+# TXT_CWAIT_STRING
+Tonalit‚
+# TXT_TONE_BUTTON
+Impulsions
+# TXT_PULSE_BUTTON
+H“te du jeu en s‚rie
+# TXT_HOST_SERIAL_GAME
+Adversaire :
+# TXT_OPPONENT_COLON
+Utilisateur reparti !
+# TXT_USER_SIGNED_OFF
+Rejoindre jeu en s‚rie
+# TXT_JOIN_SERIAL_GAME
+R‚pertoire
+# TXT_PHONE_LIST
+Ajouter
+# TXT_ADD
+Editer
+# TXT_EDIT
+Appel
+# TXT_DIAL
+D‚faut
+# TXT_DEFAULT
+D‚faut
+# TXT_DEFAULT_SETTINGS
+Autres paramŠtres
+# TXT_CUSTOM_SETTINGS
+R‚pertoire
+# TXT_PHONE_LISTING
+Nom :
+# TXT_NAME_COLON
+Num‚ro :
+# TXT_NUMBER_COLON
+Modem non d‚tect‚. V‚rifiez vos branchements.
+# TXT_UNABLE_FIND_MODEM
+Pas de porteuse.
+# TXT_NO_CARRIER
+Ligne occup‚e.
+# TXT_LINE_BUSY
+Num‚ro incorrect.
+# TXT_NUMBER_INVALID
+L'autre systŠme ne r‚pond pas !
+# TXT_SYSTEM_NOT_RESPONDING
+Mauvaise synchronisation !
+# TXT_OUT_OF_SYNC
+Paquet re‡u trop tard !
+# TXT_PACKET_TOO_LATE
+L'autre joueur a quitt‚ le jeu.
+# TXT_PLAYER_LEFT_GAME
+De %s:%s
+# TXT_FROM
+TEMPS :
+# TXT_SCORE_TIME
+COMMANDEMENT :
+# TXT_SCORE_LEAD
+EFFICACITE :
+# TXT_SCORE_EFFI
+SCORE TOTAL :
+# TXT_SCORE_TOTA
+PERTES :
+# TXT_SCORE_CASU
+NEUTRE :
+# TXT_SCORE_NEUT
+BATIMENTS PERDUS
+# TXT_SCORE_BUIL
+BATIMENTS
+# TXT_SCORE_BUIL1
+PERDUS :
+# TXT_SCORE_BUIL2
+MEILLEURS SCORES
+# TXT_SCORE_TOP
+CREDITS DE FIN :
+# TXT_SCORE_ENDCRED
+%dh %dm
+# TXT_SCORE_TIMEFORMAT1
+%dm
+# TXT_SCORE_TIMEFORMAT2
+Appel...
+# TXT_DIALING
+Appel annul‚
+# TXT_DIALING_CANCELED
+Attente d'appel...
+# TXT_WAITING_FOR_CALL
+Attente d'appel annul‚e
+# TXT_ANSWERING_CANCELED
+Ing‚nieurs
+# TXT_E6
+Espion
+# TXT_E8
+Pas de cƒble Null Modem connect‚ ! C'est un cƒble de modem ou en boucle.
+# TXT_MODEM_OR_LOOPBACK
+Carte
+# TXT_MAP
+Arbre en fleurs
+# TXT_BLOSSOM_TREE
+Briefing
+# TXT_RESTATE_MISSION
+Joueur IA
+# TXT_COMPUTER
+Nombre :
+# TXT_COUNT
+Niveau :
+# TXT_LEVEL
+Adversaire
+# TXT_OPPONENT
+Vict.:
+# TXT_KILLS_COLON
+Vid‚o
+# TXT_VIDEO
+Scientifique
+# TXT_C10
+Capture drapeau
+# TXT_CAPTURE_THE_FLAG
+Objectifs de mission
+# TXT_OBJECTIVE
+Mission
+# TXT_MISSION
+Pas de sauvegardes disponibles.
+# TXT_NO_SAVES
+Bƒtiment civil
+# TXT_CIVILIAN_BUILDING
+Technicien
+# TXT_TECHNICIAN
+Sauvegarde interdite en mode Multijoueurs.
+# TXT_NO_SAVELOAD
+Agent Sp‚cial 1
+# TXT_DELPHI
+Voulez-vous recommencer cette mission ?
+# TXT_TO_REPLAY
+Reconnexion vers %s.
+# TXT_RECONN_TO
+Attendez %02d secondes.
+# TXT_PLEASE_WAIT
+Voulez-vous vous rendre ?
+# TXT_SURRENDER
+CHOIX DE LA TRANSMISSION
+# TXT_SEL_TRANS
+Les sauvegardes ne peuvent pas avoir le mˆme nom.
+# TXT_GAMENAME_MUSTBE_UNIQUE
+Partie ferm‚e.
+# TXT_GAME_IS_CLOSED
+Les noms doivent ˆtre tous diff‚rents.
+# TXT_NAME_MUSTBE_UNIQUE
+Reconnexion vers %s
+# TXT_RECONNECTING_TO
+Attente de connexions...
+# TXT_WAITING_FOR_CONNECTIONS
+Temps autoris‚ : %02d secondes
+# TXT_TIME_ALLOWED
+Appuyez sur Echap pour annuler.
+# TXT_PRESS_ESC
+De l'ordinateur : Il ne reste plus que toi et moi!
+# TXT_JUST_YOU_AND_ME
+Capture du drapeau :
+# TXT_CAPTURE_THE_FLAG_COLON
+Agent Sp‚cial 2
+# TXT_CHAN
+%s s'est alli‚(e) avec %s
+# TXT_HAS_ALLIED
+%s d‚clare la guerre … %s
+# TXT_AT_WAR
+Choisissez un cible
+# TXT_SEL_TARGET
+Abandonner
+# TXT_RESIGN
+Le minerai pousse trŠs vite.
+# TXT_TIBERIUM_FAST
+R‚ponse en cours...
+# TXT_ANSWERING
+Initialisation Modem...
+# TXT_INITIALIZING_MODEM
+Les sc‚narios ne correspondent pas.
+# TXT_SCENARIOS_DO_NOT_MATCH
+Production d'‚nergie
+# TXT_POWER_OUTPUT
+Production d'‚nergie (faible)
+# TXT_POWER_OUTPUT_LOW
+Continuer
+# TXT_CONTINUE
+Saturation des donn‚es … envoyer
+# TXT_QUEUE_FULL
+%s a modifi‚ les options de jeu!
+# TXT_SPECIAL_WARNING
+Placez un CD d'Alerte Rouge dans le lecteur de CD-ROM.
+# TXT_CD_DIALOG_1
+Placez le CD %d (%s) dans le lecteur de CD-ROM.
+# TXT_CD_DIALOG_2
+Alerte Rouge n'a pas d‚tect‚ votre lecteur de CD-ROM.
+# TXT_CD_ERROR1
+Pas de carte sonore d‚tect‚e
+# TXT_NO_SOUND_CARD
+INCONNU
+# TXT_UNKNOWN
+(ancien)
+# TXT_OLD_GAME
+Espace disque insuffisant pour lancer Alerte Rouge.
+# TXT_NO_SPACE
+Vous devez disposer de %d Mo sur votre disque dur.
+# TXT_MUST_HAVE_SPACE
+Lancez d'abord le programme SETUP.
+# TXT_RUN_SETUP
+Attente adversaire
+# TXT_WAITING_FOR_OPPONENT
+Choisissez l'option 'ParamŠtres' pour d‚finir la configuration par d‚faut
+# TXT_SELECT_SETTINGS
+Prison
+# TXT_PRISON
+Mission sauvegard‚e
+# TXT_GAME_WAS_SAVED
+Espace disque insuffisant pour sauvegarde.  Effacez une ancienne sauvegarde pour lib‚rer de la place sur le disque dur et r‚essayez.
+# TXT_SPACE_CANT_SAVE
+Port/Adresse invalide. COM 1-4 OU ADDRESSE
+# TXT_INVALID_PORT_ADDRESS
+paramŠtres Port et/ou IRQ invalides
+# TXT_INVALID_SETTINGS
+IRQ d‚j… utilis‚
+# TXT_IRQ_ALREADY_IN_USE
+Oui
+# TXT_ABORT
+Recommencer
+# TXT_RESTART
+Mission relanc‚e. Attendez SVP...
+# TXT_RESTARTING
+Chargement de la mission. Attendez SVP...
+# TXT_LOADING
+Erreur chaŒne d'initialisation modem
+# TXT_ERROR_IN_INITSTRING
+Ombre
+# TXT_SHADOW_COLON
+Mine Anti-V‚hicule 
+# TXT_AVMINE
+Mine Anti-Personnel 
+# TXT_APMINE
+Nouvelles missions
+# TXT_NEW_MISSIONS
+Voleur
+# TXT_THIEF
+Brouilleur de radar
+# TXT_MRJ
+G‚n‚rateur d'ombre
+# TXT_GAP_GENERATOR
+Bunker
+# TXT_PILLBOX
+Bunker camoufl‚
+# TXT_CAMOPILLBOX
+ChronosphŠre
+# TXT_CHRONOSPHERE
+Roy. Uni
+# TXT_ENGLAND
+Allemagne
+# TXT_GERMANY
+Espagne
+# TXT_SPAIN
+URSS
+# TXT_USSR
+Ukraine
+# TXT_UKRAINE
+GrŠce
+# TXT_GREECE
+France
+# TXT_FRANCE
+Turquie
+# TXT_TURKEY
+Rivage
+# TXT_SHORE
+Choisir objet
+# TXT_PLACE_OBJECT
+Sous-marin
+# TXT_SS
+Contre-torpilleur
+# TXT_DD
+Croiseur
+# TXT_CA
+Transport
+# TXT_TRANSPORT
+Aviso-torpilleur
+# TXT_PT
+Hall
+# TXT_LOBBY
+Parties
+# TXT_CHANNEL_GAMES
+Sauvegarder partie...
+# TXT_SAVING_GAME
+La partie est au complet.
+# TXT_GAME_FULL
+Vous devez s‚lectionner une partie!
+# TXT_MUST_SELECT_GAME
+%s joue contre %s
+# TXT_S_PLAYING_S
+Seul l'h“te peut modifier cette option.
+# TXT_ONLY_HOST_CAN_MODIFY
+La partie a ‚t‚ annul‚e.
+# TXT_GAME_CANCELLED
+%s a initi‚ une nouvelle partie.
+# TXT_S_FORMED_NEW_GAME
+La partie de %s est maintenant en cours.
+# TXT_GAME_NOW_IN_PROGRESS
+Bobine de Tesla
+# TXT_TESLA
+G‚n‚rateur d'ombre mobile
+# TXT_MGG
+Tour lance-flammes
+# TXT_FLAME_TURRET
+Canon Anti-Avion
+# TXT_AAGUN
+Niche
+# TXT_KENNEL
+Centre Technique
+# TXT_SOVIET_TECH
+Bombardier
+# TXT_BADGER
+Mig
+# TXT_MIG
+Yak
+# TXT_YAK
+Barbel‚s
+# TXT_FENCE
+M‚decin
+# TXT_MEDIC
+Saboteur
+# TXT_SABOTEUR
+G‚n‚ral
+# TXT_GENERAL
+Tanya
+# TXT_E7
+Parabombes
+# TXT_PARA_BOMB
+Parachutistes
+# TXT_PARA_INFANTRY
+Saboteur parachutiste
+# TXT_PARA_SABOTEUR
+Chantier naval
+# TXT_SHIP_YARD
+Port sous-marin
+# TXT_SUB_PEN
+Options Sc‚nario
+# TXT_SCENARIO_OPTIONS
+Avion espion
+# TXT_SPY_MISSION
+Avion espion
+# TXT_U2
+Chien d'attaque
+# TXT_GUARD_DOG
+Info Espion
+# TXT_SPY_INFO
+Bƒtiments
+# TXT_BUILDNGS
+Unit‚s
+# TXT_UNITS
+Infanterie
+# TXT_INFANTRY
+Avion
+# TXT_AIRCRAFT
+Camion d'approvisionnement
+# TXT_TRUCK
+Module d'invuln‚rabilit‚
+# TXT_INVUL
+Rideau de Fer
+# TXT_IRON_CURTAIN
+Centre technique avanc‚
+# TXT_ADVANCED_TECH
+Lance-roquettes V2
+# TXT_V2_LAUNCHER
+Poste de commandement avanc‚
+# TXT_FORWARD_COM
+Bombardeur
+# TXT_DEMOLITIONER
+Poseur de mines
+# TXT_MINE_LAYER
+Chantier de construction leurre
+# TXT_FAKE_CONST
+Usine d'armement leurre
+# TXT_FAKE_WEAP
+Chantier naval leurre
+# TXT_FAKE_YARD
+Port sous-marin leurre
+# TXT_FAKE_PEN
+D“me radar leurre
+# TXT_FAKE_RADAR
+Bigfoot
+# TXT_THEME_BIGF
+La r‚volte
+# TXT_THEME_CRUS
+A l'attaque 1
+# TXT_THEME_FAC1
+A l'attaque 2
+# TXT_THEME_FAC2
+Marche de l'enfer
+# TXT_THEME_HELL
+Sauve-qui-peut
+# TXT_THEME_RUN1
+La d‚bƒcle
+# TXT_THEME_SMSH
+Tranch‚es
+# TXT_THEME_TREN
+Les professionnels
+# TXT_THEME_WORK
+Attente
+# TXT_THEME_AWAIT
+Dense
+# TXT_THEME_DENSE_R
+S‚lection carte
+# TXT_THEME_MAP
+Fogger
+# TXT_THEME_FOGGER1A
+Boue
+# TXT_THEME_MUD1A
+Radio 2
+# TXT_THEME_RADIO2
+Laminage
+# TXT_THEME_ROLLOUT
+Serpent
+# TXT_THEME_SNAKE
+Extermination
+# TXT_THEME_TERMINAT
+Jumeau
+# TXT_THEME_TWIN
+Vecteur
+# TXT_THEME_VECTOR1A
+Equipiers
+# TXT_TEAM_MEMBERS
+Pont
+# TXT_BRIDGE
+Baril
+# TXT_BARREL
+Amical
+# TXT_GOODGUY
+Ennemi
+# TXT_BADGUY
+Or
+# TXT_GOLD
+Gemmes
+# TXT_GEMS
+Film titre
+# TXT_TEASER
+Films
+# TXT_MOVIES
+Int‚rieur
+# TXT_INTERIOR
+Signal sonar
+# TXT_SONAR_PULSE
+Silo de missiles
+# TXT_MSLO
+Satellite GPS
+# TXT_GPS_SATELLITE
+Bombe atomique
+# TXT_NUCLEAR_BOMB
+Facile
+# TXT_EASY
+Difficile
+# TXT_HARD
+Normal
+# TXT_NORMAL
+S‚lectionnez un niveau de difficult‚.
+Il sera valable tout au long de votre campagne.
+# TXT_DIFFICULTY
+Alli‚s
+# TXT_ALLIES
+Soviets
+# TXT_SOVIET
+ThŠme Intro
+# TXT_THEME_INTRO
+Progr. ombre
+# TXT_SHADOW_REGROWS
+Progr. minerai
+# TXT_ORE_SPREADS
+Musiques
+# TXT_THEME_SCORE
+Internet
+# TXT_INTERNET
+Glace
+# TXT_ICE
+Caisses
+# TXT_CRATE
+Escarmouche
+# TXT_SKIRMISH
+Choisissez votre camp.
+# TXT_CHOOSE
+Min‚raux pr‚cieux
+# TXT_MINERALS
+Ignorer
+# TXT_IGNORE
+Erreur - le modem ne r‚pond pas.
+# TXT_ERROR_NO_RESP
+Erreur - Le modem n'a pas r‚pondu … l'activation du code de r‚sultat.
+# TXT_ERROR_NO_RESCODE
+Erreur - Le modem n'a pas r‚pondu … la chaŒne d'initialisation.
+# TXT_ERROR_NO_INIT
+Erreur - Le modem n'a pas r‚pondu … l'activation des codes de r‚sultat d‚taill‚s.
+# TXT_ERROR_NO_VERB
+Erreur - Le modem n'a pas r‚pondu … la commande du mode '‚cho'.
+# TXT_ERROR_NO_ECHO
+Erreur - Impossible de d‚sactiver r‚ponse auto du modem.
+# TXT_ERROR_NO_DISABLE
+Erreur - Trop d'erreurs lors de l'initialisation du modem - Interruption.
+# TXT_ERROR_TOO_MANY
+Erreur - Le modem a retourn‚ une erreur de param‚trage.
+# TXT_ERROR_ERROR
+Erreur - Temps d'attente de connexion d‚pass‚.
+# TXT_ERROR_TIMEOUT
+Accompli
+# TXT_ACCOMPLISHED
+Cliquez pour continuer
+# TXT_CLICK_CONTINUE
+R‚ception du sc‚nario de l'h“te.
+# TXT_RECEIVING_SCENARIO
+Envoi du sc‚nario aux joueurs … distance.
+# TXT_SENDING_SCENARIO
+Erreur - Le modem n'a pas r‚pondu … la commande de contr“le de flux. Votre configuration de Windows peut ˆtre incorrecte.
+# TXT_NO_FLOW_CONTROL_RESPONSE
+Erreur - Le modem n'a pas r‚pondu … la d‚sactivation du protocole de compression. Votre configuration de Windows peut ˆtre incorrecte.
+# TXT_NO_COMPRESSION_RESPONSE
+Erreur - Le modem n'a pas r‚pondu … la d‚sactivation du protocole de correction d'erreurs. Votre configuration de Windows peut ˆtre incorrecte.
+# TXT_NO_ERROR_CORRECTION_RESPONSE
+Pour jouer … Alerte Rouge via Internet, vous devez ˆtre connect‚ … un serveur Internet et ˆtre inscrit … Planet Westwood.
+# TXT_EXPLAIN_REGISTRATION
+Erreur - Impossible d'ex‚cuter WChat.
+# TXT_ERROR_UNABLE_TO_RUN_WCHAT
+Enregistrer
+# TXT_REGISTER
+Gisement Minerai
+# TXT_ORE_MINE
+Aucun modem configur‚
+# TXT_NO_REGISTERED_MODEM
+D‚placement chronoporte
+# TXT_CHRONOSHIFT
+Adresse invalide ou en cours d'utilisation
+# TXT_UNABLE_TO_OPEN_PORT
+Pas de tonalit‚. Assurez-vous que votre modem est connect‚ … la ligne t‚l‚phonique et r‚essayez.
+# TXT_NO_DIAL_TONE
+Erreur - L'autre joueur n'a pas ce sc‚nario d'extension.
+# TXT_NO_EXPANSION_SCENARIO
+Patientez SVP...
+# TXT_STAND_BY
+Musique du g‚n‚rique de fin
+# TXT_THEME_CREDITS
+Puissance faible: Canon(s) AA neutralis‚(s)
+# TXT_POWER_AAGUN
+Puissance faible: Bobine(s) de Tesla neutralis‚e(s)
+# TXT_POWER_TESLA
+Puissance Faible
+# TXT_LOW_POWER
+Commandant:
+# TXT_COMMANDER
+Parties gagn‚es:
+# TXT_BATTLES_WON
+Fichier de donn‚es du jeu d‚tect‚ incompatible. Un fichier de donn‚es du jeu est peut-ˆtre corrompu.
+# TXT_MISMATCH
+Votre version de jeu n‚cessite une mise … jour. Vous pouvez t‚l‚charger la derniŠre mise … jour sur notre site Web : WWW.WESTWOOD.COM.
+#TXT_SCENARIO_ERROR
+Connecting
+# TXT_CONNECTING
+Initialisation du Modem
+# TXT_MODEM_INITIALISATION
+Compression des Donn‚es
+# TXT_DATA_COMPRESSION
+Correction d'Erreur
+# TXT_ERROR_CORRECTION
+Contr“le Mat‚riel du Flux
+# TXT_HARDWARE_FLOW_CONTROL
+Avanc‚
+# TXT_ADVANCED
+Seconde main
+# TXT_THEME_2ND_HAND
+Arazo‹de
+# TXT_THEME_ARAZOID
+Retour … l'envoyeur
+# TXT_THEME_BACKSTAB
+Chaos2
+# TXT_THEME_CHAOS2
+Fermez-la !
+# TXT_THEME_SHUT_IT
+Visite de courtoisie
+# TXT_THEME_TWINMIX1
+A couvert 
+# TXT_THEME_UNDER3
+VR2
+# TXT_THEME_VR2
+L'autre systŠme ne r‚pond pas. Voulez-vous tenter une sauvegarde d'urgence ? Tous les joueurs doivent sauvegarder pour que cela fonctionne.
+# TXT_ASK_EMERGENCY_SAVE_NOT_RESPONDING
+L'autre systŠme a raccroch‚. Voulez-vous tenter une sauvegarde d'urgence ? Tous les joueurs doivent sauvegarder pour que cela fonctionne.
+# TXT_ASK_EMERGENCY_SAVE_HUNG_UP
+Alerte Rouge n'a pu ex‚cuter le programme d'enregistrement. Vous devez installer Westwood Chat … partir du CD d'Alerte Rouge pour vous enregistrer.
+# TXT_NO_REG_APP
+Un joueur de la partie n'a pas son sc‚nario d'extension.
+# TXT_NO_CS_SCENARIOS
+Sous-marin MS
+# TXT_MISSILESUB
+Electrocuteur
+# TXT_SHOCKTROOPER
+M‚canicien
+# TXT_MECHANIC
+Chrono Tank
+# TXT_CHRONOTANK
+Tank Tesla
+# TXT_TESLATANK
+Tank M.A.D.
+# TXT_MAD
+Camion de d‚molition
+# TXT_DEMOTRUCK
+Transport Cam‚l‚on
+# TXT_PHASETRANSPORT
+Mar‚cages
+# TXT_THEME_BOG
+Volutes
+# TXT_THEME_FLOAT_V2
+T‚nŠbres
+# TXT_THEME_GLOOM
+Terrain min‚
+# TXT_THEME_GRNDWIRE
+M‚caniciens 2
+# TXT_THEME_RPT
+Battue
+# TXT_THEME_SEARCH
+Traction
+# TXT_THEME_TRACTION
+Chaos
+# TXT_THEME_WASTELND
+H‚liport Mobile
+# TXT_CARRIER
+

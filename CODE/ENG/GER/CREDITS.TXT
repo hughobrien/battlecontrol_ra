@@ -1,0 +1,242 @@
+
+
+	     AusfÅhrender Produzent	Brett W. Sperry
+
+			  Produzent	Lewis S. Peterson
+
+		     Programmierung	Barry Green
+
+		 Technische Leitung	Steve Wetherill, Eric Wang
+
+      Design der Solospieler-Karten	John Archer, Patrick Connelly,
+					Adam Isgreen, Michael Lightner,
+					Erik Yeo
+
+      Design der Mehrspieler-Karten	John Archer, Stuart Bailey,
+					Nigel Berryman, D'Andre Campbell,
+					Valerie Carpentier, Cathi Diet,
+					Keith Ditchburn, Gareth Eke,
+					Darren Esp, Simon Evers, Rod Gray,
+					Randy Greenback, Matthew Howe,
+					Levi Luke, Suzanne Maddison,
+					Iain McNeil, Graeme Miller,
+					Lee Morse, David Parsons,
+					Alex Scarrow, Robert Scheel,
+					Lawrence So, John Sweeney,
+					Matthew Tillett, Phillip Veale 
+
+			     Grafik	Chris Demers, Matthew Hansel,
+					Joseph B. Hewitt IV 
+
+		      Audio-Leitung	Paul S. Mudra
+
+			      Musik	Frank Klepacki
+
+		    GerÑuscheffekte	Dwight K. Okahara
+
+	Leiter QualitÑtsÅberwachung	Glenn Sperry
+
+	       QualitÑtsÅberwachung	Jim Adkins, Lloyd Bell,
+					Chris Blevens, D'Andre Campbell,
+					Errol Campbell, Shane Dietrich,
+					Randy Greenback, Jon Hix,
+					Mark Laity, Troy Leonard,
+					DeMarlo Lewis, Levi Luke,
+					Patrick Offord, Richard Rasmussen,
+					Mike Ruppert, Steve Shockey,
+					Mike Smith, Albert Springfield
+
+		   Deutsche Version
+
+		     Projektleitung	Marc Buro		
+
+			   Sprecher	Jîrg Mackensen, Thomas Stein
+
+			öbersetzung	Rolf D. Busch
+
+	       QualitÑtsÅberwachung	Rolf D. Busch
+
+
+
+
+				Alarmstufe Rot
+
+		AusfÅhrender Produzent	Brett W. Sperry
+                             Produzent	Ed Del Castillo
+
+		      Original Konzept	Brett W. Sperry
+					Joe Bostic
+
+			Original Story	Ron Smith
+					Ed Del Castillo
+
+		    Hauptprogrammierer	Joe Bostic
+					Barry Green
+					Steve Tall
+
+             	 	 Programmierer	Phil Gorrow
+					Maria del Mar McCready Legg
+					Jeff Brown
+					Bill Randolph
+					Matt Thorn
+					David Aldridge
+					Steve Wetherill
+
+	Programmierer deutsche Version	Victor Grippi
+
+     		    Technische Leitung	Steve Wetherill
+                          		Eric Wang
+
+				Design	Brett W. Sperry
+					Adam Isgreen
+					Michael Lightner
+					Erik Yeo
+
+			 Hauptgrafiker	Chris Demers
+					Matthew Hansel
+					Joseph Hewitt
+
+			      Grafiker	Paul Wesberry
+					David T. Potter
+					Damon Redmond
+					Brian White
+
+			  Film & Video	Eric Gooch
+					Kevin Becquet
+
+		 Video Post Production	Felix Kupis
+					Kevin Becquet
+
+			    Screenplay	Ron Smith
+					Adam Isgreen
+					John Scott Lewinski
+
+			Direktor Audio	Paul S. Mudra
+			    Soundtrack	Frank Klepacki
+			 Sound Effekte	Dwight K. Okahara
+
+	    Leitung QualitÑtssicherung	Glenn Sperry
+
+		    QualitÑtssicherung	Lloyd Bell
+					Kenny Dunne
+					Mike Smith
+					John Archer
+					Chris Rubyor
+					D'Andre Cambell
+					Chad Shackelford
+					Chris Bleven
+					Levi Luke
+					Errol Campbell
+					Abe Hernandez
+					James Adkins
+					Richard Rasmussen
+					Ben Lublin
+					Chris Holloway
+					Isaiah Myers
+					Phillip Castro
+					Albert Springfield
+					Steve Corcoran
+					James Hughes
+					Randy Greenback
+					Tyler Thackery
+
+		     Verpackungsdesign	Matthew Hansel
+					Thomas Puckett inc.
+
+			Handbuchdesign	Victoria Hart
+
+
+
+                Besonderer Dank an Daniel Woodyatt, Rosemarie Dalton,
+                und alle Virgins in Europa. Vielen Dank auch an
+		Tracy Chapman fÅr einen neuen Anfang.
+
+
+
+
+			          Die Schauspieler
+
+
+	Allierte Seite
+             	         Von Esling  	 Arthur Roberts
+                            Stavros  	 Barry Kramer
+                              Tanya  	 Lynne Litteer
+		   Verhîrspezialist	 Dom Magwili
+			  Ansagerin	 Gwen Castaldi
+
+		...und John Milford als Albert Einstein
+
+
+		   Allierte Truppen	Ricky Russell
+					Nick Paulos
+					Scott Ryan Talley
+					Joe Bostic
+					Chris Demers
+					Barry Green
+					Matthew Hansel
+					Adam Isgreen
+					Frank Klepacki
+					Mike Lightner
+					Bill Randolph
+					Philip E. Shelburne
+					Eric Wang
+
+
+
+	Sovietische Seite
+			      Kukov	Craig Cavanah
+			   Gradenko	Alan Terry
+			      Nadia	Andrea Robinson
+			       Kane	Joe Kucan
+
+		...und Eugene Dynarski als Josef Stalin
+
+
+		Sovietische Truppen	Felix Kupis
+					Erik Yeo
+
+
+	Stimmen im Spiel
+			     E.V.A.	Martin Alper
+			      Tanya	Lanae Freeborn
+			    Truppen	Mike Grayford
+					Adam Isgreen
+					Troy Leonard
+					Chris Rubyor
+
+
+	Produktions Crew
+
+			    Casting	Marilee Lear, C.S.A.
+
+		       KostÅmdesign	Christie Moeller
+
+		 Make-up & Frisuren	Cindy Cline
+
+		     Sound Engineer	Paul S. Mudra
+
+			Beleuchtung	Eric Gooch
+
+	  Hauptproduktionsassistent	Paul Bastardo
+
+	     Produktionsassistenten	Pat Connelly
+					Richard Rasmussen
+					Rick Appin
+					Jeff Fillhaber
+					Patience Becquet
+
+			      Video	Kevin Becquet
+
+			Sfx Make-up	Philip E. Shelburne
+
+
+	    Spezielles Bildmaterial
+			Courtesy Of	NBC News Archives Films
+					Fabulous Footage
+
+
+			     Regie:	Joseph D. Kucan
+
+
+
+

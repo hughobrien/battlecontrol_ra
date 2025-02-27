@@ -1,0 +1,104 @@
+/*
+**	Command & Conquer Red Alert(tm)
+**	Copyright 2025 Electronic Arts Inc.
+**
+**	This program is free software: you can redistribute it and/or modify
+**	it under the terms of the GNU General Public License as published by
+**	the Free Software Foundation, either version 3 of the License, or
+**	(at your option) any later version.
+**
+**	This program is distributed in the hope that it will be useful,
+**	but WITHOUT ANY WARRANTY; without even the implied warranty of
+**	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+**	GNU General Public License for more details.
+**
+**	You should have received a copy of the GNU General Public License
+**	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+
+enablemapdirect3216 = true;
+
+typedef	int	BOOL;
+typedef	int	INT;
+
+
+typedef	struct tag_network_number {
+		unsigned char   bytes[4];
+}network_number;
+
+typedef struct tag_physical_node {
+		unsigned char   bytes[6];
+}physical_node;
+
+typedef struct tag_send_address_struct{
+	unsigned char	address[6];
+}send_address_struct;
+
+typedef struct tag_send_buffer_struct{
+	unsigned char	buffer[512];
+}send_buffer_struct;
+
+typedef struct tag_get_buffer_struct{
+	unsigned char	get_buffer[1024];
+}get_buffer_struct;
+
+
+
+
+BOOL _IPX_Initialise(INT)
+{
+}
+
+
+INT  _IPX_Open_Socket95(INT)
+{
+}
+
+INT  _IPX_Close_Socket95(INT)
+{
+}
+
+INT  _IPX_Get_Connection_Number95(void)
+{
+}
+
+
+INT _IPX_Send_Packet95(send_address_struct *address, send_buffer_struct *buffer, INT, network_number *net, physical_node* node)
+{
+	address	= input;
+	buffer	= input;
+	net	= input;
+	node	= input;
+}
+
+INT _IPX_Broadcast_Packet95(send_buffer_struct *buffer, INT)
+{
+	buffer	= input;
+}
+
+INT _IPX_Get_Local_Target95(network_number *netnum, physical_node *node, short, send_address_struct *address)
+{
+	netnum	= input;
+	node	= input;
+	address	= output;
+}
+
+
+INT _IPX_Start_Listening95(void)
+{
+}
+
+INT _IPX_Shut_Down95(void)
+{
+}
+
+
+
+INT _IPX_Get_Outstanding_Buffer95(get_buffer_struct *buffer)
+{
+	buffer	= output;
+}
+
+
+

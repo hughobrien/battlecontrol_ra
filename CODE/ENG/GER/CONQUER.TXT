@@ -1,0 +1,1113 @@
+# TXT_NONE
+%3d.%02d
+# TXT_CREDIT_FORMAT
+Zeit: %02d:%02d:%02d
+# TXT_TIME_FORMAT_HOURS
+Zeit: %02d:%02d
+# TXT_TIME_FORMAT_NO_HOURS
+Verkaufen
+# TXT_BUTTON_SELL
+Verkaufen 
+# TXT_SELL
+Reparieren
+# TXT_BUTTON_REPAIR
+Sie:
+# TXT_YOU
+Gegner:
+# TXT_ENEMY
+Geb„ude vernichtet durch 
+# TXT_BUILD_DEST
+Einheiten zerst”rt durch 
+# TXT_UNIT_DEST
+Erz gesammelt durch 
+# TXT_TIB_HARV
+Punkte: %d
+# TXT_SCORE_1
+Ja
+# TXT_YES
+Nein
+# TXT_NO
+Einsatz erfolgreich 
+# TXT_SCENARIO_WON
+Einsatz fehlgeschlagen
+# TXT_SCENARIO_LOST
+Neues Spiel starten 
+# TXT_START_NEW_GAME
+Vorschau & Intro
+# TXT_INTRO
+Zurck
+# TXT_CANCEL
+Felsen
+# TXT_ROCK
+Technobot
+# TXT_CIVILIAN
+Entseuchungstrupp 
+# TXT_JP
+Ok
+# TXT_OK
+Baum
+# TXT_TREE
+\x011
+# TXT_LEFT
+\x010
+# TXT_RIGHT
+\x01E
+# TXT_UP
+\x01F
+# TXT_DOWN
+Frei
+# TXT_CLEAR
+Wasser
+# TXT_WATER
+Strasse
+# TXT_ROAD
+Hgel
+# TXT_SLOPE
+Schlamm
+# TXT_PATCH
+Fluss
+# TXT_RIVER
+Einsatz laden 
+# TXT_LOAD_MISSION
+Einsatz sichern 
+# TXT_SAVE_MISSION
+Einsatz l”schen 
+# TXT_DELETE_MISSION
+Laden
+# TXT_LOAD_BUTTON
+Sichern
+# TXT_SAVE_BUTTON
+L”schen
+# TXT_DELETE_BUTTON
+Spielsteuerung 
+# TXT_GAME_CONTROLS
+Soundsteuerung 
+# TXT_SOUND_CONTROLS
+Zurck
+# TXT_RESUME_MISSION
+Optische Steuerung 
+# TXT_VISUAL_CONTROLS
+Einsatz abbrechen 
+# TXT_QUIT_MISSION
+Spiel verlassen 
+# TXT_EXIT_GAME
+Optionen
+# TXT_OPTIONS
+šberreste 
+# TXT_SQUISH
+Krater
+# TXT_CRATER
+Brandspuren 
+# TXT_SCORCH
+Helligkeit:
+# TXT_BRIGHTNESS
+Musiklautst„rke 
+# TXT_MUSIC
+Ger„uschlautst„rke 
+# TXT_VOLUME
+T”nung:
+# TXT_TINT
+Kontrast:
+# TXT_CONTRAST
+Spielgeschwindigkeit
+# TXT_SPEED
+Scrollgeschwindigkeit:
+# TXT_SCROLLRATE
+Farbe:
+# TXT_COLOR
+Zurck zum Spiel 
+# TXT_RETURN_TO_GAME
+Gegnerischer Cyborg 
+# TXT_ENEMY_SOLDIER
+Gegnerisches Fahrzeug 
+# TXT_ENEMY_VEHICLE
+Gegnerisches Geb„ude 
+# TXT_ENEMY_STRUCTURE
+Leichter Panzer 
+# TXT_LTANK
+Schwerer Panzer 
+# TXT_MTANK
+Kampfpanzer 
+# TXT_MTANK2
+Mammutpanzer 
+# TXT_HTANK
+Flak-Stellung 
+# TXT_SAM
+Ranger 4WD Gel„ndewagen
+# TXT_JEEP
+Helitrans 
+# TXT_TRANS
+Erztransporter 
+# TXT_HARVESTER
+Artillerie
+# TXT_ARTY
+Cyborg "Schtze" 
+# TXT_E1
+Cyborg "Grenadier"
+# TXT_E2
+Cyborg "Rak-Zero"
+# TXT_E3
+Cyborg "Flammenwerfer"
+# TXT_E4
+Kampfhelikopter
+# TXT_HELI
+Hind-Hubschrauber
+# TXT_ORCA
+BMT
+# TXT_APC
+Wachturm
+# TXT_GUARD_TOWER
+Radar
+# TXT_COMMAND
+Heliport
+# TXT_HELIPAD
+Flugfeld
+# TXT_AIRSTRIP
+Erz-Silo
+# TXT_STORAGE
+Bauhof
+# TXT_CONST_YARD
+Erz-Raffinerie
+# TXT_REFINERY
+Kirche
+# TXT_CIV1
+Schmidts Wohnung
+# TXT_CIV2
+Anwesen der Hewitts
+# TXT_CIV3
+Haus von Kerstin 
+# TXT_CIV4
+Bastis Zuhause
+# TXT_CIV5
+Docs Scheune
+# TXT_CIV6
+Damons Kneipe
+# TXT_CIV7
+Die Farm
+# TXT_CIV8
+Musikfabrik
+# TXT_CIV9
+Spielzeugladen
+# TXT_CIV10
+Ludwigs Haus
+# TXT_CIV11
+Heustapel
+# TXT_CIV12
+Heustapel 
+# TXT_CIV13
+Weizenfeld
+# TXT_CIV14
+Brachland
+# TXT_CIV15
+Maisfeld
+# TXT_CIV16
+Selleriefelder
+# TXT_CIV17
+Kartoffelfeld
+# TXT_CIV18
+Salas Haus
+# TXT_CIV20
+Abduls Haus
+# TXT_CIV21
+Pablos Verrufene Pinte
+# TXT_CIV22
+Dorfbrunnen
+# TXT_CIV23
+Kamelh„ndler
+# TXT_CIV24
+Kirche
+# TXT_CIV25
+Alis Haus
+# TXT_CIV26
+Kr„mer Ted
+# TXT_CIV27
+Meneliks Heim
+# TXT_CIV28
+Prestor Johns Haus
+# TXT_CIV29
+Sch”pfbrunnen
+# TXT_CIV30
+Htte des Medizinmanns
+# TXT_CIV31
+Rikitikitembos Htte
+# TXT_CIV32
+Roarkes Htte
+# TXT_CIV33
+Mubasas Htte
+# TXT_CIV34
+Aksums Htte
+# TXT_CIV35
+Mambos Htte
+# TXT_CIV36
+Das Studio
+# TXT_CIV37
+Technologiezentrum
+# TXT_CIVMISS
+Geschtzturm
+# TXT_TURRET
+Rak-Kreuzer
+# TXT_GUNBOAT
+Mobiles Baufahrzeug 
+# TXT_MCV
+Kraftwerk
+# TXT_POWER
+Grosskraftwerk	
+# TXT_ADVANCED_POWER
+Krankenhaus
+# TXT_HOSPITAL
+Cyborgfabrik
+# TXT_BARRACKS
+™lf”rderpumpe 
+# TXT_PUMP
+™ltanker 
+# TXT_TANKER
+Sandsack-Barriere
+# TXT_SANDBAG_WALL
+Maschendrahtzaun
+# TXT_CYCLONE_WALL
+Betonmauer
+# TXT_BRICK_WALL
+Stacheldrahtzaun
+# TXT_BARBWIRE_WALL
+Lattenzaun
+# TXT_WOOD_WALL
+Waffenfabrik
+# TXT_WEAPON_FACTORY
+Befestigungsturm
+# TXT_AGUARD_TOWER
+Bio-Forschungslabor
+# TXT_BIO_LAB
+Werkstatt
+# TXT_FIX_IT
+Seitenmen
+# TXT_TAB_SIDEBAR
+Optionen
+# TXT_TAB_BUTTON_CONTROLS
+Datenbank
+# TXT_TAB_BUTTON_DATABASE
+Unbekanntes Terrain
+# TXT_SHADOW
+Optionen-Men
+# TXT_OPTIONS_MENU
+STOP
+# TXT_STOP
+SPIEL
+# TXT_PLAY
+ZUFALL
+# TXT_SHUFFLE
+ENDLOS
+# TXT_REPEAT
+Musiklautst„rke:
+# TXT_MUSIC_VOLUME
+Ger„uschlautst„rke:
+# TXT_SOUND_VOLUME
+An
+# TXT_ON
+Aus 
+# TXT_OFF
+Mehrspieler-Modus
+# TXT_MULTIPLAYER_GAME
+Keine Dateien verfgbar
+# TXT_NO_FILES
+Wollen Sie diese Datei l”schen?
+# TXT_DELETE_SINGLE_FILE
+Wollen Sie %d Dateien l”schen?
+# TXT_DELETE_MULTIPLE_FILES
+Standardwerte
+# TXT_RESET_MENU
+Wollen Sie den Einsatz abbrechen?
+# TXT_CONFIRM_EXIT
+Einsatzbeschreibung 
+# TXT_MISSION_DESCRIPTION
+Joe
+# TXT_C1
+Barry
+# TXT_C2
+Shelly
+# TXT_C3
+Maria
+# TXT_C4
+Karen
+# TXT_C5
+Steve
+# TXT_C6
+Phil
+# TXT_C7
+Dwight
+# TXT_C8
+Erik
+# TXT_C9
+Prof. Einstein
+# TXT_EINSTEIN
+Strasse
+# TXT_BIB
+Schnell
+# TXT_FASTER
+Langsam
+# TXT_SLOWER
+Luftangriff
+# TXT_AIR_STRIKE
+Stahlbeh„lter 
+# TXT_STEEL_CRATE
+Holzkiste 
+# TXT_WOOD_CRATE
+Wasserbeh„lter 
+# TXT_WATER_CRATE
+Flagge 
+# TXT_FLAG_SPOT
+Kann Szenario nicht lesen!
+# TXT_UNABLE_READ_SCENARIO
+Fehler beim Laden des Spieles!
+# TXT_ERROR_LOADING_GAME
+šberholter gespeicherter Spielstand.
+# TXT_OBSOLETE_SAVEGAME
+Sie mssen eine Beschreibung eingeben!
+# TXT_MUSTENTER_DESCRIPTION
+Fehler beim Sichern des Spieles!
+# TXT_ERROR_SAVING_GAME
+Diese Datei l”schen?
+# TXT_DELETE_FILE_QUERY
+[NOCH FREI]
+# TXT_EMPTY_SLOT
+Mehrspielermodus w„hlen
+# TXT_SELECT_MPLAYER_GAME
+Modem/Seriell
+# TXT_MODEM_SERIAL
+Netzwerk
+# TXT_NETWORK
+Kann Netzwerk nicht initialisieren!
+# TXT_INIT_NET_ERROR
+Im Netzwerk mitspielen
+# TXT_JOIN_NETWORK_GAME
+Neu
+# TXT_NEW
+Dazu
+# TXT_JOIN
+Nachricht senden
+# TXT_SEND_MESSAGE
+Ihr  Name:
+# TXT_YOUR_NAME
+Seite:
+# TXT_SIDE_COLON
+Farbe:
+# TXT_COLOR_COLON
+Spielrunden
+# TXT_GAMES
+Spieler
+# TXT_PLAYERS
+Szenario:
+# TXT_SCENARIO_COLON
+>> NICHT GEFUNDEN <<
+# TXT_NOT_FOUND
+Geld beim Spielstart:
+# TXT_START_CREDITS_COLON
+Sttzpunkte:
+# TXT_BASES_COLON
+Erz:
+# TXT_TIBERIUM_COLON
+Kisten:
+# TXT_CRATES_COLON
+KI-Spieler:
+# TXT_AI_PLAYERS_COLON
+Anfrage wurde abgelehnt.
+# TXT_REQUEST_DENIED
+Kann nicht starten; Szenario nicht gefunden.
+# TXT_UNABLE_PLAY_WAAUGH
+Niemand da zum Mitspielen!
+# TXT_NOTHING_TO_JOIN
+Sie mssen einen Namen eingeben!
+# TXT_NAME_ERROR
+Doppelte Namen sind nicht erlaubt.
+# TXT_DUPENAMES_NOTALLOWED
+Ihre Spielversion ist zu alt und berholt.
+# TXT_YOURGAME_OUTDATED
+Gegnerische Spielversion ist zu alt und berholt.
+# TXT_DESTGAME_OUTDATED
+Das Spiel von %s
+# TXT_THATGUYS_GAME
+[Das Spiel von %s]
+# TXT_THATGUYS_GAME_BRACKET
+Netzwerk-Spieleinstellungen
+# TXT_NETGAME_SETUP
+Ablehnen
+# TXT_REJECT
+He, Du kannst Dich doch nicht selbst ablehnen! Msstest Du doch langsam wissen... 
+# TXT_CANT_REJECT_SELF
+Sie mssen schon aussuchen, wen Sie ablehnen wollen...
+# TXT_SELECT_PLAYER_REJECT
+Sttzpunkte
+# TXT_BASES
+Kisten
+# TXT_CRATES
+KI-Spieler 
+# TXT_AI_PLAYERS
+Szenarien
+# TXT_SCENARIOS
+Geld:
+# TXT_CREDITS_COLON
+Nur ein einsamer Spieler?
+# TXT_ONLY_ONE
+Uuups!
+# TXT_OOPS
+An %s: 
+# TXT_TO
+An alle: 
+# TXT_TO_ALL
+Nachricht: 
+# TXT_MESSAGE
+Verbindung mit %s abgebrochen!
+# TXT_CONNECTION_LOST
+%s ist aus dem Spiel ausgestiegen.
+# TXT_LEFT_GAME
+%s wurde besiegt!
+# TXT_PLAYER_DEFEATED
+Warte auf Verbindung...
+# TXT_WAITING_CONNECT
+Verbindungsfehler!\rBitte Kabel berprfen.\rVersuche neue Verbindung...
+# TXT_NULL_CONNERR_CHECK_CABLES
+Verbindungsabbruch!\rW„hle neu an...
+# TXT_MODEM_CONNERR_REDIALING
+Verbindungsabbruch!\rWarte auf Anruf...
+# TXT_MODEM_CONNERR_WAITING
+W„hle seriellen Modus
+# TXT_SELECT_SERIAL_GAME
+Anrufen
+# TXT_DIAL_MODEM
+Anruf annehmen
+# TXT_ANSWER_MODEM
+Null-Modem
+# TXT_NULL_MODEM
+Einstellungen
+# TXT_SETTINGS
+Port:
+# TXT_PORT_COLON
+IRQ:
+# TXT_IRQ_COLON
+Baud:
+# TXT_BAUD_COLON
+Init.-Sequenz:
+# TXT_INIT_STRING
+"Call Waiting"-Sequenz:
+# TXT_CWAIT_STRING
+Tonwahl
+# TXT_TONE_BUTTON
+Impulswahl
+# TXT_PULSE_BUTTON
+Serielles Spiel - Host
+# TXT_HOST_SERIAL_GAME
+Gegner:
+# TXT_OPPONENT_COLON
+User hat sich abgemeldet!
+# TXT_USER_SIGNED_OFF
+Serielles Spiel - Mitspieler
+# TXT_JOIN_SERIAL_GAME
+Telefonbuch
+# TXT_PHONE_LIST
+Dazu
+# TXT_ADD
+Žndern
+# TXT_EDIT
+W„hlen
+# TXT_DIAL
+Standard
+# TXT_DEFAULT
+Standardeinstellungen
+# TXT_DEFAULT_SETTINGS
+Eigene Einstellungen
+# TXT_CUSTOM_SETTINGS
+Telefonbuch-Eintrag
+# TXT_PHONE_LISTING
+Name:
+# TXT_NAME_COLON
+Nummer:
+# TXT_NUMBER_COLON
+Kann Modem nicht finden.\rBitte Netzanschluss und Kabel berprfen.
+# TXT_UNABLE_FIND_MODEM
+Kein Tr„gersignal.
+# TXT_NO_CARRIER
+Besetzt.
+# TXT_LINE_BUSY
+Ungltige Nummer.
+# TXT_NUMBER_INVALID
+Der andere Rechner antwortet nicht!
+# TXT_SYSTEM_NOT_RESPONDING
+Das Spiel l„uft nicht mehr synchron!
+# TXT_OUT_OF_SYNC
+Datenpaket zu sp„t angekommen!
+# TXT_PACKET_TOO_LATE
+Der andere Spieler hat das Spiel beendet.
+# TXT_PLAYER_LEFT_GAME
+Von %s: %s
+# TXT_FROM
+ZEIT:
+# TXT_SCORE_TIME
+FšHRUNG:
+# TXT_SCORE_LEAD
+EFFIZIENZ:
+# TXT_SCORE_EFFI
+GESAMTPUNKTE:
+# TXT_SCORE_TOTA
+VERLUSTE:
+# TXT_SCORE_CASU
+NEUTRAL:
+# TXT_SCORE_NEUT
+GEBŽUDE VERLOREN
+# TXT_SCORE_BUIL
+GEBŽUDE
+# TXT_SCORE_BUIL1
+VERLOREN:
+# TXT_SCORE_BUIL2
+DIE BESTEN
+# TXT_SCORE_TOP
+GELD BEI SPIELENDE:
+# TXT_SCORE_ENDCRED
+%ds %dm
+# TXT_SCORE_TIMEFORMAT1
+%dm
+# TXT_SCORE_TIMEFORMAT2
+W„hle an...
+# TXT_DIALING
+Anwahl abgebrochen
+# TXT_DIALING_CANCELED
+Warte auf Anruf...
+# TXT_WAITING_FOR_CALL
+Annehmen abgebrochen
+# TXT_ANSWERING_CANCELED
+Invasor 
+# TXT_E6
+Spion
+# TXT_E8
+Kein Nullmodem-Kabel angeschlossen! Das ist ein Modem- oder Schleifenkabel.
+# TXT_MODEM_OR_LOOPBACK
+Karte
+# TXT_MAP
+Bltenbaum 
+# TXT_BLOSSOM_TREE
+Einsatzziel
+# TXT_RESTATE_MISSION
+Computer
+# TXT_COMPUTER
+Einheiten:
+# TXT_COUNT
+Tech.-Stufe:
+# TXT_LEVEL
+Gegner
+# TXT_OPPONENT
+Zerst”rt:
+# TXT_KILLS_COLON
+Video
+# TXT_VIDEO
+Forscher
+# TXT_C10
+Erobere die Flagge 
+# TXT_CAPTURE_THE_FLAG
+Einsatzziel 
+# TXT_OBJECTIVE
+Einsatz
+# TXT_MISSION
+Keine gespeicherten Spielst„nde! 
+# TXT_NO_SAVES
+Geb„ude 
+# TXT_CIVILIAN_BUILDING
+Technobot
+# TXT_TECHNICIAN
+Im Mehrspielermodus ist kein Zugriff auf gespeicherte Spielst„nde gestattet.
+# TXT_NO_SAVELOAD
+Spezialagent
+# TXT_DELPHI
+Wollen Sie diesen Einsatz neu beginnen? 
+# TXT_TO_REPLAY
+Neue Verbindung mit %s.
+# TXT_RECONN_TO
+Bitte warten Sie %02d Sekunden.
+# TXT_PLEASE_WAIT
+Wollen Sie etwa kapitulieren? 
+# TXT_SURRENDER
+Nachricht w„hlen 
+# TXT_SEL_TRANS
+Der Spielname darf nur einmal vorkommen. 
+# TXT_GAMENAME_MUSTBE_UNIQUE
+Das Spiel ist geschlossen. 
+# TXT_GAME_IS_CLOSED
+Ihr Name darf nur einmal vorkommen. 
+# TXT_NAME_MUSTBE_UNIQUE
+Neue Verbindung mit %s
+# TXT_RECONNECTING_TO
+Warte auf Verbindungen...
+# TXT_WAITING_FOR_CONNECTIONS
+Erlaubte Wartezeit: %02d Sekunden
+# TXT_TIME_ALLOWED
+ESC drcken, um abzubrechen
+# TXT_PRESS_ESC
+Vom Rechner: Jetzt gibt's nur noch uns beide! 
+# TXT_JUST_YOU_AND_ME
+Erobere die Flagge:
+# TXT_CAPTURE_THE_FLAG_COLON
+Spezialagent
+# TXT_CHAN
+%s hat sich mit %s verbndet
+# TXT_HAS_ALLIED
+%s erkl„rt %s den Krieg.
+# TXT_AT_WAR
+Ziel w„hlen 
+# TXT_SEL_TARGET
+Aufgeben 
+# TXT_RESIGN
+Erz w„chst schnell
+# TXT_TIBERIUM_FAST
+Antworte...
+# TXT_ANSWERING
+Initialisiere Modem...
+# TXT_INITIALIZING_MODEM
+Szenarien stimmen nicht berein. 
+# TXT_SCENARIOS_DO_NOT_MATCH
+Energieleistung 
+# TXT_POWER_OUTPUT
+Energieleistung (niedrig)
+# TXT_POWER_OUTPUT_LOW
+Weiter
+# TXT_CONTINUE
+Daten-Warteschlange zu voll 
+# TXT_QUEUE_FULL
+%s hat die Spieloptionen ge„ndert!
+# TXT_SPECIAL_WARNING
+Bitte legen Sie eine 'Alarmstufe Rot'-CD in das CD-ROM-Laufwerk. 
+# TXT_CD_DIALOG_1
+Bitte legen Sie die CD %d (%s) in das CD-ROM-Laufwerk. 
+# TXT_CD_DIALOG_2
+Alarmstufe Rot kann Ihr CD-ROM-Laufwerk nicht finden.
+# TXT_CD_ERROR1
+Keine Soundkarte entdeckt 
+# TXT_NO_SOUND_CARD
+UNBEKANNT
+# TXT_UNKNOWN
+(berholt)
+# TXT_OLD_GAME
+Zuwenig Festplattenplatz fr Alarmstufe Rot.
+# TXT_NO_SPACE
+Sie brauchen %d Megabytes freien Festplattenplatz.
+# TXT_MUST_HAVE_SPACE
+Starten Sie erst das SETUP-Programm.
+# TXT_RUN_SETUP
+Warte auf Gegner 
+# TXT_WAITING_FOR_OPPONENT
+Bitte w„hlen Sie 'Einstellungen', um die Standard-Konfiguration einzustellen. 
+# TXT_SELECT_SETTINGS
+Gef„ngnis
+# TXT_PRISON
+Einsatz gespeichert 
+# TXT_GAME_WAS_SAVED
+Zuwenig Festplattenplatz zum Speichern des Spielstandes. Bitte einen frher gesicherten Spielstand l”schen, um Platz freizumachen, und erneut versuchen. 
+# TXT_SPACE_CANT_SAVE
+Port/Adresse ungltig. COM 1-4 ODER ADRESSE
+# TXT_INVALID_PORT_ADDRESS
+Port und/oder IRQ-Einstellung ungltig. 
+# TXT_INVALID_SETTINGS
+IRQ bereits belegt 
+# TXT_IRQ_ALREADY_IN_USE
+Abbruch
+# TXT_ABORT
+Neustart
+# TXT_RESTART
+Einsatz startet neu. Bitte warten...
+# TXT_RESTARTING
+Einsatz wird geladen. Bitte warten...
+# TXT_LOADING
+Fehler in der Init-Sequenz 
+# TXT_ERROR_IN_INITSTRING
+Schatten:
+# TXT_SHADOW_COLON
+Panzermine 
+# TXT_AVMINE
+Tretmine 
+# TXT_APMINE
+Neue Eins„tze 
+# TXT_NEW_MISSIONS
+D.I.E.B.-Einheit
+# TXT_THIEF
+Radarst”rger„t 
+# TXT_MRJ
+Schattengenerator
+# TXT_GAP_GENERATOR
+Bunker
+# TXT_PILLBOX
+Tarnbunker 
+# TXT_CAMOPILLBOX
+Chronosph„re
+# TXT_CHRONOSPHERE
+England
+# TXT_ENGLAND
+Deutschland
+# TXT_GERMANY
+Spanien
+# TXT_SPAIN
+Sowjetunion 
+# TXT_USSR
+Ukraine
+# TXT_UKRAINE
+Griechenland
+# TXT_GREECE
+Frankreich
+# TXT_FRANCE
+Trkei
+# TXT_TURKEY
+Ufer
+# TXT_SHORE
+Gegenstand ausw„hlen 
+# TXT_PLACE_OBJECT
+U-Boot
+# TXT_SS
+Zerst”rer
+# TXT_DD
+Schlachtkreuzer
+# TXT_CA
+Transporter
+# TXT_TRANSPORT
+Kanonenboot 
+# TXT_PT
+Lobby
+# TXT_LOBBY
+Spiele
+# TXT_CHANNEL_GAMES
+Spiel sichern...
+# TXT_SAVING_GAME
+Spiel ist voll.
+# TXT_GAME_FULL
+Sie mssen ein Spiel ausw„hlen! 
+# TXT_MUST_SELECT_GAME
+%s spielt %s
+# TXT_S_PLAYING_S
+Nur der Spielleiter kann diese Option „ndern. 
+# TXT_ONLY_HOST_CAN_MODIFY
+Spiel wurde abgebrochen. 
+# TXT_GAME_CANCELLED
+%s hat ein neues Spiel er”ffnet.
+# TXT_S_FORMED_NEW_GAME
+Das Spiel von %s l„uft jetzt.
+# TXT_GAME_NOW_IN_PROGRESS
+Teslaspule 
+# TXT_TESLA
+Mobiler Schattengenerator 
+# TXT_MGG
+Flammenturm 
+# TXT_FLAME_TURRET
+Flak 
+# TXT_AAGUN
+Zwinger
+# TXT_KENNEL
+Technologiezentrum 
+# TXT_SOVIET_TECH
+Lufttransporter
+# TXT_BADGER
+MiG-Jagdbomber 
+# TXT_MIG
+Yak-Angriffsj„ger 
+# TXT_YAK
+Stacheldraht 
+# TXT_FENCE
+Mechanobot 
+# TXT_MEDIC
+Saboteur
+# TXT_SABOTEUR
+General
+# TXT_GENERAL
+Tanya
+# TXT_E7
+Fallschirmbomben
+# TXT_PARA_BOMB
+Fallschirmtruppen
+# TXT_PARA_INFANTRY
+Fallschirm-Saboteur 
+# TXT_PARA_SABOTEUR
+Werft 
+# TXT_SHIP_YARD
+U-Boot-Werft 
+# TXT_SUB_PEN
+Szenario-Optionen
+# TXT_SCENARIO_OPTIONS
+Spionageflugzeug 
+# TXT_SPY_MISSION
+Spionageflugzeug 
+# TXT_U2
+Terminator-Wachhund 
+# TXT_GUARD_DOG
+Spionage-Info 
+# TXT_SPY_INFO
+Geb„ude
+# TXT_BUILDNGS
+Einheiten
+# TXT_UNITS
+Infantrie-Cyborgs
+# TXT_INFANTRY
+Flugzeuge
+# TXT_AIRCRAFT
+Nachschub-Lkw 
+# TXT_TRUCK
+Unverwundbarkeitsschirm 
+# TXT_INVUL
+Eiserner Vorhang 
+# TXT_IRON_CURTAIN
+Technologiezentrum 
+# TXT_ADVANCED_TECH
+V2-Raketenwerfer
+# TXT_V2_LAUNCHER
+Kommandoposten 
+# TXT_FORWARD_COM
+Sprengmeister
+# TXT_DEMOLITIONER
+Minenleger 
+# TXT_MINE_LAYER
+Bauhof-Attrappe 
+# TXT_FAKE_CONST
+Waffenfabrik-Attrappe 
+# TXT_FAKE_WEAP
+Werft-Attrappe 
+# TXT_FAKE_YARD
+U-Boot-Werft-Attrappe 
+# TXT_FAKE_PEN
+Radar-Attrappe 
+# TXT_FAKE_RADAR
+Bigfoot
+# TXT_THEME_BIGF
+Crush
+# TXT_THEME_CRUS
+Face the Enemy 1
+# TXT_THEME_FAC1
+Face the Enemy 2
+# TXT_THEME_FAC2
+Hell March
+# TXT_THEME_HELL
+Run for Your Life
+# TXT_THEME_RUN1
+Smash
+# TXT_THEME_SMSH
+Trenches
+# TXT_THEME_TREN
+Workmen
+# TXT_THEME_WORK
+Await
+# TXT_THEME_AWAIT
+Dense
+# TXT_THEME_DENSE_R
+Map Selection
+# TXT_THEME_MAP
+Fogger
+# TXT_THEME_FOGGER1A
+Mud
+# TXT_THEME_MUD1A
+Radio 2
+# TXT_THEME_RADIO2
+Roll Out
+# TXT_THEME_ROLLOUT
+Snake
+# TXT_THEME_SNAKE
+Terminate
+# TXT_THEME_TERMINAT
+Twin
+# TXT_THEME_TWIN
+Vector
+# TXT_THEME_VECTOR1A
+Team-Cyborgs 
+# TXT_TEAM_MEMBERS
+Brcke
+# TXT_BRIDGE
+Fass
+# TXT_BARREL
+Verbndeter
+# TXT_GOODGUY
+Gegner
+# TXT_BADGUY
+Gold
+# TXT_GOLD
+Edelsteine
+# TXT_GEMS
+Titelfilm 
+# TXT_TEASER
+Filme
+# TXT_MOVIES
+Innen
+# TXT_INTERIOR
+Sonar
+# TXT_SONAR_PULSE
+Raketensilo
+# TXT_MSLO
+Navigationssatellit
+# TXT_GPS_SATELLITE
+Atombombe
+# TXT_NUCLEAR_BOMB
+Leicht
+# TXT_EASY
+Schwer
+# TXT_HARD
+Normal
+# TXT_NORMAL
+Bitte w„hlen Sie die Schwierigkeitsstufe.
+Sie bleibt dann  w„hrend des gesamten Feldzuges gltig.
+# TXT_DIFFICULTY
+Allianz
+# TXT_ALLIES
+Sowjets
+# TXT_SOVIET
+Vorspannmusik 
+# TXT_THEME_INTRO
+Schatten w„chst 
+# TXT_SHADOW_REGROWS
+Erz breitet sich aus 
+# TXT_ORE_SPREADS
+Punkte-Musik 
+# TXT_THEME_SCORE
+Internet
+# TXT_INTERNET
+Eis
+# TXT_ICE
+Kisten
+# TXT_CRATE
+Gepl„nkel
+# TXT_SKIRMISH
+Seite ausw„hlen
+# TXT_CHOOSE
+Wertvolle Mineralien 
+# TXT_MINERALS
+Ignorieren
+# TXT_IGNORE
+Fehler - Modem antwortet nicht
+# TXT_ERROR_NO_RESP
+Fehler - Modem antwortet nicht auf 'result code enable'-Befehl
+# TXT_ERROR_NO_RESCODE
+Fehler - Modem antwortet nicht  auf Initialisierungssequenz.
+# TXT_ERROR_NO_INIT
+Fehler - Modem antwortet nicht auf 'verbose'-Befehl
+# TXT_ERROR_NO_VERB
+Fehler - Modem antwortet nicht auf 'echo'-Befehl. 
+# TXT_ERROR_NO_ECHO
+Fehler - Modem antwortet nicht auf Befehl 'disable modem auto answer'.
+# TXT_ERROR_NO_DISABLE
+Fehler - Zu viele Fehler beim Initialisieren des Modems. Abbruch. 
+# TXT_ERROR_TOO_MANY
+Fehler - Modem gibt Fehlermeldung zurck. 
+# TXT_ERROR_ERROR
+Fehler - Zeit abgelaufen beim Warten auf Verbindung.
+# TXT_ERROR_TIMEOUT
+erfolgreich
+# TXT_ACCOMPLISHED
+Klicken Sie, um weiterzumachen. 
+# TXT_CLICK_CONTINUE
+Empfange Szenario vom Spielleiter.
+# TXT_RECEIVING_SCENARIO
+Sende Szenario an Spieler.
+# TXT_SENDING_SCENARIO
+Fehler - Modem antwortet nicht auf den Befehl 'flow control'. Ihre Windows-Konfiguration k”nnte falsch sein. 
+# TXT_NO_FLOW_CONTROL_RESPONSE
+Fehler - Modem antwortet nicht auf den Befehl 'compression disable'. Ihre Windows-Konfiguration k”nnte falsch sein. 
+# TXT_NO_COMPRESSION_RESPONSE
+Fehler - Modem antwortet nicht auf den Befehl 'error correction disable". Ihre Windows-Konfiguration k”nnte falsch sein. 
+# TXT_NO_ERROR_CORRECTION_RESPONSE
+Um Alarmstufe Rot ber das Internet zu spielen, mssen Sie mit einem Internet-Provider verbunden und beim Planeten Westwood registriert sein. 
+# TXT_EXPLAIN_REGISTRATION
+Fehler - kann WChat nicht starten.
+# TXT_ERROR_UNABLE_TO_RUN_WCHAT
+Registrieren
+# TXT_REGISTER
+Erzmine 
+# TXT_ORE_MINE
+Kein eingetragenes Modem 
+# TXT_NO_REGISTERED_MODEM
+Chronoport
+# TXT_CHRONOSHIFT
+Ungltiger oder besetzter Port 
+# TXT_UNABLE_TO_OPEN_PORT
+Kein W„hlton. Vergewissern Sie sich, dass Ihr Modem an die Telefonleitung angeschlossen ist, und versuchen Sie es erneut.
+# TXT_NO_DIAL_TONE
+Fehler - der andere Spieler hat dieses Erweiterungsszenario nicht. 
+# TXT_NO_EXPANSION_SCENARIO
+Bitte warten...
+# TXT_STAND_BY
+The Credits Theme
+# TXT_THEME_CREDITS
+Energieniveau kritisch: Flak ausser Betrieb 
+# TXT_POWER_AAGUN
+Energieniveau kritisch: Teslaspulen ausser Betrieb 
+# TXT_POWER_TESLA
+Energieniveau kritisch
+# TXT_LOW_POWER
+Kommandeur:
+# TXT_COMMANDER
+Siege:
+# TXT_BATTLES_WON
+Ihre Version des Spiels muá m”glicherweise upgedated werden. Die neuesten 
+Informationen ber Updates erhalten Sie auf unserer Webseite - 
+www.westwood.com
+# TXT_MISMATCH
+Nicht-kompatible Datei mit Spieldaten entdeckt. Diese Spieldatei k”nnte defekt sein.
+# TXT_SCENARIO_ERROR
+Wird verbunden
+# TXT_CONNECTING
+Modem-Initialisierung
+# TXT_MODEM_INITIALISATION
+Datenkompression
+# TXT_DATA_COMPRESSION
+Fehlerkorrektur
+# TXT_ERROR_CORRECTION
+Hardware-Datenfluákontrolle
+# TXT_HARDWARE_FLOW_CONTROL
+Fortgeschritten
+# TXT_ADVANCED
+2nd_Hand
+# TXT_THEME_2ND_HAND
+Arazoid
+# TXT_THEME_ARAZOID
+BackStab
+# TXT_THEME_BACKSTAB
+Chaos2
+# TXT_THEME_CHAOS2
+Shut_It
+# TXT_THEME_SHUT_IT
+TwinMix1
+# TXT_THEME_TWINMIX1
+Under3
+# TXT_THEME_UNDER3
+VR2
+# TXT_THEME_VR2
+Der andere Rechner reagiert nicht. M”chten Sie eine Notspeicherung versuchen? Damit das funktionieren kann, mssen beide Spieler sichern.
+# TXT_ASK_EMERGENCY_SAVE_NOT_RESPONDING
+Der andere Rechner hat aufgelegt. M”chten Sie eine Notspeicherung versuchen? Damit das funktionieren kann, mssen beide Spieler sichern.
+# TXT_ASK_EMERGENCY_SAVE_HUNG_UP
+Alarmstufe Rot kann die Registrierungssoftware nicht starten. Sie mssen Westwood Chat von der Alarmstufe-Rot-CD aus starten, um sich registrieren zu lassen.
+# TXT_NO_REG_APP
+Ein Spieler in dieser Runde hat dieses Erweiterungsszenario nicht.
+# TXT_NO_CS_SCENARIOS
+Raketen-U-Boot
+# TXT_MISSILESUB
+Elektrobot
+# TXT_SHOCKTROOPER
+Mechaniker
+# TXT_MECHANIC
+ChronoPanzer
+# TXT_CHRONOTANK
+TeslaPanzer
+# TXT_TESLATANK
+M.A.D.-Panzer
+# TXT_MAD
+Sprengwagen
+# TXT_DEMOTRUCK
+Tarntransporter
+# TXT_PHASETRANSPORT
+Bog
+# TXT_THEME_BOG
+Floating
+# TXT_THEME_FLOAT_V2
+Gloom
+# TXT_THEME_GLOOM
+Ground Wire
+# TXT_THEME_GRNDWIRE
+Mech Man 2
+# TXT_THEME_RPT
+Search
+# TXT_THEME_SEARCH
+Traction
+# TXT_THEME_TRACTION
+Wasteland
+# TXT_THEME_WASTELND
+H‚litransporter
+# TXT_CARRIER
+

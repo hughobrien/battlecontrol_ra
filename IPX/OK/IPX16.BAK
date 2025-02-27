@@ -1,0 +1,13 @@
+system	windows_dll
+option redefsok
+option quiet
+option map
+option eliminate
+option caseexact
+option one
+
+debug all
+file ipx16a.obj
+file ipx16c.obj
+
+name wwipx16.dll

@@ -1,0 +1,6 @@
+
+#define ICON_1	1
+
+
+ICON_1 ICON "redalert.ico"
+
