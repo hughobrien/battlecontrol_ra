@@ -63,6 +63,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "function.h"
+#include <stdint.h>
 
 #define	MCW	MAP_CELL_W
 int const MapClass::RadiusOffset[] = {
@@ -1325,8 +1326,8 @@ if (BlubCell->Overlapper[1]) {
 		obj = (*this)[cell].Cell_Occupier();
 		if (obj) {
 			if (
-				((unsigned int)obj & 0xff000000) ||
-				((unsigned int)obj->Next & 0xff000000) ||
+				((uintptr_t)obj & 0xff000000) ||
+				((uintptr_t)obj->Next & 0xff000000) ||
 //				((unsigned int)obj->Trigger & 0xff000000) ||
 				obj->IsInLimbo ||
 				((unsigned int)Coord_Cell(obj->Coord) >= MAP_CELL_TOTAL)) {
@@ -1342,8 +1343,8 @@ if (BlubCell->Overlapper[1]) {
 			obj = (*this)[cell].Overlapper[i];
 			if (obj) {
 				if (
-					((unsigned int)obj & 0xff000000) ||
-					((unsigned int)obj->Next & 0xff000000) ||
+					((uintptr_t)obj & 0xff000000) ||
+					((uintptr_t)obj->Next & 0xff000000) ||
 //					((unsigned int)obj->Trigger & 0xff000000) ||
 					obj->IsInLimbo ||
 					((unsigned int)Coord_Cell(obj->Coord) >= MAP_CELL_TOTAL)) {
