@@ -60,11 +60,11 @@
  *=============================================================================================*/
 void CRCEngine::operator() (char datum)
 {
-	StagingBuffer.Buffer[Index++] = datum;
+	StagingBuffer[Index++] = datum;
 
-	if (Index == sizeof(long))  {
+	if (Index == sizeof(int32_t))  {
 		CRC = Value();
-		StagingBuffer.Composite = 0;
+		memset(StagingBuffer, '\0', sizeof(StagingBuffer));
 		Index = 0;
 	}
 }
@@ -88,7 +88,7 @@ void CRCEngine::operator() (char datum)
  * HISTORY:                                                                                    *
  *   03/02/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-long CRCEngine::operator() (void const * buffer, int length)
+int32_t CRCEngine::operator() (void const * buffer, int length)
 {
 	if (buffer != NULL && length > 0)  {
 		char const * dataptr = (char const *)buffer;
@@ -107,21 +107,23 @@ long CRCEngine::operator() (void const * buffer, int length)
 		}
 
 		/*
-		**	Perform the fast 'bulk' processing by reading long word sized
+		**	Perform the fast 'bulk' processing by reading 32-bit word sized
 		**	data blocks.
 		*/
-		long const * longptr = (long const *)dataptr;
-		int longcount = bytes_left / sizeof(long);		// Whole 'long' elements remaining.
-		while (longcount--) {
-			CRC = _lrotl(CRC, 1) + *longptr++;
-			bytes_left -= sizeof(long);
+		int wordcount = bytes_left / sizeof(int32_t);
+		while (wordcount--) {
+			int32_t word;
+			memcpy(&word, dataptr, sizeof(word));
+			uint32_t c = (uint32_t)CRC;
+			CRC = (int32_t)(((c << 1) | (c >> 31)) + (uint32_t)word);
+			dataptr += sizeof(word);
+			bytes_left -= sizeof(int32_t);
 		}
 
 		/*
 		**	If there are remainder bytes, then process these by adding them
 		**	to the staging buffer.
 		*/
-		dataptr = (char const *)longptr;
 		while (bytes_left) {
 			operator()(*dataptr);
 			dataptr++;
