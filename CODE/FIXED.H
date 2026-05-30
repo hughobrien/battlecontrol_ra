@@ -216,7 +216,7 @@ class fixed
 	private:
 		union {
 			struct {
-#ifdef BIG_ENDIAN
+#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
 				unsigned char Whole;
 				unsigned char Fraction;
 #else
