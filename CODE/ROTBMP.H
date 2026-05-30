@@ -21,7 +21,7 @@
 #define MAKE_PTR(vp,x,y) (char *) (vp->Get_Offset() + ((y) * (vp->Get_Width() + vp->Get_XAdd())) + (x))
 #define MAKE_PTR2(vp,x,y) (char *) (vp->Get_Offset() + (((y)<<1) * (vp->Get_Width() + vp->Get_XAdd())) + ((x)<<1))
 
-#ifndef WIN32
+#if !defined(WIN32) && defined(__WATCOMC__)
 class BitmapClass
 {
 	public:

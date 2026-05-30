@@ -28,7 +28,7 @@
 
 **********************************************************************/
 
-#ifndef WIN32
+#if !defined(WIN32) && defined(__WATCOMC__)
 class BitmapClass
 {
 	public:
