@@ -389,6 +389,20 @@ int VectorClass<T>::Resize(unsigned newsize, T const * array)
 	return(true);
 }
 
+template class VectorClass<unsigned char>;
+template class VectorClass<void *>;
+template class VectorClass<char *>;
+template class VectorClass<char const *>;
+template class VectorClass<ObjectClass *>;
+template class VectorClass<TriggerClass *>;
+template class VectorClass<RemapControlType *>;
+template class VectorClass<BaseNodeClass>;
+template class VectorClass<FileEntryClass *>;
+template class VectorClass<MultiMission *>;
+template class VectorClass<NodeNameTag *>;
+template class VectorClass<PhoneEntryClass *>;
+template class VectorClass<CellClass>;
+
 //----------------------------------------------------------------------------------------------
 
 /***********************************************************************************************
@@ -671,5 +685,4 @@ void BooleanVectorClass::Fixup(int index) const
 		((int &)LastIndex) = index;
 	}
 }
-
 

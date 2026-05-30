@@ -102,7 +102,7 @@ template<class T>
 int DynamicVectorClass<T>::Resize(unsigned newsize, T const * array)
 {
 	if (VectorClass<T>::Resize(newsize, array)) {
-		if (Length() < ActiveCount) ActiveCount = Length();
+		if (this->Length() < ActiveCount) ActiveCount = this->Length();
 		return(true);
 	}
 	return(false);
@@ -157,9 +157,9 @@ int DynamicVectorClass<T>::ID(T const & object)
 template<class T>
 int DynamicVectorClass<T>::Add(T const & object)
 {
-	if (ActiveCount >= Length()) {
-		if ((IsAllocated || !VectorMax) && GrowthStep > 0) {
-			if (!Resize(Length() + GrowthStep)) {
+	if (ActiveCount >= this->Length()) {
+		if ((this->IsAllocated || !this->VectorMax) && GrowthStep > 0) {
+			if (!Resize(this->Length() + GrowthStep)) {
 
 				/*
 				**	Failure to increase the size of the vector is an error condition.
@@ -203,9 +203,9 @@ int DynamicVectorClass<T>::Add(T const & object)
 template<class T>
 int DynamicVectorClass<T>::Add_Head(T const & object)
 {
-	if (ActiveCount >= Length()) {
-		if ((IsAllocated || !VectorMax) && GrowthStep > 0) {
-			if (!Resize(Length() + GrowthStep)) {
+	if (ActiveCount >= this->Length()) {
+		if ((this->IsAllocated || !this->VectorMax) && GrowthStep > 0) {
+			if (!Resize(this->Length() + GrowthStep)) {
 
 				/*
 				**	Failure to increase the size of the vector is an error condition.
@@ -297,3 +297,15 @@ int DynamicVectorClass<T>::Delete(int index)
 }
 
 /************************** end of dynavec.cpp *****************************/
+
+template class DynamicVectorClass<void *>;
+template class DynamicVectorClass<char *>;
+template class DynamicVectorClass<char const *>;
+template class DynamicVectorClass<ObjectClass *>;
+template class DynamicVectorClass<TriggerClass *>;
+template class DynamicVectorClass<RemapControlType *>;
+template class DynamicVectorClass<BaseNodeClass>;
+template class DynamicVectorClass<FileEntryClass *>;
+template class DynamicVectorClass<MultiMission *>;
+template class DynamicVectorClass<NodeNameTag *>;
+template class DynamicVectorClass<PhoneEntryClass *>;
