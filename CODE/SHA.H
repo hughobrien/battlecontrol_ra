@@ -57,6 +57,7 @@ typedef int bool;
 #include	<stdio.h>
 #include	<string.h>
 #include	<stdlib.h>
+#include	<stdint.h>
 #include	<new.h>
 
 
@@ -90,7 +91,7 @@ class SHAEngine
 	private:
 
 		typedef union {
-			unsigned long Long[5];
+			uint32_t Long[5];
 			unsigned char Char[20];
 		} SHADigest;
 
@@ -116,14 +117,20 @@ class SHAEngine
 			K3=0x8f1bbcdcL,		// t=40..59		5^(1/2)/4
 			K4=0xca62c1d6L,		// t=60..79		10^(1/2)/4
 
+			// Source data is grouped into this many 32-bit words.
+			SRC_BLOCK_WORDS=16,
+
 			// Source data is grouped into blocks of this size.
-			SRC_BLOCK_SIZE=16*sizeof(long),
+			SRC_BLOCK_SIZE=SRC_BLOCK_WORDS*sizeof(uint32_t),
+
+			// Internal processing data is grouped into this many 32-bit words.
+			PROC_BLOCK_WORDS=80,
 
 			// Internal processing data is grouped into blocks this size.
-			PROC_BLOCK_SIZE=80*sizeof(long)
+			PROC_BLOCK_SIZE=PROC_BLOCK_WORDS*sizeof(uint32_t)
 		};
 
-		long Get_Constant(int index) const {
+		uint32_t Get_Constant(int index) const {
 			if (index < 20) return K1;
 			if (index < 40) return K2;
 			if (index < 60) return K3;
@@ -131,26 +138,26 @@ class SHAEngine
 		};
 
 		// Used for 0..19
-		long Function1(long X, long Y, long Z) const {
+		uint32_t Function1(uint32_t X, uint32_t Y, uint32_t Z) const {
 			return(Z ^ ( X & ( Y ^ Z ) ) );
 		};
 
 		// Used for 20..39
-		long Function2(long X, long Y, long Z) const {
+		uint32_t Function2(uint32_t X, uint32_t Y, uint32_t Z) const {
 			return( X ^ Y ^ Z );
 		};
 
 		// Used for 40..59
-		long Function3(long X, long Y, long Z) const {
+		uint32_t Function3(uint32_t X, uint32_t Y, uint32_t Z) const {
 			return( (X & Y) | (Z & (X | Y) ) );
 		};
 
 		// Used for 60..79
-		long Function4(long X, long Y, long Z) const {
+		uint32_t Function4(uint32_t X, uint32_t Y, uint32_t Z) const {
 			return( X ^ Y ^ Z );
 		};
 
-		long Do_Function(int index, long X, long Y, long Z) const {
+		uint32_t Do_Function(int index, uint32_t X, uint32_t Y, uint32_t Z) const {
 			if (index < 20) return Function1(X, Y, Z);
 			if (index < 40) return Function2(X, Y, Z);
 			if (index < 60) return Function3(X, Y, Z);
