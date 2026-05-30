@@ -438,7 +438,7 @@ void AnimClass::Init(void)
  * HISTORY:                                                                                    *
  *   05/31/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-void * AnimClass::operator new(size_t)
+void * AnimClass::operator new(size_t) throw()
 {
 	void * ptr = Anims.Allocate();
 	if (ptr != NULL) {
