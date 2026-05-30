@@ -41,6 +41,7 @@
 #include "control.h"
 #include "shapebtn.h"
 #include "slider.h"
+#include <algorithm>
 
 
 /***************************************************************************
@@ -263,10 +264,10 @@ TListClass<T>::TListClass(int id, int x, int y, int w, int h, TextPrintType flag
 	UpGadget.X -= UpGadget.Width;
 	DownGadget.X -= DownGadget.Width;
 	DownGadget.Y -= DownGadget.Height;
-	ScrollGadget.X -= max(UpGadget.Width, DownGadget.Width);
+	ScrollGadget.X -= std::max(UpGadget.Width, DownGadget.Width);
 	ScrollGadget.Y = Y+UpGadget.Height;
 	ScrollGadget.Height -= UpGadget.Height + DownGadget.Height;
-	ScrollGadget.Width = max(UpGadget.Width, DownGadget.Width);
+	ScrollGadget.Width = std::max(UpGadget.Width, DownGadget.Width);
 
 	/*
 	**	Set the list box to a default state.
@@ -303,10 +304,10 @@ void TListClass<T>::Set_Position(int x, int y)
 	UpGadget.Y = y;
 	DownGadget.X = x + Width - DownGadget.Width;
 	DownGadget.Y = y + Height - DownGadget.Height;
-	ScrollGadget.X = x + Width - max(UpGadget.Width, DownGadget.Width);
+	ScrollGadget.X = x + Width - std::max(UpGadget.Width, DownGadget.Width);
 	ScrollGadget.Y = y + UpGadget.Height;
 	ScrollGadget.Height = Height - (UpGadget.Height + DownGadget.Height);
-	ScrollGadget.Width = max(UpGadget.Width, DownGadget.Width);
+	ScrollGadget.Width = std::max(UpGadget.Width, DownGadget.Width);
 }
 
 template<class T>
@@ -447,7 +448,7 @@ int TListClass<T>::Action(unsigned flags, KeyNumType & key)
 			int index = Get_Mouse_Y() - (Y+1);
 			index = index / LineHeight;
 			SelectedIndex = CurrentTopIndex + index;
-			SelectedIndex = min(SelectedIndex, List.Count()-1);
+			SelectedIndex = std::min(SelectedIndex, List.Count()-1);
 		}
 	}
 	return(ControlClass::Action(flags, key));
@@ -523,7 +524,7 @@ void TListClass<T>::Step(int up)
 template<class T>
 T TListClass<T>::Get_Item(int index) const
 {
-	index = min(index, List.Count());
+	index = std::min(index, List.Count());
 	return(List[index]);
 }
 #endif
