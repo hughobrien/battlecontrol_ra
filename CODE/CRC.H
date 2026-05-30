@@ -40,6 +40,8 @@
 #define CRC_H
 
 #include	<stdlib.h>
+#include	<stdint.h>
+#include	<string.h>
 
 /*
 **	The "bool" integral type was defined by the C++ comittee in
@@ -65,18 +67,18 @@ class CRCEngine {
 	public:
 
 		// Constructor for CRC engine (it can have an override initial CRC value).
-		CRCEngine(long initial=0) : CRC(initial), Index(0) {
-			StagingBuffer.Composite = 0;
+		CRCEngine(int32_t initial=0) : CRC(initial), Index(0) {
+			memset(StagingBuffer, '\0', sizeof(StagingBuffer));
 		};
 
 		// Fetches CRC value.
-		long operator() (void) const {return(Value());};
+		int32_t operator() (void) const {return(Value());};
 
 		// Submits one byte sized datum to the CRC accumulator.
 		void operator() (char datum);
 
 		// Submits an arbitrary buffer to the CRC accumulator.
-		long operator() (void const * buffer, int length);
+		int32_t operator() (void const * buffer, int length);
 
 		// Implicit conversion operator so this object appears like a 'long integer'.
 		operator long(void) const {return(Value());};
@@ -87,9 +89,12 @@ class CRCEngine {
 			return(Index != 0);
 		};
 
-		long Value(void) const {
+		int32_t Value(void) const {
 			if (Buffer_Needs_Data()) {
-				return(_lrotl(CRC, 1) + StagingBuffer.Composite);
+				int32_t composite;
+				memcpy(&composite, StagingBuffer, sizeof(composite));
+				uint32_t c = (uint32_t)CRC;
+				return (int32_t)(((c << 1) | (c >> 31)) + (uint32_t)composite);
 			}
 			return(CRC);
 		};
@@ -98,7 +103,7 @@ class CRCEngine {
 		**	Current accumulator of the CRC value. This value doesn't take into
 		**	consideration any pending data in the staging buffer.
 		*/
-		long CRC;
+		int32_t CRC;
 
 		/*
 		**	This is the sub index into the staging buffer used to keep track of
@@ -111,11 +116,7 @@ class CRCEngine {
 		**	is filled, the value is transformed into the CRC and the buffer is flushed
 		**	in preparation for additional data.
 		*/
-		union {
-			long Composite;
-			char Buffer[sizeof(long)];
-		} StagingBuffer;
+		char StagingBuffer[sizeof(int32_t)];
 };
 
 #endif
-
