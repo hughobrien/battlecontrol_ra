@@ -36,7 +36,7 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
-#ifndef WIN32
+#if !defined(WIN32) && defined(__WATCOMC__)
 #include	"..\wwflat32\include\keyboard.h"
 #else
 
@@ -47,7 +47,7 @@
 **	November of '94. Until the compiler supports this, use the following
 **	definition.
 */
-#ifndef __BORLANDC__
+#if defined(__WATCOMC__)
 #ifndef TRUE_FALSE_DEFINED
 #define TRUE_FALSE_DEFINED
 enum {false=0,true=1};
