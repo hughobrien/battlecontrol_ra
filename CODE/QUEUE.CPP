@@ -811,14 +811,14 @@ static void Queue_AI_Multiplayer(void)
 
 	rc = Wait_For_Players (0, net,
 		(Session.MaxAhead << 3),
-		MAX ( net->Response_Time() * 3, FRAMESYNC_DLG_TIME*timeout_factor ),
+		MAX ( (int)(net->Response_Time() * 3), FRAMESYNC_DLG_TIME*timeout_factor ),
 		iFramesyncTimeout * (2*timeout_factor),
 		multi_packet_buf, my_sent, their_frame,
 		their_sent, their_recv);
 #else
 		rc = Wait_For_Players (0, net,
 		(Session.MaxAhead << 3),
-		MAX ( net->Response_Time() * 3, FRAMESYNC_DLG_TIME*timeout_factor ),
+		MAX ( (int)(net->Response_Time() * 3), FRAMESYNC_DLG_TIME*timeout_factor ),
 		FRAMESYNC_TIMEOUT* (2*timeout_factor),
 		multi_packet_buf, my_sent, their_frame,
 		their_sent, their_recv);
@@ -1453,7 +1453,7 @@ static void Generate_Real_Timing_Event(ConnManClass *net, int my_sent)
 	// (Isn't "thrice" a cool word?)
 	//
 	maxahead = ((maxahead + Session.FrameSendRate - 1) / Session.FrameSendRate) * Session.FrameSendRate;
-	maxahead = MAX (maxahead, Session.FrameSendRate * 3);
+	maxahead = MAX (maxahead, (int)Session.FrameSendRate * 3);
 
 	ev.Type = EventClass::TIMING;
 	ev.Data.Timing.DesiredFrameRate = Session.DesiredFrameRate;
