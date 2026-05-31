@@ -1,0 +1,6 @@
+#ifndef BATTLECONTROL_RA_WIN32_SHIM_RPCNDR_H
+#define BATTLECONTROL_RA_WIN32_SHIM_RPCNDR_H
+
+#include "windows.h"
+
+#endif
