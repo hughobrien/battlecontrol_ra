@@ -274,14 +274,16 @@ bool Init_Game(int , char * [])
 	/*
 	**	Find and process any rules for this game.
 	*/
-	if (RuleINI.Load(CCFileClass("RULES.INI"), false)) {
+	CCFileClass rulesFile("RULES.INI");
+	if (RuleINI.Load(rulesFile, false)) {
 		Rule.Process(RuleINI);
 	}
 #ifdef FIXIT_CSII	//	checked - ajw 9/28/98
 	//  Aftermath runtime change 9/29/98
 	//	This is safe to do, as only rules for aftermath units are included in this ini.
 	if (Is_Aftermath_Installed() == true) {
-		if (AftermathINI.Load(CCFileClass("AFTRMATH.INI"), false)) {
+		CCFileClass aftermathFile("AFTRMATH.INI");
+		if (AftermathINI.Load(aftermathFile, false)) {
 			Rule.Process(AftermathINI);
 		}
 	}
@@ -3409,7 +3411,8 @@ static void Init_Bulk_Data(void)
 	**	Fetch the tutorial message data.
 	*/
 	INIClass ini;
-	ini.Load(CCFileClass("TUTORIAL.INI"));
+	CCFileClass tutorialFile("TUTORIAL.INI");
+	ini.Load(tutorialFile);
 	for (int index = 0; index < ARRAY_SIZE(TutorialText); index++) {
 		TutorialText[index] = NULL;
 
