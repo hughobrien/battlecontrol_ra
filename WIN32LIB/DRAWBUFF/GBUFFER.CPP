@@ -84,6 +84,21 @@ extern "C" int __cdecl Buffer_Get_Pixel(void *thisptr, int x, int y)
 }
 
 
+extern "C" void __cdecl Buffer_Clear(void *thisptr, unsigned char color)
+{
+	GraphicViewPortClass *view = (GraphicViewPortClass *)thisptr;
+	unsigned char *line = (unsigned char *)view->Get_Offset();
+	int width = view->Get_Width();
+	int height = view->Get_Height();
+	int stride = width + view->Get_XAdd() + view->Get_Pitch();
+
+	for (int row = 0; row < height; row++) {
+		memset(line, color, width);
+		line += stride;
+	}
+}
+
+
 extern "C" BOOL __cdecl Linear_Blit_To_Linear(void *thisptr, void *destptr, int x_pixel, int y_pixel,
 	int dx_pixel, int dy_pixel, int pixel_width, int pixel_height, BOOL trans)
 {
