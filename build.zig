@@ -16,6 +16,7 @@ pub fn build(b: *std.Build) void {
 
     if (cnc_ddraw_source.len != 0) {
         exe_module.addIncludePath(b.path("linux-compat/win32-shim"));
+        exe_module.addIncludePath(b.path("linux-compat"));
         exe_module.addIncludePath(.{ .cwd_relative = b.pathJoin(&.{ cnc_ddraw_source, "inc" }) });
     }
     exe_module.addIncludePath(b.path("CODE"));
