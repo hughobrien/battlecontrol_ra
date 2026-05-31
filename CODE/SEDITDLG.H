@@ -21,7 +21,7 @@
 //	SEditDlg.h - "SimpleEditDlgClass": An ok/cancel type dialog with a single edit box.
 //	ajw 07/21/98
 
-#include "function.h"
+#include "FUNCTION.H"
 
 class SimpleEditDlgClass
 {

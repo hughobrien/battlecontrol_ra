@@ -57,7 +57,7 @@
  *   ListClass::~ListClass -- Destructor for list class objects.                               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***************************************************************************

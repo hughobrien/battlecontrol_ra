@@ -38,8 +38,8 @@
  *   ShapeButtonClass::ShapeButtonClass -- Constructor for a shape type button.                *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include "shapebtn.h"
+#include	"FUNCTION.H"
+#include "SHAPEBTN.H"
 
 
 /***********************************************************************************************

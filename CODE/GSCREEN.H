@@ -38,8 +38,8 @@
 #ifndef GSCREEN_H
 #define GSCREEN_H
 
-#include	"function.h"
-#include	"cell.h"
+#include	"FUNCTION.H"
+#include	"CELL.H"
 
 class GScreenClass
 {

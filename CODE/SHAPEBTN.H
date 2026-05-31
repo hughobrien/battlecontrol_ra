@@ -38,7 +38,7 @@
 #ifndef SHAPEBTN_H
 #define SHAPEBTN_H
 
-#include	"toggle.h"
+#include	"TOGGLE.H"
 
 class ShapeButtonClass : public ToggleClass
 {

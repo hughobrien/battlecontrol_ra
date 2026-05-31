@@ -45,10 +45,10 @@
  *   VersionClass::Max_Version -- returns highest version # to connect to  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 #ifdef FIXIT_VERSION_3
-#include "rawolapi.h"		//	For version number.
+#include "RAWOLAPI.H"		//	For version number.
 #endif
 
 /****************************** Globals ************************************/

@@ -44,7 +44,7 @@
  *   PowerClass::Flash_Power -- Flag the power bar to flash.                                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /*

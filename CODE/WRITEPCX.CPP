@@ -36,7 +36,7 @@
  * int Save_PCX_File (char* name, GraphicViewPortClass& pic, char* palette)*
  *= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =*/
 
-#include	"function.h"
+#include	"FUNCTION.H"
 #include "pcx.h"
 
 

@@ -33,8 +33,8 @@
 //	Extra data included 3 item preceding icons, 1 fixed position icon, an extra string,
 //	an extra void pointer, and a color remapping value.
 
-#include "iconlist.h"
-#include "dibapi.h"
+#include "ICONLIST.H"
+#include "DIBAPI.H"
 
 int Format_Window_String_New( const char* string, int maxlinelen, int& width, int& height, char* szReturn, int iExtraChars );
 void CC_Draw_DIB( const char* pDIB, int xDest, int yDest, int iWidth, WindowNumberType window );

@@ -19,11 +19,11 @@
 #ifndef _MPGSETTINGS_H_
 #define _MPGSETTINGS_H_
 
-#include "function.h"
+#include "FUNCTION.H"
 
 #ifdef DVD
-#include "mci.h"
-#include "rawfile.h"
+#include "MCI.H"
+#include "RAWFILE.H"
 
 class MPGSettings
 	{

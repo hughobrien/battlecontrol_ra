@@ -38,8 +38,8 @@
 #ifndef STATBTN_H
 #define STATBTN_H
 
-#include	"gadget.h"
-#include	"buff.h"
+#include	"GADGET.H"
+#include	"BUFF.H"
 
 class StaticButtonClass : public GadgetClass
 {

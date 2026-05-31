@@ -38,7 +38,7 @@
 #ifndef SCROLL_H
 #define SCROLL_H
 
-#include	"help.h"
+#include	"HELP.H"
 
 
 class ScrollClass: public HelpClass

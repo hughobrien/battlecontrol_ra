@@ -52,7 +52,7 @@
 #define __LZO_CONF_H
 
 #ifndef __LZOCONF_H
-#  include <lzoconf.h>
+#  include <LZOCONF.H>
 #endif
 
 

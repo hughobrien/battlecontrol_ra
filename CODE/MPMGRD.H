@@ -19,7 +19,7 @@
 #ifndef mpmgr_h
 #define mpmgr_h
 
-#include "connmgr.h"
+#include "CONNMGR.H"
 
 // maximum number of connections
 #define CONNECT_MAX    7

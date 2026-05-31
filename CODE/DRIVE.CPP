@@ -58,7 +58,7 @@
  *   DriveClass::While_Moving -- Processes unit movement.                                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 #ifdef NEVER

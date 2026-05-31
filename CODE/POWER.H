@@ -38,7 +38,7 @@
 #ifndef POWER_H
 #define POWER_H
 
-#include	"radar.h"
+#include	"RADAR.H"
 
 class PowerClass : public RadarClass
 {

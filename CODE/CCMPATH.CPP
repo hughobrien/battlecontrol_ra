@@ -35,7 +35,7 @@
  *   Connect_MPATH -- Waits for connections to other players               *
  *   Destroy_MPATH_Connection -- Destroys the given connection             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#include "function.h"
+#include "FUNCTION.H"
 
 
 /***************************************************************************

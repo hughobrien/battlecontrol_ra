@@ -52,7 +52,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"bfiofile.h"
+#include	"BFIOFILE.H"
 #include	<string.h>
 
 

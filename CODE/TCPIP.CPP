@@ -58,8 +58,8 @@
 
 #ifdef WIN32
 
-#include "function.h"
-#include "tcpip.h"
+#include "FUNCTION.H"
+#include "TCPIP.H"
 
 
 /*

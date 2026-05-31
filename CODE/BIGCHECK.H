@@ -24,7 +24,7 @@
 #ifndef BIGCHECKBOX_H
 #define BIGCHECKBOX_H
 
-#include	"toggle.h"
+#include	"TOGGLE.H"
 
 #define BIGCHECK_OFFSETX	20
 #define BIGCHECK_OFFSETY	0

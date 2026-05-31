@@ -29,9 +29,9 @@
 #ifndef WOLAPI_H
 #define WOLAPI_H
 
-#include "RAWolapi.h"
-#include "dibapi.h"
-#include "IconList.h"
+#include "RAWOLAPI.H"
+#include "DIBAPI.H"
+#include "ICONLIST.H"
 
 //***********************************************************************************************
 class IconListClass;

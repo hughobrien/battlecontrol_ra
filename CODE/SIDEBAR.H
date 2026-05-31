@@ -38,9 +38,9 @@
 #ifndef SIDEBAR_H
 #define SIDEBAR_H
 
-#include	"function.h"
-#include	"power.h"
-#include	"factory.h"
+#include	"FUNCTION.H"
+#include	"POWER.H"
+#include	"FACTORY.H"
 
 class InitClass {};
 

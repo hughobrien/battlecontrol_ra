@@ -45,22 +45,22 @@
  *   IPXConnClass::Send_To -- sends the packet to the given address			*
  *   IPXConnClass::Broadcast -- broadcasts the given packet						*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#include "function.h"
+#include "FUNCTION.H"
 #include <stdio.h>
 #include <mem.h>
 #include <string.h>
-#include "ipxconn.h"
+#include "IPXCONN.H"
 
 #ifdef WINSOCK_IPX
-#include "WSProto.h"
+#include "WSPROTO.H"
 
 #else
 
-#include "ipx95.h"
+#include "IPX95.H"
 #ifdef WIN32
-#include "tcpip.h"
+#include "TCPIP.H"
 #else	//WIN32
-#include "fakesock.h"
+#include "FAKESOCK.H"
 #endif	//WIN32
 #endif	//WINSOCK_IPX
 

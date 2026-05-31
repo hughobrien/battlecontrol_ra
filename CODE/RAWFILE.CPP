@@ -60,7 +60,7 @@
 #include	<share.h>
 #include	<stddef.h>
 
-#include	"rawfile.h"
+#include	"RAWFILE.H"
 
 #ifndef WIN32
 #include	<fcntl.h>

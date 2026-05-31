@@ -40,7 +40,7 @@
  *   Dial8Class::Set_Direction -- sets current direction (0-255) of dial                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 
 /***************************************************************************

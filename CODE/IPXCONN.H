@@ -48,8 +48,8 @@
 /*
 ********************************* Includes **********************************
 */
-#include "connect.h"
-#include "ipxaddr.h"
+#include "CONNECT.H"
+#include "IPXADDR.H"
 
 
 /*

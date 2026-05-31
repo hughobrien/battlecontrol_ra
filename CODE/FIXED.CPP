@@ -38,7 +38,7 @@
  *   fixed::fixed -- Constructor for fixed integral from ASCII initializer.                    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"fixed.h"
+#include	"FIXED.H"
 #include	<string.h>
 #include	<stdlib.h>
 #include	<stdio.h>

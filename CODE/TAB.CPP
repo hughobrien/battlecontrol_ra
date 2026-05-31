@@ -40,7 +40,7 @@
  *   TabClass::TabClass -- Default construct for the tab button class.                         *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 void const * TabClass::TabShape = NULL;

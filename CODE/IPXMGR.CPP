@@ -67,25 +67,25 @@
  *   IPXManagerClass::Free_RealMode_Mem -- frees real-mode memory				*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 #include <stdio.h>
 #include <mem.h>
 #include <i86.h>
-#include "ipxmgr.h"
-#include "wwlib32.h"	// to enable mono output
+#include "IPXMGR.H"
+#include "WWLIB32.H"	// to enable mono output
 
 #ifdef WINSOCK_IPX
 
-#include "WSProto.h"
-#include "WSPIPX.h"
+#include "WSPROTO.H"
+#include "WSPIPX.H"
 
 #else	//WINSOCK_IPX
 
-#include "ipx95.h"
+#include "IPX95.H"
 #ifdef WIN32
-#include "tcpip.h"
+#include "TCPIP.H"
 #else
-#include	"fakesock.h"
+#include	"FAKESOCK.H"
 #endif	//WIN32
 
 #endif	//WINSOCK_IPX
@@ -93,7 +93,7 @@
 // Turn off "expression is not meaningful".
 #pragma warning 628 9
 
-#include "WolDebug.h"
+#include "WOLDEBUG.H"
 
 /***************************************************************************
  * IPXManagerClass::IPXManagerClass -- class constructor                   *

@@ -85,15 +85,15 @@ B<A> test;
 
 
 
-#include	"function.h"
+#include	"FUNCTION.H"
 #ifdef WIN32
 #ifdef WINSOCK_IPX
-#include	"WSProto.h"
+#include	"WSPROTO.H"
 #else	//WINSOCK_IPX
-#include	"tcpip.h"
+#include	"TCPIP.H"
 #endif	//WINSOCK_IPX
 #else
-#include	"fakesock.h"
+#include	"FAKESOCK.H"
 TcpipManagerClass	Winsock;
 #endif
 #include	<stdlib.h>
@@ -104,22 +104,22 @@ TcpipManagerClass	Winsock;
 #include	<io.h>
 #include	<dos.h>
 #include	<share.h>
-#include	"ccdde.h"
-#include	"vortex.h"
+#include	"CCDDE.H"
+#include	"VORTEX.H"
 
 #ifdef WOLAPI_INTEGRATION
 //#include "WolDebug.h"
-#include "WolStrng.h"
-#include "WolapiOb.h"
+#include "WOLSTRNG.H"
+#include "WOLAPIOB.H"
 extern WolapiObject* pWolapi;
 #define PAGE_RESPOND_KEY	KN_RETURN	//KN_COMMA
 #endif
 
 #ifdef MPEGMOVIE
 #ifdef MCIMPEG
-#include "mcimovie.h"
+#include "MCIMOVIE.H"
 #endif
-#include "movie.h"
+#include "MOVIE.H"
 MPG_RESPONSE far __stdcall MpegCallback(MPG_CMD cmd, LPVOID data, LPVOID user);
 #endif
 

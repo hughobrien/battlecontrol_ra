@@ -38,7 +38,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"blwstraw.h"
+#include	"BLWSTRAW.H"
 #include	<string.h>
 #include	<assert.h>
 

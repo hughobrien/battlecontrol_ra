@@ -133,8 +133,8 @@
  *   HouseClass::Random_Cell_In_Zone -- Find a (technically) legal cell in the zone specified. *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"vortex.h"
+#include	"FUNCTION.H"
+#include	"VORTEX.H"
 
 //#include "WolDebug.h"
 

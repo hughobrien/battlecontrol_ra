@@ -21,17 +21,17 @@
 //	Wol_CGam.cpp - Create game dialog.
 //	ajw 09/9/98
 
-#include "function.h"
+#include "FUNCTION.H"
 
 #ifndef FIXIT_CSII
 #error FIXIT_CSII must be defined.
 #endif
 
-#include "IconList.h"
-#include "WolapiOb.h"
-#include "WolStrng.h"
-#include "SEditDlg.h"
-#include "BigCheck.h"
+#include "ICONLIST.H"
+#include "WOLAPIOB.H"
+#include "WOLSTRNG.H"
+#include "SEDITDLG.H"
+#include "BIGCHECK.H"
 
 //extern char* LoadShpFile( const char* szShpFile );
 void SetPlayerCountList( IconListClass& PlayerCountList, int iPlayerMax, char* pShpBoxCheck, char* pShpBoxEmpty );

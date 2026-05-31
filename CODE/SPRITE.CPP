@@ -57,7 +57,7 @@ class TPoint2D
 #define RAWFILE_H
 #define WWMEM_H
 #define WWFILE_Hx
-#include	<wwlib32.h>
+#include	<WWLIB32.H>
 #include <stdio.h>
 //#include "gbuffer.h"
 //#include "math.h"

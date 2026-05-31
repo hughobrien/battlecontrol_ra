@@ -40,8 +40,8 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"lcwpipe.h"
-#include	"lcw.h"
+#include	"LCWPIPE.H"
+#include	"LCW.H"
 #include	<string.h>
 #include	<assert.h>
 

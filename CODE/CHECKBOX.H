@@ -38,7 +38,7 @@
 #ifndef CHECKBOX_H
 #define CHECKBOX_H
 
-#include	"toggle.h"
+#include	"TOGGLE.H"
 
 class CheckBoxClass : public ToggleClass
 {

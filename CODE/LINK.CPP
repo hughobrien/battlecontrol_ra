@@ -47,8 +47,8 @@
  *   LinkClass::~LinkClass -- Default destructor for linked list object.                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
-#include "link.h"
+#include "FUNCTION.H"
+#include "LINK.H"
 
 
 /***********************************************************************************************

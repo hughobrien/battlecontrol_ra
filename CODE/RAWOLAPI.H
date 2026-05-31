@@ -30,7 +30,7 @@
 #ifndef RAWOLAPI_H
 #define RAWOLAPI_H
 
-#include "function.h"
+#include "FUNCTION.H"
 
 //#include "cominit.h"
 #include <stdio.h>

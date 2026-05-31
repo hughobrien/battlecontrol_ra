@@ -51,7 +51,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include "function.h"
+#include "FUNCTION.H"
 
 
 // Submarine

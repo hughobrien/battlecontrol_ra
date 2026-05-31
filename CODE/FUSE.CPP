@@ -39,7 +39,7 @@
  *   FuseClass::Fuse_Write -- Writes the fuse data to the save game file.                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***********************************************************************************************

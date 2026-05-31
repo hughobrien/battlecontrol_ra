@@ -36,11 +36,11 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 //#include	"function.h"
-#include	"watcom.h"
-#include "rotbmp.h"
+#include	"WATCOM.H"
+#include "ROTBMP.H"
 #define FILE_H
 #define WWMEM_H
-#include	<wwlib32.h>
+#include	<WWLIB32.H>
 
 
 int Rotate_Bitmap(GraphicViewPortClass * srcvp, GraphicViewPortClass * destvp, int angle);

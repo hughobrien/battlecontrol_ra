@@ -51,8 +51,8 @@
  *   OverlayTypeClass::operator new -- Allocate an overlay type class object from pool.        *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"type.h"
+#include	"FUNCTION.H"
+#include	"TYPE.H"
 
 
 static OverlayTypeClass const Sandbag(

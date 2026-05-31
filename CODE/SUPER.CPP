@@ -45,7 +45,7 @@
  *   SuperClass::Suspend -- Suspend the charging of the super weapon.                          *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***********************************************************************************************

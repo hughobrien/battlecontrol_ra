@@ -53,12 +53,12 @@
  *   VectorClass<T>::~VectorClass -- Default destructor for vector class.                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 #ifdef WINSOCK_IPX
-#include	"WSProto.h"
-#include	"WSPUDP.h"
+#include	"WSPROTO.H"
+#include	"WSPUDP.H"
 #endif	//WINSOCK_IPX
-#include "vector.h"
+#include "VECTOR.H"
 #include	<mem.h>
 #include	<stdio.h>
 

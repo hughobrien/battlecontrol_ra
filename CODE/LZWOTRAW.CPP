@@ -38,8 +38,8 @@
  *   LZWStraw::~LZWStraw -- Destructor for the LZW straw.                                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"lzostraw.h"
-#include	"lzo.h"
+#include	"LZOSTRAW.H"
+#include	"LZO.H"
 #include	<string.h>
 #include	<assert.h>
 

@@ -35,7 +35,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"mpu.h"
+#include	"MPU.H"
 
 
 #ifdef __BORLANDC__

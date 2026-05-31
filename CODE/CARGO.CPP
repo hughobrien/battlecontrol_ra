@@ -39,7 +39,7 @@
  *   CargoClass::Detach_Object -- Removes a unit from the cargo hold.                          *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 #ifdef CHEAT_KEYS

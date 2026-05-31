@@ -38,9 +38,9 @@
 #ifndef AIRCRAFT_H
 #define AIRCRAFT_H
 
-#include	"radio.h"
-#include	"fly.h"
-#include	"target.h"
+#include	"RADIO.H"
+#include	"FLY.H"
+#include	"TARGET.H"
 
 
 /*

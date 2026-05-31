@@ -100,7 +100,7 @@
  *   ObjectClass::Get_Image_Data -- Fetches the image data to use for this object.             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 /*
 **	Selected objects have a special marking box around them. This is the shapes that are

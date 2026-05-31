@@ -19,14 +19,14 @@
 #ifndef _MCIMOVIE_H_
 #define _MCIMOVIE_H_
 
-#include "function.h"
+#include "FUNCTION.H"
 
 #ifdef MCIMPEG
 #include <windows.h>
 #include <windowsx.h>
 #include <mmsystem.h>
 #include <digitalv.h>
-#include "watcom.h"
+#include "WATCOM.H"
 
 class MCIMovie
 	{

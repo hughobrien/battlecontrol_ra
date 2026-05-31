@@ -38,7 +38,7 @@
 #ifndef SAVEDLG_H
 #define SAVEDLG_H
 
-#include "gadget.h"
+#include "GADGET.H"
 
 class SaveOptionsClass 
 {

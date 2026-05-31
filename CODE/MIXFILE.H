@@ -36,9 +36,9 @@ typedef int bool;
 #endif
 
 #include	<stdlib.h>
-#include	"listnode.h"
-#include	"pk.h"
-#include "buff.h"
+#include	"LISTNODE.H"
+#include	"PK.H"
+#include "BUFF.H"
 
 template<class T>
 class MixFileClass : public Node<MixFileClass>

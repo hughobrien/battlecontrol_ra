@@ -38,7 +38,7 @@
 #ifndef _LZW_H
 #define _LZW_H
 
-#include	"buff.h"
+#include	"BUFF.H"
 
 class LZWEngine
 {

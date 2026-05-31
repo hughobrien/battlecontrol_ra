@@ -49,13 +49,13 @@
  *   Test_Null_Modem -- Null-Modem test routine                            *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 #ifdef FIXIT_RANDOM_GAME
 #include "time.h"
 #endif
 #ifdef WIN32
-#include "wincomm.h"
-#include "modemreg.h"
+#include "WINCOMM.H"
+#include "MODEMREG.H"
 ModemRegistryEntryClass *ModemRegistry = NULL;		//Ptr to modem registry data
 #endif	//WIN32
 

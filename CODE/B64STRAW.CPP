@@ -37,8 +37,8 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"b64straw.h"
-#include	"base64.h"
+#include	"B64STRAW.H"
+#include	"BASE64.H"
 #include	<string.h>
 
 

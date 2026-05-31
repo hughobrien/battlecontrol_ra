@@ -39,8 +39,8 @@
  *   Benchmarks -- Display the performance tracking benchmarks.                                *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
-#include "vortex.h"
+#include "FUNCTION.H"
+#include "VORTEX.H"
 #include	<stdarg.h>
 
 

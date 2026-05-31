@@ -47,13 +47,13 @@
  *   EventClass::EventClass -- construct a variable-sized event                                *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 #ifdef WIN32
-#include "ccdde.h"
+#include "CCDDE.H"
 #endif	//WIN32
 
 #ifdef FIXIT_VERSION_3		//	Stalemate games.
-#include "WolStrng.h"
+#include "WOLSTRNG.H"
 #endif
 
 /***************************************************************************

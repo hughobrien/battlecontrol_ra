@@ -27,7 +27,7 @@
 //	Why a standard dialog class that would handle common input behavior and so forth (one that this class could derive from)
 //	wasn't written 5 years ago, I don't know...
 
-#include "WolapiOb.h"
+#include "WOLAPIOB.H"
 //class WolapiObject;
 class IconListClass;
 class EditClass;

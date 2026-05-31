@@ -58,8 +58,8 @@
  *   Target_Legal -- Determines if the specified target is legal.                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"target.h"
+#include	"FUNCTION.H"
+#include	"TARGET.H"
 
 
 TargetClass::TargetClass(TARGET target)

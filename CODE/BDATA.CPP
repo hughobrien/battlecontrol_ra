@@ -60,7 +60,7 @@
  *   BuildingTypeClass::operator new -- Allocates a building type object from the special heap.*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 #define FATSHIP

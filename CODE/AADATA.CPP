@@ -50,7 +50,7 @@
  *   AircraftTypeClass::operator new -- Allocates an aircraft type object from special pool.   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 void const * AircraftTypeClass::LRotorData = NULL;

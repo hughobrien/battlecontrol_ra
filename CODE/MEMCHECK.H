@@ -51,7 +51,7 @@
         #if-#endif's around the header file's inclusion, as in
 
                     #ifdef DEBUG        // DON'T DO THIS!
-                    #include <memcheck.h>
+                    #include <MEMCHECK.H>
                     #endif
 
         Using the "#ifdef DEBUG" as above doesn't allow the
@@ -1462,7 +1462,7 @@ extern "C" {
 
         static char *_thisfile = __FILE__;
         #define _MCSF_  ((MCSF)thisfile)
-        #include <memcheck.h>
+        #include <MEMCHECK.H>
 
     This is only needed under MSC pre-VC++.
     Borland has "-d" Merge duplicate strings.
@@ -1755,7 +1755,7 @@ extern unsigned int _MCAPI mc_stackend (void);  /* low  address */
     ERF or error reporting function).  These variables provide
     a link-level method of setting these functions:
 
-        #include <memcheck.h>
+        #include <MEMCHECK.H>
         :
         // Sets custom erf at link-time
         MC_SET_ERF (erf_custom_startup);
@@ -1818,13 +1818,13 @@ extern unsigned char _MCVAR MC_FreedBufferFillChar;
     (any *one* module will work fine) after the MemCheck 
     header file has been included:
 
-        #include <memcheck.h>
+        #include <MEMCHECK.H>
         MC_SET_...(params);
 
     For example, to change the default log file that MemCheck
     uses at runtime to C:\MYDEV\MYPROG.LOG:
 
-        #include <memcheck.h>
+        #include <MEMCHECK.H>
         MC_SET_LOGFILE ("C:\\MYDEV\\MPROG.LOG");
 
     Most of these macros have runtime function equivalents,
@@ -1874,7 +1874,7 @@ extern unsigned char _MCVAR MC_FreedBufferFillChar;
     MemCheck handles in protected mode by default.
 
     Usage (exactly as typed):
-            #include <memcheck.h>
+            #include <MEMCHECK.H>
             :
             MC_BEGIN_EXCEPTLIST
                 MC_HANDLE_EXCEPTION (0x0)
@@ -2343,7 +2343,7 @@ _RTLDECL(_fstrcpy,  char far * _MCFARGLUE,  (char far *,const void far *));
          Module MEM_GET.C ... 
         :
         #define NO_INTERCEPT
-        #include <memcheck.h>
+        #include <MEMCHECK.H>
         :
 
     MCCONFIG may be used to configure even the shrouded
@@ -2446,7 +2446,7 @@ public:
     In new and delete modules, NO_INTERCEPT should be #defined, e.g.
 
         #define NO_INTERCEPT
-        #include <memcheck.h>
+        #include <MEMCHECK.H>
         :
         void * operator new ( size_t size )
         {

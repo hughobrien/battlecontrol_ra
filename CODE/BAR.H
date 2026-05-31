@@ -51,7 +51,7 @@ typedef int bool;
 #endif
 #endif
 
-#include "fixed.h"
+#include "FIXED.H"
 
 
 /*

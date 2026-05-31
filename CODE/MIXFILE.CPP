@@ -47,17 +47,17 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"buff.h"
-#include	"function.h"
+#include	"BUFF.H"
+#include	"FUNCTION.H"
 #include	<direct.h>
 #include	<fcntl.h>
 #include	<io.h>
 #include	<dos.h>
 #include	<errno.h>
 #include	<share.h>
-#include	"mixfile.h"
+#include	"MIXFILE.H"
 
-#include	"cdfile.h"
+#include	"CDFILE.H"
 extern MFCD temp;
 
 

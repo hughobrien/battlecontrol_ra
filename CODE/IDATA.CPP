@@ -50,8 +50,8 @@
  *   InfantryTypeClass::operator new -- Allocate an infanty type class object.                 *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"type.h"
+#include	"FUNCTION.H"
+#include	"TYPE.H"
 
 static DoInfoStruct DogDoControls[DO_COUNT] = {
 	{0,	1,	1},					// DO_STAND_READY

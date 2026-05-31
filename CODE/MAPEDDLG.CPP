@@ -45,7 +45,7 @@
  *   MapEditClass::Size_Map -- lets user set size & location of map        *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 #ifdef SCENARIO_EDITOR
 

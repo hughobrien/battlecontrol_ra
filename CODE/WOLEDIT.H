@@ -25,7 +25,7 @@
  * HISTORY:    07/17/1998 ajw : Created.
  *=========================================================================*/
 
-#include "Function.h"
+#include "FUNCTION.H"
 
 class WOLEditClass : public EditClass
 {

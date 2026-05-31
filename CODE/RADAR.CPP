@@ -69,7 +69,7 @@
  *   RadarClass::Zoom_Mode(void) -- Handles toggling zoom on the map                           *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 //void const * RadarClass::CoverShape;

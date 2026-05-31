@@ -27,7 +27,7 @@
 #define debugprint			OutputDebugString
 
 #define _DEBUG
-#include "w95trace.h"
+#include "W95TRACE.H"
 
 #define debugprogress debugprint( "...%s: %i\n", __FILE__, __LINE__ )
 #define _ASSERTE( x )		if( !(x) )	debugprint( "ASSERT FALSE!\n" );

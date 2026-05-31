@@ -38,8 +38,8 @@
 #ifndef MOUSE_H
 #define MOUSE_H
 
-#include	"stage.h"
-#include	"scroll.h"
+#include	"STAGE.H"
+#include	"SCROLL.H"
 
 class MouseClass: public ScrollClass
 {

@@ -25,7 +25,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <process.h>
-#include "w95trace.h"
+#include "W95TRACE.H"
 
 
 void OutputDebugStringW95( LPCTSTR /*lpOutputString*/, ...)

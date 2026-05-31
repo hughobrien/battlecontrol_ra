@@ -37,8 +37,8 @@
  *   ConfirmationClass::Process -- Handles all the options graphic interface.                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"confdlg.h"
+#include	"FUNCTION.H"
+#include	"CONFDLG.H"
 
 
 bool ConfirmationClass::Process(int text)

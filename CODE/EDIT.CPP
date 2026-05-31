@@ -43,7 +43,7 @@
  *   EditClass::~EditClass -- Default destructor for the edit gadget.                          *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***********************************************************************************************

@@ -42,7 +42,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include "blowfish.h"
+#include "BLOWFISH.H"
 #include	<string.h>
 #include	<assert.h>
 

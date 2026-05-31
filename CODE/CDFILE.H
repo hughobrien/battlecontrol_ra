@@ -39,7 +39,7 @@
 #define CDFILE_H
 
 #include	<dos.h>
-#include	"bfiofile.h"
+#include	"BFIOFILE.H"
 
 /*
 **	This class is derived from the BufferIOFileClass. This class adds the functionality of searching
