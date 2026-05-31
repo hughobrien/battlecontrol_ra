@@ -105,7 +105,7 @@ ListClass::ListClass (int id, int x, int y, int w, int h, TextPrintType flags, v
 	Tabs = 0;
 	SelectedIndex = 0;
 	CurrentTopIndex = 0;
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TextFlags);
+	Plain_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TextFlags);
 	LineHeight = FontHeight+FontYSpacing-1;
 	LineCount = (h-1) / LineHeight;
 }
