@@ -342,7 +342,7 @@ unsigned short Get_Build_Frame_Y(void const * dataptr)
  * HISTORY:                                                                                    *
  *   06/25/1995 JLB : Commented                                                                *
  *=============================================================================================*/
-unsigned short Get_Build_Frame_Width(void const * dataptr)
+uint16_t Get_Build_Frame_Width(void const * dataptr)
 {
 	if (dataptr) {
 		return(((KeyFrameHeaderType const *)dataptr)->width);
@@ -366,7 +366,7 @@ unsigned short Get_Build_Frame_Width(void const * dataptr)
  * HISTORY:                                                                                    *
  *   06/25/1995 JLB : Commented                                                                *
  *=============================================================================================*/
-unsigned short Get_Build_Frame_Height(void const * dataptr)
+uint16_t Get_Build_Frame_Height(void const * dataptr)
 {
 	if (dataptr) {
 		return(((KeyFrameHeaderType const *)dataptr)->height);
