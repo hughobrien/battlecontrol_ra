@@ -297,7 +297,7 @@ char WWKeyboardClass::To_ASCII(unsigned short key)
 }
 
 
-WWKeyboardClass::Down(unsigned short key)
+bool WWKeyboardClass::Down(unsigned short key)
 {
 	return(GetAsyncKeyState(key & 0xFF));
 }
