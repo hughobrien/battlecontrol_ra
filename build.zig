@@ -20,6 +20,7 @@ pub fn build(b: *std.Build) void {
     }
     exe_module.addIncludePath(b.path("CODE"));
     exe_module.addIncludePath(b.path("WIN32LIB/INCLUDE"));
+    exe_module.addIncludePath(b.path("VQ/INCLUDE"));
     exe_module.addCSourceFile(.{
         .file = b.path("CODE/STARTUP.CPP"),
         .flags = &.{

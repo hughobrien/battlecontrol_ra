@@ -38,21 +38,20 @@
 *
 ****************************************************************************/
 
-#include <vqm32\IFF.H>
-#include <vqm32\MONO.H>
-#include <vqm32\PORTIO.H>
-#include <vqm32\PROFILE.H>
-#include <vqm32\TARGA.H>
-#include <vqm32\COMPRESS.H>
-#include <vqm32\VIDEO.H>
-#include <vqm32\PALETTE.H>
-#include <vqm32\VESAVID.H>
-#include <vqm32\VESABLIT.H>
-#include <vqm32\GRAPHICS.H>
-#include <vqm32\MIXFILE.H>
-#include <vqm32\CRC.H>
-#include <vqm32\HUFFMAN.H>
-#include <vqm32\mem.h>
+#include <VQM32/IFF.H>
+#include <VQM32/MONO.H>
+#include <VQM32/PORTIO.H>
+#include <VQM32/PROFILE.H>
+#include <VQM32/TARGA.H>
+#include <VQM32/COMPRESS.H>
+#include <VQM32/VIDEO.H>
+#include <VQM32/PALETTE.H>
+#include <VQM32/VESAVID.H>
+#include <VQM32/VESABLIT.H>
+#include <VQM32/GRAPHICS.H>
+#include <VQM32/MIXFILE.H>
+#include <VQM32/CRC.H>
+#include <VQM32/HUFFMAN.H>
+#include <VQM32/MEM.H>
 
 #endif /* VQMALL_H */
-
