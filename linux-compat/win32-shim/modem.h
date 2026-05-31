@@ -1,0 +1,6 @@
+#ifndef BATTLECONTROL_RA_WIN32_SHIM_MODEM_H
+#define BATTLECONTROL_RA_WIN32_SHIM_MODEM_H
+
+#include <commlib.h>
+
+#endif
