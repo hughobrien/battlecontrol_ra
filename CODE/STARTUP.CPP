@@ -388,7 +388,7 @@ int main(int argc, char * argv[])
 
 #ifdef WIN32
 			char	disk_space_message [512];
-			sprintf (disk_space_message, TEXT_CRITICALLY_LOW, (INIT_FREE_DISK_SPACE) / (1024 * 1024));
+			strcpy (disk_space_message, TEXT_CRITICALLY_LOW);
 			int reply = MessageBox(NULL, disk_space_message, TEXT_SHORT_TITLE, MB_ICONQUESTION|MB_YESNO);
 			if (reply == IDNO) {
 				if ( WindowsTimer )
