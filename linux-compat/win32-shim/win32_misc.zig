@@ -55,6 +55,10 @@ fn copyZ(dest: [*:0]u8, src: []const u8, max: usize) usize {
     return count;
 }
 
+fn readLe16(ptr: [*]const u8) usize {
+    return @as(usize, ptr[0]) | (@as(usize, ptr[1]) << 8);
+}
+
 export fn lstrcpy(dest: [*:0]u8, src: [*:0]const u8) callconv(.c) [*:0]u8 {
     const text = std.mem.span(src);
     _ = copyZ(dest, text, text.len + 1);
@@ -288,6 +292,70 @@ export fn Apply_XOR_Delta(target: [*]u8, delta: [*]const u8) callconv(.c) c_uint
             }
         }
     }
+}
+
+// LCW command semantics from WIN32LIB/IFF/LCWUNCMP.ASM; length is an output cap.
+export fn LCW_Uncompress(source: [*]const u8, dest: [*]u8, length: c_ulong) callconv(.c) c_ulong {
+    var src = source;
+    var out = dest;
+    const start = dest;
+    const limit: usize = @intCast(length);
+    var written: usize = 0;
+
+    while (written < limit) {
+        const max_count = limit - written;
+        const op_code = src[0];
+        src += 1;
+
+        if (op_code < 0x80) {
+            var count = @min(@as(usize, op_code >> 4) + 3, max_count);
+            const offset = @as(usize, src[0]) | (@as(usize, op_code & 0x0f) << 8);
+            src += 1;
+            var copy = out - offset;
+            written += count;
+            while (count != 0) : (count -= 1) {
+                out[0] = copy[0];
+                out += 1;
+                copy += 1;
+            }
+        } else if ((op_code & 0x40) == 0) {
+            if (op_code == 0x80) break;
+            var count = @min(@as(usize, op_code & 0x3f), max_count);
+            written += count;
+            while (count != 0) : (count -= 1) {
+                out[0] = src[0];
+                out += 1;
+                src += 1;
+            }
+        } else if (op_code == 0xfe) {
+            var count = @min(readLe16(src), max_count);
+            const value = src[2];
+            src += 3;
+            written += count;
+            while (count != 0) : (count -= 1) {
+                out[0] = value;
+                out += 1;
+            }
+        } else {
+            var count = @as(usize, op_code & 0x3f) + 3;
+            if (op_code == 0xff) {
+                count = readLe16(src);
+                src += 2;
+            }
+            const offset = readLe16(src);
+            src += 2;
+            count = @min(count, max_count);
+            var copy = start + offset;
+            written += count;
+            while (count != 0) : (count -= 1) {
+                out[0] = copy[0];
+                out += 1;
+                copy += 1;
+            }
+        }
+    }
+
+    return @intCast(written);
 }
 
 export fn DdeInitialize(instance: ?*DWORD, callback: ?*const anyopaque, command: DWORD, reserved: DWORD) callconv(.c) UINT {
