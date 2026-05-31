@@ -29,6 +29,8 @@ const DdeString = extern struct {
 
 var dde_strings: ?*DdeString = null;
 
+export var WindowsNT: bool = false;
+
 extern fn readlink(path: [*:0]const u8, buffer: [*]u8, size: usize) isize;
 extern fn usleep(usec: c_uint) c_int;
 
@@ -134,6 +136,13 @@ export fn RegQueryValueEx(key: HKEY, value_name: ?[*:0]const u8, reserved: ?*DWO
 export fn RegCloseKey(key: HKEY) callconv(.c) LONG {
     _ = key;
     return 0;
+}
+
+export fn _Z20Get_Registry_Sub_KeyPvPci(base_key: HKEY, search_key: ?[*:0]u8, close: BOOL) callconv(.c) HKEY {
+    _ = base_key;
+    _ = search_key;
+    _ = close;
+    return null;
 }
 
 export fn CreateProcess(
