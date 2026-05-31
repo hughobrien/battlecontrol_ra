@@ -136,3 +136,11 @@ int32_t CRCEngine::operator() (void const * buffer, int length)
 	*/
 	return(Value());
 }
+
+
+extern "C" {
+long Calculate_CRC(void * buffer, long len)
+{
+	return(CRCEngine()(buffer, len));
+}
+}
