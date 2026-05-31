@@ -83,6 +83,8 @@
 
 #include	"FUNCTION.H"
 
+#include <algorithm>
+
 
 /***********************************************************************************************
  * FootClass::FootClass -- Default constructor for foot class objects.                         *
@@ -183,7 +185,7 @@ void FootClass::Debug_Dump(MonoClass * mono) const
 	}
 
 	static char	const * _p2c[9] = {"-","0","1","2","3","4","5","6","7"};
-	for (int index = 0; index < min(12, ARRAY_SIZE(Path)); index++) {
+	for (int index = 0; index < std::min(12, ARRAY_SIZE(Path)); index++) {
 		mono->Set_Cursor(54+index, 3);
 		mono->Printf("%s", _p2c[((ABS((int)Path[index]+1)) % ARRAY_SIZE(_p2c))]);
 	}
@@ -427,7 +429,7 @@ bool FootClass::Basic_Path(void)
 				**	go with the best (easiest) path method.
 				*/
 				path = Find_Path(cell, &workpath2[0], sizeof(workpath2), MOVE_CLOAK);
-				if (path && path->Cost && path->Cost < max((path1.Cost + (path1.Cost/2)), 3)) {
+				if (path && path->Cost && path->Cost < std::max((path1.Cost + (path1.Cost/2)), 3)) {
 					memcpy(&path1, path, sizeof(path1));
 					memcpy(workpath1, workpath2, sizeof(workpath1));
 				} else {
@@ -439,7 +441,7 @@ bool FootClass::Basic_Path(void)
 					for (MoveType move = (MoveType)(MOVE_CLOAK+1); move < (MoveType)(maxtype-1); move++) {
 //					for (MoveType move = MOVE_MOVING_BLOCK; move < maxtype-1; move++) {
 						path = Find_Path(cell, &workpath2[0], sizeof(workpath2), move);
-						if (path && path->Cost && path->Cost < max((path1.Cost + (path1.Cost/2)), 3)) {
+						if (path && path->Cost && path->Cost < std::max((path1.Cost + (path1.Cost/2)), 3)) {
 							memcpy(&path1, path, sizeof(path1));
 							memcpy(workpath1, workpath2, sizeof(workpath1));
 						}
@@ -454,7 +456,7 @@ bool FootClass::Basic_Path(void)
 			*/
 			if (found1) {
 				Fixup_Path(&path1);
-				memcpy(&Path[0], &workpath1[0], min(path->Length, (int)sizeof(Path)));
+				memcpy(&Path[0], &workpath1[0], std::min(path->Length, (int)sizeof(Path)));
 			}
 
 			Mark(MARK_DOWN);
@@ -724,7 +726,7 @@ bool FootClass::Stop_Driver(void)
 	assert(IsActive);
 
 	if (HeadToCoord) {
-		HeadToCoord = NULL;
+		HeadToCoord = 0;
 		Set_Speed(0);
 		IsDriving = false;
 		return(true);
@@ -767,7 +769,7 @@ bool FootClass::Start_Driver(COORDINATE &headto)
 		}
 		if (!IsActive) return(false);
 
-		HeadToCoord = NULL;
+		HeadToCoord = 0;
 		IsDriving = false;
 	}
 	return(false);
@@ -895,7 +897,7 @@ void FootClass::Approach_Target(void)
 				maxrange -= 0x00B7;
 			}
 #endif
-			maxrange = max(maxrange, 0);
+			maxrange = std::max(maxrange, 0);
 
 			COORDINATE tcoord = ::As_Coord(TarCom);
 			COORDINATE trycoord = 0;
@@ -1330,6 +1332,9 @@ void FootClass::Active_Click_With(ActionType action, CELL cell)
 		case ACTION_SABOTAGE:
 			Player_Assign_Mission(MISSION_SABOTAGE, TARGET_NONE, ::As_Target(cell) );
 			break;
+
+		default:
+			break;
 	}
 }
 
@@ -1642,6 +1647,9 @@ RadioMessageType FootClass::Receive_Message(RadioClass * from, RadioMessageType 
 				return(RADIO_ROGER);
 			}
 			break;
+
+		default:
+			break;
 	}
 	return(TechnoClass::Receive_Message(from, message, param));
 }
@@ -1835,14 +1843,14 @@ int FootClass::Rescue_Mission(TARGET tarcom)
 		** Next we need to figure out how fast the unit moves because this
 		** decreases the distance penalty.
 		*/
-		speed = max((unsigned)Techno_Type_Class()->MaxSpeed, (unsigned)1);
+		speed = std::max((unsigned)Techno_Type_Class()->MaxSpeed, (unsigned)1);
 
 		int ratio = (speed > 0) ? Max(dist / speed, 1) : 1;
 
 		/*
 		** Finally modify the threat by the distance the unit is away.
 		*/
-		threat = max(threat/ratio, 1);
+		threat = std::max(threat/ratio, 1);
 	}
 	return(threat);
 }
@@ -2546,4 +2554,3 @@ int FootClass::Mission_Retreat(void)
 
 	return(MissionControl[Mission].Normal_Delay() + Random_Pick(0, 2));
 }
-

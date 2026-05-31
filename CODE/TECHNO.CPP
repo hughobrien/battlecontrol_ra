@@ -135,6 +135,8 @@
 
 #include	"FUNCTION.H"
 
+#include <algorithm>
+
 
 /***************************************************************************
 **	Cloaking control values.
@@ -687,7 +689,7 @@ int TechnoClass::Time_To_Build(void) const
 // Hack: allow the multiple-factory bonus, but only up to two factories if
 //			this is an AM<->AM game.
 		if(NewUnitsEnabled) {
-			val /= min(divisor,2);
+			val /= std::min(divisor,2);
 		} else {
 			val /= divisor;
 		}
@@ -986,9 +988,9 @@ RadioMessageType TechnoClass::Receive_Message(RadioClass * from, RadioMessageTyp
 			*/
 			if (Health_Ratio() < Rule.ConditionGreen) {
 				int cost = Techno_Type_Class()->Repair_Cost();
-				cost = max(cost, 1);
+				cost = std::max(cost, 1);
 				int step = Techno_Type_Class()->Repair_Step();
-				step = max(step, 1);
+				step = std::max(step, 1);
 
 				/*
 				**	If there is sufficient money to repair the unit one step, then do so.
@@ -1674,7 +1676,7 @@ bool TechnoClass::Evaluate_Object(ThreatType method, int mask, int range, Techno
 	**	the fake building's value.
 	*/
 	if ((method & THREAT_FAKES) && otype == RTTI_BUILDING) {
-		switch (!((BuildingTypeClass const *)tclass)->Type) {
+		switch ((int)!((BuildingTypeClass const *)tclass)->Type) {
 			case STRUCT_FAKECONST:
 			case STRUCT_FAKEWEAP:
 			case STRUCT_FAKE_YARD:
@@ -1753,7 +1755,7 @@ bool TechnoClass::Evaluate_Object(ThreatType method, int mask, int range, Techno
 //		value = (value * 32000) / (((dist/ICON_LEPTON_W)*(dist/ICON_LEPTON_W))+1);
 
 //		if (value < MAP_CELL_W*2) value = dist/ICON_LEPTON_W;
-		value = max(value, 1);
+		value = std::max(value, 1);
 		BEnd(BENCH_EVAL_OBJECT);
 		return(true);
 	}
@@ -2049,7 +2051,7 @@ TARGET TechnoClass::Greatest_Threat(ThreatType method) const
 
 		int crange = range / ICON_LEPTON_W;
 		if (range == 0) {
-			crange = max(Weapon_Range(0), Weapon_Range(1)) / ICON_LEPTON_W;
+			crange = std::max(Weapon_Range(0), Weapon_Range(1)) / ICON_LEPTON_W;
 			crange++;
 		}
 		CELL cell = Coord_Cell(Fire_Coord(0));
@@ -2518,6 +2520,9 @@ void TechnoClass::Cloaking_AI(void)
 								Scatter(0, true);
 							}
 							break;
+
+						default:
+							break;
 					}
 					break;
 
@@ -2531,6 +2536,9 @@ void TechnoClass::Cloaking_AI(void)
 						Mark(MARK_CHANGE);
 					}
 #endif
+					break;
+
+				default:
 					break;
 			}
 		}
@@ -3132,6 +3140,9 @@ BulletClass * TechnoClass::Fire_At(TARGET target, int which)
 
 			case ANIM_SAM_N:
 				a = AnimType(ANIM_SAM_N + Dir_Facing(PrimaryFacing.Current()));
+				break;
+
+			default:
 				break;
 		}
 
@@ -4572,7 +4583,7 @@ int TechnoClass::Threat_Range(int control) const
 	*/
 	int range = Techno_Type_Class()->ThreatRange;
 	if (range == 0) {
-		range = max(Weapon_Range(0), Weapon_Range(1));
+		range = std::max(Weapon_Range(0), Weapon_Range(1));
 	}
 
 	range *= 2;
@@ -5450,7 +5461,7 @@ void TechnoClass::Draw_Pips(int x, int y, WindowNumberType window) const
 			int greenpips  = pips * fixed(nickel, Rule.BailCount);
 
 			while (greenpips + graypips < pips) {
-				int ironnickelmax = max(iron, nickel);
+				int ironnickelmax = std::max(iron, nickel);
 				if (iron > nickel) {
 					graypips++;
 				} else {
@@ -5567,7 +5578,7 @@ void TechnoClass::Draw_Pips(int x, int y, WindowNumberType window) const
 		** If this unit is part of a formation, draw an 'F' after the group
 		** number.
 		*/
-		if ( ((FootClass *)this)->XFormOffset != 0x80000000UL) {
+		if ( ((FootClass *)this)->XFormOffset != (int)0x80000000) {
 			CC_Draw_Shape(Class_Of().PipShapes, PIP_LETTERF, x+8, y+yval, window, SHAPE_CENTER|SHAPE_WIN_REL);
 		}
 	}
@@ -5826,7 +5837,7 @@ int TechnoClass::Anti_Armor(void) const
 		WeaponTypeClass const * weapon = Techno_Type_Class()->PrimaryWeapon;
 		BulletTypeClass const * bullet = weapon->Bullet;
 		WarheadTypeClass const * warhead = weapon->WarheadPtr;
-		int mrange = min(weapon->Range, 0x0400);
+		int mrange = std::min<int>(weapon->Range, 0x0400);
 
 		int value = ((weapon->Attack * warhead->Modifier[ARMOR_STEEL]) * mrange * warhead->SpreadFactor) / weapon->ROF;
 		if (Techno_Type_Class()->Is_Two_Shooter()) {
@@ -5867,7 +5878,7 @@ int TechnoClass::Anti_Infantry(void) const
 		WeaponTypeClass const * weapon = Techno_Type_Class()->PrimaryWeapon;
 		BulletTypeClass const * bullet = weapon->Bullet;
 		WarheadTypeClass const * warhead = weapon->WarheadPtr;
-		int mrange = min(weapon->Range, 0x0400);
+		int mrange = std::min<int>(weapon->Range, 0x0400);
 
 		int value = ((weapon->Attack * warhead->Modifier[ARMOR_NONE]) * mrange * warhead->SpreadFactor) / weapon->ROF;
 		if (Techno_Type_Class()->Is_Two_Shooter()) {
@@ -6211,10 +6222,10 @@ bool TechnoTypeClass::Is_Two_Shooter(void) const
  *=============================================================================================*/
 static inline int _Scale_To_256(int val)
 {
-	val = min(val, 100);
-	val = max(val, 0);
+	val = std::min(val, 100);
+	val = std::max(val, 0);
 	val = ((val * 256) / 100);
-	val = min(val, 255);
+	val = std::min(val, 255);
 	return(val);
 }
 
