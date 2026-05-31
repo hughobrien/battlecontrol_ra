@@ -36,7 +36,7 @@
  *   main -- Programs main entry point.                                    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -36,8 +36,8 @@
  * int Get_PCX_Palette (char * name, void& palette )								*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include  <wwlib32.h>
-#include "filepcx.h"
+#include  <WWLIB32.H>
+#include "FILEPCX.H"
 
 /***************************************************************************
  * READ_PCX_FILE -- read a pcx file into a Graphic Buffer                  *

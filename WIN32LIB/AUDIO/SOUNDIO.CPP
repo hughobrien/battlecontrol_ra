@@ -69,20 +69,20 @@ extern	void Colour_Debug (int call_number);
 #include	"dsound.h"
 
 #include	<mem.h>
-#include	<wwmem.h>
-#include	"soundint.h"
+#include	<WWMEM.H>
+#include	"SOUNDINT.H"
 #include	<stdio.h>
 #include	<string.h>
 #include	<direct.h>
 #include	<stdlib.h>
 #include <process.h>
-#include	<keyboard.h>
-#include	<file.h>
+#include	<KEYBOARD.H>
+#include	<FILE.H>
 #include	<bios.h>
 #include	<TIMER.H>
 #include	<math.h>
 #pragma		pack(1)
-#include	"audio.h"
+#include	"AUDIO.H"
 #pragma		pack(4)
 
 LPDIRECTSOUNDBUFFER	DumpBuffer;

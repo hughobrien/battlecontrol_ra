@@ -33,9 +33,9 @@
  *   Init_Delay -- I am not sure                                           *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "wwstd.h"
+#include "WWSTD.H"
 #include "TIMER.H"
-#include "video.h"
+#include "VIDEO.H"
 		   	 
 BOOL VertBlank;
 

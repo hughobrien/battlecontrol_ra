@@ -42,8 +42,8 @@
  *   Write_Iff_Chunk -- Writes an IFF chuck out.                           *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "iff.h"
-#include "file.h"
+#include "IFF.H"
+#include "FILE.H"
 
 #define ID_FORM			MAKE_ID('F','O','R','M')
 

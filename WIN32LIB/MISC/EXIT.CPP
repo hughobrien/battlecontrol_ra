@@ -35,7 +35,7 @@
  *   Exit -- Exit routine with message.                                    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "misc.h"
+#include "MISC.H"
 
 #include <stdio.h>
 

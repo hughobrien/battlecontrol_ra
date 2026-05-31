@@ -36,8 +36,8 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include "font.h"
-#include <wwstd.h>
+#include "FONT.H"
+#include <WWSTD.H>
 
 
 

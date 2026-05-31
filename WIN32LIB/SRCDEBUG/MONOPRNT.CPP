@@ -38,7 +38,7 @@
 #include	<stdarg.h>
 #include	<string.h>
 #include	<stdio.h>
-#include "mono.h"
+#include "MONO.H"
 
 /***************************************************************************
  * Mono_Printf -- Prints formated text to the monochrome screen.           *

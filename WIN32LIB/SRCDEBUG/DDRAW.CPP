@@ -42,9 +42,9 @@
 /*= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =*/
 
 
-#include "misc.h"
-#include <gbuffer.h>
-#include <palette.h>
+#include "MISC.H"
+#include <GBUFFER.H>
+#include <PALETTE.H>
 
 
 LPDIRECTDRAW		DirectDrawObject=NULL;	// Pointer to the direct draw object

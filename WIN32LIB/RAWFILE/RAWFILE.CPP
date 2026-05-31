@@ -64,11 +64,11 @@
 #include	<dos.h>
 #include	<share.h>
 #include	<sys\stat.h>
-#include	<wwstd.h>
+#include	<WWSTD.H>
 
 //#include "wwlib32.h"
 //#include	"compat.h"
-#include	"rawfile.h"
+#include	"RAWFILE.H"
 
 
 /***********************************************************************************************

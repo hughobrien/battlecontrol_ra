@@ -35,11 +35,11 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef WWSTD_H
-#include "wwstd.h"
+#include "WWSTD.H"
 #endif	   
 
 #ifndef _FILE_H
-#include "_file.h"
+#include "_FILE.H"
 #endif
 
 /*=========================================================================*/

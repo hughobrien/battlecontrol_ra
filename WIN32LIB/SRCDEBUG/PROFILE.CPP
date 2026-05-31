@@ -58,10 +58,10 @@
 #include <windows.h>
 #include <windowsx.h>
 
-#include <wwstd.h>
-#include <rawfile.h>
-#include <file.h>
-#include "profile.h"
+#include <WWSTD.H>
+#include <RAWFILE.H>
+#include <FILE.H>
+#include "PROFILE.H"
 
 extern "C"{
 unsigned	ProfileList	[PROFILE_RATE*60*MAX_PROFILE_TIME];

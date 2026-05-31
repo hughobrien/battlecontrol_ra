@@ -32,7 +32,7 @@
 *
 ****************************************************************************/
 
-#include "movie.h"
+#include "MOVIE.H"
 #include <mmstream.h>
 #include <streams.h>
 #include <amstream.h>

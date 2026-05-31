@@ -45,10 +45,10 @@
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<mem.h>
-#include	<wwstd.h>
-#include	<file.h>
-#include	"tile.h"
-#include	<iff.h>
+#include	<WWSTD.H>
+#include	<FILE.H>
+#include	"TILE.H"
+#include	<IFF.H>
 
 
 

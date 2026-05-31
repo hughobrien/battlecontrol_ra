@@ -53,8 +53,8 @@
 
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <wwstd.h>
-#include "wwmem.h"
+#include <WWSTD.H>
+#include "WWMEM.H"
 #include <TIMER.H>
 
 #include	<stddef.h>

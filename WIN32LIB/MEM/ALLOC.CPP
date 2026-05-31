@@ -48,7 +48,7 @@
 
 
 #ifndef WWMEM_H
-#include "wwmem.h"
+#include "WWMEM.H"
 #endif
 
 

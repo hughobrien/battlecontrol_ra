@@ -84,10 +84,10 @@
 #endif // _WIN32
 #include <windows.h>
 #include <windowsx.h>
-#include <wwstd.h>
-#include <rawfile.h>
-#include <file.h>
-#include "profile.h"
+#include <WWSTD.H>
+#include <RAWFILE.H>
+#include <FILE.H>
+#include "PROFILE.H"
 #include <vdmdbg.h>
 #include <TIMER.H>
 
