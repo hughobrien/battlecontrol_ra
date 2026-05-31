@@ -78,6 +78,11 @@ typedef enum {
 /*
 ------------------------------- Shape header --------------------------------
 */
+/*
+** This header overlays packed SHP bytes. Without explicit packing, LP64
+** alignment reads Width, ShapeSize, and DataLength from the wrong offsets.
+*/
+#pragma pack(push, 1)
 typedef struct {
 	unsigned short		ShapeType;			// 0 = normal, 1 = 16 colors,
 										//  2 = uncompressed, 4 = 	<16 colors
@@ -88,17 +93,35 @@ typedef struct {
 	unsigned short		DataLength;			// Size of the uncompressed shape (just data)
 	unsigned char		Colortable[16];	// Optional color table for compact shape
 } Shape_Type;
+#pragma pack(pop)
 
 /*
 ------------------------------- Shape block ---------------------------------
 */
+/*
+** ShapeBlock_Type overlays raw SHP file data. The on-disk layout is a
+** uint16_t count followed immediately by 32-bit offsets; Win32 long was
+** 32-bit, but Linux LP64 long is 64-bit.
+*/
+#ifndef _MSC_VER
+#include <stdint.h>
+#endif
+#pragma pack(push, 2)
+#ifdef _MSC_VER
+#pragma warning (disable : 4200)
+#endif
 typedef struct {
 	unsigned short		NumShapes;			// number of shapes in the block
+#ifndef _MSC_VER
+	int32_t		Offsets[];			// array of offsets to shape data
+#else
 	long		Offsets[];			// array of offsets to shape data
+#endif
 										//  (offsets within the shape block, with
 										//  0 being the first offset value, not the
 										//  start of the shape block)
 } ShapeBlock_Type;
+#pragma pack(pop)
 
 
 /*
