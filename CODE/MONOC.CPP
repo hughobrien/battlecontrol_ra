@@ -251,10 +251,10 @@ void MonoClass::Sub_Window(int x, int y, int w, int h)
 	/*
 	**	Ensure parameters are legal.
 	*/
-	x = min(x, COLUMNS-1);
-	x = max(x, 0);
-	y = min(y, LINES-1);
-	y = max(y, 0);
+	x = std::min(x, COLUMNS-1);
+	x = std::max(x, 0);
+	y = std::min(y, LINES-1);
+	y = std::max(y, 0);
 	if (w == -1) w = COLUMNS-x;
 	if (h == -1) h = LINES-y;
 
@@ -271,10 +271,10 @@ void MonoClass::Sub_Window(int x, int y, int w, int h)
 	*/
 	int xx = X;
 	int yy = Y;
-	xx = min(xx, SubX+SubW-1);
-	xx = max(xx, SubX);
-	yy = min(yy, SubY+SubH-1);
-	yy = max(yy, SubY);
+	xx = std::min(xx, SubX+SubW-1);
+	xx = std::max(xx, SubX);
+	yy = std::min(yy, SubY+SubH-1);
+	yy = std::max(yy, SubY);
 	Set_Cursor(xx-SubX, yy-SubY);
 }
 
@@ -309,14 +309,14 @@ void MonoClass::Draw_Box(int x, int y, int w, int h, MonoAttribute attrib, BoxSt
 
 	if (!Enabled || !w || !h) return;
 
-	x = min(x, SubW);
-	x = max(x, 0);
-	y = min(y, SubH);
-	y = max(y, 0);
-	w = min(w, SubW-x);
-	w = max(w, 1);
-	h = min(h, SubH-y);
-	h = max(h, 1);
+	x = std::min(x, SubW);
+	x = std::max(x, 0);
+	y = std::min(y, SubH);
+	y = std::max(y, 0);
+	w = std::min(w, SubW-x);
+	w = std::max(w, 1);
+	h = std::min(h, SubH-y);
+	h = std::max(h, 1);
 
 	x += SubX;
 	y += SubY;
@@ -380,10 +380,10 @@ void MonoClass::Draw_Box(int x, int y, int w, int h, MonoAttribute attrib, BoxSt
  *=============================================================================================*/
 void MonoClass::Set_Cursor(int x, int y)
 {
-	x = min(x, SubW);
-	x = max(x, 0);
-	y = min(y, SubH);
-	y = max(y, 0);
+	x = std::min(x, SubW);
+	x = std::max(x, 0);
+	y = std::min(y, SubH);
+	y = std::max(y, 0);
 
 	X = x;
 	Y = y;
