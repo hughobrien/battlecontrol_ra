@@ -152,6 +152,9 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef __cdecl
 #define __cdecl
 #endif
+#ifndef cdecl
+#define cdecl
+#endif
 #ifndef __stdcall
 #define __stdcall
 #endif
@@ -193,6 +196,40 @@ typedef struct _RTL_CRITICAL_SECTION {
 #endif
 #ifndef E_NOTIMPL
 #define E_NOTIMPL ((HRESULT)0x80004001L)
+#endif
+
+#ifndef MB_OK
+#define MB_OK 0x00000000L
+#endif
+#ifndef MB_ICONSTOP
+#define MB_ICONSTOP 0x00000010L
+#endif
+#ifndef MB_ICONEXCLAMATION
+#define MB_ICONEXCLAMATION 0x00000030L
+#endif
+
+#ifndef SW_HIDE
+#define SW_HIDE 0
+#endif
+#ifndef SW_RESTORE
+#define SW_RESTORE 9
+#endif
+#ifndef SW_SHOWMAXIMIZED
+#define SW_SHOWMAXIMIZED 3
+#endif
+#ifndef SW_MINIMIZE
+#define SW_MINIMIZE 6
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+HWND FindWindow(LPCSTR class_name, LPCSTR window_name);
+BOOL SetForegroundWindow(HWND window);
+BOOL ShowWindow(HWND window, int command_show);
+int MessageBox(HWND window, LPCSTR text, LPCSTR caption, UINT type);
+#ifdef __cplusplus
+}
 #endif
 
 #endif
