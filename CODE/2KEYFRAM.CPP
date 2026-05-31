@@ -48,12 +48,12 @@
 #define	Apply_Delta(buffer, delta)		Apply_XOR_Delta((char*)(buffer), (char*)(delta))
 
 typedef struct {
-	unsigned short frames;
-	unsigned short x;
-	unsigned short y;
-	unsigned short width;
-	unsigned short height;
-	unsigned short largest_frame_size;
+	uint16_t frames;
+	uint16_t x;
+	uint16_t y;
+	uint16_t width;
+	uint16_t height;
+	uint16_t largest_frame_size;
 	short				flags;
 } KeyFrameHeaderType;
 
@@ -218,7 +218,7 @@ void Check_Use_Compressed_Shapes (void)
 
 
 
-unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr)
+unsigned long Build_Frame(void const *dataptr, uint16_t framenumber, void *buffptr)
 {
 #ifdef FIXIT_SCORE_CRASH
 	char *ptr;
@@ -229,7 +229,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 #endif
 	uint32_t offset[SUBFRAMEOFFS];
 	KeyFrameHeaderType *keyfr;
-	unsigned short buffsize, currframe, subframe;
+	uint16_t buffsize, currframe, subframe;
 	unsigned long length = 0;
 	char frameflags;
 	unsigned long return_value;
@@ -332,7 +332,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 	} else {	// key delta or delta
 
 		if ( (frameflags & KF_DELTA) ) {
-			currframe = (unsigned short)offset[1];
+			currframe = (uint16_t)offset[1];
 
 			ptr = (char *)Add_Long_To_Pointer( dataptr, (((unsigned long)currframe << 3) + sizeof(KeyFrameHeaderType)) );
 			Mem_Copy( ptr, &offset[0], (long)(SUBFRAMEOFFS * sizeof(offset[0])) );
@@ -494,7 +494,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
  * HISTORY:                                                                                    *
  *   06/25/1995 JLB : Commented.                                                               *
  *=============================================================================================*/
-unsigned short Get_Build_Frame_Count(void const *dataptr)
+uint16_t Get_Build_Frame_Count(void const *dataptr)
 {
 	if (dataptr) {
 		return(((KeyFrameHeaderType const *)dataptr)->frames);
@@ -503,7 +503,7 @@ unsigned short Get_Build_Frame_Count(void const *dataptr)
 }
 
 
-unsigned short Get_Build_Frame_X(void const *dataptr)
+uint16_t Get_Build_Frame_X(void const *dataptr)
 {
 	if (dataptr) {
 		return(((KeyFrameHeaderType const *)dataptr)->x);
@@ -512,7 +512,7 @@ unsigned short Get_Build_Frame_X(void const *dataptr)
 }
 
 
-unsigned short Get_Build_Frame_Y(void const *dataptr)
+uint16_t Get_Build_Frame_Y(void const *dataptr)
 {
 	if (dataptr) {
 		return(((KeyFrameHeaderType const *)dataptr)->y);
