@@ -560,10 +560,11 @@ long RawFileClass::Read(void * buffer, long size)
 #ifdef WIN32
 	long total = 0;
 	while (size > 0) {
-		bytesread = 0;
+		DWORD actual = 0;
 
 		SetErrorMode(SEM_FAILCRITICALERRORS);
-		if (!ReadFile(Handle, buffer, size, &(unsigned long&)bytesread, NULL)) {
+		if (!ReadFile(Handle, buffer, (DWORD)size, &actual, NULL)) {
+			bytesread = (long)actual;
 			size -= bytesread;
 			total += bytesread;
 			Error(GetLastError(), true, Filename);
@@ -571,6 +572,7 @@ long RawFileClass::Read(void * buffer, long size)
 			continue;
 		}
 		SetErrorMode(0);
+		bytesread = (long)actual;
 		size -= bytesread;
 		total += bytesread;
 		if (bytesread == 0) break;
@@ -677,9 +679,11 @@ long RawFileClass::Write(void const * buffer, long size)
 	}
 
 #ifdef WIN32
-	if (!WriteFile(Handle, buffer, size, &(unsigned long&)bytesread, NULL)) {
+	DWORD actual = 0;
+	if (!WriteFile(Handle, buffer, (DWORD)size, &actual, NULL)) {
 		Error(GetLastError(), false, Filename);
 	}
+	bytesread = (long)actual;
 
 #else
 
