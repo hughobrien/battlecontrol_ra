@@ -38,7 +38,6 @@
 #ifndef RGB_H
 #define RGB_H
 
-class PaletteClass;
 class HSVClass;
 
 #ifndef OUTPORTB
@@ -134,5 +133,46 @@ class RGBClass
 };
 
 extern RGBClass const BlackColor;
+
+/*
+**	A full 256 entry game palette. The Win32 palette library stores the active
+**	DAC palette as 768 bytes, which has the same byte layout as 256 RGBClass
+**	entries.
+*/
+class PaletteClass
+{
+	public:
+		enum {
+			COLOR_COUNT = 256
+		};
+
+		PaletteClass(void) {};
+		PaletteClass(RGBClass const & rgb);
+
+		RGBClass & operator [] (unsigned index) {return(Palette[index % COLOR_COUNT]);};
+		RGBClass const & operator [] (unsigned index) const {return(Palette[index % COLOR_COUNT]);};
+
+		int operator == (PaletteClass const & palette) const;
+		int operator != (PaletteClass const & palette) const {return(!(operator == (palette)));};
+		PaletteClass & operator = (PaletteClass const & palette);
+
+		void const * Get_Data(void) const {return(&Palette[0]);};
+		void * Get_Data(void) {return(&Palette[0]);};
+		operator unsigned char const * (void) const {return((unsigned char const *)&Palette[0]);};
+		operator unsigned char * (void) {return((unsigned char *)&Palette[0]);};
+
+		void Adjust(int ratio);
+		void Adjust(int ratio, PaletteClass const & palette);
+		void Adjust(PaletteClass const & palette, int ratio) {Adjust(ratio, palette);};
+		void Partial_Adjust(int ratio, char * lut);
+		void Partial_Adjust(int ratio, PaletteClass const & palette, char * lut);
+		void Set(int time = 0, void (*callback)(void) = 0) const;
+		int Closest_Color(RGBClass const & rgb) const;
+
+		static PaletteClass const & CurrentPalette;
+
+	private:
+		RGBClass Palette[COLOR_COUNT];
+};
 
 #endif
