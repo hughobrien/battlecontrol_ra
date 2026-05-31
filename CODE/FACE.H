@@ -38,8 +38,10 @@
 #ifndef FACE_H
 #define FACE_H
 
+#include <stdint.h>
+
 // Enumerations of the facing values returned from Desired_Facing().
-typedef enum DirType {
+typedef enum DirType : uint8_t {
 	DIR_MIN=0,
 	DIR_N=0,
 	DIR_NE=1<<5,
