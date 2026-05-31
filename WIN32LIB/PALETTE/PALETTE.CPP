@@ -57,11 +57,13 @@
 ********************************** Globals **********************************
 */
 extern "C" unsigned char CurrentPalette[PALETTE_BYTES] = {};		/* in pal.asm */
+PRIVATE unsigned char DisplayedPalette[PALETTE_BYTES] = {};
 
 struct CurrentPaletteInitializer {
 	CurrentPaletteInitializer()
 	{
 		memset(CurrentPalette, 255, PALETTE_BYTES);
+		memset(DisplayedPalette, 255, PALETTE_BYTES);
 	}
 };
 PRIVATE CurrentPaletteInitializer CurrentPaletteInit;
@@ -113,7 +115,8 @@ extern "C" void __cdecl Set_Palette_Range(void *palette)
 	if (!palette) return;
 
 	memcpy(CurrentPalette, palette, PALETTE_BYTES);
-	Set_DD_Palette(palette);
+	memcpy(DisplayedPalette, palette, PALETTE_BYTES);
+	Set_DD_Palette(DisplayedPalette);
 }
 
 
@@ -121,14 +124,11 @@ extern "C" void Set_Palette_Register(int number, int red, int green, int blue)
 {
 	if (number < 0 || number >= PALETTE_SIZE) return;
 
-	unsigned char palette[PALETTE_BYTES];
-	memcpy(palette, CurrentPalette, PALETTE_BYTES);
-
-	unsigned char *entry = &palette[number * RGB_BYTES];
+	unsigned char *entry = &DisplayedPalette[number * RGB_BYTES];
 	entry[0] = (unsigned char)(red & 63);
 	entry[1] = (unsigned char)(green & 63);
 	entry[2] = (unsigned char)(blue & 63);
-	Set_DD_Palette(palette);
+	Set_DD_Palette(DisplayedPalette);
 }
 
 

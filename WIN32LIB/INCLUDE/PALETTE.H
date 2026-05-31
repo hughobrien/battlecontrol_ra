@@ -72,6 +72,7 @@ extern "C" {
 #endif
 
 extern void __cdecl Set_Palette_Range(void *palette);
+extern void __cdecl Set_Palette_Register(int number, int red, int green, int blue);
 extern BOOL __cdecl Bump_Color(void *palette, int changable, int target);
 
 #ifdef __cplusplus
