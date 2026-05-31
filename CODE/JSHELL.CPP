@@ -274,36 +274,6 @@ int Load_Picture(char const * filename, BufferClass& scratchbuf, BufferClass& de
 
 
 /***********************************************************************************************
- * Load_Alloc_Data -- Allocates a buffer and loads the file into it.                           *
- *                                                                                             *
- *    This is the C++ replacement for the Load_Alloc_Data function. It will allocate the       *
- *    memory big enough to hold the file and then read the file into it.                       *
- *                                                                                             *
- * INPUT:   file  -- The file to read.                                                         *
- *                                                                                             *
- *          mem   -- The memory system to use for allocation.                                  *
- *                                                                                             *
- * OUTPUT:  Returns with a pointer to the allocated and filled memory block.                   *
- *                                                                                             *
- * WARNINGS:   none                                                                            *
- *                                                                                             *
- * HISTORY:                                                                                    *
- *   10/17/1994 JLB : Created.                                                                 *
- *=============================================================================================*/
-void * Load_Alloc_Data(FileClass &file)
-{
-	void * ptr = 0;
-	long size = file.Size();
-
-	ptr = new char [size];
-	if (ptr) {
-		file.Read(ptr, size);
-	}
-	return(ptr);
-}
-
-
-/***********************************************************************************************
  * Translucent_Table_Size -- Determines the size of a translucent table.                       *
  *                                                                                             *
  *    Use this routine to determine how big the translucent table needs                        *

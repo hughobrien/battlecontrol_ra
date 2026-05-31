@@ -619,6 +619,18 @@ unsigned long __cdecl Load_Data(char const * name, void * ptr, unsigned long siz
 }
 #endif
 
+void * Load_Alloc_Data(FileClass &file)
+{
+	void * ptr = 0;
+	long size = file.Size();
+
+	ptr = new char [size];
+	if (ptr) {
+		file.Read(ptr, size);
+	}
+	return(ptr);
+}
+
 void * __cdecl Load_Alloc_Data(char const * name, int )
 {
 	CCFileClass file(name);
@@ -689,5 +701,4 @@ char CallingDOSInt;
 void Unfragment_File_Cache(void)
 {
 }
-
 
