@@ -41,10 +41,10 @@
 #include	<stdio.h>
 
 #ifndef READ
-#define	READ	_READ
+#define READ 1
 #endif
 #ifndef WRITE
-#define	WRITE	_WRITE
+#define WRITE 2
 #endif
 
 class FileClass
