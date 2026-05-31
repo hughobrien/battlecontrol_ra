@@ -100,8 +100,19 @@ class EditClass : public ControlClass
 		int IsReadOnly;
 };
 
-inline EditClass::EditStyle operator |(EditClass::EditStyle, EditClass::EditStyle);
-inline EditClass::EditStyle operator &(EditClass::EditStyle, EditClass::EditStyle);
-inline EditClass::EditStyle operator ~(EditClass::EditStyle);
+inline EditClass::EditStyle operator |(EditClass::EditStyle a, EditClass::EditStyle b)
+{
+	return (EditClass::EditStyle)((int)a | (int)b);
+}
+
+inline EditClass::EditStyle operator &(EditClass::EditStyle a, EditClass::EditStyle b)
+{
+	return (EditClass::EditStyle)((int)a & (int)b);
+}
+
+inline EditClass::EditStyle operator ~(EditClass::EditStyle a)
+{
+	return (EditClass::EditStyle)(~(int)a);
+}
 
 #endif
