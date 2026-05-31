@@ -36,30 +36,30 @@
 #ifndef WWLIB32_H
 #define WWLIB32_H
 
-#include <GBUFFER.H>
-#include <WWSTD.H>
-#include <DRAWBUFF.H>
-#include <BUFFER.H>
-#include <FONT.H>
-#include <IFF.H>
-#include <MISC.H>
-#include <MONO.H>
-#include <TILE.H>
-#include <WWMEM.H>
-#include <KEYBOARD.H>
-#include <MOUSE.H>
-#include <FILE.H>
-#include <RAWFILE.H>
+#include "GBUFFER.H"
+#include "WWSTD.H"
+#include "DRAWBUFF.H"
+#include "BUFFER.H"
+#include "FONT.H"
+#include "IFF.H"
+#include "MISC.H"
+#include "MONO.H"
+#include "TILE.H"
+#include "WWMEM.H"
+#include "KEYBOARD.H"
+#include "MOUSE.H"
+#include "FILE.H"
+#include "RAWFILE.H"
 
-#include <AUDIO.H>
-#include <DIPTHONG.H>
-#include <PALETTE.H>
-#include <PLAYCD.H>
-#include <SHAPE.H>
-#include <TIMER.H>
-#include <WW_WIN.H>
-#include <WSA.H>
-#include <PROFILE.H>
+#include "AUDIO.H"
+#include "DIPTHONG.H"
+#include "PALETTE.H"
+#include "PLAYCD.H"
+#include "SHAPE.H"
+#include "TIMER.H"
+#include "WW_WIN.H"
+#include "WSA.H"
+#include "PROFILE.H"
 
 
 
