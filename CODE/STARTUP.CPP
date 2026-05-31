@@ -1067,3 +1067,25 @@ void Get_OS_Version (void)
 #endif	//WIN32
 
 
+#if defined(WIN32) && !defined(_MSC_VER)
+// Linux libc enters through main; keep the existing WinMain startup body for the compatibility build.
+int main(int argc, char * argv[])
+{
+	char command_line[4096];
+	size_t used = 0;
+	command_line[0] = '\0';
+
+	for (int index = 1; index < argc && used + 1 < sizeof(command_line); index++) {
+		if (index > 1) {
+			command_line[used++] = ' ';
+		}
+
+		for (char const * arg = argv[index]; arg != NULL && *arg != '\0' && used + 1 < sizeof(command_line); arg++) {
+			command_line[used++] = *arg;
+		}
+		command_line[used] = '\0';
+	}
+
+	return WinMain(NULL, NULL, command_line, 0);
+}
+#endif
