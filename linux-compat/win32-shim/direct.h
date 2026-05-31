@@ -36,4 +36,12 @@
 #define _rmdir rmdir
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+void _splitpath(char const *path, char *drive, char *dir, char *fname, char *ext);
+#ifdef __cplusplus
+}
+#endif
+
 #endif

@@ -204,8 +204,21 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef MB_ICONSTOP
 #define MB_ICONSTOP 0x00000010L
 #endif
+#ifndef MB_ICONQUESTION
+#define MB_ICONQUESTION 0x00000020L
+#endif
 #ifndef MB_ICONEXCLAMATION
 #define MB_ICONEXCLAMATION 0x00000030L
+#endif
+#ifndef MB_YESNO
+#define MB_YESNO 0x00000004L
+#endif
+#ifndef IDNO
+#define IDNO 7
+#endif
+
+#ifndef WM_DESTROY
+#define WM_DESTROY 0x0002
 #endif
 
 #ifndef SW_HIDE
@@ -224,10 +237,14 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifdef __cplusplus
 extern "C" {
 #endif
+DWORD GetModuleFileName(HMODULE module, LPSTR filename, DWORD size);
+DWORD GetVersion(void);
 HWND FindWindow(LPCSTR class_name, LPCSTR window_name);
+BOOL PostMessage(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
 BOOL SetForegroundWindow(HWND window);
 BOOL ShowWindow(HWND window, int command_show);
 int MessageBox(HWND window, LPCSTR text, LPCSTR caption, UINT type);
+void Sleep(DWORD milliseconds);
 #ifdef __cplusplus
 }
 #endif
