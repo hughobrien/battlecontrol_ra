@@ -390,6 +390,7 @@ int VectorClass<T>::Resize(unsigned newsize, T const * array)
 }
 
 template class VectorClass<unsigned char>;
+template class VectorClass<int>;
 template class VectorClass<void *>;
 template class VectorClass<char *>;
 template class VectorClass<char const *>;
