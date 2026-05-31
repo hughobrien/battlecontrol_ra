@@ -103,6 +103,15 @@ typedef struct _RGNDATA {
     BYTE Buffer[1];
 } RGNDATA, *LPRGNDATA;
 
+typedef struct _RTL_CRITICAL_SECTION {
+    void *DebugInfo;
+    int32_t LockCount;
+    int32_t RecursionCount;
+    HANDLE OwningThread;
+    HANDLE LockSemaphore;
+    ULONG_PTR SpinCount;
+} CRITICAL_SECTION, *PCRITICAL_SECTION, *LPCRITICAL_SECTION;
+
 #ifndef TRUE
 #define TRUE 1
 #endif
@@ -116,8 +125,14 @@ typedef struct _RGNDATA {
 #ifndef FAR
 #define FAR
 #endif
+#ifndef far
+#define far
+#endif
 #ifndef NEAR
 #define NEAR
+#endif
+#ifndef near
+#define near
 #endif
 #ifndef PASCAL
 #define PASCAL
