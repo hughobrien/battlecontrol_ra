@@ -349,7 +349,7 @@ short const * Coord_Spillage_List(COORDINATE coord, Rect const & rect, bool noce
  * HISTORY:                                                                                    *
  *   05/27/1994 JLB : Created.                                                                 *
  *=============================================================================================*/
-COORDINATE Coord_Move(COORDINATE start, DirType dir, unsigned short distance)
+COORDINATE Coord_Move(COORDINATE start, DirType dir, uint16_t distance)
 {
 #ifdef NEVER
 	short x = Coord_X(start);
@@ -449,7 +449,7 @@ static int calcy(int16_t scalar, uint16_t distance)
 }
 #endif
 
-void Move_Point(short &x, short &y, DirType dir, unsigned short distance)
+void Move_Point(short &x, short &y, DirType dir, uint16_t distance)
 {
 	static char const CosTable[256] = {
 		0x00,0x03,0x06,0x09,0x0c,0x0f,0x12,0x15,
@@ -589,7 +589,7 @@ void Move_Point(short &x, short &y, DirType dir, unsigned short distance)
  *=============================================================================================*/
 // Loss of precision in initializations (8 bits to 7 bits) warning. Hmmm.. can this be fixed?
 //lint -e569
-void Normal_Move_Point(short &x, short &y, DirType dir, unsigned short distance)
+void Normal_Move_Point(short &x, short &y, DirType dir, uint16_t distance)
 {
 	static signed char const CosTable[256] = {
 		0x00,0x03,0x06,0x09,0x0c,0x0f,0x12,0x15,

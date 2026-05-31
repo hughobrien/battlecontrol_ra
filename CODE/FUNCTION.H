@@ -559,9 +559,9 @@ void Shake_The_Screen(int shakes);
 **	COORD.CPP
 */
 short const * Coord_Spillage_List(COORDINATE coord, Rect const & rect, bool nocenter=true);
-void Normal_Move_Point(short &x, short &y, DirType dir, unsigned short distance);
-void Move_Point(short &x, short &y, DirType dir, unsigned short distance);
-COORDINATE Coord_Move(COORDINATE start, DirType facing, unsigned short distance);
+void Normal_Move_Point(short &x, short &y, DirType dir, uint16_t distance);
+void Move_Point(short &x, short &y, DirType dir, uint16_t distance);
+COORDINATE Coord_Move(COORDINATE start, DirType facing, uint16_t distance);
 COORDINATE Coord_Scatter(COORDINATE coord, unsigned distance, bool lock=false);
 DirType Direction(CELL cell1, CELL cell2);
 DirType Direction(COORDINATE coord1, COORDINATE coord2);
