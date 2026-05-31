@@ -33,7 +33,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include	"wwstd.h"
-#include <timer.h>
+#include <TIMER.H>
 
 void Delay(int duration)
 {

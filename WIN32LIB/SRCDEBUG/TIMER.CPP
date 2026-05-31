@@ -41,8 +41,8 @@
  *   TimerClass::Time -- Get the current time of timer.                    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <wwstd.h>
-#include "timer.H"
+#include <WWSTD.H>
+#include "TIMER.H"
 #include <stdio.h>
 #include <stdlib.h>
 
