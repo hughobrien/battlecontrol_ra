@@ -11,6 +11,8 @@ pub fn build(b: *std.Build) void {
         .link_libc = true,
         .link_libcpp = true,
     });
+    exe_module.addCMacro("WIN32", "1");
+    exe_module.addCMacro("_WIN32", "1");
 
     if (cnc_ddraw_source.len != 0) {
         exe_module.addIncludePath(b.path("linux-compat/win32-shim"));
