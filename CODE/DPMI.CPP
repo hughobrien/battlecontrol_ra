@@ -48,8 +48,8 @@ void DOSSegmentClass::Swap(DOSSegmentClass &src, int soffset, DOSSegmentClass &d
 {
 	if (!size) return;
 
-	unsigned short ssel = src.Selector;
-	unsigned short dsel = dest.Selector;
+	uint16_t ssel = (uint16_t)src.Selector;
+	uint16_t dsel = (uint16_t)dest.Selector;
 
 	asm {
 		push	es
@@ -80,9 +80,14 @@ again:
 }
 #endif
 
+#if !defined(__WATCOMC__)
+static void dss_swap(uint8_t *src, uint8_t *dest, int size);
+#endif
+
 
 void DOSSegmentClass::Swap(DOSSegmentClass &src, int soffset, DOSSegmentClass &dest, int doffset, int size)
 {
+#if defined(__WATCOMC__)
 	extern void dss_swap(char *src, char *dest, int size);
 
 	#pragma aux dss_swap = 		\
@@ -94,10 +99,26 @@ void DOSSegmentClass::Swap(DOSSegmentClass &src, int soffset, DOSSegmentClass &d
 		"loop	again"			\
 		parm	[esi] [edi] [ecx]	\
 		modify [ax];
+#endif
 
 	if (!size) return;
+#if defined(__WATCOMC__)
 	dss_swap((char *)(src.Selector + soffset), (char *)(dest.Selector + doffset), size);
+#else
+	dss_swap((uint8_t *)(src.Selector + soffset), (uint8_t *)(dest.Selector + doffset), size);
+#endif
 }
+
+#if !defined(__WATCOMC__)
+static void dss_swap(uint8_t *src, uint8_t *dest, int size)
+{
+	for (uint32_t count = (uint32_t)size; count != 0; count--) {
+		uint8_t temp = *src;
+		*src++ = *dest;
+		*dest++ = temp;
+	}
+}
+#endif
 
 #ifdef OBSOLETE
 void DOSSegmentClass::Copy(DOSSegmentClass &src, int soffset, DOSSegmentClass &dest, int doffset, int size)
