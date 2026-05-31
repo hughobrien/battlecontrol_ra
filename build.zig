@@ -35,6 +35,7 @@ pub fn build(b: *std.Build) void {
         "WIN32LIB/DRAWBUFF/GBUFFER.CPP",
         "WIN32LIB/TIMER/TIMER.CPP",
         "WIN32LIB/TIMER/TIMERDWN.CPP",
+        "WIN32LIB/TIMER/TIMERINI.CPP",
         "CODE/INTERNET.CPP",
         "CODE/IPXADDR.CPP",
         "CODE/RAWFILE.CPP",

@@ -64,6 +64,7 @@ extern BOOL Remove_Timer_Interrupt(VOID);
 /////////////////////////////// Global Data /////////////////////////////////////
 
 BOOL	TimerSystemOn	= FALSE;
+WinTimerClass *WindowsTimer = NULL;
 
 // Global timers that the library or user can count on existing.
 TimerClass					TickCount(BT_SYSTEM);
@@ -99,6 +100,12 @@ int		InTimerCallback	= 0;		//Flag to say if we are in a timer callback
 WinTimerClass::WinTimerClass (UINT freq, BOOL partial)
 {
 	BOOL		success;
+
+	TimerHandle = 0;
+	TrueRate = 0;
+	SysTicks = 0;
+	UserTicks = 0;
+	UserRate = 0;
 
 	//
 	// Inform windows that we want a higher than normal
