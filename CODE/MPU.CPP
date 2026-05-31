@@ -39,10 +39,21 @@
 
 
 #ifdef __BORLANDC__
-unsigned long __cdecl Get_CPU_Clock(unsigned long & high)
+uint32_t __cdecl Get_CPU_Clock(uint32_t & high)
 {
 	__asm db 0fh,031h
 	__asm mov [high],edx
 	return(_EAX);
+}
+#elif !defined(__WATCOMC__)
+uint32_t Get_CPU_Clock(uint32_t & high)
+{
+#if defined(__i386__) || defined(__x86_64__)
+	uint32_t low;
+	__asm__ __volatile__("rdtsc" : "=a"(low), "=d"(high));
+	return low;
+#else
+#error Get_CPU_Clock needs an implementation for this CPU architecture.
+#endif
 }
 #endif

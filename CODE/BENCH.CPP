@@ -130,7 +130,7 @@ void Benchmark::Begin(bool reset)
  *=============================================================================================*/
 void Benchmark::End(void)
 {
-	unsigned long value = Clock;
+	uint32_t value = Clock;
 
 	if (Counter == MAXIMUM_EVENT_COUNT) {
 		Average -= Average / MAXIMUM_EVENT_COUNT;
