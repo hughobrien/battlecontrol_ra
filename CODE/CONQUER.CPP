@@ -1138,7 +1138,9 @@ void Toggle_Formation(void) {
  * HISTORY:                                                                                    *
  *   05/22/1995 BRR : Created.                                                                 *
  *=============================================================================================*/
+#if defined(__WATCOMC__)
 #pragma off (unreferenced)
+#endif
 static void Message_Input(KeyNumType &input)
 {
 	int rc;
@@ -1500,7 +1502,9 @@ static void Message_Input(KeyNumType &input)
 		Map.Flag_To_Redraw(true);
 	}
 }
+#if defined(__WATCOMC__)
 #pragma on (unreferenced)
+#endif
 
 
 /***********************************************************************************************
