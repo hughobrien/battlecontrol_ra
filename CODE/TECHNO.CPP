@@ -3790,7 +3790,7 @@ bool TechnoClass::Captured(HouseClass * newowner)
  * HISTORY:                                                                                    *
  *   06/20/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-ResultType TechnoClass::Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source, int forced)
+ResultType TechnoClass::Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source, bool forced)
 {
 	assert(IsActive);
 

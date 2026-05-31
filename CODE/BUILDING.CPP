@@ -1191,7 +1191,7 @@ bool BuildingClass::Unlimbo(COORDINATE coord, DirType dir)
  *   11/22/1994 JLB : Shares base damage handler for techno objects.                           *
  *   07/15/1995 JLB : Power ratio gets adjusted.                                               *
  *=============================================================================================*/
-ResultType BuildingClass::Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source, int forced)
+ResultType BuildingClass::Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source, bool forced)
 {
 	assert(Buildings.ID(this) == ID);
 	assert(IsActive);

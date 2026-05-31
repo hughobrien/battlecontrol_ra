@@ -1558,7 +1558,7 @@ BulletClass * AircraftClass::Fire_At(TARGET target, int which)
  * HISTORY:                                                                                    *
  *   05/26/1995 JLB : Created.                                                                 *
  *=============================================================================================*/
-ResultType AircraftClass::Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source, int forced)
+ResultType AircraftClass::Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source, bool forced)
 {
 	assert(Aircraft.ID(this) == ID);
 	assert(IsActive);
