@@ -56,7 +56,7 @@
 #endif
 
 #include <direct.h>
-#include <search.h>
+#include <SEARCH.H>
 #include <string.h>
 
 /*=========================================================================*/

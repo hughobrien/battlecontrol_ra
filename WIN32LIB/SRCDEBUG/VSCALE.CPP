@@ -32,9 +32,9 @@
  *                                                                         *
  *-------------------------------------------------------------------------*
 */
-#include <mcgaprim.h>
+#include <MCGAPRIM.H>
 #include <GBUFFER.H>
-#include <vbuffer.h>
+#include <VBUFFER.H>
 
 //VideoBufferClass		SeenPage(640,480);
 //GraphicBufferClass 	HidBuff;

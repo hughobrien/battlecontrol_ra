@@ -41,9 +41,9 @@
 #include "iostream.h"
 #include "VIDEO.H"
 #include "DESCMGMT.H"
-#include "mcgaprim.h"
+#include "MCGAPRIM.H"
 #include "GBUFFER.H"
-#include "vbuffer.h"
+#include "VBUFFER.H"
 #include "WWMEM.H"
 
 #include "PLAYCD.H"
