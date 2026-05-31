@@ -564,7 +564,7 @@ int main(int argc, char * argv[])
 
 			Options.Adjust_Variables_For_Resolution();
 			if (!Special.IsFromInstall) {
-				BlackPalette.Set();
+				Set_Palette((void *)&BlackPalette);
 //				Set_Palette(Palette);
 				Set_Video_Mode(MCGA_MODE);
 			}
@@ -913,7 +913,7 @@ void Emergency_Exit ( int code )
 	*/
 	VisiblePage.Clear();
 	HiddenPage.Clear();
-	BlackPalette.Set();
+	Set_Palette((void *)&BlackPalette);
 	Memory_Error_Exit = Print_Error_Exit;
 
 	/*
