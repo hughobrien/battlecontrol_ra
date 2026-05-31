@@ -46,10 +46,6 @@
  *   ScoreClass::Print_Minutes -- Print out hours/minutes up to max                            *
  *   ScoreClass::Pulse_Bar_Graph -- Pulses the bargraph color.                                 *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#ifndef WIN32
-extern short StreamLowImpact;
-#endif
-
 #include	<algorithm>
 
 #include	"FUNCTION.H"
