@@ -53,6 +53,7 @@ typedef void *LPVOID;
 typedef const void *LPCVOID;
 typedef BOOL *LPBOOL;
 typedef BYTE *LPBYTE;
+typedef BYTE *PBYTE;
 typedef WORD *LPWORD;
 typedef DWORD *LPDWORD;
 typedef LONG *LPLONG;
@@ -360,6 +361,48 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef WM_SYSCOMMAND
 #define WM_SYSCOMMAND 0x0112
 #endif
+#ifndef WM_KEYDOWN
+#define WM_KEYDOWN 0x0100
+#endif
+#ifndef WM_KEYUP
+#define WM_KEYUP 0x0101
+#endif
+#ifndef WM_SYSKEYDOWN
+#define WM_SYSKEYDOWN 0x0104
+#endif
+#ifndef WM_SYSKEYUP
+#define WM_SYSKEYUP 0x0105
+#endif
+#ifndef WM_MOUSEMOVE
+#define WM_MOUSEMOVE 0x0200
+#endif
+#ifndef WM_LBUTTONDOWN
+#define WM_LBUTTONDOWN 0x0201
+#endif
+#ifndef WM_LBUTTONUP
+#define WM_LBUTTONUP 0x0202
+#endif
+#ifndef WM_LBUTTONDBLCLK
+#define WM_LBUTTONDBLCLK 0x0203
+#endif
+#ifndef WM_RBUTTONDOWN
+#define WM_RBUTTONDOWN 0x0204
+#endif
+#ifndef WM_RBUTTONUP
+#define WM_RBUTTONUP 0x0205
+#endif
+#ifndef WM_RBUTTONDBLCLK
+#define WM_RBUTTONDBLCLK 0x0206
+#endif
+#ifndef WM_MBUTTONDOWN
+#define WM_MBUTTONDOWN 0x0207
+#endif
+#ifndef WM_MBUTTONUP
+#define WM_MBUTTONUP 0x0208
+#endif
+#ifndef WM_MBUTTONDBLCLK
+#define WM_MBUTTONDBLCLK 0x0209
+#endif
 #ifndef WM_USER
 #define WM_USER 0x0400
 #endif
@@ -493,6 +536,16 @@ HWND CreateWindowEx(DWORD ex_style, LPCTSTR class_name, LPCTSTR window_name, DWO
 int GetSystemMetrics(int index);
 BOOL UpdateWindow(HWND window);
 HWND SetFocus(HWND window);
+BOOL GetCursorPos(LPPOINT point);
+BOOL ClipCursor(const RECT *rect);
+UINT MapVirtualKey(UINT code, UINT map_type);
+int ToAscii(UINT virtual_key, UINT scan_code, PBYTE key_state, LPWORD translated, UINT flags);
+short GetKeyState(int key);
+short GetAsyncKeyState(int key);
+void InitializeCriticalSection(LPCRITICAL_SECTION critical_section);
+void DeleteCriticalSection(LPCRITICAL_SECTION critical_section);
+void EnterCriticalSection(LPCRITICAL_SECTION critical_section);
+void LeaveCriticalSection(LPCRITICAL_SECTION critical_section);
 UINT RegisterWindowMessage(LPCTSTR string);
 INT_PTR DialogBox(HANDLE instance, LPCTSTR template_name, HWND owner, DLGPROC dialog_proc);
 int ShowCursor(BOOL show);

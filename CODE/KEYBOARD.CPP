@@ -45,6 +45,7 @@
 #include "KEYBOARD.H"
 
 #include	"MONOC.H"
+#include <string.h>
 
 //void Message_Loop(void);
 
