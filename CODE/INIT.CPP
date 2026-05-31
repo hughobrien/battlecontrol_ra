@@ -2221,7 +2221,8 @@ long Obfuscate(char const * string)
 	**	Ensure that only visible ASCII characters compose the key phrase. This
 	**	discourages the direct forced illegal character input method of attack.
 	*/
-	for (int index = 0; index < length; index++) {
+	int index;
+	for (index = 0; index < length; index++) {
 		if (!isgraph(buffer[index])) {
 			buffer[index] = 'A' + (index%26);
 		}
