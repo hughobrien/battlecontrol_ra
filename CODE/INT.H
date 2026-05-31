@@ -49,6 +49,9 @@
 #pragma warn -inl
 #endif
 
+template<class T>
+T Generate_Prime(Straw & rng, int pbits, T const * = 0);
+
 template<int PRECISION>
 class Int {
 	public:
@@ -183,7 +186,7 @@ class Int {
 		void DERDecode(const unsigned char *input) {XMP_DER_Decode(&reg[0], input, PRECISION);}
 
 		// Friend helper functions.
-		friend Int<PRECISION> Generate_Prime(Straw & rng, int pbits, Int<PRECISION> const * = 0);
+		friend Int<PRECISION> Generate_Prime<>(Straw & rng, int pbits, Int<PRECISION> const *);
 		friend Int<PRECISION> Gcd(const Int<PRECISION> & a, const Int<PRECISION> & b);
 //		friend bool NextPrime(Int<PRECISION> & p, const Int<PRECISION> & max, bool blumInt=false);
 //		friend Int<PRECISION> a_exp_b_mod_pq(const Int<PRECISION> & a, const Int<PRECISION> & ep, const Int<PRECISION> & eq, const Int<PRECISION> & p, const Int<PRECISION> & q, const Int<PRECISION> & u);
@@ -275,8 +278,8 @@ T Generate_Prime(Straw & rng, int pbits, T const *)
 		q.Randomize(rng, minQ, maxQ);
 		p = (q*2) + (unsigned short)1;
 
-		T::RemainderTable rtQ(q);
-		T::RemainderTable rtP(p);
+		typename T::RemainderTable rtQ(q);
+		typename T::RemainderTable rtP(p);
 
 		while (rtQ.HasZero() || rtP.HasZero() || !q.IsPrime() || !p.IsPrime()) {
 			q += 2;
@@ -305,4 +308,3 @@ typedef Int<MAX_UNIT_PRECISION>	BigInt;
 //BigInt Generate_Prime(RandomNumberGenerator & rng, int pbits, BigInt const * dummy);
 
 #endif
-
