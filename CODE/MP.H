@@ -55,7 +55,7 @@ typedef int bool;
 #endif
 
 
-#include	"straw.h"
+#include	"STRAW.H"
 #include	<stdlib.h>
 #include	<stdint.h>
 

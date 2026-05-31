@@ -41,9 +41,9 @@
  *   ProgressBarClass::Update -- Update the value and redraw as necessary.                     *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"bar.h"
-#include	"fixed.h"
+#include	"FUNCTION.H"
+#include	"BAR.H"
+#include	"FIXED.H"
 
 
 /***********************************************************************************************

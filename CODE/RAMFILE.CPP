@@ -49,7 +49,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include "ramfile.h"
+#include "RAMFILE.H"
 #include	<string.h>
 
 

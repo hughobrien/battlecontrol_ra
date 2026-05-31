@@ -44,7 +44,7 @@
 #ifndef IPXADDR_H
 #define IPXADDR_H
 
-#include "ipx.h"				// for NetNumType & NetNodeType
+#include "IPX.H"				// for NetNumType & NetNodeType
 
 
 /*

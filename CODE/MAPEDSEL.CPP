@@ -43,7 +43,7 @@
  *   MapEditClass::Select_Object -- selects an object for processing       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 #ifdef SCENARIO_EDITOR
 

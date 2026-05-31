@@ -55,8 +55,8 @@
  * WIC::Set_Socket_Options -- Sets default socket options for Winsock buffer sizes             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"WSProto.h"
+#include	"FUNCTION.H"
+#include	"WSPROTO.H"
 
 #include	<stdio.h>
 

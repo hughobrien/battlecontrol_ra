@@ -44,11 +44,11 @@
  *                                                                         *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 #ifdef WIN32
 
-#include "ipx95.h"
+#include "IPX95.H"
 
 /*
 ** Instance handle for the THIPX32 .DLL

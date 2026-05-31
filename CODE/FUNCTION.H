@@ -121,8 +121,8 @@ UnitTypeClass      ³   BuildingTypeClass      ³  VesselTypeClass
 #endif
 
 
-#include	"watcom.h"
-#include "lint.h"
+#include	"WATCOM.H"
+#include "LINT.H"
 
 
 #ifdef WIN32
@@ -202,41 +202,41 @@ struct NoInitClass {
 #endif
 
 #ifdef WIN32
-#include	"key.h"
+#include	"KEY.H"
 #endif
 
-#include <wwlib32.h>
-#include	"mpu.h"
-#include	"bench.h"
-#include	"rect.h"
-#include	"jshell.h"
-#include	"buff.h"
-#include	"face.h"
-#include	"random.h"
-#include	"crc.h"
-#include "compat.h"
-#include	"fixed.h"
-#include	"base64.h"
-#include	"pipe.h"
-#include	"xpipe.h"
-#include	"ramfile.h"
-#include	"lcw.h"
-#include	"lzw.h"
-#include	"lcwpipe.h"
-#include	"lzwpipe.h"
-#include	"lzopipe.h"
-#include	"crcpipe.h"
-#include	"shapipe.h"
-#include	"b64pipe.h"
-#include	"straw.h"
-#include	"xstraw.h"
-#include	"b64straw.h"
-#include	"lcwstraw.h"
-#include	"lzwstraw.h"
-#include	"lzostraw.h"
-#include	"crcstraw.h"
-#include	"shastraw.h"
-#include	"rndstraw.h"
+#include <WWLIB32.H>
+#include	"MPU.H"
+#include	"BENCH.H"
+#include	"RECT.H"
+#include	"JSHELL.H"
+#include	"BUFF.H"
+#include	"FACE.H"
+#include	"RANDOM.H"
+#include	"CRC.H"
+#include "COMPAT.H"
+#include	"FIXED.H"
+#include	"BASE64.H"
+#include	"PIPE.H"
+#include	"XPIPE.H"
+#include	"RAMFILE.H"
+#include	"LCW.H"
+#include	"LZW.H"
+#include	"LCWPIPE.H"
+#include	"LZWPIPE.H"
+#include	"LZOPIPE.H"
+#include	"CRCPIPE.H"
+#include	"SHAPIPE.H"
+#include	"B64PIPE.H"
+#include	"STRAW.H"
+#include	"XSTRAW.H"
+#include	"B64STRAW.H"
+#include	"LCWSTRAW.H"
+#include	"LZWSTRAW.H"
+#include	"LZOSTRAW.H"
+#include	"CRCSTRAW.H"
+#include	"SHASTRAW.H"
+#include	"RNDSTRAW.H"
 
 // Should be part of WWLIB.H. This is used in JSHELL.CPP.
 typedef struct {
@@ -278,17 +278,17 @@ extern bool GameActive;
 extern long LParam;
 
 #include	<assert.h>
-#include	"vector.h"
-#include	"heap.h"
-#include	"ccfile.h"
-#include	"monoc.h"
-#include	"conquer.h"
-#include	"debug.h"
-#include "special.h"
-#include	"defines.h"
-#include	"ccini.h"
-#include	"ccptr.h"
-#include	"bar.h"
+#include	"VECTOR.H"
+#include	"HEAP.H"
+#include	"CCFILE.H"
+#include	"MONOC.H"
+#include	"CONQUER.H"
+#include	"DEBUG.H"
+#include "SPECIAL.H"
+#include	"DEFINES.H"
+#include	"CCINI.H"
+#include	"CCPTR.H"
+#include	"BAR.H"
 
 /*
 **	Greenleaf specific includes.
@@ -300,114 +300,114 @@ extern long LParam;
 extern long Frame;
 CELL Coord_Cell(COORDINATE coord);
 
-#include	"utracker.h"
-#include	"crate.h"
-#include	"rules.h"
-#include	"ini.h"
-#include	"int.h"
-#include	"pk.h"
-#include	"pkpipe.h"
-#include	"pkstraw.h"
-#include	"sha.h"
-#include	"blowfish.h"
-#include	"blowpipe.h"
-#include	"blwstraw.h"
-#include	"language.h"
-#include	"hsv.h"
-#include	"rgb.h"
-#include	"palette.h"
-#include "version.h"
-#include	"facing.h"
-#include	"ftimer.h"
-#include	"theme.h"
-#include	"link.h"
-#include	"gadget.h"
-#include	"control.h"
-#include	"toggle.h"
-#include	"checkbox.h"
-#include	"shapebtn.h"
-#include	"textbtn.h"
-#include	"statbtn.h"
-#include	"slider.h"
-#include "list.h"
-#include	"drop.h"
-#include "cheklist.h"
-#include "colrlist.h"
-#include	"edit.h"
-#include	"gauge.h"
-#include	"msgbox.h"
-#include	"dial8.h"
-#include	"txtlabel.h"
-#include "loaddlg.h"
-#include	"super.h"
-#include	"house.h"
-#include	"gscreen.h"
-#include	"map.h"
-#include	"display.h"
-#include	"radar.h"
-#include	"power.h"
-#include	"sidebar.h"
-#include	"tab.h"
-#include	"help.h"
-#include	"mouse.h"
-#include	"help.h"
-#include	"target.h"
-#include	"theme.h"
-#include	"team.h"				// Team objects.
-#include	"warhead.h"
-#include	"weapon.h"
-#include	"trigtype.h"
-#include	"teamtype.h"		// Team type objects.
-#include	"taction.h"
-#include	"tevent.h"
-#include	"trigger.h"			// Trigger event objects.
-#include	"mapedit.h"			// map editor class
-#include	"abstract.h"
-#include "object.h"
-#include "mission.h"
-#include	"door.h"
-#include	"bullet.h"			// Bullet objects.
-#include	"terrain.h"			// Terrain objects.
-#include	"anim.h"				// Animation objects.
-#include	"template.h"		// Icon template objects.
-#include	"overlay.h"			// Overlay objects.
-#include	"smudge.h"			// Stains on the terrain objects.
-#include	"aircraft.h"		// Aircraft objects.
-#include	"unit.h"				// Ground unit objects.
-#include "vessel.h"			// Sea unit objects.
-#include	"infantry.h"		// Infantry objects.
-#include	"credits.h"			// Credit counter class.
-#include	"score.h"			// Scoring system class.
-#include	"factory.h"			// Production manager class.
-#include "intro.h"
-#include "ending.h"
-#include	"logic.h"
-#include	"queue.h"
-#include	"event.h"
-#include "base.h"				// defines the AI's pre-built base
-#include	"carry.h"
-#include	"scenario.h"
-#include "msglist.h"			// Multiplayer chat message system
-#include "session.h"			// Multiplayer session class
+#include	"UTRACKER.H"
+#include	"CRATE.H"
+#include	"RULES.H"
+#include	"INI.H"
+#include	"INT.H"
+#include	"PK.H"
+#include	"PKPIPE.H"
+#include	"PKSTRAW.H"
+#include	"SHA.H"
+#include	"BLOWFISH.H"
+#include	"BLOWPIPE.H"
+#include	"BLWSTRAW.H"
+#include	"LANGUAGE.H"
+#include	"HSV.H"
+#include	"RGB.H"
+#include	"PALETTE.H"
+#include "VERSION.H"
+#include	"FACING.H"
+#include	"FTIMER.H"
+#include	"THEME.H"
+#include	"LINK.H"
+#include	"GADGET.H"
+#include	"CONTROL.H"
+#include	"TOGGLE.H"
+#include	"CHECKBOX.H"
+#include	"SHAPEBTN.H"
+#include	"TEXTBTN.H"
+#include	"STATBTN.H"
+#include	"SLIDER.H"
+#include "LIST.H"
+#include	"DROP.H"
+#include "CHEKLIST.H"
+#include "COLRLIST.H"
+#include	"EDIT.H"
+#include	"GAUGE.H"
+#include	"MSGBOX.H"
+#include	"DIAL8.H"
+#include	"TXTLABEL.H"
+#include "LOADDLG.H"
+#include	"SUPER.H"
+#include	"HOUSE.H"
+#include	"GSCREEN.H"
+#include	"MAP.H"
+#include	"DISPLAY.H"
+#include	"RADAR.H"
+#include	"POWER.H"
+#include	"SIDEBAR.H"
+#include	"TAB.H"
+#include	"HELP.H"
+#include	"MOUSE.H"
+#include	"HELP.H"
+#include	"TARGET.H"
+#include	"THEME.H"
+#include	"TEAM.H"				// Team objects.
+#include	"WARHEAD.H"
+#include	"WEAPON.H"
+#include	"TRIGTYPE.H"
+#include	"TEAMTYPE.H"		// Team type objects.
+#include	"TACTION.H"
+#include	"TEVENT.H"
+#include	"TRIGGER.H"			// Trigger event objects.
+#include	"MAPEDIT.H"			// map editor class
+#include	"ABSTRACT.H"
+#include "OBJECT.H"
+#include "MISSION.H"
+#include	"DOOR.H"
+#include	"BULLET.H"			// Bullet objects.
+#include	"TERRAIN.H"			// Terrain objects.
+#include	"ANIM.H"				// Animation objects.
+#include	"TEMPLATE.H"		// Icon template objects.
+#include	"OVERLAY.H"			// Overlay objects.
+#include	"SMUDGE.H"			// Stains on the terrain objects.
+#include	"AIRCRAFT.H"		// Aircraft objects.
+#include	"UNIT.H"				// Ground unit objects.
+#include "VESSEL.H"			// Sea unit objects.
+#include	"INFANTRY.H"		// Infantry objects.
+#include	"CREDITS.H"			// Credit counter class.
+#include	"SCORE.H"			// Scoring system class.
+#include	"FACTORY.H"			// Production manager class.
+#include "INTRO.H"
+#include "ENDING.H"
+#include	"LOGIC.H"
+#include	"QUEUE.H"
+#include	"EVENT.H"
+#include "BASE.H"				// defines the AI's pre-built base
+#include	"CARRY.H"
+#include	"SCENARIO.H"
+#include "MSGLIST.H"			// Multiplayer chat message system
+#include "SESSION.H"			// Multiplayer session class
 #include "phone.h"			// Phone list manager
-#include "ipxmgr.h"			// IPX connection manager
-#include	"nullmgr.h"			// Modem connection manager
-#include	"readline.h"
-#include	"vortex.h"
-#include "egos.h"
+#include "IPXMGR.H"			// IPX connection manager
+#include	"NULLMGR.H"			// Modem connection manager
+#include	"READLINE.H"
+#include	"VORTEX.H"
+#include "EGOS.H"
 #ifdef WIN32
 #include	"pcx.h"
 #endif
 
 #if(TEN)
-#include "tenmgr.h"
+#include "TENMGR.H"
 #endif
 
 #if(MPATH)
 #ifdef WIN32
-#include "mpmgrw.h"
+#include "MPMGRW.H"
 #else
-#include "mpmgrd.h"
+#include "MPMGRD.H"
 #endif
 #endif
 
@@ -417,7 +417,7 @@ bool InitDDraw(void);
 bool PlayMpegMovie(const char* name);
 #endif
 
-#include	"externs.h"
+#include	"EXTERNS.H"
 
 
 extern int Get_CD_Drive(void);
@@ -978,7 +978,7 @@ void Load_Title_Screen(char *name, GraphicViewPortClass *video_page, unsigned ch
 */
 void Show_Who_Was_Responsible (void);
 
-#include	"inline.h"
+#include	"INLINE.H"
 
 /*
 **	These declarations ensure that the templates will be expanded for these specified

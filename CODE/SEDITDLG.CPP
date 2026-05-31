@@ -23,8 +23,8 @@
 //					Still - I can't believe there isn't a set of dialog classes in here already.
 //	ajw 07/21/98
 
-#include "SEditDlg.h"
-#include "WOLEdit.h"
+#include "SEDITDLG.H"
+#include "WOLEDIT.H"
 
 extern bool cancel_current_msgbox;
 bool disable_current_msgbox = false;

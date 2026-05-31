@@ -77,7 +77,7 @@
  *   SidebarClass::Zoom_Mode_Control -- Handles the zoom mode toggle operation.                *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 void * SidebarClass::SidebarShape = NULL;

@@ -38,7 +38,7 @@
 #ifndef COLORLIST_H
 #define COLORLIST_H
 
-#include "list.h"
+#include "LIST.H"
 
 
 /***************************************************************************

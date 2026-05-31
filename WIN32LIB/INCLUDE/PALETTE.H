@@ -35,7 +35,7 @@
 #ifndef PALETTE_H
 #define PALETTE_H
 
-#include <gbuffer.h>
+#include <GBUFFER.H>
 /*
 ********************************* Constants *********************************
 */

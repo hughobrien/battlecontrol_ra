@@ -37,7 +37,7 @@
 #ifndef WSPIPX_H
 #define WSPIPX_H
 
-#include	"WSProto.h"
+#include	"WSPROTO.H"
 
 /*
 ** Include Windows specific extensions for Winsock that allow IPX over winsock 1.1

@@ -57,8 +57,8 @@
  *   TerrainClass::~TerrainClass -- Default destructor for terrain class objects.              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"terrain.h"
+#include	"FUNCTION.H"
+#include	"TERRAIN.H"
 
 
 /***********************************************************************************************

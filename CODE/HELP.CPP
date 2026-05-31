@@ -47,7 +47,7 @@
  *   HelpClass::Set_Text -- Determines the overlap list and draw coordinates.                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 /*
 **	This is the holding buffer for the text overlap list. This buffer must be in the near

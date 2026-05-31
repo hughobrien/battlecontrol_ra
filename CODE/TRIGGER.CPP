@@ -47,7 +47,7 @@
  *   TriggerClass::~TriggerClass -- Destructor for trigger objects.                            *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 
 #if defined(CHEAT_KEYS) || defined(SCENARIO_EDITOR)

@@ -53,8 +53,8 @@
 #include <io.h>
 #include <direct.h>
 #include <stdlib.h>
-#include "dibutil.h"
-#include "dibapi.h"
+#include "DIBUTIL.H"
+#include "DIBAPI.H"
 
 //#include "WolDebug.h"
 

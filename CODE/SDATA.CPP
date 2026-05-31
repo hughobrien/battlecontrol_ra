@@ -49,8 +49,8 @@
  *   SmudgetypeClass::Occupy_List -- Determines occupation list for smudge object.             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"type.h"
+#include	"FUNCTION.H"
+#include	"TYPE.H"
 
 
 static SmudgeTypeClass const Crater1 (

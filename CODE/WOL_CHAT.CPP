@@ -21,12 +21,12 @@
 //	wol_chat.cpp
 //	ajw 7/8/98
 
-#include "function.h"
-#include "iconlist.h"
-#include "WolapiOb.h"
-#include "SEditDlg.h"
-#include "WolStrng.h"
-#include "ToolTip.h"
+#include "FUNCTION.H"
+#include "ICONLIST.H"
+#include "WOLAPIOB.H"
+#include "SEDITDLG.H"
+#include "WOLSTRNG.H"
+#include "TOOLTIP.H"
 
 //#include "WolDebug.h"
 

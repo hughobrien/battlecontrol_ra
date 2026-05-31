@@ -38,8 +38,8 @@
 #ifndef TEMPLATE_H
 #define TEMPLATE_H
 
-#include	"object.h"
-#include	"type.h"
+#include	"OBJECT.H"
+#include	"TYPE.H"
 
 
 /******************************************************************************

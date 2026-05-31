@@ -40,8 +40,8 @@
 #define RNDSTRAW_H
 
 
-#include	"straw.h"
-#include	"random.h"
+#include	"STRAW.H"
+#include	"RANDOM.H"
 
 /*
 **	This is a straw terminator class. It will generate random numbers to fill the data request.

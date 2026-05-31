@@ -48,7 +48,7 @@
 /*
 ********************************* Includes **********************************
 */
-#include "connect.h"
+#include "CONNECT.H"
 #include "commlib.h"
 
 /*

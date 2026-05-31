@@ -17,8 +17,8 @@
 */
 
 
-#include	"wwfile.h"
-#include	"straw.h"
+#include	"WWFILE.H"
+#include	"STRAW.H"
 
 void strtrim(char * buffer);
 int Read_Line(FileClass & file, char * buffer, int len, bool & eof);

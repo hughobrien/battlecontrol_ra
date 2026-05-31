@@ -36,15 +36,15 @@
  *   OptionsClass::Process -- Handles all the options graphic interface.                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"gamedlg.h"
-#include "sounddlg.h"
-#include "visudlg.h"
+#include	"FUNCTION.H"
+#include	"GAMEDLG.H"
+#include "SOUNDDLG.H"
+#include "VISUDLG.H"
 #define GERMAN_OFFSET_Y   4      //VG
 
 #ifdef WOLAPI_INTEGRATION
-#include "WolStrng.h"
-#include "WolapiOb.h"
+#include "WOLSTRNG.H"
+#include "WOLAPIOB.H"
 extern WolapiObject* pWolapi;
 bool WOL_Options_Dialog( WolapiObject* pWO, bool bCalledFromGame );
 #endif

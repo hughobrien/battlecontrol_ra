@@ -32,8 +32,8 @@
 #ifndef ICONLIST_H
 #define ICONLIST_H
 
-#include "function.h"
-#include "vector.h"
+#include "FUNCTION.H"
+#include "VECTOR.H"
 
 enum ICONKIND
 {

@@ -45,13 +45,13 @@
  *   Memory_Error_Handler -- Handle a possibly fatal failure to allocate memory                *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 #ifdef WINSOCK_IPX
-#include "WSProto.h"
+#include "WSPROTO.H"
 #else	//WINSOCK_IPX
-#include "tcpip.h"
-#include "ipx95.h"
+#include "TCPIP.H"
+#include "IPX95.H"
 #endif	//WINSOCK_IPX
 
 void output(short,short)
@@ -830,7 +830,7 @@ void Load_Title_Screen(char *name, GraphicViewPortClass *video_page, unsigned ch
 
 
 
-#include "filepcx.h"
+#include "FILEPCX.H"
 
 /***************************************************************************
  * READ_PCX_FILE -- read a pcx file into a Graphic Buffer                  *

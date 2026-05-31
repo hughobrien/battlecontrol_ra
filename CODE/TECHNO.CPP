@@ -133,7 +133,7 @@
  *   TechnoTypeClass::Time_To_Build -- Fetches the time to build this object.                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***************************************************************************

@@ -38,7 +38,7 @@
  *   CreditClass::Graphic_Logic -- Handles the credit redraw logic.                            *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***********************************************************************************************

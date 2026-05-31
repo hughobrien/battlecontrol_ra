@@ -47,7 +47,7 @@
  *   GScreenClass::Render -- General drawing dispatcher an display update function.            *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 
 GadgetClass * GScreenClass::Buttons = 0;

@@ -39,8 +39,8 @@
 #ifndef SURFACE_H
 #define SURFACE_H
 
-#include	"buff.h"
-#include	"rect.h"
+#include	"BUFF.H"
+#include	"RECT.H"
 
 /*
 **	This class is used to represent an arbitrary rectangle in a graphic memory space. Typically,

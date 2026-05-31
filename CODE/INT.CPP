@@ -36,8 +36,8 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"mp.h"
-#include "int.h"
+#include	"MP.H"
+#include "INT.H"
 
 template<> int bignum::Error = 0;
 template<> bool bignum::Carry = false;

@@ -43,9 +43,9 @@
  *   SequencedConnClass::Service_Receive_Queue -- services recieve queue	*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
-#include "WolDebug.h"
+#include "WOLDEBUG.H"
 
 /***************************************************************************
  * SequencedConnClass::SequencedConnClass -- class constructor             *

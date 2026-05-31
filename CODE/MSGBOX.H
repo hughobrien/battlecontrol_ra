@@ -38,7 +38,7 @@
 #ifndef MSGBOX_H
 #define MSGBOX_H
 
-#include	"jshell.h"
+#include	"JSHELL.H"
 
 class WWMessageBox
 {

@@ -38,8 +38,8 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
-#include	"map.h"
-#include	"layer.h"
+#include	"MAP.H"
+#include	"LAYER.H"
 
 
 #define	ICON_PIXEL_W	 		24

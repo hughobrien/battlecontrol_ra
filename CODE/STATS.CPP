@@ -43,10 +43,10 @@
 
 #ifdef WIN32
 
-#include	"function.h"
-#include "tcpip.h"
-#include "packet.h"
-#include "ccdde.h"
+#include	"FUNCTION.H"
+#include "TCPIP.H"
+#include "PACKET.H"
+#include "CCDDE.H"
 
 #define FIELD_PACKET_TYPE						"TYPE"
 #define FIELD_GAME_ID							"IDNO"
@@ -166,10 +166,10 @@ TimerClass	GameTimer;
 long			GameEndTime;
 void			*PacketLater = NULL;
 
-#include "WolDebug.h"
+#include "WOLDEBUG.H"
 
 #ifdef WOLAPI_INTEGRATION
-#include "WolapiOb.h"
+#include "WOLAPIOB.H"
 extern WolapiObject* pWolapi;
 
 extern bool bReconnectDialogCancelled;

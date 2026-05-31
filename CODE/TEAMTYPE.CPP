@@ -59,7 +59,7 @@
  *   TeamTypeClass::~TeamTypeClass -- class destructor                                         *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 
 TeamMissionClass TeamMissions[TMISSION_COUNT] = {

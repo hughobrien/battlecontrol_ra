@@ -54,8 +54,8 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"function.h"
-#include	"heap.h"
+#include	"FUNCTION.H"
+#include	"HEAP.H"
 #include	<mem.h>
 #include	<stdio.h>
 #include	<stddef.h>

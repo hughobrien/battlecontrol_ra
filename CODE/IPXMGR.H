@@ -120,10 +120,10 @@
 /*
 ********************************* Includes **********************************
 */
-#include "ipxconn.h"
-#include "ipxgconn.h"
-#include "ipxaddr.h"
-#include "connmgr.h"
+#include "IPXCONN.H"
+#include "IPXGCONN.H"
+#include "IPXADDR.H"
+#include "CONNMGR.H"
 
 /*
 ********************************** Defines **********************************

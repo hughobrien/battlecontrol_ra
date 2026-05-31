@@ -41,8 +41,8 @@
  *   OverlayClass::new -- Allocates a overlay object from pool                                 *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"overlay.h"
+#include	"FUNCTION.H"
+#include	"OVERLAY.H"
 
 
 HousesType OverlayClass::ToOwn = HOUSE_NONE;

@@ -106,22 +106,22 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 //	Warning - Most disgusting cpp file of all time. ajw
 
-#include "function.h"
+#include "FUNCTION.H"
 #ifdef WIN32
 #ifdef WINSOCK_IPX
-#include	"WSProto.h"
+#include	"WSPROTO.H"
 #else	//WINSOCK_IPX
-#include "tcpip.h"
+#include "TCPIP.H"
 #endif	//WINSOCK_IPX
-#include "ccdde.h"
+#include "CCDDE.H"
 #else	//WIN32
-#include "fakesock.h"
+#include "FAKESOCK.H"
 #endif	//WIN32
 
 #include <time.h>
 #include <dos.h>
 
-#include "WolDebug.h"
+#include "WOLDEBUG.H"
 
 #define SHOW_MONO		0
 //#define OLDWAY			1
@@ -144,8 +144,8 @@ bool bSpecialAftermathScenario( const char* szScenarioDescription );
 bool Force_Scenario_Available( const char* szName );
 #endif
 #ifdef WOLAPI_INTEGRATION
-#include "WolStrng.h"
-#include "WolapiOb.h"
+#include "WOLSTRNG.H"
+#include "WOLAPIOB.H"
 extern WolapiObject* pWolapi;
 #endif
 

@@ -16,12 +16,12 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 extern "C" {
-#include "soscomp.h"
-#include "itable.cpp"
-#include "dtable.cpp"
+#include "SOSCOMP.H"
+#include "ITABLE.CPP"
+#include "DTABLE.CPP"
 
 
 void sosCODECInitStream(_SOS_COMPRESS_INFO* info)

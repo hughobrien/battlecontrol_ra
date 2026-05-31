@@ -37,17 +37,17 @@
  *   main -- Initial startup routine (preps library systems).                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 #include	<conio.h>
 #include	<io.h>
 
 #ifdef WIN32
-#include  "ccdde.h"
-#include	"ipx95.h"
+#include  "CCDDE.H"
+#include	"IPX95.H"
 #endif	//WIN32
 
 #ifdef MCIMPEG // Denzil 6/15/98
-#include "mcimovie.h"
+#include "MCIMOVIE.H"
 #endif
 
 #ifdef WOLAPI_INTEGRATION

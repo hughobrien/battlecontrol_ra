@@ -50,7 +50,7 @@
  *   Normal_Move_Point -- Moves point with tilt compensation.                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***********************************************************************************************

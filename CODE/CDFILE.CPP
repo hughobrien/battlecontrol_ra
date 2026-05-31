@@ -43,13 +43,13 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"cdfile.h"
+#include	"CDFILE.H"
 #include	<stdio.h>
 #include	<string.h>
 
 #ifndef WIN32
-#include	<wwstd.h>
-#include	<playcd.h>
+#include	<WWSTD.H>
+#include	<PLAYCD.H>
 #endif
 
 /*

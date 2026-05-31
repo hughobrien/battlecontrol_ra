@@ -39,7 +39,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"blowpipe.h"
+#include	"BLOWPIPE.H"
 #include	<string.h>
 #include	<assert.h>
 

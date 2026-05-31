@@ -47,11 +47,11 @@
  *   Save_Misc_Values -- saves miscellaneous variables                                         *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"vortex.h"
+#include	"FUNCTION.H"
+#include	"VORTEX.H"
 #ifdef WIN32
-#include "tcpip.h"
-#include "ccdde.h"
+#include "TCPIP.H"
+#include "CCDDE.H"
 
 //#include "WolDebug.h"
 

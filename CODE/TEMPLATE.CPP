@@ -42,8 +42,8 @@
  *   TemplateClass::new -- Allocates a template object from pool                               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"template.h"
+#include	"FUNCTION.H"
+#include	"TEMPLATE.H"
 
 
 /***********************************************************************************************

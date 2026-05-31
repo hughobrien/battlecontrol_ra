@@ -38,15 +38,15 @@
 #define IFF_H
 
 #ifndef GBUFFER_H
-#include <gbuffer.h>
+#include <GBUFFER.H>
 #endif
 
 #ifndef MISC_H
-#include <misc.h>		// This is needed fro Reverse_WORD and _LONG
+#include <MISC.H>		// This is needed fro Reverse_WORD and _LONG
 #endif
 
 #ifndef MEMFLAGS_H
-#include <memflag.h>	// This is needed for MemoryFlagType.
+#include <MEMFLAG.H>	// This is needed for MemoryFlagType.
 #endif
 
 #define LZW_SUPPORTED			FALSE

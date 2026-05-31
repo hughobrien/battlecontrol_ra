@@ -40,7 +40,7 @@
 #endif
 
 //#include	"function.h"
-#include "dpmi.h"
+#include "DPMI.H"
 
 #ifndef __FLAT__
 

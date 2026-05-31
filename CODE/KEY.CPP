@@ -54,9 +54,9 @@
  *   WWKeyboardClass::Put_Mouse_Message -- Stores a mouse type message into the keyboard buffer*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "key.h"
+#include "KEY.H"
 
-#include	"monoc.h"
+#include	"MONOC.H"
 
 //void Message_Loop(void);
 

@@ -36,9 +36,9 @@
  *   Main_Menu -- Menu processing                                                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 #ifdef WIN32
-#include "ccdde.h"
+#include "CCDDE.H"
 #else	//WIN32
 #include	<sys\timeb.h>
 #endif
@@ -57,7 +57,7 @@ PRIVATE int MenuUpdate=1;
 PRIVATE int MenuSkip;
 
 #ifdef FIXIT_VERSION_3
-#include "WolStrng.h"
+#include "WOLSTRNG.H"
 #endif
 
 /*=========================================================================*/

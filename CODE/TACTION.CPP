@@ -45,7 +45,7 @@
  *   ActionChoiceClass::Draw_It -- Display the action choice as part of a list box.            *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 /*
 **	These are the text names for the various actions. If the action name ends with "..." then

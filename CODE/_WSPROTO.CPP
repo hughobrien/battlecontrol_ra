@@ -34,7 +34,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"_WSProto.h"
+#include	"_WSPROTO.H"
 
 
 WinsockInterfaceClass	*PacketTransport = 0;			//The object for interfacing with Winsock

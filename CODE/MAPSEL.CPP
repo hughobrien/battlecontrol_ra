@@ -38,7 +38,7 @@
  *   Print_Statistics -- Prints statistics on country selected                                 *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 void Cycle_Call_Back_Delay(int time, PaletteClass &pal);
 extern int ControlQ;

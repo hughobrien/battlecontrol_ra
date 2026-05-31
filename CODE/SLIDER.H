@@ -38,8 +38,8 @@
 #ifndef SLIDER_H
 #define SLIDER_H
 
-#include "gauge.h"
-#include "shapebtn.h"
+#include "GAUGE.H"
+#include "SHAPEBTN.H"
 
 
 /***************************************************************************

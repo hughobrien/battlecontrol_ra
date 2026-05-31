@@ -41,7 +41,7 @@
  *   GaugeClass::Value_To_Pixel -- Convert gauge value to pixel offset.                        *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***************************************************************************

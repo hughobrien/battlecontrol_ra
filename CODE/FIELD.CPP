@@ -33,7 +33,7 @@
  * Functions:                                                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #include <string.h>
-#include "field.h"
+#include "FIELD.H"
 
 FieldClass::FieldClass(char *id, char data)
 {

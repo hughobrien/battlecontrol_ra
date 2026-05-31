@@ -38,8 +38,8 @@
 #ifndef TARCOM_H
 #define TARCOM_H
 
-#include	"turret.h"
-#include	"bullet.h"
+#include	"TURRET.H"
+#include	"BULLET.H"
 
 /****************************************************************************
 **	Units that can perform combat are handled by this class. It performs

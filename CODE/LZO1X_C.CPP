@@ -42,10 +42,10 @@
  */
 
 
-#include "lzo1x.h"
+#include "LZO1X.H"
 #define NDEBUG
 #include <assert.h>
-#include "lzo_conf.h"
+#include "LZO_CONF.H"
 
 #if !defined(LZO1X) && !defined(LZO1Y)
 #  define LZO1X

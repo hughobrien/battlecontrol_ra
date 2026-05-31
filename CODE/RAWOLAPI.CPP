@@ -22,15 +22,15 @@
 //	Definitions for RAChatEventSink, RADownloadEventSink, RANetUtilEventSink.
 //	ajw 07/10/98
 
-#include "RAWolapi.h"
+#include "RAWOLAPI.H"
 #define IID_DEFINED
 #include "wolapi\wolapi_i.c"
-#include "WolapiOb.h"
-#include "WolStrng.h"
-#include "Wol_gsup.h"
+#include "WOLAPIOB.H"
+#include "WOLSTRNG.H"
+#include "WOL_GSUP.H"
 #include "wolapi\netutildefs.h"
 
-#include "WolDebug.h"
+#include "WOLDEBUG.H"
 
 bool operator<( const User& u1, const User& u2 );
 

@@ -25,7 +25,7 @@
  * HISTORY:    07/17/1998 ajw : Created.
  *=========================================================================*/
 
-#include "WOLEdit.h"
+#include "WOLEDIT.H"
 
 //#include "WolDebug.h"
 

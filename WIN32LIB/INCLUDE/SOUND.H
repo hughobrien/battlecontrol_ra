@@ -39,7 +39,7 @@
 
 //#define	HMI_DRIVER	TRUE
 //#include	"sos.h"
-#include	"soscomp.h"
+#include	"SOSCOMP.H"
 #include "dsound.h"
 
 /*

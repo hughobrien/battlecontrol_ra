@@ -62,7 +62,7 @@
  *   MapClass::Pick_Random_Location -- Picks a random location on the map.                     *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 #include <stdint.h>
 
 #define	MCW	MAP_CELL_W
