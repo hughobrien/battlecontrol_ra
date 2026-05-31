@@ -45,7 +45,9 @@
 #include	"MP.H"
 #include	"STRAW.H"
 
+#if defined(__WATCOMC__)
 #pragma warn -inl
+#endif
 
 template<int PRECISION>
 class Int {
@@ -256,8 +258,10 @@ T Gcd(const T & a, const T & n)
 
 
 
+#if defined(__WATCOMC__)
 #pragma warning 604 9
 #pragma warning 595 9
+#endif
 template<class T>
 T Generate_Prime(Straw & rng, int pbits, T const *)
 {

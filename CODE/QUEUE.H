@@ -48,7 +48,9 @@
 #include	"TARGET.H"
 #include	"DEFINES.H"
 
+#if defined(__WATCOMC__)
 #pragma warn -inl
+#endif
 
 /*
 **	This class implements a classic FIFO queue (also known as - standing in line). Objects
