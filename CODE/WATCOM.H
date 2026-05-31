@@ -38,6 +38,82 @@
 #ifndef WATCOM_H
 #define WATCOM_H
 
+/*
+**	Zig builds this code through Clang, whose libc surface does not provide the
+**	legacy MS/Watcom string helpers used throughout the original source.
+*/
+#if defined(__clang__)
+#include <ctype.h>
+#include <stdint.h>
+#include <string.h>
+
+static inline int WW_Stricmp(char const * left, char const * right)
+{
+	while (*left && *right) {
+		int l = tolower((uint8_t)*left);
+		int r = tolower((uint8_t)*right);
+		if (l != r) {
+			return l - r;
+		}
+		left++;
+		right++;
+	}
+	return tolower((uint8_t)*left) - tolower((uint8_t)*right);
+}
+
+static inline int WW_Memicmp(void const * left, void const * right, size_t length)
+{
+	uint8_t const * lptr = (uint8_t const *)left;
+	uint8_t const * rptr = (uint8_t const *)right;
+	for (size_t index = 0; index < length; index++) {
+		int l = tolower(lptr[index]);
+		int r = tolower(rptr[index]);
+		if (l != r) {
+			return l - r;
+		}
+	}
+	return 0;
+}
+
+static inline char *WW_Strupr(char * text)
+{
+	for (char * ptr = text; *ptr; ptr++) {
+		*ptr = (char)toupper((uint8_t)*ptr);
+	}
+	return text;
+}
+
+static inline char *WW_Strlwr(char * text)
+{
+	for (char * ptr = text; *ptr; ptr++) {
+		*ptr = (char)tolower((uint8_t)*ptr);
+	}
+	return text;
+}
+
+static inline char *WW_Strrev(char * text)
+{
+	if (text && *text) {
+		char * left = text;
+		char * right = text + strlen(text) - 1;
+		while (left < right) {
+			char temp = *left;
+			*left++ = *right;
+			*right-- = temp;
+		}
+	}
+	return text;
+}
+
+#define stricmp WW_Stricmp
+#define strcmpi WW_Stricmp
+#define _stricmp WW_Stricmp
+#define memicmp WW_Memicmp
+#define strupr WW_Strupr
+#define _strlwr WW_Strlwr
+#define strrev WW_Strrev
+#endif
+
 // Turn all warnings into errors.
 #pragma warning * 0
 
