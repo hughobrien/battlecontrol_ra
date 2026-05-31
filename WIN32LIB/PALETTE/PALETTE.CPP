@@ -56,14 +56,24 @@
 /*
 ********************************** Globals **********************************
 */
-extern "C" extern unsigned char  CurrentPalette[];		/* in pal.asm */
+extern "C" unsigned char CurrentPalette[PALETTE_BYTES] = {};		/* in pal.asm */
+
+struct CurrentPaletteInitializer {
+	CurrentPaletteInitializer()
+	{
+		memset(CurrentPalette, 255, PALETTE_BYTES);
+	}
+};
+PRIVATE CurrentPaletteInitializer CurrentPaletteInit;
 
 /*
 ******************************** Prototypes *********************************
 */
 
+PRIVATE unsigned long __cdecl Palette_Tick_Count(void);
 PRIVATE void __cdecl Determine_Bump_Rate(void *palette, int delay, short *ticks, short *rate);
 PRIVATE BOOL __cdecl Bump_Palette(void *palette1, unsigned int step);
+extern "C" void Set_DD_Palette(void *palette);
 
 /*
 ******************************** Code *********************************
@@ -96,6 +106,27 @@ void __cdecl Set_Palette(void *palette)
 	#endif
 
 }	/* end of Set_Palette */
+
+
+extern "C" void __cdecl Set_Palette_Range(void *palette)
+{
+	if (!palette) return;
+
+	memcpy(CurrentPalette, palette, PALETTE_BYTES);
+	Set_DD_Palette(palette);
+}
+
+
+extern "C" void Set_Palette_Register(int number, int red, int green, int blue)
+{
+	if (number < 0 || number >= PALETTE_SIZE) return;
+
+	unsigned char *entry = &CurrentPalette[number * RGB_BYTES];
+	entry[0] = (unsigned char)(red & 63);
+	entry[1] = (unsigned char)(green & 63);
+	entry[2] = (unsigned char)(blue & 63);
+	Set_DD_Palette(CurrentPalette);
+}
 
 
 /***************************************************************************
@@ -181,7 +212,7 @@ void Fade_Palette_To(void *palette1, unsigned int delay, void (*callback)() )
 	Determine_Bump_Rate(palette1, delay, &ticksper, &jump);
 
 	tickaccum = 0;							// init accumulated elapsed time
-	timer = TickCount.Time(); 				// timer = current time
+	timer = Palette_Tick_Count(); 			// timer = current time
 	do {
 		changed = FALSE;
 
@@ -195,7 +226,7 @@ void Fade_Palette_To(void *palette1, unsigned int delay, void (*callback)() )
 		.................. Wait for time increment to elapse ..................
 		*/
 		if (changed) {
-			while (TickCount.Time() < timer) {
+			while (Palette_Tick_Count() < timer) {
 				/*
 				................. Update callback while waiting .................
 				*/
@@ -217,6 +248,13 @@ void Fade_Palette_To(void *palette1, unsigned int delay, void (*callback)() )
 	} while (changed);
 
 }	/* end of Fade_Palette_To */
+
+
+PRIVATE unsigned long __cdecl Palette_Tick_Count(void)
+{
+	if (!WindowsTimer) return 0;
+	return WindowsTimer->Get_System_Tick_Count();
+}
 
 
 /***************************************************************************
