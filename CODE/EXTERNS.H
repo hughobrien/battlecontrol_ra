@@ -113,6 +113,8 @@ extern int NameIDOverride[25];
 #endif
 
 #ifdef WIN32
+#include <dsound.h>
+
 extern bool					GameInFocus;
 extern uint8_t 			*InterpolatedPalettes[100];
 extern BOOL					PalettesRead;
