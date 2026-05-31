@@ -319,6 +319,7 @@ CELL Coord_Cell(COORDINATE coord);
 #include	"HSV.H"
 #include	"RGB.H"
 #include	"PALETTE.H"
+#include	"PALETTEC.H"
 #include "VERSION.H"
 #include	"FACING.H"
 #include	"FTIMER.H"
