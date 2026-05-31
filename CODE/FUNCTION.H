@@ -43,7 +43,9 @@
 */
 #define	NDEBUG
 
+#if defined(__WATCOMC__)
 #pragma warn -hid
+#endif
 
 #ifdef NEVER
 Map (screen) class heirarchy.

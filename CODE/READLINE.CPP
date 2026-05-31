@@ -25,7 +25,9 @@
 
 
 // Disable the "temporary object used to initialize a non-constant reference" warning.
+#if defined(__WATCOMC__)
 #pragma warning 665 9
+#endif
 
 
 void strtrim(char * buffer)

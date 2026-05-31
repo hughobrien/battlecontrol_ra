@@ -114,6 +114,7 @@ static inline char *WW_Strrev(char * text)
 #define strrev WW_Strrev
 #endif
 
+#if defined(__WATCOMC__)
 // Turn all warnings into errors.
 #pragma warning * 0
 
@@ -149,6 +150,7 @@ static inline char *WW_Strrev(char * text)
 
 // No virtual destructor is not an error in C&C.
 #pragma warning 004 9
+#endif
 
 // Turns off unreferenced function parameter warning.
 //#pragma off(unreferenced)

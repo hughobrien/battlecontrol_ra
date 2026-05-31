@@ -71,7 +71,9 @@
 
 
 // Turn off "expression is not meaningful".
+#if defined(__WATCOMC__)
 #pragma warning 628 9
+#endif
 
 
 /***************************************************************************

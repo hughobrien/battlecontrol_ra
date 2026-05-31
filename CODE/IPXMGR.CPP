@@ -91,7 +91,9 @@
 #endif	//WINSOCK_IPX
 
 // Turn off "expression is not meaningful".
+#if defined(__WATCOMC__)
 #pragma warning 628 9
+#endif
 
 #include "WOLDEBUG.H"
 
