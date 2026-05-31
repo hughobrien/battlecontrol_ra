@@ -40,9 +40,11 @@
 
 #include <vqa32\VQAPLAY.H>
 #include <VIDMODE.H>
+#if !defined(__cplusplus)
 #define bool BOOL
 #define true 1
 #define false 0
+#endif
 #include <RAWFILE.H>
 
 //==========================================================================
