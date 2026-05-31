@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "cnc-ddraw": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1751539807,
+        "narHash": "sha256-2D01XQwv0dGAa+OepG2qpPKmYTTHami8a0as6s509ng=",
+        "owner": "FunkyFr3sh",
+        "repo": "cnc-ddraw",
+        "rev": "a0b81b11553e1af358396f15ed7f30b9674c390e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "FunkyFr3sh",
+        "repo": "cnc-ddraw",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1779560665,
@@ -18,6 +34,7 @@
     },
     "root": {
       "inputs": {
+        "cnc-ddraw": "cnc-ddraw",
         "nixpkgs": "nixpkgs"
       }
     }

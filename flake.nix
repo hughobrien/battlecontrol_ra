@@ -1,10 +1,16 @@
 {
   description = "Zig build environment for battlecontrol_ra";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    cnc-ddraw = {
+      url = "github:FunkyFr3sh/cnc-ddraw";
+      flake = false;
+    };
+  };
 
   outputs =
-    { nixpkgs, ... }:
+    { nixpkgs, cnc-ddraw, ... }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
@@ -15,7 +21,9 @@
         name = "battlecontrol-ra-zig-build";
         runtimeInputs = packages;
         text = ''
-          exec zig build "$@"
+          exec zig build \
+            -Dcnc-ddraw-source=${cnc-ddraw} \
+            "$@"
         '';
       };
     in
