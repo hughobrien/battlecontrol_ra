@@ -112,7 +112,8 @@ bool Get_Broadcast_Addresses (void)
 	CCINIClass ip_ini;
 	int res=0;
 
-	if (ip_ini.Load(CCFileClass("IP.INI"), false)) {
+	CCFileClass ipFile("IP.INI");
+	if (ip_ini.Load(ipFile, false)) {
 		int entry=0;
 		char entry_name[16];
 		do {
