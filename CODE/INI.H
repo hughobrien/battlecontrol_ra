@@ -39,6 +39,7 @@
 #ifndef INI_H
 #define INI_H
 
+#include	<ctype.h>
 #include	<stdlib.h>
 #include	"listnode.h"
 #include	"pipe.h"
@@ -115,6 +116,17 @@ class INIClass {
 	protected:
 		enum {MAX_LINE_LENGTH=128};
 
+		static int Index_ID(char const * text)
+		{
+			CRCEngine crc;
+			if (text != NULL) {
+				while (*text != '\0') {
+					crc((char)toupper((unsigned char)*text++));
+				}
+			}
+			return(crc());
+		}
+
 		/*
 		**	The value entries for the INI file are stored as objects of this type.
 		**	The entry identifier and value string are combined into this object.
@@ -122,7 +134,7 @@ class INIClass {
 		struct INIEntry : Node<INIEntry> {
 			INIEntry(char * entry = 0, char * value = 0) : Entry(entry), Value(value) {}
 			~INIEntry(void) {free(Entry);Entry = 0;free(Value);Value = 0;}
-			int Index_ID(void) const {return(CRCEngine()(Entry, strlen(Entry)));};
+			int Index_ID(void) const {return(INIClass::Index_ID(Entry));};
 
 			char * Entry;
 			char * Value;
@@ -136,7 +148,7 @@ class INIClass {
 			INISection(char * section) : Section(section) {}
 			~INISection(void) {free(Section);Section = 0;EntryList.Delete();}
 			INIEntry * Find_Entry(char const * entry) const;
-			int Index_ID(void) const {return(CRCEngine()(Section, strlen(Section)));};
+			int Index_ID(void) const {return(INIClass::Index_ID(Section));};
 
 			char * Section;
 			List<INIEntry> EntryList;

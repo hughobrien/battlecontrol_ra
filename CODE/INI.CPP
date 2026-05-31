@@ -398,7 +398,7 @@ INIClass::INISection * INIClass::Find_Section(char const * section) const
 {
 	if (section != NULL) {
 
-		long crc = CRCEngine()(section, strlen(section));
+		long crc = Index_ID(section);
 
 		if (SectionIndex.Is_Present(crc)) {
 			return(SectionIndex.Fetch_Index(crc));
@@ -1116,7 +1116,7 @@ bool INIClass::Get_Bool(char const * section, char const * entry, bool defvalue)
 INIClass::INIEntry * INIClass::INISection::Find_Entry(char const * entry) const
 {
 	if (entry != NULL) {
-		int crc = CRCEngine()(entry, strlen(entry));
+		int crc = INIClass::Index_ID(entry);
 		if (EntryIndex.Is_Present(crc)) {
 			return(EntryIndex.Fetch_Index(crc));
 		}
