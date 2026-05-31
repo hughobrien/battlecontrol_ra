@@ -72,5 +72,17 @@ pub fn build(b: *std.Build) void {
         .root_module = exe_module,
     });
 
+    const win32_shim_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/win32-shim/file_path.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const win32_shim = b.addObject(.{
+        .name = "win32-file-path-shim",
+        .root_module = win32_shim_module,
+    });
+    exe.root_module.addObject(win32_shim);
+
     b.installArtifact(exe);
 }
