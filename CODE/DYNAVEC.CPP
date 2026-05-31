@@ -255,7 +255,9 @@ int DynamicVectorClass<T>::Add_Head(T const & object)
 template<class T>
 int DynamicVectorClass<T>::Delete(T const & object)
 {
-	return(Delete(ID(object)));
+	typedef int (DynamicVectorClass<T>::*DeleteByIndex)(int);
+	DeleteByIndex delete_by_index = &DynamicVectorClass<T>::Delete;
+	return((this->*delete_by_index)(ID(object)));
 }
 
 
