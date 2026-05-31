@@ -57,6 +57,7 @@ pub fn build(b: *std.Build) void {
         "CODE/INTERPAL.CPP",
         "CODE/GADGET.CPP",
         "CODE/LINK.CPP",
+        "CODE/CCPTR.CPP",
         "WIN32LIB/MEM/ALLOC.CPP",
         "CODE/WINSTUB.CPP",
         "CODE/DDE.CPP",
