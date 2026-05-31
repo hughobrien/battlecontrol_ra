@@ -658,19 +658,19 @@ BOOL Any_Locked (void)
 //}
 
 
-unsigned char	*VQPalette;
+uint8_t			*VQPalette;
 long				VQNumBytes;
 unsigned long	VQSlowpal;
 bool				VQPaletteChange = false;
 
 
 extern "C"{
-	void __cdecl SetPalette(unsigned char *palette, long numbytes, unsigned long slowpal);
+	void __cdecl SetPalette(uint8_t *palette, long numbytes, unsigned long slowpal);
 }
 
 
 
-void Flag_To_Set_Palette(unsigned char *palette, long numbytes, unsigned long slowpal)
+void Flag_To_Set_Palette(uint8_t *palette, long numbytes, unsigned long slowpal)
 {
 	VQPalette = palette;
 	VQNumBytes = numbytes;
@@ -692,7 +692,7 @@ void Check_VQ_Palette_Set(void)
 
 
 
-void __cdecl SetPalette(unsigned char *palette, long, unsigned long)
+void __cdecl SetPalette(uint8_t *palette, long, unsigned long)
 {
 	for (int i=0 ; i<256*3 ; i++) {
 		*(palette+i)&=63;

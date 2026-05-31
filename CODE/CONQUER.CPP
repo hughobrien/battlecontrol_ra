@@ -3735,7 +3735,7 @@ void Check_VQ_Palette_Set(void);
 
 extern GraphicBufferClass VQ640;
 extern bool IsVQ640;
-long VQ_Call_Back(unsigned char *, long )
+long VQ_Call_Back(uint8_t *, long )
 {
 	int key = 0;
 	if (Keyboard->Check()) {
@@ -3771,7 +3771,7 @@ long VQ_Call_Back(unsigned char *, long )
 
 #else	//WIN32
 
-long VQ_Call_Back(unsigned char *, long )
+long VQ_Call_Back(uint8_t *, long )
 {
 	Call_Back();
 	if ((BreakoutAllowed || Debug_Flag) && Keyboard->Check()) {
