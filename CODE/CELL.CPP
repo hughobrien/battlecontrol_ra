@@ -82,6 +82,8 @@
 #include	"FUNCTION.H"
 #include	"VORTEX.H"
 
+#include <algorithm>
+
 /***********************************************************************************************
  * CellClass::CellClass -- Constructor for cell objects.                                       *
  *                                                                                             *
@@ -395,8 +397,8 @@ void CellClass::Redraw_Objects(bool forced)
 #else
 				optr->Mark(MARK_CHANGE);
 #endif
-				if (optr->Next != NULL && !optr->Next->IsActive) {
-					optr->Next = NULL;
+				if (optr->Next != 0 && !optr->Next->IsActive) {
+					optr->Next = 0;
 				}
 				optr = optr->Next;
 			}
@@ -601,7 +603,7 @@ void CellClass::Occupy_Down(ObjectClass * object)
 	*/
 	if (object->What_Am_I() == RTTI_BUILDING && Cell_Occupier()) {
 		optr = Cell_Occupier();
-		while (optr->Next != NULL) {
+		while (optr->Next != 0) {
 			assert(optr != object);
 			assert(optr->What_Am_I() != RTTI_BUILDING);
 			optr = optr->Next;
@@ -1829,7 +1831,7 @@ COORDINATE CellClass::Closest_Free_Spot(COORDINATE coord, bool any) const
 	**	Cells occupied by buildings or vehicles don't have any free spots.
 	*/
 	if (!any && (Flag.Occupy.Vehicle || Flag.Occupy.Monolith)) {
-		return(NULL);
+		return(0);
 	}
 
 	/*
@@ -2072,7 +2074,7 @@ long CellClass::Tiberium_Adjust(bool pregame)
 
 			if (gems) {
 				OverlayData = _adjgem[count];
-				OverlayData = min(OverlayData, 2);
+				OverlayData = std::min<int>(OverlayData, 2);
 			} else {
 				OverlayData = _adj[count];
 			}
@@ -2244,7 +2246,7 @@ bool CellClass::Goodie_Check(FootClass * object)
 										bcount += hptr->QuantityB(j);
 									}
 									ucount += bcount/2;	// weight buildings less
-									minunits = min(minunits, ucount);
+									minunits = std::min(minunits, ucount);
 								}
 							}
 							if (Random_Pick(0, minunits) == minunits) {
@@ -2256,6 +2258,9 @@ bool CellClass::Goodie_Check(FootClass * object)
 							powerup = CRATE_MONEY;
 						}
 					}
+					break;
+
+				default:
 					break;
 			}
 			/*
@@ -2442,7 +2447,7 @@ crate_money:
 			**	Create a squad of miscellaneous composition.
 			*/
 			case CRATE_SQUAD:
-				for (index = 0; index < 5; index++) {
+				for (int index = 0; index < 5; index++) {
 					static InfantryType _inf[] = {
 						INFANTRY_E1,INFANTRY_E1,INFANTRY_E1,INFANTRY_E1,INFANTRY_E1,INFANTRY_E1,
 						INFANTRY_E2,
@@ -2489,7 +2494,7 @@ crate_money:
 					int d = CrateData[powerup];
 					object->Take_Damage(d, 0, WARHEAD_HE, 0, true);
 				}
-				for (index = 0; index < 5; index++) {
+				for (int index = 0; index < 5; index++) {
 					COORDINATE frag_coord = Coord_Scatter(Cell_Coord(), Random_Pick(0, 0x0200));
 					new AnimClass(ANIM_FBALL1, frag_coord);
 					damage = CrateData[powerup];
@@ -2515,7 +2520,7 @@ crate_money:
 			**	All objects within a certain range will gain the ability to cloak.
 			*/
 			case CRATE_CLOAK:
-				for (index = 0; index < DisplayClass::Layer[LAYER_GROUND].Count(); index++) {
+				for (int index = 0; index < DisplayClass::Layer[LAYER_GROUND].Count(); index++) {
 					ObjectClass * obj = DisplayClass::Layer[LAYER_GROUND][index];
 
 					if (obj && obj->Is_Techno() && Distance(Cell_Coord(), obj->Center_Coord()) < Rule.CrateRadius) {
@@ -2531,7 +2536,7 @@ crate_money:
 				if (object->IsOwnedByPlayer) {
 					Sound_Effect(VOC_HEAL, object->Center_Coord());
 				}
-				for (index = 0; index < Logic.Count(); index++) {
+				for (int index = 0; index < Logic.Count(); index++) {
 					ObjectClass * obj = Logic[index];
 
 					if (obj && object->Is_Techno() && object->House->Class->House == obj->Owner()) {
@@ -2551,7 +2556,7 @@ crate_money:
 				break;
 
 			case CRATE_ARMOR:
-				for (index = 0; index < DisplayClass::Layer[LAYER_GROUND].Count(); index++) {
+				for (int index = 0; index < DisplayClass::Layer[LAYER_GROUND].Count(); index++) {
 					ObjectClass * obj = DisplayClass::Layer[LAYER_GROUND][index];
 
 					if (obj != NULL && obj->Is_Techno() && Distance(Cell_Coord(), obj->Center_Coord()) < Rule.CrateRadius && ((TechnoClass *)obj)->ArmorBias == 1) {
@@ -2564,7 +2569,7 @@ crate_money:
 				break;
 
 			case CRATE_SPEED:
-				for (index = 0; index < DisplayClass::Layer[LAYER_GROUND].Count(); index++) {
+				for (int index = 0; index < DisplayClass::Layer[LAYER_GROUND].Count(); index++) {
 					ObjectClass * obj = DisplayClass::Layer[LAYER_GROUND][index];
 
 					if (obj && obj->Is_Foot() && Distance(Cell_Coord(), obj->Center_Coord()) < Rule.CrateRadius && ((FootClass *)obj)->SpeedBias == 1 && obj->What_Am_I() != RTTI_AIRCRAFT) {
@@ -2579,7 +2584,7 @@ crate_money:
 				break;
 
 			case CRATE_FIREPOWER:
-				for (index = 0; index < DisplayClass::Layer[LAYER_GROUND].Count(); index++) {
+				for (int index = 0; index < DisplayClass::Layer[LAYER_GROUND].Count(); index++) {
 					ObjectClass * obj = DisplayClass::Layer[LAYER_GROUND][index];
 
 					if (obj && obj->Is_Techno() && Distance(Cell_Coord(), obj->Center_Coord()) < Rule.CrateRadius && ((TechnoClass *)obj)->FirepowerBias == 1) {
@@ -2593,7 +2598,7 @@ crate_money:
 				break;
 
 			case CRATE_INVULN:
-				for (index = 0; index < DisplayClass::Layer[LAYER_GROUND].Count(); index++) {
+				for (int index = 0; index < DisplayClass::Layer[LAYER_GROUND].Count(); index++) {
 					ObjectClass * obj = DisplayClass::Layer[LAYER_GROUND][index];
 
 					if (obj && obj->Is_Techno() && Distance(Cell_Coord(), obj->Center_Coord()) < Rule.CrateRadius) {
@@ -2846,6 +2851,9 @@ bool CellClass::Is_Bridge_Here(void) const
 		case TEMPLATE_BRIDGE_3E:
 		case TEMPLATE_BRIDGE_3F:
 			return(true);
+
+		default:
+			break;
 	}
 	return(false);
 }
