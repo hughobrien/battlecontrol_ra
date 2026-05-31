@@ -60,6 +60,8 @@
 
 #include	"FUNCTION.H"
 
+#include <algorithm>
+
 
 #ifdef NEVER
 void test(void)
@@ -661,7 +663,7 @@ bool DriveClass::While_Moving(void)
 	**	visibly move on the map, then process accordingly.
 	** Slow the unit down if he's carrying a flag.
 	*/
-	MPHType maxspeed = MPHType(min(Techno_Type_Class()->MaxSpeed * SpeedBias * House->GroundspeedBias, (int)MPH_LIGHT_SPEED));
+	MPHType maxspeed = MPHType(std::min(Techno_Type_Class()->MaxSpeed * SpeedBias * House->GroundspeedBias, (int)MPH_LIGHT_SPEED));
 	if (IsFormationMove) maxspeed = FormationMaxSpeed;
 
 	int actual;			// Working movement addition value.
@@ -783,6 +785,9 @@ bool DriveClass::While_Moving(void)
 									Map[c].Incoming(0, true, true);
 								}
 								break;
+
+							default:
+								break;
 						}
 					}
 				}
@@ -793,7 +798,7 @@ bool DriveClass::While_Moving(void)
 				Coord = Head_To_Coord();
 				Stop_Driver();
 				TrackNumber = -1;
-				TrackIndex = NULL;
+				TrackIndex = 0;
 
 				/*
 				**	Perform "per cell" activities.
@@ -1170,7 +1175,7 @@ bool DriveClass::Start_Of_Move(void)
 		if (cando != MOVE_OK) {
 		 	Path[0] = FACING_NONE;		// Path is blocked!
 			TrackNumber = -1;
-		 	dest = NULL;
+			dest = 0;
 		} else {
 
 			Overrun_Square(Coord_Cell(dest), true);
@@ -1223,7 +1228,7 @@ bool DriveClass::Start_Of_Move(void)
 
 						Path[0] = FACING_NONE;		// Path is blocked!
 						TrackNumber = -1;
-						dest = NULL;
+						dest = 0;
 						if (cando == MOVE_DESTROYABLE) {
 
 							if (Map[destcell].Cell_Object()) {
@@ -1545,7 +1550,7 @@ void DriveClass::Fixup_Path(PathType * path)
 	*/
 	if (ok) {
 		if (path->Length <= 1) {
-			memmove((char *)&stage[0], (char*)path->Command, max(counter, 1));
+			memmove((char *)&stage[0], (char*)path->Command, std::max(counter, 1));
 			path->Length = counter;
 		} else {
 
@@ -2330,6 +2335,3 @@ DriveClass::TurnTrackType const DriveClass::TrackControl[67] = {
 	{12,	12,	DIR_SW_X2,	F_},															// Drive back into refinery.
 	{13,	13,	DIR_SW,	F_}																// Drive out of weapons factory.
 };
-
-
-
