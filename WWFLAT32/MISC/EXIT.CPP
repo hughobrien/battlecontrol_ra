@@ -82,10 +82,3 @@ void randomize	( void )
 {
   srand ( time ( NULL ) ) ;
 }
-
-#if(0)
-ULONG	random ( ULONG mod ) 
-{
-  return rand () * mod / RAND_MAX ;
-}
-#endif

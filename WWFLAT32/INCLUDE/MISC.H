@@ -151,7 +151,6 @@ long Calculate_CRC(void *buffer, long length);
 
 extern WORD  Processor(VOID);
 extern WORD  Operating_System(VOID);
-extern ULONG random ( ULONG mod )  ;
 extern void  randomize ( void ) ;
 
 extern int Clip_Rect ( int * x , int * y , int * dw , int * dh ,

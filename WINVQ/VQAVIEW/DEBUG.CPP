@@ -233,8 +233,8 @@ VOID Debug_Show_Palette( VOID )
 	}
 
 	color = 0;
-	for ( i = 0; i < 16; i ++ ) { 
-		for ( j = 0; j < 16; j ++ ) { 
+	for ( i = 0; i < 16; i ++ ) {
+		for ( j = 0; j < 16; j ++ ) {
 			x = VQ_MOVIE_X + (j * PIXEL_SIZE);
 			y = VQ_MOVIE_Y + (i * PIXEL_SIZE);
 			Monopoly_Fill_Rect( x, y, x+PIXEL_SIZE-1, y+PIXEL_SIZE-1, COLOR_BLACK );
@@ -313,8 +313,8 @@ VOID Debug_Draw_Line_Test( VOID )
 VOID Debug_Put_Pixel_Test( VOID )
 {
 #if( 0 )
-	INT x = random( 640 );
-	INT y = random( 440 );
+	INT x = IRandom(0, 639);
+	INT y = IRandom(0, 439);
 	INT xweight=1; int yweight=1; 
 	LONG i;
 	static UBYTE color = 0;
@@ -349,7 +349,7 @@ VOID Debug_Put_Pixel_Test( VOID )
 		if ( xweight > 0 ) {
 			/* 0-9 */
 			/* 0-9 */
-			if ( random( 10 ) <= 4 ) { 
+			if ( IRandom(0, 9) <= 4 ) {
 				x ++;
 			}
 			else { /* 0 */
@@ -358,7 +358,7 @@ VOID Debug_Put_Pixel_Test( VOID )
 		}
 		else {
 			/* 0-9 */
-			if ( random( 10 ) <= 4 ) { 
+			if ( IRandom(0, 9) <= 4 ) {
 				x --;
 			}
 			else { /* 0 */
@@ -367,7 +367,7 @@ VOID Debug_Put_Pixel_Test( VOID )
 		}
 		if ( yweight > 0 ) {
 			/* 0-9 */
-			if ( random( 10 ) <= 4 ) { 
+			if ( IRandom(0, 9) <= 4 ) {
 				y ++;
 			}
 			else { /* 0 */
@@ -376,7 +376,7 @@ VOID Debug_Put_Pixel_Test( VOID )
 		}
 		else {
 			/* 0-9 */
-			if ( random( 10 ) <= 4 ) { 
+			if ( IRandom(0, 9) <= 4 ) {
 				y --;
 			}
 			else { /* 0 */
