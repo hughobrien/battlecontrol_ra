@@ -60,9 +60,9 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 //#include	"watcom.h"
-#include	"monoc.h"
+#include	"MONOC.H"
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 #include	<stdlib.h>
 #include	<stdio.h>

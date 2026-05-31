@@ -38,7 +38,7 @@
 #ifndef SOUNDDLG_H
 #define SOUNDDLG_H
 
-#include "gadget.h"
+#include "GADGET.H"
 
 class SoundControlsClass
 {

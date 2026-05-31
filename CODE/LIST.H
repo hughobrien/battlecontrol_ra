@@ -38,9 +38,9 @@
 #ifndef LIST_H
 #define LIST_H
 
-#include "control.h"
-#include "shapebtn.h"
-#include "slider.h"
+#include "CONTROL.H"
+#include "SHAPEBTN.H"
+#include "SLIDER.H"
 #include <algorithm>
 
 

@@ -40,7 +40,7 @@
  *   SpecialClass::Init -- Initialize the special class of options.                            *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 #ifdef WIN32
 #define	OPTION_WIDTH	236*2

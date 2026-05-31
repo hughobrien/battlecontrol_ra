@@ -44,7 +44,7 @@
  *   Voc_Name -- Fetches the name for the sound effect.                                        *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***************************************************************************

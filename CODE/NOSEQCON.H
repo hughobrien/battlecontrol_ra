@@ -52,8 +52,8 @@
 /*
 ********************************* Includes **********************************
 */
-#include "connect.h"
-#include "combuf.h"
+#include "CONNECT.H"
+#include "COMBUF.H"
 
 
 /*

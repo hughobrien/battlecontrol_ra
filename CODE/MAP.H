@@ -38,8 +38,8 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include	"gscreen.h"
-#include	"crate.h"
+#include	"GSCREEN.H"
+#include	"CRATE.H"
 
 class MapClass: public GScreenClass
 {

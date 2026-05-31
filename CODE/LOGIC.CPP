@@ -38,9 +38,9 @@
  *   LogicClass::Detach -- Detatch the specified target from the logic system.                 *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"logic.h"
-#include 	"vortex.h"
+#include	"FUNCTION.H"
+#include	"LOGIC.H"
+#include 	"VORTEX.H"
 
 static unsigned FramesPerSecond=0;
 

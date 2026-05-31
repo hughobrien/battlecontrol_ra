@@ -38,9 +38,9 @@
 #ifndef CELL_H
 #define CELL_H
 
-#include	"building.h"
-#include	"unit.h"
-#include	"template.h"
+#include	"BUILDING.H"
+#include	"UNIT.H"
+#include	"TEMPLATE.H"
 
 
 /****************************************************************************

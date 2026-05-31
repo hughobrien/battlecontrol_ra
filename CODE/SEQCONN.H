@@ -48,8 +48,8 @@
 #ifndef SEQCONN_H
 #define SEQCONN_H
 
-#include "connect.h"
-#include "comqueue.h"
+#include "CONNECT.H"
+#include "COMQUEUE.H"
 
 
 /*

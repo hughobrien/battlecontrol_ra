@@ -35,7 +35,7 @@
  *   Sim_Random -- Returns 0 - 255                                         * 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 int SimRandIndex = 0;
 

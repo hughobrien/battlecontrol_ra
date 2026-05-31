@@ -38,7 +38,7 @@
 #ifndef GAMEDLG_H
 #define GAMEDLG_H
 
-#include "gadget.h"
+#include "GADGET.H"
 
 class GameControlsClass 
 {

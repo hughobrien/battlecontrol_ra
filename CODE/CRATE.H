@@ -38,8 +38,8 @@
 #ifndef CRATE_H
 #define CRATE_H
 
-#include	"ftimer.h"
-#include	"jshell.h"
+#include	"FTIMER.H"
+#include	"JSHELL.H"
 
 
 /*

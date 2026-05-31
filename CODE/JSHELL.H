@@ -44,7 +44,7 @@
 #ifdef WIN32
 //#define getch	Get_Key_Num
 //#define kbhit	Check_Key_Num
-#include	"key.h"
+#include	"KEY.H"
 #else
 #include	<conio.h>
 #endif

@@ -44,9 +44,9 @@
  * TMC::Message_Handler -- Message handler function for Winsock related messages               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"internet.h"
-#include	"WSPUDP.h"
+#include	"FUNCTION.H"
+#include	"INTERNET.H"
+#include	"WSPUDP.H"
 
 #include	<assert.h>
 #include	<stdio.h>

@@ -43,7 +43,7 @@
  *   BulletTypeClass::operator new -- Allocates a bullet type object from the special heap.    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 

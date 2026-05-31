@@ -52,7 +52,7 @@ extern short StreamLowImpact;
 
 #include	<algorithm>
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 #define SCORETEXT_X		184
 #define SCORETEXT_Y		8

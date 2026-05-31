@@ -38,8 +38,8 @@
 #ifndef GOPTIONS_H
 #define GOPTIONS_H
 
-#include "options.h"
-#include "gadget.h"
+#include "OPTIONS.H"
+#include "GADGET.H"
 
 
 class GameOptionsClass : public OptionsClass {

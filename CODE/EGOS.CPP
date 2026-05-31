@@ -40,7 +40,7 @@
  * Functions:                                                                        *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include 	"function.h"
+#include 	"FUNCTION.H"
 
 /*
 ** List of Ego Class instances

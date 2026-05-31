@@ -62,7 +62,7 @@
  *   doIncomingPacket -- Callback: packet has arrived                      * 
  *   doPlayerJoins -- Callback: player joins                               * 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#include "function.h"
+#include "FUNCTION.H"
 
 #ifdef WIN32
 #define WINDOWS

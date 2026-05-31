@@ -60,8 +60,8 @@
  *                                                                                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
-#include "vortex.h"
+#include "FUNCTION.H"
+#include "VORTEX.H"
 
 
 /*

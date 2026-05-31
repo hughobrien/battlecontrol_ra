@@ -38,7 +38,7 @@
 #ifndef LOGIC_H
 #define LOGIC_H
 
-#include	"layer.h"
+#include	"LAYER.H"
 
 /***********************************************************************************************
 **	Game logic processing is controlled by this class. The graphic and AI logic is handled

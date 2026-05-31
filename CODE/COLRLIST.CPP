@@ -41,7 +41,7 @@
  *   ColorListClass::~ColorListClass -- Class destructor                                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***************************************************************************

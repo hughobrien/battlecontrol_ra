@@ -41,7 +41,7 @@
  *   AbstractTypeClass::Get_Ownable -- Fetch the ownable bits for this object.                 *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***********************************************************************************************

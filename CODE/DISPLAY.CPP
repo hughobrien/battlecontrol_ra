@@ -88,8 +88,8 @@
  *   DisplayClass::Write_INI -- Write the map data to the INI file specified.                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"vortex.h"
+#include	"FUNCTION.H"
+#include	"VORTEX.H"
 
 /*
 **	These layer control elements are used to group the displayable objects

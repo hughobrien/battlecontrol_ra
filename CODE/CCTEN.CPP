@@ -40,7 +40,7 @@
  *   Send_TEN_Out_Of_Sync -- Announces this game out of sync               *
  *   Send_TEN_Packet_Too_Late -- Announces packet-received-too-late        *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#include "function.h"
+#include "FUNCTION.H"
 
 #if(TEN)
 #ifdef WIN32

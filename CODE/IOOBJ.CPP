@@ -65,7 +65,7 @@
  *   TriggerClass::Decode_Pointers -- decodes pointers for load/save                           *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 
 /***********************************************************************************************

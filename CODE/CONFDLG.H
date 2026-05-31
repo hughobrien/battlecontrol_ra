@@ -37,7 +37,7 @@
 #ifndef CONFDLG_H
 #define CONFDLG_H
 
-#include "gadget.h"
+#include "GADGET.H"
 
 class ConfirmationClass
 {

@@ -44,8 +44,8 @@
 /*
 ********************************* Includes **********************************
 */
-#include "nullconn.h"
-#include "connmgr.h"
+#include "NULLCONN.H"
+#include "CONNMGR.H"
 #include "commlib.h"
 
 /*

@@ -43,8 +43,8 @@
  *   Translucent_Table_Size -- Determines the size of a translucent table.                     *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"wwfile.h"
+#include	"FUNCTION.H"
+#include	"WWFILE.H"
 
 
 /***********************************************************************************************

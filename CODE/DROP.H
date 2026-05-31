@@ -39,8 +39,8 @@
 #define DROP_H
 
 #include	<stdint.h>
-#include	"list.h"
-#include	"edit.h"
+#include	"LIST.H"
+#include	"EDIT.H"
 
 extern uint16_t Get_Build_Frame_Width(void const * dataptr);
 extern uint16_t Get_Build_Frame_Height(void const * dataptr);

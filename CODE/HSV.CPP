@@ -39,9 +39,9 @@
  *   HSVClass::operator RGBClass -- Conversion operator for RGBClass object.                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"watcom.h"
-#include	"hsv.h"
-#include	"rgb.h"
+#include	"WATCOM.H"
+#include	"HSV.H"
+#include	"RGB.H"
 
 HSVClass const HSVClass::BlackColor(0, 0, 0);
 

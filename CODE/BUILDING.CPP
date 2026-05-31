@@ -107,7 +107,7 @@
  *   BuildingClass::~BuildingClass -- Destructor for building type objects.                    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 enum SAMState {

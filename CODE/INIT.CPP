@@ -59,16 +59,16 @@
  *   Load_Prolog_Page -- Loads the special pre-prolog "please wait" page.                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"loaddlg.h"
+#include	"FUNCTION.H"
+#include	"LOADDLG.H"
 #ifdef WIN32
 #ifdef WINSOCK_IPX
-#include	"WSProto.h"
-#include	"WSPUDP.h"
-#include	"WSPIPX.h"
-#include	"internet.h"
+#include	"WSPROTO.H"
+#include	"WSPUDP.H"
+#include	"WSPIPX.H"
+#include	"INTERNET.H"
 #else	//WINSOCK_IPX
-#include	"tcpip.h"
+#include	"TCPIP.H"
 #endif	//WINSOCK_IPX
 
 #endif
@@ -77,7 +77,7 @@
 #ifndef WIN32
 #include	<sys\timeb.h>
 #endif
-#include  "ccdde.h"
+#include  "CCDDE.H"
 
 #include <time.h>
 
@@ -86,12 +86,12 @@
 #endif
 
 #ifdef MPEGMOVIE // Denzil 6/25/98
-#include "mpgset.h"
+#include "MPGSET.H"
 #endif
 
 RemapControlType SidebarScheme;
 
-#include "WolDebug.h"
+#include "WOLDEBUG.H"
 
 #ifdef CHEAT_KEYS
 extern bool bNoMovies;
@@ -134,7 +134,7 @@ bool Save_Recording_Values(CCFileClass & file);
 
 #ifdef WOLAPI_INTEGRATION
 extern int WOL_Main();
-#include "WolapiOb.h"
+#include "WOLAPIOB.H"
 extern WolapiObject* pWolapi;
 #endif
 
@@ -192,7 +192,7 @@ static void Load_Prolog_Page(void)
  * HISTORY:                                                                                    *
  *   10/07/1992 JLB : Created.                                                                 *
  *=============================================================================================*/
-#include	"sha.h"
+#include	"SHA.H"
 //#include    <locale.h>
 bool Init_Game(int , char * [])
 {

@@ -39,9 +39,9 @@
  * IPXInterfaceClass::Message_Handler -- Handler for windows messages relating to IPX          *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"wspipx.h"
-#include	"ipxaddr.h"
+#include	"FUNCTION.H"
+#include	"WSPIPX.H"
+#include	"IPXADDR.H"
 
 #include	<assert.h>
 #include	<stdio.h>

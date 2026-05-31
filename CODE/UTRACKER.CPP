@@ -46,7 +46,7 @@
 
 
 
-#include "function.h"
+#include "FUNCTION.H"
 
 /*
 ** Define host to network to host functions for DOS

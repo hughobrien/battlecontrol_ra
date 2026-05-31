@@ -35,8 +35,8 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"drop.h"
+#include	"FUNCTION.H"
+#include	"DROP.H"
 
 
 DropListClass::DropListClass(int id, char * text, int max_len, TextPrintType flags, int x, int y, int w, int h, void const * up, void const * down) :

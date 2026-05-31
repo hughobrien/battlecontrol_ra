@@ -49,9 +49,9 @@
  *   TerrainTypeClass::operator new -- Allocates a terrain type object from special pool.      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"terrain.h"
-#include	"type.h"
+#include	"FUNCTION.H"
+#include	"TERRAIN.H"
+#include	"TYPE.H"
 
 
 static short const _List000011101000[] = {MAP_CELL_W, MAP_CELL_W+1, MAP_CELL_W+2, MAP_CELL_W*2, REFRESH_EOL};

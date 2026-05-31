@@ -34,7 +34,7 @@
  *---------------------------------------------------------------------------------------------*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 bool IsVQ640 = false;
 unsigned long GameVersion = 0;
@@ -792,11 +792,11 @@ int UnitBuildPenalty = 100;
 
 #ifdef MPEGMOVIE // Denzil 6/15/98
 #ifdef MCIMPEG
-#include "mcimovie.h"
+#include "MCIMOVIE.H"
 MCIMovie* MciMovie = NULL;
 #endif
 
-#include "mpgset.h"
+#include "MPGSET.H"
 MPGSettings* MpgSettings = NULL;
 #endif
 

@@ -42,7 +42,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"buff.h"
+#include	"BUFF.H"
 #include	<stddef.h>
 
 

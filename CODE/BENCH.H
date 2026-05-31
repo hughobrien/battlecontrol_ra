@@ -39,8 +39,8 @@
 #ifndef BENCH_H
 #define BENCH_H
 
-#include	"mpu.h"
-#include	"ftimer.h"
+#include	"MPU.H"
+#include	"FTIMER.H"
 
 /*
 **	The "bool" integral type was defined by the C++ committee in

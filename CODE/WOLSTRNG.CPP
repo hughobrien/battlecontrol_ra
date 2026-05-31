@@ -19,8 +19,8 @@
 //	New character strings for wolapi integration.
 
 #ifdef WOLAPI_INTEGRATION
-#include "function.h"
-#include "WolStrng.h"
+#include "FUNCTION.H"
+#include "WOLSTRNG.H"
 
 //#undef ENGLISH
 //#define GERMAN

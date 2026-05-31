@@ -18,9 +18,9 @@
 
 
 
-#include "function.h"
+#include "FUNCTION.H"
 //#include "_WSProto.h"
-#include "WSPUDP.h"
+#include "WSPUDP.H"
 
 
 bool Get_Broadcast_Addresses (void)

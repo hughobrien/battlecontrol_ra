@@ -77,11 +77,11 @@
  *   Print_Framesync_Values -- displays frame-sync variables               *
  *   Check_Mirror -- Checks mirror memory                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#include	"function.h"
+#include	"FUNCTION.H"
 
 #ifdef WOLAPI_INTEGRATION
 //#include "WolDebug.h"
-#include "WolapiOb.h"
+#include "WOLAPIOB.H"
 extern WolapiObject* pWolapi;
 
 bool bReconnectDialogCancelled;

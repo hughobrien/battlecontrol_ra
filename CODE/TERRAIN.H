@@ -38,8 +38,8 @@
 #ifndef TERRAIN_H
 #define TERRAIN_H
 
-#include	"object.h"
-#include	"type.h"
+#include	"OBJECT.H"
+#include	"TYPE.H"
 
 
 /****************************************************************************

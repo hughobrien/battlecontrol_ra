@@ -37,7 +37,7 @@
  *   FlasherClass::Process -- Performs the logic processing for the flashing ability.          *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 #ifdef CHEAT_KEYS

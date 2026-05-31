@@ -42,7 +42,7 @@
  */
 
 
-#include "lzo1x.h"
+#include "LZO1X.H"
 #define NDEBUG
 #include <assert.h>
 

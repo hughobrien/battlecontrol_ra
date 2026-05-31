@@ -62,10 +62,10 @@
  *   ScenarioClass::Do_Fade_AI -- Process the palette fading effect.                           *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 #ifdef WIN32
-#include "tcpip.h"
-#include "ccdde.h"
+#include "TCPIP.H"
+#include "CCDDE.H"
 
 extern bool SpawnedFromWChat;
 #endif
@@ -74,7 +74,7 @@ extern int PreserveVQAScreen;
 //#include "WolDebug.h"
 
 #ifdef FIXIT_VERSION_3		//	Stalemate games.
-#include "WolStrng.h"
+#include "WOLSTRNG.H"
 #endif
 
 static void Remove_AI_Players(void);

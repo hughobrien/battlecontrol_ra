@@ -37,8 +37,8 @@
  *   DescriptionClass::Process -- Handles all the options graphic interface.                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"descdlg.h"
+#include	"FUNCTION.H"
+#include	"DESCDLG.H"
 
 
 /***********************************************************************************************

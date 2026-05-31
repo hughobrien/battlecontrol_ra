@@ -39,8 +39,8 @@
  *   FacingClass::Set_Desired -- Sets the desired facing  value.                               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"facing.h"
+#include	"FUNCTION.H"
+#include	"FACING.H"
 
 
 /***********************************************************************************************

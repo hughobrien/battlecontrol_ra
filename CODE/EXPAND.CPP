@@ -36,10 +36,10 @@
  *   EListClass::Draw_Entry -- Draws entry for expansion scenario.                             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 #ifdef FIXIT_VERSION_3
-#include "WolStrng.h"
+#include "WOLSTRNG.H"
 #endif
 
 //#define CS_DEBUG

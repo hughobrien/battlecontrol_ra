@@ -37,7 +37,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 /*
 **	These member functions for the CCPtr class cannot be declared inside the

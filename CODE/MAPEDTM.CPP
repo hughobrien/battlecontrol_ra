@@ -39,7 +39,7 @@
  *   MapEditClass::Team_Members -- user picks makeup of a team             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 #ifdef SCENARIO_EDITOR
 

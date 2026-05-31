@@ -57,7 +57,7 @@
  *   GadgetClass::Set_Position -- Set the coordinate position of this gadget.                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 
 /*

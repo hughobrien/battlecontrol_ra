@@ -38,7 +38,7 @@
  *   RandomClass::operator() -- Ranged random number generator.                                *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "random.h"
+#include "RANDOM.H"
 #ifdef RANDOM_COUNT
 #include <stdio.h>
 extern long Frame;

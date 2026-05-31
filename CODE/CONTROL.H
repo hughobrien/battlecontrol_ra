@@ -38,7 +38,7 @@
 #ifndef CONTROL_H
 #define CONTROL_H
 
-#include	"gadget.h"
+#include	"GADGET.H"
 
 /***************************************************************************
  * ControlClass -- Region tracking class									         *

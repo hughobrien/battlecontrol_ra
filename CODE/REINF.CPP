@@ -43,7 +43,7 @@
  *   _Need_To_Take -- Examines unit to determine if it should be confiscated.                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***********************************************************************************************

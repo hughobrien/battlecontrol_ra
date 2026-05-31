@@ -19,14 +19,14 @@
 
 #ifdef WOLAPI_INTEGRATION			//	Now implies also WINSOCK_IPX, WIN32, and FIXIT_CSII must be true
 
-#include "wol_gsup.h"
-#include "function.h"
-#include "IconList.h"
+#include "WOL_GSUP.H"
+#include "FUNCTION.H"
+#include "ICONLIST.H"
 #include <time.h>
-#include "WolStrng.h"
-#include "wsproto.h"
-#include "BigCheck.h"
-#include "ToolTip.h"
+#include "WOLSTRNG.H"
+#include "WSPROTO.H"
+#include "BIGCHECK.H"
+#include "TOOLTIP.H"
 
 extern char const* EngMisStr[];
 
@@ -40,7 +40,7 @@ int ScenarioIndex_From_Filename( const char* szScenarioFilename );
 
 bool bSpecialAftermathScenario( const char* szScenarioDescription );
 
-#include "WolDebug.h"
+#include "WOLDEBUG.H"
 
 #define PARAMREFRESHWAIT	2000
 

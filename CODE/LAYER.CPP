@@ -38,8 +38,8 @@
  *   LayerClass::Submit -- Adds an object to a layer list.                                     *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"layer.h"
+#include	"FUNCTION.H"
+#include	"LAYER.H"
 
 
 /***********************************************************************************************

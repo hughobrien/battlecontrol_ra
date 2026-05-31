@@ -54,7 +54,7 @@
  *   MapEditClass::Toggle_House -- toggles current placement object's house*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 #ifdef SCENARIO_EDITOR
 

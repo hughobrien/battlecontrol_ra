@@ -37,7 +37,7 @@
  *   CRCEngine::operator() -- Submits an arbitrary data block to the CRC engine.               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "crc.h"
+#include "CRC.H"
 
 
 /***********************************************************************************************

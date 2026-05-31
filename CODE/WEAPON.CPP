@@ -44,7 +44,7 @@
  *   WeaponTypeClass::Allowed_Threats -- Determine what threats this weapon can address.       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /***************************************************************************

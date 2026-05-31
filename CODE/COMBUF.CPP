@@ -51,12 +51,12 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"function.h"
+#include	"FUNCTION.H"
 #include <stdio.h>
 #include <mem.h>
-#include "combuf.h"
-#include "connect.h"	// for command names for debug output
-#include "wwlib32.h"	// to enable mono output
+#include "COMBUF.H"
+#include "CONNECT.H"	// for command names for debug output
+#include "WWLIB32.H"	// to enable mono output
 
 
 /***************************************************************************

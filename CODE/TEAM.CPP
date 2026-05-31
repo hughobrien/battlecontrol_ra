@@ -75,8 +75,8 @@
  *   _Is_It_Playing -- Determines if unit is active and an initiated team member.              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
-#include "mission.h"
+#include "FUNCTION.H"
+#include "MISSION.H"
 
 
 /***********************************************************************************************

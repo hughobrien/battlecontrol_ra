@@ -45,7 +45,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 /*
 **	This is the text name for all of the trigger events. These are used by the scenario editor

@@ -37,7 +37,7 @@
 #ifndef DESCDLG_H
 #define DESCDLG_H
 
-#include "gadget.h"
+#include "GADGET.H"
 
 class DescriptionClass 
 {

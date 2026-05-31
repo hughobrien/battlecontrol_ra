@@ -21,14 +21,14 @@
 //	WolapiOb.cpp - Implementation of class WolapiObject.
 //	ajw 07/10/98
 
-#include "WolapiOb.h"
-#include "RAWolapi.h"
-#include "WolStrng.h"
-#include "SEditDlg.h"
-#include "ToolTip.h"
-#include "Wol_GSup.h"
+#include "WOLAPIOB.H"
+#include "RAWOLAPI.H"
+#include "WOLSTRNG.H"
+#include "SEDITDLG.H"
+#include "TOOLTIP.H"
+#include "WOL_GSUP.H"
 
-#include "WolDebug.h"
+#include "WOLDEBUG.H"
 
 extern void WOL_PrintMessage( IconListClass& ILTarget, const char* szText, PlayerColorType iColorRemap = PCOLOR_NONE );
 extern void WOL_PrintMessage( IconListClass& ILTarget, const char* szText, RemapControlType* pColorRemap );

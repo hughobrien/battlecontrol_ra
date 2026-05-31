@@ -55,9 +55,9 @@
 #ifdef WIN32
 
 #include <WINDOWS.H>
-#include "ccdde.h"
+#include "CCDDE.H"
 #include <stdio.h>
-#include <timer.h>
+#include <TIMER.H>
 
 DDEServerClass	DDEServer;				//Instance of the DDE Server class
 

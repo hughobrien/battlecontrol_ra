@@ -43,8 +43,8 @@
  *   SmudgeClass::operator new -- Creator of smudge objects.                                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"smudge.h"
+#include	"FUNCTION.H"
+#include	"SMUDGE.H"
 
 
 

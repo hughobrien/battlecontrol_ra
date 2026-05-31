@@ -39,7 +39,7 @@
 #ifndef LCWPIPE_H
 #define LCWPIPE_H
 
-#include	"pipe.h"
+#include	"PIPE.H"
 
 
 /*

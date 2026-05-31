@@ -38,8 +38,8 @@
 #ifndef TAB_H
 #define TAB_H
 
-#include	"sidebar.h"
-#include	"credits.h"
+#include	"SIDEBAR.H"
+#include	"CREDITS.H"
 
 class TabClass: public SidebarClass
 {

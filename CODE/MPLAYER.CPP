@@ -42,12 +42,12 @@
  *   Abort_Dialog -- Prompts user for confirmation on aborting the mission							  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "function.h"
+#include "FUNCTION.H"
 
 extern bool Is_Mission_Counterstrike (char *file_name);
 
 #ifdef WOLAPI_INTEGRATION
-#include "WolStrng.h"
+#include "WOLSTRNG.H"
 #endif
 
 /***********************************************************************************************

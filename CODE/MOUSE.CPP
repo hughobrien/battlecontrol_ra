@@ -43,7 +43,7 @@
  *   MouseClass::Set_Default_Mouse -- Sets the mouse to match the shape specified.             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
+#include	"FUNCTION.H"
 
 
 /*
