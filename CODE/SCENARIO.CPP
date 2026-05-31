@@ -1315,11 +1315,11 @@ bool Restate_Mission(char const * name, int button1, int button2)
 #define	BUTTON_2		2
 #define	BUTTON_3		3
 #define	BUTTON_FLAG	0x8000
-bool BGMessageBox(char const * msg, int btn1, int btn2)
+int BGMessageBox(char const * msg, int btn1, int btn2)
 {
 #define BUFFSIZE 511
 	char buffer[BUFFSIZE];
-	bool retval;
+	int retval;
 	bool process;								// loop while true
 	KeyNumType input;							// user input
 	int selection;

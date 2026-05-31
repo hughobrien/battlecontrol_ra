@@ -67,7 +67,7 @@ void Check_Use_Compressed_Shapes (void);
 void Read_Setup_Options(RawFileClass *config_file);
 bool VideoBackBufferAllowed = true;
 #else
-BOOL Init_Timer_System(unsigned int freq, int partial = FALSE);
+BOOL Init_Timer_System(unsigned int freq, int partial);
 BOOL Remove_Timer_System(VOID);
 #endif	//WIN32
 
