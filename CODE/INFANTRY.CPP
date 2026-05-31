@@ -316,7 +316,7 @@ void InfantryClass::operator delete(void * ptr)
  *   11/22/1994 JLB : Shares base damage handler for techno objects.                           *
  *   03/31/1995 JLB : Revenge factor.                                                          *
  *=============================================================================================*/
-ResultType InfantryClass::Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source, int forced)
+ResultType InfantryClass::Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source, bool forced)
 {
 	assert(Infantry.ID(this) == ID);
 	assert(IsActive);

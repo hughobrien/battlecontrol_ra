@@ -985,7 +985,7 @@ bool UnitClass::Unlimbo(COORDINATE coord, DirType dir)
  *   06/30/1995 JLB : Lasers do maximum damage against gunboat.                                *
  *   08/16/1995 JLB : Harvester crushing doesn't occur on early missions.                      *
  *=============================================================================================*/
-ResultType UnitClass::Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source, int forced)
+ResultType UnitClass::Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source, bool forced)
 {
 	assert(Units.ID(this) == ID);
 	assert(IsActive);
