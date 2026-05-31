@@ -42,7 +42,7 @@
 #include	"WATCOM.H"
 #include "RGB.H"
 #include	"HSV.H"
-#include	"PALETTE.H"
+#include	"PALETTEC.H"
 
 RGBClass const BlackColor(0, 0, 0);
 
@@ -246,4 +246,3 @@ void RGBClass::Set(int color) const
 
 	((RGBClass &)PaletteClass::CurrentPalette[color]) = *this;
 }
-
