@@ -1431,7 +1431,7 @@ void FootClass::Per_Cell_Process(PCPType why)
 			/*
 			**	Check for vertical trigger crossing.
 			*/
-			for (index = 0; index < Map.MapCellHeight; index++) {
+			for (int index = 0; index < Map.MapCellHeight; index++) {
 				trigger = Map[XY_Cell(x, index+Map.MapCellY)].Trigger;
 				if (trigger != NULL) {
 					if (trigger->Class->Event1.Event == TEVENT_CROSS_VERTICAL || (trigger->Class->EventControl != MULTI_ONLY && trigger->Class->Event2.Event == TEVENT_CROSS_VERTICAL)) {

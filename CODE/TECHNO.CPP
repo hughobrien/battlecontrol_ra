@@ -4770,7 +4770,7 @@ void TechnoClass::Base_Is_Attacked(TechnoClass const * enemy)
 	** Loop through the units looking for those who are capable of going
 	** on a rescue mission.
 	*/
-	for (index = 0; index < Units.Count() && desired > 0; index++) {
+	for (int index = 0; index < Units.Count() && desired > 0; index++) {
 	 	UnitClass * unit = Units.Ptr(index);
 		if (unit != NULL && unit->Owner() == Owner()) {
 
@@ -4872,7 +4872,7 @@ void TechnoClass::Base_Is_Attacked(TechnoClass const * enemy)
 			}
 		}
 
-		for (lp = 0; lp < count; lp ++) {
+		for (int lp = 0; lp < count; lp ++) {
 			if (Percent_Chance(50)) {
 				defender[lp]->Assign_Mission(MISSION_RESCUE);
 			} else {

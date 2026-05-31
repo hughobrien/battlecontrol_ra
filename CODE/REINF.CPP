@@ -487,14 +487,16 @@ bool Do_Reinforcements(TeamTypeClass const * teamtype)
 			**	Could not unlimbo at location specified so find an adjacent location that it can
 			**	be unlimboed at. If this fails, then abort the whole placement process.
 			*/
+			bool found_adjacent = false;
 			for (FacingType adj = FACING_N; adj < FACING_COUNT; adj++) {
 				CELL trycell = Adjacent_Cell(newcell, adj);
 				if (!Map.In_Radar(trycell) && object->Can_Enter_Cell(trycell, adj) == MOVE_OK) {
 					newcell = trycell;
+					found_adjacent = true;
 					break;
 				}
 			}
-			if (adj < FACING_COUNT) continue;
+			if (found_adjacent) continue;
 			newcell = -1;
 		}
 		ScenarioInit--;
@@ -658,6 +660,7 @@ int Create_Air_Reinforcement(HouseClass * house, AircraftType air, int number, M
 	** Loop through the number of objects we are supposed to create and
 	** 	create and place them on the map.
 	*/
+	int placed_count = 0;
 	for (int sub = 0; sub < number; sub++) {
 
 		/*
@@ -667,7 +670,7 @@ int Create_Air_Reinforcement(HouseClass * house, AircraftType air, int number, M
 		ScenarioInit++;
 		TechnoClass * obj = (TechnoClass *)type->Create_One_Of(house);
 		ScenarioInit--;
-		if (!obj) return(sub);
+		if (!obj) return(placed_count);
 
 		/*
 		** Flying objects always have the IsALoaner bit set.
@@ -739,11 +742,11 @@ int Create_Air_Reinforcement(HouseClass * house, AircraftType air, int number, M
 			** Start the object into action.
 			*/
 			obj->Commence();
+			placed_count++;
 		} else {
 			delete obj;
-			sub--;
-			return(sub);
+			return(sub - 1);
 		}
 	}
-	return(sub);
+	return(placed_count);
 }
