@@ -40,9 +40,9 @@
  *   CDTC::Reset -- Clear the timer.                                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <wwstd.h>
-#include <descmgmt.h>
-#include "timer.H"
+#include <WWSTD.H>
+#include <DESCMGMT.H>
+#include "TIMER.H"
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// Defines /////////////////////////////////////

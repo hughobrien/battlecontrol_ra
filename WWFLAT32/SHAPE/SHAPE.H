@@ -35,7 +35,7 @@
 #define SHAPE_H
 
 #ifndef GBUFFER_H
-#include "gbuffer.h"
+#include "GBUFFER.H"
 #endif
 /*
 *********************************** Types ***********************************

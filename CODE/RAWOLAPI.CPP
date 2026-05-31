@@ -24,11 +24,11 @@
 
 #include "RAWOLAPI.H"
 #define IID_DEFINED
-#include "wolapi\wolapi_i.c"
+#include "wolapi\WOLAPI_I.C"
 #include "WOLAPIOB.H"
 #include "WOLSTRNG.H"
 #include "WOL_GSUP.H"
-#include "wolapi\netutildefs.h"
+#include "wolapi\NETUTILDEFS.H"
 
 #include "WOLDEBUG.H"
 

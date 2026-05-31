@@ -42,15 +42,15 @@
 *
 ****************************************************************************/
 
-#include <vqm32\video.h>
-#include <vqm32\soscomp.h>
-#include <vqm32\captoken.h>
-#include "vqafile.h"
-#include "vqaplay.h"
-#include "caption.h"
+#include <vqm32\VIDEO.H>
+#include <vqm32\SOSCOMP.H>
+#include <vqm32\CAPTOKEN.H>
+#include "VQAFILE.H"
+#include "VQAPLAY.H"
+#include "CAPTION.H"
 
 #if(VQAAUDIO_ON)
-#include "sos.h"
+#include "SOS.H"
 #endif
 
 /*---------------------------------------------------------------------------

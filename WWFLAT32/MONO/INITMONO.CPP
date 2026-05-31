@@ -35,15 +35,15 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef WWSTD_H
-#include "wwstd.h"
+#include "WWSTD.H"
 #endif	   
 
 #ifndef MONO_H
-#include "mono.h"
+#include "MONO.H"
 #endif
 
 #ifndef DESCMGMT_H
-#include "descmgmt.h"
+#include "DESCMGMT.H"
 #endif
 
 /***************************************************************************

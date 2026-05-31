@@ -41,8 +41,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
-#include <monochrm.h>
-#include <westwood.h>
+#include <MONOCHRM.H>
+#include <WESTWOOD.H>
 
 typedef struct
 {

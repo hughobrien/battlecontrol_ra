@@ -48,9 +48,9 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "vq.h"
-#include "vqaplayp.h"
-#include <vqm32\all.h>
+#include "VQ.H"
+#include "VQAPLAYP.H"
+#include <vqm32\ALL.H>
 
 #if(VQAMONO_ON)
 

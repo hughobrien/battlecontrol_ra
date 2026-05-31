@@ -50,11 +50,11 @@
 #include <string.h>
 #include	<stdio.h>
 #include	<stdarg.h>
-#include <wwstd.h>
+#include <WWSTD.H>
 #include "windows.h"
-#include <keyboard.h>
-#include	<font.h>
-#include <dipthong.h>
+#include <KEYBOARD.H>
+#include	<FONT.H>
+#include <DIPTHONG.H>
 
 PRIVATE void Scroll_Window(void);
 PRIVATE void Flush_Line(void);

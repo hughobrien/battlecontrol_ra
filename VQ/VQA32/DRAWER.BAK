@@ -76,10 +76,10 @@
 #include <conio.h>
 #include <dos.h>
 #include <mem.h>
-#include "vq.h"
-#include "unvq.h"
-#include "vqaplayp.h"
-#include <vqm32\all.h>
+#include "VQ.H"
+#include "UNVQ.H"
+#include "VQAPLAYP.H"
+#include <vqm32\ALL.H>
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS

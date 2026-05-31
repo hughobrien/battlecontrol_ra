@@ -47,7 +47,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "palette.h"
+#include "PALETTE.H"
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS

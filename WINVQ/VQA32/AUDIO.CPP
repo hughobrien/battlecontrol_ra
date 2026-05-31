@@ -68,8 +68,8 @@
 #include <malloc.h>
 #include <mem.h>
 #include <sys\timeb.h>
-#include "vqaplayp.h"
-#include <vqm32\all.h>
+#include "VQAPLAYP.H"
+#include <vqm32\ALL.H>
 
 #ifdef __WATCOMC__
 #pragma pack(4);

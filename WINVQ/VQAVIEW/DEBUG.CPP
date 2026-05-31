@@ -47,7 +47,7 @@
  *   Debug_Mono_Print_Whose_Turn -- Displays current turn on MONO display  *
  *   Build_Debug_Log_File_Name -- Based on the date and time of system     *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#include "function.h"
+#include "FUNCTION.H"
 #include "debug.rh"
 #include "strings.rh"
 

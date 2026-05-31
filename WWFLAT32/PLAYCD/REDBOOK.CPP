@@ -51,9 +51,9 @@
 #include <string.h>
 #include <dos.h>
 
-#include "wwstd.h"
-#include "playcd.h"
-#include "wwmem.h"
+#include "WWSTD.H"
+#include "PLAYCD.H"
+#include "WWMEM.H"
 
 
 /***************************************************************************

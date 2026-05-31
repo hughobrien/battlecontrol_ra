@@ -38,10 +38,10 @@
 /*
 ********************************* Includes **********************************
 */
-#include "wwstd.h"
-#include "video.h"
-#include "palette.h"
-#include "timer.h"
+#include "WWSTD.H"
+#include "VIDEO.H"
+#include "PALETTE.H"
+#include "TIMER.H"
 
 /*
 ********************************* Constants *********************************

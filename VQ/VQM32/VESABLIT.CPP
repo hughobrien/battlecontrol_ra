@@ -45,9 +45,9 @@
 #include <stdio.h>
 #include <mem.h>
 #include <dos.h>
-#include "video.h"
-#include "vesavid.h"
-#include "vesablit.h"
+#include "VIDEO.H"
+#include "VESAVID.H"
+#include "VESABLIT.H"
 
 
 /****************************************************************************

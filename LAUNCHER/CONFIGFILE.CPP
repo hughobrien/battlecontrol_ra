@@ -42,7 +42,7 @@ for the 'get' functions. E.g. getString("KEY",valWstring);
 #include <stdio.h>
 #include <ctype.h>
 
-#include "configfile.h"
+#include "CONFIGFILE.H"
 
 static uint32 Wstring_Hash(Wstring &string);
 static char  *Eat_Spaces(char *string);

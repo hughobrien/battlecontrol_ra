@@ -37,9 +37,9 @@
  *   Window_Show_Mouse -- Shows the mouse after Window_Hide_Mouse hides it.*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	<wwstd.h>
-#include	<keyboard.h>
-#include "window.h"
+#include	<WWSTD.H>
+#include	<KEYBOARD.H>
+#include "WINDOW.H"
 
 
 #if(IBM)

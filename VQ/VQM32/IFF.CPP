@@ -59,7 +59,7 @@
 #include <fcntl.h>
 #include <sys\stat.h>
 #include <mem.h>
-#include "iff.h"
+#include "IFF.H"
 
 
 /****************************************************************************

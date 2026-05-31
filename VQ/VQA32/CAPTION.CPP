@@ -41,11 +41,11 @@
 
 #include <mem.h>
 #include <malloc.h>
-#include <vqm32\font.h>
-#include <vqm32\text.h>
-#include <vqm32\graphics.h>
-#include <vqm32\captoken.h>
-#include "caption.h"
+#include <vqm32\FONT.H>
+#include <vqm32\TEXT.H>
+#include <vqm32\GRAPHICS.H>
+#include <vqm32\CAPTOKEN.H>
+#include "CAPTION.H"
 
 
 /*---------------------------------------------------------------------------

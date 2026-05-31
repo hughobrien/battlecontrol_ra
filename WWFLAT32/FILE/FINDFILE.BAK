@@ -47,11 +47,11 @@
 /*= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =*/
 
 #ifndef WWSTD_H
-#include "wwstd.h"
+#include "WWSTD.H"
 #endif	   
 
 #ifndef _FILE_H
-#include "_file.h"
+#include "_FILE.H"
 #endif
 
 #include <direct.h>
@@ -61,7 +61,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <search.h>
+#include <SEARCH.H>
 #include <sys\stat.h>
 
 

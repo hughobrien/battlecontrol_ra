@@ -35,9 +35,9 @@
  * Functions:                                                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"wwstd.h"
-#include "gbuffer.h"
-#include	"vbuffer.h"
+#include	"WWSTD.H"
+#include "GBUFFER.H"
+#include	"VBUFFER.H"
 
 /*=========================================================================*/
 /* The following PRIVATE functions are in this file:                       */

@@ -36,9 +36,9 @@
  *   WWMessageBox::Process -- Handles all the options graphic interface.                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"msgbox.h"
-#include "gadget.h"
+#include	"FUNCTION.H"
+#include	"MSGBOX.H"
+#include "GADGET.H"
 
 
 /***********************************************************************************************

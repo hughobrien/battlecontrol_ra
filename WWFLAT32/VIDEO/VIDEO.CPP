@@ -41,14 +41,14 @@
 
 #include <dos.h>
 #include "iostream.h"
-#include "video.h"
-#include "descmgmt.h"
-#include "mcgaprim.h"
-#include "gbuffer.h"
-#include "vbuffer.h"
-#include "wwmem.h"
+#include "VIDEO.H"
+#include "DESCMGMT.H"
+#include "MCGAPRIM.H"
+#include "GBUFFER.H"
+#include "VBUFFER.H"
+#include "WWMEM.H"
 
-#include "playcd.h"
+#include "PLAYCD.H"
 
 extern "C" int MInstalled ;
 extern "C" void Hide_Mouse(void);

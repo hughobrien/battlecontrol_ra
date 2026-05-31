@@ -20,9 +20,9 @@
 #define PROCESS_HEADER
 
 #include <windows.h>
-#include "wstypes.h"
-#include "wdebug.h"
-#include "configfile.h"
+#include "WSTYPES.H"
+#include "WDEBUG.H"
+#include "CONFIGFILE.H"
 
 class Process
 {

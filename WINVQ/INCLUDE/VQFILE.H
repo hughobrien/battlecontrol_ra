@@ -38,7 +38,7 @@
 *
 ****************************************************************************/
 
-#include <vqm32\iff.h>
+#include <vqm32\IFF.H>
 
 /* Disable Watcom structure alignment. */
 #ifdef __WATCOMC__

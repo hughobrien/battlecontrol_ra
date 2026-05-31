@@ -51,9 +51,9 @@
  *   Mem_Get_ID -- Returns ID of node.                                     *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <wwstd.h>
-#include "wwmem.h"
-#include <timer.h>
+#include <WWSTD.H>
+#include "WWMEM.H"
+#include <TIMER.H>
 
 #include	<stddef.h>
 #include	<mem.h>

@@ -37,9 +37,9 @@
 ;* int Write_PCX_File (char* name, GraphicViewPortClass& pic, BYTE* palette );*
 ;*= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =*/
 #include <string.h>
-#include <buffer.h>
-#include <gbuffer.h>
-#include	<file.h>
+#include <BUFFER.H>
+#include <GBUFFER.H>
+#include	<FILE.H>
 
 #ifndef PCX_H
 #define PCX_H

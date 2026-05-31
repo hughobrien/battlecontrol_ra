@@ -33,7 +33,7 @@
  *   Draw_Rect -- Draws a rectangle to the LogicPage.                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "gbuffer.h"
+#include "GBUFFER.H"
 
 /***************************************************************************
  * Draw_Rect -- Draws a rectangle to the LogicPage.                        *

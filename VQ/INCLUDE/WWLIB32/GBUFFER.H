@@ -114,15 +114,15 @@
 /*=========================================================================*/
 
 #ifndef WWSTD_H
-#include "wwstd.h"
+#include "WWSTD.H"
 #endif
 
 #ifndef MCGAPRIM_H
-#include "mcgaprim.h"
+#include "MCGAPRIM.H"
 #endif
 
 #ifndef BUFFER_H
-#include "buffer.h"
+#include "BUFFER.H"
 #endif
 
 #include <stdlib.h>

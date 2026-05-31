@@ -55,8 +55,8 @@ will you be ready to leave grasshopper.
 
 #include <iostream.h>
 #include "sem4.h"
-#include "odevice.h"
-#include "streamer.h"
+#include "ODEVICE.H"
+#include "STREAMER.H"
 
 // This is needed because the streams return a pointer.  Every time you
 //  change the output device the old stream is deleted, and a new one

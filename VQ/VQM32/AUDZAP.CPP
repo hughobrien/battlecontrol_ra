@@ -43,7 +43,7 @@
 
 #include <stdio.h>
 #include <mem.h>
-#include "compress.h"
+#include "COMPRESS.H"
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS

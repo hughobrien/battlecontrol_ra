@@ -35,7 +35,7 @@
 ;* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef FILE_H
-#include "file.h"
+#include "FILE.H"
 #endif
 
 #ifndef _FILE_H

@@ -35,8 +35,8 @@
  *   Set_Font -- Changes the default text printing font.                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <wwstd.h>
-#include "font.h"
+#include <WWSTD.H>
+#include "FONT.H"
 
 
 

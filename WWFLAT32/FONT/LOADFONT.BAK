@@ -35,10 +35,10 @@
  *   Load_Font -- Loads a font from disk.                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <wwstd.h>
-#include "font.h"
-#include <file.h>
-#include <wwmem.h>
+#include <WWSTD.H>
+#include "FONT.H"
+#include <FILE.H>
+#include <WWMEM.H>
 
 #if(IBM)
 #include <fcntl.h>

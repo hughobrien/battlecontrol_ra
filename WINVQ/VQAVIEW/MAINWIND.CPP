@@ -36,12 +36,12 @@
 
 #include <windows.h>
 
-#include <westwood.h>
-#include <mainwind.h>
-#include <vidmode.h>
-#include <wm.h>
-#include <misc.h>
-#include <wwlib.h>
+#include <WESTWOOD.H>
+#include <MAINWIND.H>
+#include <VIDMODE.H>
+#include <WM.H>
+#include <MISC.H>
+#include <WWLIB.H>
 
 //==========================================================================
 // Private defines

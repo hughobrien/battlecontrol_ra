@@ -54,8 +54,8 @@ will you be ready to leave grasshopper.
 #define WDEBUG_HEADER
 
 #include <iostream.h>
-#include "odevice.h"
-#include "streamer.h"
+#include "ODEVICE.H"
+#include "STREAMER.H"
 #include <time.h>
 
 

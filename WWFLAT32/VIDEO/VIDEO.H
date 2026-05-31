@@ -38,7 +38,7 @@
 #define VIDEO_H
 
 #ifndef WWSTD_H
-#include "wwstd.h"
+#include "WWSTD.H"
 #endif
 					   
 /*=========================================================================*/
