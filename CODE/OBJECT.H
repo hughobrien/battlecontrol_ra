@@ -78,7 +78,7 @@ class ObjectClass : public AbstractClass
 		**	flag could be set by many different circumstances. It is automatically cleared
 		**	when the object is rerendered.
 		*/
-		unsigned IsToDisplay:1;
+		mutable unsigned IsToDisplay:1;
 
 		/*
 		**	An object in the game may be valid yet held in a state of "limbo". Units are in such

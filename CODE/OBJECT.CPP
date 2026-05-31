@@ -102,6 +102,8 @@
 
 #include "FUNCTION.H"
 
+#include <algorithm>
+
 /*
 **	Selected objects have a special marking box around them. This is the shapes that are
 **	used for this purpose.
@@ -247,11 +249,11 @@ void ObjectClass::AI(void)
 		}
 		if (IsAnimAttached) {
 			Riser -= 1;
-			Riser = max(Riser, -3);
+			Riser = std::max(Riser, -3);
 		} else {
 			Riser -= Rule.Gravity;
 //			Riser -= GRAVITY;
-			Riser = max(Riser, -100);
+			Riser = std::max(Riser, -100);
 		}
 
 		if (layer != In_Which_Layer()) {
