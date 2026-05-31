@@ -61,7 +61,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <search.h>
+#include <SEARCH.H>
 #include <sys\stat.h>
 
 

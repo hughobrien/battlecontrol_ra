@@ -54,7 +54,7 @@
 #include	<dos.h>
 #include	<errno.h>
 #include	<share.h>
-#include	"ccfile.h"
+#include	"CCFILE.H"
 
 
 /***********************************************************************************************
