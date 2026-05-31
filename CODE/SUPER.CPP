@@ -45,6 +45,7 @@
  *   SuperClass::Suspend -- Suspend the charging of the super weapon.                          *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 
@@ -327,7 +328,7 @@ int SuperClass::Anim_Stage(void) const
 //		}
 
 		int stage = ANIMATION_STAGES * fixed(RechargeTime-Control.Value(), RechargeTime);
-		stage = min(stage, ANIMATION_STAGES-1);
+		stage = std::min(stage, ANIMATION_STAGES-1);
 		return(stage);
 	}
 	return(0);

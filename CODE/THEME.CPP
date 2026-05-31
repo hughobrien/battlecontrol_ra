@@ -549,7 +549,7 @@ ThemeType ThemeClass::From_Name(char const * name) const
 		**	a substring within the full name of the score. This might
 		**	yield a match, but is not guaranteed to be unique.
 		*/
-		for (theme = THEME_FIRST; theme < THEME_COUNT; theme++) {
+		for (ThemeType theme = THEME_FIRST; theme < THEME_COUNT; theme++) {
 			if (strstr(Text_String(_themes[theme].Fullname), name) != NULL) {
 				return(theme);
 			}
@@ -614,4 +614,3 @@ void ThemeClass::Set_Theme_Data(ThemeType theme, int scenario, int owners)
 		_themes[theme].Owner = owners;
 	}
 }
-

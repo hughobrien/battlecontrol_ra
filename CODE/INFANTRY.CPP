@@ -84,6 +84,7 @@
  *   InfantryClass::~InfantryClass -- Default destructor for infantry units.                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 
@@ -425,7 +426,7 @@ ResultType InfantryClass::Take_Damage(int & damage, int distance, WarheadType wa
 	**	When infantry gets hit, it gets scared.
 	*/
 	if (res != RESULT_DESTROYED) {
-		COORDINATE source_coord = (source) ? source->Coord : NULL;
+		COORDINATE source_coord = (source) ? source->Coord : 0;
 
 		/*
 		**	If an engineer is damaged and it is just sitting there, then tell it
@@ -454,7 +455,7 @@ ResultType InfantryClass::Take_Damage(int & damage, int distance, WarheadType wa
 			int morefear = FEAR_ANXIOUS;
 			if (Health_Ratio() > Rule.ConditionRed) morefear /= 2;
 			if (Health_Ratio() > Rule.ConditionYellow) morefear /= 2;
-			Fear = FearType(min((int)Fear + morefear, FEAR_MAXIMUM));
+			Fear = FearType(std::min<int>((int)Fear + morefear, FEAR_MAXIMUM));
 		}
 	}
 	return(res);
@@ -490,7 +491,7 @@ int InfantryClass::Shape_Number(void) const
 	**	The infantry shape is always modulo the number of animation frames
 	**	of the action stage that the infantry is doing.
 	*/
-	int shapenum = Fetch_Stage() % max(Class->DoControls[doit].Count, 1);
+	int shapenum = Fetch_Stage() % std::max<int>(Class->DoControls[doit].Count, 1);
 
 	/*
 	**	If facing makes a difference, then the shape number will be incremented
@@ -626,9 +627,9 @@ void InfantryClass::Per_Cell_Process(PCPType why)
 							tech->Captured(House);
 						} else {
 #ifdef FIXIT_ENGINEER	//	checked - ajw 9/28/98
-							int damage = min( (tech->Techno_Type_Class()->MaxStrength) * EngineerDamage, tech->Strength-1);
+							int damage = std::min( (tech->Techno_Type_Class()->MaxStrength) * EngineerDamage, tech->Strength-1);
 #else
-							int damage = min( (tech->Techno_Type_Class()->MaxStrength) / 3, tech->Strength-1);
+							int damage = std::min( (tech->Techno_Type_Class()->MaxStrength) / 3, tech->Strength-1);
 #endif
 							tech->Take_Damage(damage, 0, WARHEAD_HE, this, true);
 						}
@@ -1752,7 +1753,7 @@ bool InfantryClass::Random_Animate(void)
 		**		"When in darkness or in doubt, run in circles, scream, and shout!"
 		*/
 		if (Class->IsFraidyCat && !House->IsHuman && Fear > FEAR_ANXIOUS) {
-			Scatter(NULL, true);
+			Scatter(0, true);
 			return(true);
 		}
 
@@ -1807,7 +1808,7 @@ bool InfantryClass::Random_Animate(void)
 				PrimaryFacing.Set(Facing_Dir(Random_Pick(FACING_N, FACING_NW)));
 				Mark(MARK_CHANGE_REDRAW);
 				if (!House->IsHuman && Class->IsFraidyCat) {
-					Scatter(NULL, true);
+					Scatter(0, true);
 				}
 				break;
 
@@ -1901,7 +1902,8 @@ void InfantryClass::Scatter(COORDINATE threat, bool forced, bool nokidding)
 
 		CELL newcell = 0;
 		CELL altcell = 0;
-		for (FacingType face = FACING_N; face < FACING_COUNT; face++) {
+		FacingType face;
+		for (face = FACING_N; face < FACING_COUNT; face++) {
 			FacingType newface = toface + face;
 			newcell = Adjacent_Cell(Coord_Cell(Coord), newface);
 
@@ -2218,7 +2220,7 @@ bool InfantryClass::Unlimbo(COORDINATE coord, DirType facing)
 	**	Make sure that the infantry start in a legal position on the map.
 	*/
 	coord = Map[coord].Closest_Free_Spot(coord, ScenarioInit);
-	if (coord == NULL) {
+	if (coord == 0) {
 		return(false);
 	}
 
@@ -3195,6 +3197,9 @@ ActionType InfantryClass::What_Action(CELL cell) const
 //			case TEMPLATE_BRIDGE_3A:
 //			case TEMPLATE_BRIDGE_3B:
 				return(ACTION_SABOTAGE);
+
+			default:
+				break;
 		}
 	}
 
@@ -3594,7 +3599,7 @@ void InfantryClass::Firing_AI(void)
 					Do_Uncloak();
 					break;
 
-				case FIRE_OK:
+					case FIRE_OK:
 					/*
 					**	Start firing animation.
 					*/
@@ -3614,12 +3619,15 @@ void InfantryClass::Firing_AI(void)
 					**	If the target is in range, and the NavCom is the same, then just
 					**	stop and keep firing.
 					*/
-					if (TarCom == NavCom) {
-						NavCom = TARGET_NONE;
-						Path[0] = FACING_NONE;
-					}
-					break;
-			}
+						if (TarCom == NavCom) {
+							NavCom = TARGET_NONE;
+							Path[0] = FACING_NONE;
+						}
+						break;
+
+					default:
+						break;
+				}
 		}
 
 		/*
@@ -4011,7 +4019,7 @@ void InfantryClass::Movement_AI(void)
 				/*
 				**	Advance the infantry as far as it should go.
 				*/
-				MPHType maxspeed = MPHType(min(Class->MaxSpeed * SpeedBias * House->GroundspeedBias, MPH_LIGHT_SPEED));
+				MPHType maxspeed = MPHType(std::min<int>(Class->MaxSpeed * SpeedBias * House->GroundspeedBias, MPH_LIGHT_SPEED));
 
 				if (IsFormationMove) maxspeed = FormationMaxSpeed;
 
