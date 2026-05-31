@@ -28,12 +28,24 @@ const DdeString = extern struct {
     text: [1]u8,
 };
 
+const MemoryStatus = extern struct {
+    dwLength: DWORD,
+    dwMemoryLoad: DWORD,
+    dwTotalPhys: DWORD,
+    dwAvailPhys: DWORD,
+    dwTotalPageFile: DWORD,
+    dwAvailPageFile: DWORD,
+    dwTotalVirtual: DWORD,
+    dwAvailVirtual: DWORD,
+};
+
 var dde_strings: ?*DdeString = null;
 
 export var WindowsNT: bool = false;
 
 extern fn readlink(path: [*:0]const u8, buffer: [*]u8, size: usize) isize;
 extern fn usleep(usec: c_uint) c_int;
+extern fn memmove(dest: ?*anyopaque, src: ?*const anyopaque, count: usize) ?*anyopaque;
 
 fn copyZ(dest: [*:0]u8, src: []const u8, max: usize) usize {
     if (max == 0) return 0;
@@ -105,6 +117,31 @@ export fn MessageBox(window: HWND, text: ?[*:0]const u8, caption: ?[*:0]const u8
     _ = caption;
     if ((kind & MB_YESNO) != 0) return IDYES;
     return IDOK;
+}
+
+fn clampDword(value: u64) DWORD {
+    return if (value > std.math.maxInt(DWORD)) std.math.maxInt(DWORD) else @intCast(value);
+}
+
+export fn GlobalMemoryStatus(buffer: ?*MemoryStatus) callconv(.c) void {
+    const out = buffer orelse return;
+    var info: std.os.linux.Sysinfo = undefined;
+    const result = std.os.linux.sysinfo(&info);
+    const ok = std.os.linux.errno(result) == .SUCCESS;
+    const unit: u64 = if (ok) info.mem_unit else 1;
+    const total_phys = if (ok) @as(u64, info.totalram) * unit else 0;
+    const avail_phys = if (ok) @as(u64, info.freeram) * unit else total_phys;
+    out.dwLength = @sizeOf(MemoryStatus);
+    out.dwTotalPhys = clampDword(total_phys);
+    out.dwAvailPhys = clampDword(avail_phys);
+    out.dwTotalPageFile = clampDword(total_phys + if (ok) @as(u64, info.totalswap) * unit else 0);
+    out.dwAvailPageFile = clampDword(avail_phys + if (ok) @as(u64, info.freeswap) * unit else 0);
+    out.dwTotalVirtual = out.dwTotalPhys;
+    out.dwAvailVirtual = out.dwAvailPhys;
+    out.dwMemoryLoad = if (total_phys > 0 and avail_phys <= total_phys)
+        @intCast((100 * (total_phys - avail_phys)) / total_phys)
+    else
+        0;
 }
 
 export fn RegOpenKeyEx(key: HKEY, sub_key: ?[*:0]const u8, options: DWORD, sam_desired: DWORD, result: ?*HKEY) callconv(.c) LONG {
@@ -189,6 +226,68 @@ export fn htons(hostshort: WORD) callconv(.c) WORD {
 
 export fn ntohs(netshort: WORD) callconv(.c) WORD {
     return std.mem.bigToNative(WORD, netshort);
+}
+
+export fn Mem_Copy(source: ?*const anyopaque, dest: ?*anyopaque, bytes_to_copy: c_ulong) callconv(.c) void {
+    const src = source orelse return;
+    const dst = dest orelse return;
+    if (@intFromPtr(src) == @intFromPtr(dst)) return;
+    _ = memmove(dst, src, @intCast(bytes_to_copy));
+}
+
+export fn Apply_XOR_Delta(target: [*]u8, delta: [*]const u8) callconv(.c) c_uint {
+    var dest = target;
+    var src = delta;
+    while (true) {
+        const op_code = src[0];
+        src += 1;
+        if (op_code == 0) {
+            var count = src[0];
+            src += 1;
+            const value = src[0];
+            src += 1;
+            while (count != 0) : (count -= 1) {
+                dest[0] ^= value;
+                dest += 1;
+            }
+        } else if (op_code < 0x80) {
+            var count = op_code;
+            while (count != 0) : (count -= 1) {
+                dest[0] ^= src[0];
+                dest += 1;
+                src += 1;
+            }
+        } else {
+            const short_skip = op_code - 0x80;
+            if (short_skip != 0) {
+                dest += short_skip;
+                continue;
+            }
+            const word = @as(u16, src[0]) | (@as(u16, src[1]) << 8);
+            src += 2;
+            if (word == 0) return 0;
+            if ((word & 0x8000) == 0) {
+                dest += word;
+                continue;
+            }
+            var count = word - 0x8000;
+            if ((count & 0x4000) != 0) {
+                count -= 0x4000;
+                const value = src[0];
+                src += 1;
+                while (count != 0) : (count -= 1) {
+                    dest[0] ^= value;
+                    dest += 1;
+                }
+            } else {
+                while (count != 0) : (count -= 1) {
+                    dest[0] ^= src[0];
+                    dest += 1;
+                    src += 1;
+                }
+            }
+        }
+    }
 }
 
 export fn DdeInitialize(instance: ?*DWORD, callback: ?*const anyopaque, command: DWORD, reserved: DWORD) callconv(.c) UINT {

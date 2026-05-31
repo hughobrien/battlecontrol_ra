@@ -38,6 +38,7 @@ pub fn build(b: *std.Build) void {
         "CODE/CCDDE.CPP",
         "CODE/FIELD.CPP",
         "CODE/PACKET.CPP",
+        "CODE/2KEYFRAM.CPP",
         "CODE/DDE.CPP",
         "CODE/INI.CPP",
         "CODE/MIXFILE.CPP",
