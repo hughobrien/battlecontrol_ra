@@ -196,7 +196,7 @@ static void Put_All(Pipe & pipe, int save_net)
 	if (!save_net) Call_Back();
 	count = LogicTriggers.Count();
 	pipe.Put(&count, sizeof(count));
-	for (index = 0; index < LogicTriggers.Count(); index++) {
+	for (int index = 0; index < LogicTriggers.Count(); index++) {
 		TARGET target = LogicTriggers[index]->As_Target();
 		pipe.Put(&target, sizeof(target));
 	}
@@ -204,7 +204,7 @@ static void Put_All(Pipe & pipe, int save_net)
 	for (HousesType h = HOUSE_FIRST; h < HOUSE_COUNT; h++) {
 		count = HouseTriggers[h].Count();
 		pipe.Put(&count, sizeof(count));
-		for (index = 0; index < HouseTriggers[h].Count(); index++) {
+		for (int index = 0; index < HouseTriggers[h].Count(); index++) {
 			TARGET target = HouseTriggers[h][index]->As_Target();
 			pipe.Put(&target, sizeof(target));
 		}
@@ -688,7 +688,7 @@ bool Load_Game(int id)
 
 	straw.Get(&count, sizeof(count));
 	LogicTriggers.Clear();
-	for (index = 0; index < count; index++) {
+	for (int index = 0; index < count; index++) {
 		TARGET target;
 		straw.Get(&target, sizeof(target));
 		LogicTriggers.Add(As_Trigger(target));
@@ -697,7 +697,7 @@ bool Load_Game(int id)
 	for (HousesType h = HOUSE_FIRST; h < HOUSE_COUNT; h++) {
 		straw.Get(&count, sizeof(count));
 		HouseTriggers[h].Clear();
-		for (index = 0; index < count; index++) {
+		for (int index = 0; index < count; index++) {
 			TARGET target;
 			straw.Get(&target, sizeof(target));
 			HouseTriggers[h].Add(As_Trigger(target));

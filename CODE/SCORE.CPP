@@ -50,6 +50,8 @@
 extern short StreamLowImpact;
 #endif
 
+#include	<algorithm>
+
 #include	"function.h"
 
 #define SCORETEXT_X		184
@@ -759,7 +761,7 @@ Keyboard->Clear();
 	*/
 	if (hallfame[NUMFAMENAMES-1].score >= total)
 								hallfame[NUMFAMENAMES-1].score = 0;
-	for (index = 0; index < NUMFAMENAMES; index++) {
+	for (int index = 0; index < NUMFAMENAMES; index++) {
 		if (total > hallfame[index].score) {
 			if (index < (NUMFAMENAMES-1)) for (i = (NUMFAMENAMES-1); i > index; i--) hallfame[i] = hallfame[i-1];
 			hallfame[index].score = total;
@@ -1004,8 +1006,8 @@ void ScoreClass::Do_Nod_Buildings_Graph(void)
 /*BG		if (!Keyboard->Check()) */ Call_Back_Delay(1);
 	}
 
-	i = max(GBKilled, NBKilled);
-	for (int q = 0; q <= i; q++) {
+	int max_killed = std::max(GBKilled, NBKilled);
+	for (int q = 0; q <= max_killed; q++) {
 		Set_Font_Palette(_redpal);
 		Count_Up_Print( "%d", q, NBKilled, BUILDING_X + 16, BUILDING_Y + 10);
 		Set_Font_Palette(_bluepal);

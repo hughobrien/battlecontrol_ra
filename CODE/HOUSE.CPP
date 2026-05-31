@@ -1184,7 +1184,7 @@ void HouseClass::AI(void)
 			}
 			if( !iCount )
 			{
-				for( i = 0; i != UNIT_RA_COUNT-3; ++i )
+				for( int i = 0; i != UNIT_RA_COUNT-3; ++i )
 				{
 					iCount += UQuantity[ i ];
 				}
@@ -1192,19 +1192,19 @@ void HouseClass::AI(void)
 				{
 					//	ajw - Found bug - house's civilians are not removed from IQuantity when they die.
 					//	Workaround...
-					for( i = 0; i <= INFANTRY_DOG; ++i )
+					for( int i = 0; i <= INFANTRY_DOG; ++i )
 					{
 						iCount += IQuantity[ i ];
 					}
 					if( !iCount )
 					{
-						for( i = 0; i != AIRCRAFT_COUNT; ++i )
+						for( int i = 0; i != AIRCRAFT_COUNT; ++i )
 						{
 							iCount += AQuantity[ i ];
 						}
 						if( !iCount )
 						{
-							for( i = 0; i != VESSEL_RA_COUNT; ++i )
+							for( int i = 0; i != VESSEL_RA_COUNT; ++i )
 							{
 								if( i != VESSEL_SS )
 									iCount += VQuantity[ i ];
@@ -4381,7 +4381,7 @@ COORDINATE HouseClass::Find_Build_Location(BuildingClass * building) const
 	**	defended.
 	*/
 	memset(&zonerating[0], '\0', sizeof(zonerating));
-	for (z = ZONE_FIRST; z < ZONE_COUNT; z++) {
+	for (int z = ZONE_FIRST; z < ZONE_COUNT; z++) {
 		int diff;
 
 		diff = zoneinfo.AntiAir-ZoneInfo[z].AirDefense;
@@ -4409,9 +4409,9 @@ COORDINATE HouseClass::Find_Build_Location(BuildingClass * building) const
 	*/
 	ZoneType zone = Random_Pick(ZONE_FIRST, ZONE_WEST);
 	int largest = 0;
-	for (z = ZONE_FIRST; z < ZONE_COUNT; z++) {
+	for (int z = ZONE_FIRST; z < ZONE_COUNT; z++) {
 		if (zonerating[z] > largest) {
-			zone = z;
+			zone = (ZoneType)z;
 			largest = zonerating[z];
 		}
 	}
@@ -4534,7 +4534,7 @@ void HouseClass::Recalc_Center(void)
 		if (count > 1) {
 			int radius = 0;
 
-			for (index = 0; index < Buildings.Count(); index++) {
+			for (int index = 0; index < Buildings.Count(); index++) {
 				BuildingClass const * b = Buildings.Ptr(index);
 
 				if (b != NULL && !b->IsInLimbo && (HouseClass *)b->House == this && b->Strength > 0) {
@@ -4546,7 +4546,7 @@ void HouseClass::Recalc_Center(void)
 			/*
 			**	Determine the relative strength of each base defense zone.
 			*/
-			for (index = 0; index < Buildings.Count(); index++) {
+			for (int index = 0; index < Buildings.Count(); index++) {
 				BuildingClass const * b = Buildings.Ptr(index);
 
 				if (b != NULL && !b->IsInLimbo && (HouseClass *)b->House == this && b->Strength > 0) {
@@ -4824,7 +4824,7 @@ int HouseClass::Expert_AI(void)
 	for (UrgencyType u = URGENCY_CRITICAL; u >= URGENCY_LOW; u--) {
 		bool acted = false;
 
-		for (strat = STRATEGY_FIRST; strat < STRATEGY_COUNT; strat++) {
+		for (int strat = STRATEGY_FIRST; strat < STRATEGY_COUNT; strat++) {
 			if (urgency[strat] == u) {
 				switch (strat) {
 					case STRATEGY_BUILD_POWER:
@@ -5056,8 +5056,7 @@ bool HouseClass::AI_Attack(UrgencyType )
 
 	bool shuffle = !((Frame > TICKS_PER_MINUTE && !CurBuildings) || Percent_Chance(33));
 	bool forced = (CurBuildings == 0);
-	int index;
-	for (index = 0; index < Aircraft.Count(); index++) {
+	for (int index = 0; index < Aircraft.Count(); index++) {
 		AircraftClass * a = Aircraft.Ptr(index);
 
 		if (a != NULL && !a->IsInLimbo && a->House == this && a->Strength > 0) {
@@ -5066,7 +5065,7 @@ bool HouseClass::AI_Attack(UrgencyType )
 			}
 		}
 	}
-	for (index = 0; index < Units.Count(); index++) {
+	for (int index = 0; index < Units.Count(); index++) {
 		UnitClass * u = Units.Ptr(index);
 
 		if (u != NULL && !u->IsInLimbo && u->House == this && u->Strength > 0) {
@@ -5084,7 +5083,7 @@ bool HouseClass::AI_Attack(UrgencyType )
 			}
 		}
 	}
-	for (index = 0; index < Infantry.Count(); index++) {
+	for (int index = 0; index < Infantry.Count(); index++) {
 		InfantryClass * i = Infantry.Ptr(index);
 
 		if (i != NULL && !i->IsInLimbo && i->House == this && i->Strength > 0) {
@@ -5826,7 +5825,7 @@ int HouseClass::AI_Unit(void)
 		**	to fill one team of this type regardless of whether there is a team active
 		**	of that type.
 		*/
-		for (index = 0; index < TeamTypes.Count(); index++) {
+		for (int index = 0; index < TeamTypes.Count(); index++) {
 			TeamTypeClass const * team = TeamTypes.Ptr(index);
 			if (team != NULL && team->House == Class->House && team->IsPrebuilt && (!team->IsAutocreate || IsAlerted)) {
 				for (int subindex = 0; subindex < team->ClassCount; subindex++) {
@@ -5896,7 +5895,7 @@ int HouseClass::AI_Unit(void)
 
 		if (total > 0) {
 			int choice = Random_Pick(0, total-1);
-			for (index = UNIT_FIRST; index < UNIT_COUNT; index++) {
+			for (UnitType index = UNIT_FIRST; index < UNIT_COUNT; index++) {
 				if (choice < counter[index]) {
 					BuildUnit = index;
 					break;
@@ -5958,7 +5957,7 @@ int HouseClass::AI_Vessel(void)
 		**	to fill one team of this type regardless of whether there is a team active
 		**	of that type.
 		*/
-		for (index = 0; index < TeamTypes.Count(); index++) {
+		for (int index = 0; index < TeamTypes.Count(); index++) {
 			TeamTypeClass const * team = TeamTypes.Ptr(index);
 			if (team) {
 				if (team->House == Class->House && team->IsPrebuilt && (!team->IsAutocreate || IsAlerted)) {
@@ -6068,7 +6067,7 @@ int HouseClass::AI_Infantry(void)
 		**	to fill one team of this type regardless of whether there is a team active
 		**	of that type.
 		*/
-		for (index = 0; index < TeamTypes.Count(); index++) {
+		for (int index = 0; index < TeamTypes.Count(); index++) {
 			TeamTypeClass const * team = TeamTypes.Ptr(index);
 			if (team != NULL) {
 				if (team->House == Class->House && team->IsPrebuilt && (!team->IsAutocreate || IsAlerted)) {
@@ -6728,7 +6727,7 @@ void HouseClass::Recalc_Attributes(void)
 	**	A second pass through the sentient objects is required so that the appropriate scan
 	**	bits will be set for the owner house.
 	*/
-	for (index = 0; index < Units.Count(); index++) {
+	for (int index = 0; index < Units.Count(); index++) {
 		UnitClass const * unit = Units.Ptr(index);
 		unit->House->UScan |= (1L << unit->Class->Type);
 		if (unit->IsLocked && (Session.Type != GAME_NORMAL || !unit->House->IsHuman || unit->IsDiscoveredByPlayer)) {
@@ -6737,7 +6736,7 @@ void HouseClass::Recalc_Attributes(void)
 			}
 		}
 	}
-	for (index = 0; index < Infantry.Count(); index++) {
+	for (int index = 0; index < Infantry.Count(); index++) {
 		InfantryClass const * infantry = Infantry.Ptr(index);
 		infantry->House->IScan |= (1L << infantry->Class->Type);
 		if (infantry->IsLocked && (Session.Type != GAME_NORMAL || !infantry->House->IsHuman || infantry->IsDiscoveredByPlayer)) {
@@ -6747,7 +6746,7 @@ void HouseClass::Recalc_Attributes(void)
 			}
 		}
 	}
-	for (index = 0; index < Aircraft.Count(); index++) {
+	for (int index = 0; index < Aircraft.Count(); index++) {
 		AircraftClass const * aircraft = Aircraft.Ptr(index);
 		aircraft->House->AScan |= (1L << aircraft->Class->Type);
 		if (aircraft->IsLocked && (Session.Type != GAME_NORMAL || !aircraft->House->IsHuman || aircraft->IsDiscoveredByPlayer)) {
@@ -6757,7 +6756,7 @@ void HouseClass::Recalc_Attributes(void)
 			}
 		}
 	}
-	for (index = 0; index < Buildings.Count(); index++) {
+	for (int index = 0; index < Buildings.Count(); index++) {
 		BuildingClass const * building = Buildings.Ptr(index);
 		if (building->Class->Type < 32) {
 			building->House->BScan |= (1L << building->Class->Type);
@@ -6769,7 +6768,7 @@ void HouseClass::Recalc_Attributes(void)
 			}
 		}
 	}
-	for (index = 0; index < Vessels.Count(); index++) {
+	for (int index = 0; index < Vessels.Count(); index++) {
 		VesselClass const * vessel = Vessels.Ptr(index);
 		vessel->House->VScan |= (1L << vessel->Class->Type);
 		if (vessel->IsLocked && (Session.Type != GAME_NORMAL || !vessel->House->IsHuman || vessel->IsDiscoveredByPlayer)) {
@@ -7345,9 +7344,7 @@ bool HouseClass::Fire_Sale(void)
  *=============================================================================================*/
 void HouseClass::Do_All_To_Hunt(void) const
 {
-	int index;
-
-	for (index = 0; index < Units.Count(); index++) {
+	for (int index = 0; index < Units.Count(); index++) {
 		UnitClass * unit = Units.Ptr(index);
 
 		if (unit->House == this && unit->IsDown && !unit->IsInLimbo) {
@@ -7356,7 +7353,7 @@ void HouseClass::Do_All_To_Hunt(void) const
 		}
 	}
 
-	for (index = 0; index < Infantry.Count(); index++) {
+	for (int index = 0; index < Infantry.Count(); index++) {
 		InfantryClass * infantry = Infantry.Ptr(index);
 
 		if (infantry->House == this && infantry->IsDown && !infantry->IsInLimbo) {
@@ -7365,7 +7362,7 @@ void HouseClass::Do_All_To_Hunt(void) const
 		}
 	}
 
-	for (index = 0; index < Vessels.Count(); index++) {
+	for (int index = 0; index < Vessels.Count(); index++) {
 		VesselClass * vessel = Vessels.Ptr(index);
 
 		if (vessel->House == this && vessel->IsDown && !vessel->IsInLimbo) {
@@ -7374,7 +7371,7 @@ void HouseClass::Do_All_To_Hunt(void) const
 		}
 	}
 
-	for (index = 0; index < Aircraft.Count(); index++) {
+	for (int index = 0; index < Aircraft.Count(); index++) {
 		AircraftClass * aircraft = Aircraft.Ptr(index);
 
 		if (aircraft->House == this && aircraft->IsDown && !aircraft->IsInLimbo) {

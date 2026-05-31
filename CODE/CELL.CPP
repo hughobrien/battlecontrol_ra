@@ -751,16 +751,18 @@ void CellClass::Overlap_Down(ObjectClass * object)
 	**	else out in this case.
 	*/
 	if (!ptr && object->What_Am_I() == RTTI_BUILDING) {
-		for (index = 0; index < ARRAY_SIZE(Overlapper); index++) {
+		for (int index = 0; index < ARRAY_SIZE(Overlapper); index++) {
 			switch (Overlapper[index]->What_Am_I()) {
 				case RTTI_BUILDING:
 				case RTTI_TERRAIN:
 					break;
 
 				default:
-					Overlapper[index] = object;
-					index = ARRAY_SIZE(Overlapper);
+					ptr = &Overlapper[index];
 					break;
+			}
+			if (ptr) {
+				break;
 			}
 		}
 	}
