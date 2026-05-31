@@ -782,9 +782,10 @@ inline unsigned long	VideoViewPortClass::Print(char const *str, int x, int y, in
  *=========================================================================*/
 inline unsigned long	VideoViewPortClass::Print(int num, int x, int y, int fcol, int bcol)
 {
-	BYTE str[17];
+	char str[17];
 
-	return(VVPC_Print_Func(this, itoa(num, str, 10), x, y, fcol, bcol));
+	sprintf(str, "%d", num);
+	return(VVPC_Print_Func(this, str, x, y, fcol, bcol));
 }
 
 
@@ -801,10 +802,11 @@ inline unsigned long	VideoViewPortClass::Print(int num, int x, int y, int fcol, 
  *=========================================================================*/
 inline unsigned long	VideoViewPortClass::Print(short num, int x, int y, int fcol, int bcol)
 {
-	BYTE str[17];
+	char str[17];
 
 	
-	return(VVPC_Print_Func(this, itoa(num, str, 10), x, y, fcol, bcol));
+	sprintf(str, "%d", num);
+	return(VVPC_Print_Func(this, str, x, y, fcol, bcol));
 }
 
 /***************************************************************************
@@ -821,9 +823,10 @@ inline unsigned long	VideoViewPortClass::Print(short num, int x, int y, int fcol
  *=========================================================================*/
 inline unsigned long	VideoViewPortClass::Print(long num, int x, int y, int fcol, int bcol)
 {
-	BYTE str[33];
+	char str[33];
 
-	return(VVPC_Print_Func(this, ltoa(num, str, 10), x, y, fcol, bcol));
+	sprintf(str, "%ld", num);
+	return(VVPC_Print_Func(this, str, x, y, fcol, bcol));
 }
 
 

@@ -761,7 +761,7 @@ PRIVATE BOOL Debug_Adjust_Cash_Dialog_Procedure( WindowHandle window_handle,
 					Default cash for player
 				*/
 				player = Game_Status.Get_Whos_Turn_Is_It_Now();
-				itoa( Players[ player ].Get_Cash(), Text_String, 10 );
+				sprintf( Text_String, "%d", Players[ player ].Get_Cash() );
 				SetDlgItemText( window_handle, 
 									 CASH_EDIT1, 
 									 Text_String );

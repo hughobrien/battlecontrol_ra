@@ -369,7 +369,7 @@ class GraphicBufferClass : public GraphicViewPortClass, public BufferClass {
 		void DD_Init(GBC_Enum flags);
 		void Init(int w, int h, void *buffer, long size, GBC_Enum flags);
 		void Un_Init(void);
-		void GraphicBufferClass::Attach_DD_Surface (GraphicBufferClass * attach_buffer);
+		void Attach_DD_Surface (GraphicBufferClass * attach_buffer);
 		BOOL Lock(void);
 		BOOL Unlock(void);
 
@@ -1004,7 +1004,8 @@ inline unsigned long	GraphicViewPortClass::Print(int num, int x, int y, int fcol
 
 	unsigned long	return_code=0;
 	if (Lock()){
-		return_code = (Buffer_Print(this, itoa(num, str, 10), x, y, fcol, bcol));
+		sprintf(str, "%d", num);
+		return_code = (Buffer_Print(this, str, x, y, fcol, bcol));
 	}
 	Unlock();
 	return ( return_code );
@@ -1027,7 +1028,8 @@ inline unsigned long	GraphicViewPortClass::Print(short num, int x, int y, int fc
 
 	unsigned long	return_code=0;
 	if (Lock()){
-		return_code = (Buffer_Print(this, itoa(num, str, 10), x, y, fcol, bcol));
+		sprintf(str, "%d", num);
+		return_code = (Buffer_Print(this, str, x, y, fcol, bcol));
 	}
 	Unlock();
 	return ( return_code );
@@ -1050,7 +1052,8 @@ inline unsigned long	GraphicViewPortClass::Print(long num, int x, int y, int fco
 
 	unsigned long	return_code=0;
 	if (Lock()){
-		return_code = (Buffer_Print(this, ltoa(num, str,10), x, y, fcol, bcol));
+		sprintf(str, "%ld", num);
+		return_code = (Buffer_Print(this, str, x, y, fcol, bcol));
 	}
 	Unlock();
 	return ( return_code );
