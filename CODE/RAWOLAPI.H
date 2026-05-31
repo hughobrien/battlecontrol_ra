@@ -327,7 +327,6 @@ private:
 #endif
 #endif
 
-#define GAME_VERSION	0x00030003
 #define GAME_TYPE		21
 #define LOB_PREFIX		"Lob_21_"
 
