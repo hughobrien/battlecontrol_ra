@@ -665,7 +665,8 @@ inline unsigned long	GraphicViewPortClass::Print(int num, int x, int y, int fcol
 	char str[17];
 
 	
-	return(MCGA_Print(this, itoa(num, str, 10), x, y, fcol, bcol));
+	sprintf(str, "%d", num);
+	return(MCGA_Print(this, str, x, y, fcol, bcol));
 }
 
 /***************************************************************************
@@ -683,7 +684,8 @@ inline unsigned long	GraphicViewPortClass::Print(short num, int x, int y, int fc
 {
 	char str[17];
 
-	return(MCGA_Print(this, itoa(num, str, 10), x, y, fcol, bcol));
+	sprintf(str, "%d", num);
+	return(MCGA_Print(this, str, x, y, fcol, bcol));
 }
 
 /***************************************************************************
@@ -701,7 +703,8 @@ inline unsigned long	GraphicViewPortClass::Print(long num, int x, int y, int fco
 {
 	char str[33];
 
-	return(MCGA_Print(this, ltoa(num, str,10), x, y, fcol, bcol));
+	sprintf(str, "%ld", num);
+	return(MCGA_Print(this, str, x, y, fcol, bcol));
 }
 
 /***************************************************************************
