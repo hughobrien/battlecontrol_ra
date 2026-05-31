@@ -110,7 +110,7 @@ class VesselClass : public DriveClass
 		virtual void Per_Cell_Process(PCPType why);
 		virtual void Assign_Destination(TARGET target);
 
-		virtual ResultType Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source=0, int forced=false);
+		virtual ResultType Take_Damage(int & damage, int distance, WarheadType warhead, TechnoClass * source=0, bool forced=false);
 		virtual FireErrorType Can_Fire(TARGET target, int which) const;
 
 		virtual void Enter_Idle_Mode(bool initial=false);
