@@ -51,6 +51,7 @@
 #include "MISC.H"
 #endif
 #include <string.h>
+#include <stdint.h>
 #pragma inline
 
 int		TotalLocks;
@@ -58,6 +59,116 @@ BOOL 	AllowHardwareBlitFills = TRUE;
 
 
 //int	CacheAllowed;
+
+extern "C" void __cdecl Buffer_Put_Pixel(void *thisptr, int x, int y, unsigned char color)
+{
+	GraphicViewPortClass *view = (GraphicViewPortClass *)thisptr;
+	if ((unsigned)x >= (unsigned)view->Get_Width()) return;
+	if ((unsigned)y >= (unsigned)view->Get_Height()) return;
+
+	unsigned char *base = (unsigned char *)view->Get_Offset();
+	int stride = view->Get_Width() + view->Get_XAdd() + view->Get_Pitch();
+	base[(y * stride) + x] = color;
+}
+
+
+extern "C" int __cdecl Buffer_Get_Pixel(void *thisptr, int x, int y)
+{
+	GraphicViewPortClass *view = (GraphicViewPortClass *)thisptr;
+	if ((unsigned)x >= (unsigned)view->Get_Width()) return 0;
+	if ((unsigned)y >= (unsigned)view->Get_Height()) return 0;
+
+	unsigned char *base = (unsigned char *)view->Get_Offset();
+	int stride = view->Get_Width() + view->Get_XAdd() + view->Get_Pitch();
+	return base[(y * stride) + x];
+}
+
+
+extern "C" BOOL __cdecl Linear_Blit_To_Linear(void *thisptr, void *destptr, int x_pixel, int y_pixel,
+	int dx_pixel, int dy_pixel, int pixel_width, int pixel_height, BOOL trans)
+{
+	GraphicViewPortClass *source = (GraphicViewPortClass *)thisptr;
+	GraphicViewPortClass *dest = (GraphicViewPortClass *)destptr;
+
+	int source_x0 = x_pixel;
+	int source_y0 = y_pixel;
+	int source_x1 = x_pixel + pixel_width;
+	int source_y1 = y_pixel + pixel_height;
+
+	if (source_x0 < 0) source_x0 = 0;
+	if (source_y0 < 0) source_y0 = 0;
+	if (source_x1 > source->Get_Width()) source_x1 = source->Get_Width();
+	if (source_y1 > source->Get_Height()) source_y1 = source->Get_Height();
+
+	int dest_x0 = dx_pixel;
+	int dest_y0 = dy_pixel;
+	int dest_x1 = dest_x0 + (source_x1 - source_x0);
+	int dest_y1 = dest_y0 + (source_y1 - source_y0);
+
+	if (dest_x0 < 0) {
+		source_x0 -= dest_x0;
+		dest_x0 = 0;
+	}
+	if (dest_y0 < 0) {
+		source_y0 -= dest_y0;
+		dest_y0 = 0;
+	}
+	if (dest_x1 > dest->Get_Width()) {
+		source_x1 -= dest_x1 - dest->Get_Width();
+		dest_x1 = dest->Get_Width();
+	}
+	if (dest_y1 > dest->Get_Height()) {
+		source_y1 -= dest_y1 - dest->Get_Height();
+		dest_y1 = dest->Get_Height();
+	}
+
+	int width = dest_x1 - dest_x0;
+	int height = dest_y1 - dest_y0;
+	if (width <= 0 || height <= 0) return FALSE;
+
+	unsigned char *source_base = (unsigned char *)source->Get_Offset();
+	unsigned char *dest_base = (unsigned char *)dest->Get_Offset();
+	int source_stride = source->Get_Width() + source->Get_XAdd() + source->Get_Pitch();
+	int dest_stride = dest->Get_Width() + dest->Get_XAdd() + dest->Get_Pitch();
+	unsigned char *source_line = source_base + (source_y0 * source_stride) + source_x0;
+	unsigned char *dest_line = dest_base + (dest_y0 * dest_stride) + dest_x0;
+	BOOL is_transparent = trans & 1;
+
+	if (source_line == dest_line) return FALSE;
+
+	if ((uintptr_t)source_line < (uintptr_t)dest_line) {
+		source_line += (height - 1) * source_stride;
+		dest_line += (height - 1) * dest_stride;
+
+		for (int row = 0; row < height; row++) {
+			if (is_transparent) {
+				for (int col = width - 1; col >= 0; col--) {
+					unsigned char color = source_line[col];
+					if (color) dest_line[col] = color;
+				}
+			} else {
+				memmove(dest_line, source_line, width);
+			}
+			source_line -= source_stride;
+			dest_line -= dest_stride;
+		}
+	} else {
+		for (int row = 0; row < height; row++) {
+			if (is_transparent) {
+				for (int col = 0; col < width; col++) {
+					unsigned char color = source_line[col];
+					if (color) dest_line[col] = color;
+				}
+			} else {
+				memmove(dest_line, source_line, width);
+			}
+			source_line += source_stride;
+			dest_line += dest_stride;
+		}
+	}
+
+	return TRUE;
+}
 
 /*=========================================================================*/
 /* The following PRIVATE functions are in this file:                       */
@@ -706,7 +817,3 @@ HRESULT GraphicViewPortClass::DD_Linear_Blit_To_Linear (
 												key_source | DDBLT_WAIT | DDBLT_ASYNC,
 												NULL ) );
 }
-
-
-
-
