@@ -43,8 +43,24 @@
 #include "RGB.H"
 #include	"HSV.H"
 #include	"PALETTE.H"
+#include	"FTIMER.H"
+#include	"TIMER.H"
+#include	<string.h>
 
 RGBClass const BlackColor(0, 0, 0);
+
+#ifndef SYSTEM_TIMER_CLASS
+#define SYSTEM_TIMER_CLASS
+class SystemTimerClass
+{
+	public:
+		long operator () (void) const {if (!WindowsTimer) return(0);return(WindowsTimer->Get_System_Tick_Count());};
+		operator long (void) const {if (!WindowsTimer) return(0);return(WindowsTimer->Get_System_Tick_Count());};
+};
+#endif
+
+PaletteClass const & PaletteClass::CurrentPalette = *(PaletteClass const *)&::CurrentPalette[0];
+static_assert(sizeof(PaletteClass) == PALETTE_BYTES, "PaletteClass must match the Win32 palette buffer layout");
 
 
 /***********************************************************************************************
@@ -247,3 +263,110 @@ void RGBClass::Set(int color) const
 	((RGBClass &)PaletteClass::CurrentPalette[color]) = *this;
 }
 
+
+PaletteClass::PaletteClass(RGBClass const & rgb)
+{
+	for (int index = 0; index < COLOR_COUNT; index++) {
+		Palette[index] = rgb;
+	}
+}
+
+
+int PaletteClass::operator == (PaletteClass const & palette) const
+{
+	if (this == &palette) return(true);
+	return(memcmp(Palette, palette.Palette, sizeof(Palette)) == 0);
+}
+
+
+PaletteClass & PaletteClass::operator = (PaletteClass const & palette)
+{
+	if (this != &palette) {
+		memcpy(Palette, palette.Palette, sizeof(Palette));
+	}
+	return(*this);
+}
+
+
+void PaletteClass::Adjust(int ratio)
+{
+	for (int index = 0; index < COLOR_COUNT; index++) {
+		Palette[index].Adjust(ratio, BlackColor);
+	}
+}
+
+
+void PaletteClass::Adjust(int ratio, PaletteClass const & palette)
+{
+	for (int index = 0; index < COLOR_COUNT; index++) {
+		Palette[index].Adjust(ratio, palette[index]);
+	}
+}
+
+
+void PaletteClass::Partial_Adjust(int ratio, char * lut)
+{
+	for (int index = 0; index < COLOR_COUNT; index++) {
+		if (lut[index]) {
+			Palette[index].Adjust(ratio, BlackColor);
+		}
+	}
+}
+
+
+void PaletteClass::Partial_Adjust(int ratio, PaletteClass const & palette, char * lut)
+{
+	for (int index = 0; index < COLOR_COUNT; index++) {
+		if (lut[index]) {
+			Palette[index].Adjust(ratio, palette[index]);
+		}
+	}
+}
+
+
+int PaletteClass::Closest_Color(RGBClass const & rgb) const
+{
+	int closest = 0;
+	int value = -1;
+
+	for (int index = 0; index < COLOR_COUNT; index++) {
+		int difference = rgb.Difference(Palette[index]);
+		if (value == -1 || difference < value) {
+			value = difference;
+			closest = index;
+		}
+	}
+
+	return(closest);
+}
+
+
+void PaletteClass::Set(int time, void (* callback)(void)) const
+{
+	if (time <= 0) {
+		Set_Palette((void *)&Palette[0]);
+		return;
+	}
+
+	CDTimerClass<SystemTimerClass> timer = time;
+	PaletteClass original = CurrentPalette;
+
+	while (timer) {
+		PaletteClass palette = original;
+		int adjust = ((time - timer) * 256) / time;
+		palette.Adjust(adjust, *this);
+
+		long holdtime = timer;
+		Set_Palette((void *)&palette[0]);
+
+		if (callback) {
+			callback();
+		}
+
+		while (timer == holdtime && holdtime != 0) {
+			if (callback) callback();
+		}
+	}
+
+	Set_Palette((void *)&Palette[0]);
+}

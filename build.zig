@@ -28,6 +28,8 @@ pub fn build(b: *std.Build) void {
     };
     const sources = [_][]const u8{
         "CODE/STARTUP.CPP",
+        "CODE/GLOBALS.CPP",
+        "CODE/RGB.CPP",
         "CODE/HEAP.CPP",
         "CODE/VECTOR.CPP",
         "CODE/DYNAVEC.CPP",

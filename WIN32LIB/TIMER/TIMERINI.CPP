@@ -66,8 +66,8 @@ extern BOOL Remove_Timer_Interrupt(VOID);
 BOOL	TimerSystemOn	= FALSE;
 WinTimerClass *WindowsTimer = NULL;
 
-// Global timers that the library or user can count on existing.
-TimerClass					TickCount(BT_SYSTEM);
+// Timer used internally while starting the Win32 timer library.
+static TimerClass			LibraryTickCount(BT_SYSTEM);
 CountDownTimerClass		CountDown(BT_SYSTEM, 0);
 
 
@@ -129,7 +129,7 @@ WinTimerClass::WinTimerClass (UINT freq, BOOL partial)
 	if (success)  {
 		if (!partial) {
 			WindowsTimer=this;
-			TickCount.Start();
+			LibraryTickCount.Start();
 		}
 	}else{
 		char error_str [128];

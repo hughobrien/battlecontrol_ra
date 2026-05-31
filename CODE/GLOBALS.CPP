@@ -34,7 +34,9 @@
  *---------------------------------------------------------------------------------------------*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#define CCPTR_HEAP_SPECIALIZATIONS
 #include "FUNCTION.H"
+#undef CCPTR_HEAP_SPECIALIZATIONS
 
 bool IsVQ640 = false;
 unsigned long GameVersion = 0;
