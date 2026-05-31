@@ -18,7 +18,6 @@
 
 //	New character strings for wolapi integration.
 
-#ifdef WOLAPI_INTEGRATION
 #include "FUNCTION.H"
 #include "WOLSTRNG.H"
 
@@ -798,8 +797,6 @@ const char TXT_WOL_CANCELMEANSFORFEIT[]			= " (ET RENONCER AU JEU)";
 const char TXT_WOL_DLLERROR_GETIE3[]			= "Votre version des Windows est démodée. Améliorez s'il vous plait aux Windows SP1, ou installez l'Internet Explorer 3,0 ou plus haut.";
 const char TXT_WOL_DLLERROR_CALLUS[]			= "Une erreur inattendue s'est produite. Veuillez contacter l'assistance technique de Electronic Arts.";
 const char TXT_WOL_PRIVATE[]					= "<personnel>";
-
-#endif
 
 #endif
 
