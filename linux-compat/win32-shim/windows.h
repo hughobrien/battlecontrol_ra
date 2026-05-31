@@ -37,6 +37,7 @@ typedef void *HPALETTE;
 typedef void *HHOOK;
 typedef void *HKEY;
 typedef void *HGDIOBJ;
+typedef void *HBRUSH;
 typedef UINT_PTR SOCKET;
 
 typedef char *LPSTR;
@@ -56,6 +57,10 @@ typedef LONG HRESULT;
 typedef UINT_PTR WPARAM;
 typedef LONG_PTR LPARAM;
 typedef LONG_PTR LRESULT;
+typedef intptr_t INT_PTR;
+typedef WORD ATOM;
+typedef LONG (*WNDPROC)(HWND, UINT, UINT, LONG);
+typedef INT_PTR (*DLGPROC)(HWND, UINT, WPARAM, LPARAM);
 
 typedef struct in_addr {
     union {
@@ -159,6 +164,28 @@ typedef struct tagSIZE {
     LONG cy;
 } SIZE, *LPSIZE;
 
+typedef struct tagMSG {
+    HWND hwnd;
+    UINT message;
+    WPARAM wParam;
+    LPARAM lParam;
+    DWORD time;
+    POINT pt;
+} MSG, *LPMSG;
+
+typedef struct tagWNDCLASS {
+    UINT style;
+    WNDPROC lpfnWndProc;
+    int cbClsExtra;
+    int cbWndExtra;
+    HINSTANCE hInstance;
+    HICON hIcon;
+    HCURSOR hCursor;
+    HBRUSH hbrBackground;
+    LPCSTR lpszMenuName;
+    LPCSTR lpszClassName;
+} WNDCLASS, *LPWNDCLASS;
+
 typedef union _LARGE_INTEGER {
     struct {
         DWORD LowPart;
@@ -245,8 +272,21 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef __stdcall
 #define __stdcall
 #endif
+#ifndef _export
+#define _export
+#endif
 #ifndef __success
 #define __success(x)
+#endif
+
+#ifndef LOWORD
+#define LOWORD(l) ((WORD)((uintptr_t)(l) & 0xffffu))
+#endif
+#ifndef HIWORD
+#define HIWORD(l) ((WORD)((uintptr_t)(l) >> 16))
+#endif
+#ifndef MAKEINTRESOURCE
+#define MAKEINTRESOURCE(i) ((LPCTSTR)(uintptr_t)((WORD)(i)))
 #endif
 
 #ifndef MAKE_HRESULT
@@ -310,8 +350,49 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef WM_DESTROY
 #define WM_DESTROY 0x0002
 #endif
+#ifndef WM_ACTIVATEAPP
+#define WM_ACTIVATEAPP 0x001c
+#endif
+#ifndef WM_SYSCOMMAND
+#define WM_SYSCOMMAND 0x0112
+#endif
 #ifndef WM_USER
 #define WM_USER 0x0400
+#endif
+
+#ifndef PM_NOREMOVE
+#define PM_NOREMOVE 0x0000
+#endif
+#ifndef PM_NOYIELD
+#define PM_NOYIELD 0x0002
+#endif
+
+#ifndef CS_VREDRAW
+#define CS_VREDRAW 0x0001
+#endif
+#ifndef CS_HREDRAW
+#define CS_HREDRAW 0x0002
+#endif
+
+#ifndef WS_POPUP
+#define WS_POPUP 0x80000000u
+#endif
+#ifndef WS_EX_TOPMOST
+#define WS_EX_TOPMOST 0x00000008u
+#endif
+
+#ifndef SM_CXSCREEN
+#define SM_CXSCREEN 0
+#endif
+#ifndef SM_CYSCREEN
+#define SM_CYSCREEN 1
+#endif
+
+#ifndef SC_SCREENSAVE
+#define SC_SCREENSAVE 0xf140
+#endif
+#ifndef SC_CLOSE
+#define SC_CLOSE 0xf060
 #endif
 
 #ifndef SW_HIDE
@@ -390,8 +471,24 @@ DWORD GetVersion(void);
 HWND FindWindow(LPCSTR class_name, LPCSTR window_name);
 BOOL IsWindow(HWND window);
 BOOL PostMessage(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
+BOOL PeekMessage(LPMSG msg, HWND window, UINT filter_min, UINT filter_max, UINT remove_msg);
+BOOL GetMessage(LPMSG msg, HWND window, UINT filter_min, UINT filter_max);
+BOOL TranslateMessage(const MSG *msg);
+LRESULT DispatchMessage(const MSG *msg);
+LRESULT DefWindowProc(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
+void PostQuitMessage(int exit_code);
+void ExitProcess(UINT exit_code);
 BOOL SetForegroundWindow(HWND window);
 BOOL ShowWindow(HWND window, int command_show);
+HICON LoadIcon(HINSTANCE instance, LPCTSTR icon_name);
+ATOM RegisterClass(const WNDCLASS *window_class);
+HWND CreateWindowEx(DWORD ex_style, LPCTSTR class_name, LPCTSTR window_name, DWORD style, int x, int y, int width, int height, HWND parent, HMENU menu, HINSTANCE instance, LPVOID param);
+int GetSystemMetrics(int index);
+BOOL UpdateWindow(HWND window);
+HWND SetFocus(HWND window);
+UINT RegisterWindowMessage(LPCTSTR string);
+INT_PTR DialogBox(HANDLE instance, LPCTSTR template_name, HWND owner, DLGPROC dialog_proc);
+int ShowCursor(BOOL show);
 int MessageBox(HWND window, LPCSTR text, LPCSTR caption, UINT type);
 LPSTR lstrcpy(LPSTR dest, LPCSTR src);
 HANDLE CreateFile(LPCSTR file_name, DWORD desired_access, DWORD share_mode, LPSECURITY_ATTRIBUTES security_attributes, DWORD creation_disposition, DWORD flags_and_attributes, HANDLE template_file);
