@@ -991,6 +991,7 @@ void Show_Who_Was_Responsible (void);
 **	names ever created, however there are other objects of this type (with different names) that
 **	are created.
 */
+#ifndef CCPTR_HEAP_SPECIALIZATIONS
 extern template class CCPtr<AircraftClass>;
 extern template class CCPtr<AnimClass>;
 extern template class CCPtr<BuildingClass>;
@@ -1018,6 +1019,7 @@ extern template class CCPtr<TemplateTypeClass>;
 extern template class CCPtr<TerrainTypeClass>;
 extern template class CCPtr<OverlayTypeClass>;
 extern template class CCPtr<SmudgeTypeClass>;
+#endif
 template<> class DynamicVectorClass<CCPtr<TeamTypeClass> >;
 extern DynamicVectorClass<CCPtr<TeamTypeClass> > y002;
 template<> class DynamicVectorClass<CCPtr<TriggerTypeClass> >;
