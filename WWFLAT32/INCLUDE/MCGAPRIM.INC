@@ -117,8 +117,3 @@ struc  RECTANGLE
 		  x1	dd	?
 		  y1 dd ?
 ends 	 RECTANGLE
-
-
-
-
-

@@ -145,7 +145,3 @@ WORD ibm_chdir(BYTE const *path)
 	CallingDOSInt--;
 	return(retval);
 }
-
-
-
-

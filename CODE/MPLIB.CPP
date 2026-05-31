@@ -127,4 +127,3 @@ int MGenSanityCheck(void)
 
    return regs.x.eax;
 }
-

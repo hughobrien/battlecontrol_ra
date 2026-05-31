@@ -112,4 +112,3 @@ GLOBAL	Calculate_CRC	:NEAR
 	ENDP	Calculate_CRC
 
 	END
-

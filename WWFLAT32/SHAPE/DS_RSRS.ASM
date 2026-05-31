@@ -107,4 +107,3 @@ PROC	Right_Scale_Reverse_Skip NOLANGUAGE NEAR
 	END
 
 ;*************************** End of ds_rsrs.asm ****************************
-

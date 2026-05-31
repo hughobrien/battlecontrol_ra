@@ -440,4 +440,3 @@ VOID cdecl Set_Uncomp_Buffer(int buffer_segment, unsigned int size_of_buffer)
 	}
 }
 #endif
-

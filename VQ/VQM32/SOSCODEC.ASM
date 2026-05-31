@@ -1267,5 +1267,3 @@ wCODECMask			DW	0 ; Current mask
 
 	ENDP	sosCODECDecompressData
 	END
-
-

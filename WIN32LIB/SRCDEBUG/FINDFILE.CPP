@@ -306,7 +306,3 @@ WORD cdecl Find_File_Index(BYTE const *filename)
 	}
 	return(ERROR);
 }
-
-
-
-

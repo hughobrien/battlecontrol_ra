@@ -18,4 +18,3 @@
 
 .rc.res:
 	hello
-

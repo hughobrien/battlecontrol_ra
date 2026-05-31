@@ -306,7 +306,3 @@ int cdecl Find_File_Index(char const *filename)
 	}
 	return(ERROR);
 }
-
-
-
-

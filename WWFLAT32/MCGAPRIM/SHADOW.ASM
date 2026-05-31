@@ -206,5 +206,3 @@ GLOBAL	Show_Mouse  : NEAR
 	ENDP    Shadow_Blit
 
 	END
-
-

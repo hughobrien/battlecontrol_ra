@@ -158,5 +158,3 @@ update: .SYMBOLIC
 	@echo Updating VQAPlay32 header files!
 	@copy vqaplay.h ..\include\vqa32 >NUL
 	@copy vqafile.h ..\include\vqa32 >NUL
-
-

@@ -124,4 +124,3 @@ NullLPC(void)
 
    MGenMoveTo(REC_QUEUE, IDLE_QUEUE);
 }
-
