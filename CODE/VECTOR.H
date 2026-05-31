@@ -62,11 +62,16 @@
 #endif
 #endif
 
+#if !defined(__WATCOMC__)
+#include	<new>
+#endif
 #include	<stdlib.h>
 #include	<stddef.h>
 
+#if defined(__WATCOMC__)
 inline void * operator new(size_t , void * pointer) {return(pointer);}
 inline void * operator new[](size_t , void * pointer) {return(pointer);}
+#endif
 
 
 /**************************************************************************
