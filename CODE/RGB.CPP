@@ -62,6 +62,43 @@ class SystemTimerClass
 PaletteClass const & PaletteClass::CurrentPalette = *(PaletteClass const *)&::CurrentPalette[0];
 static_assert(sizeof(PaletteClass) == PALETTE_BYTES, "PaletteClass must match the Win32 palette buffer layout");
 
+static unsigned char PendingPaletteRegister;
+static unsigned char PendingPaletteComponent;
+static unsigned char PendingPaletteRGB[3];
+
+void outportb(int port, unsigned char data)
+{
+	if (port == 0x03C8) {
+		PendingPaletteRegister = data;
+		PendingPaletteComponent = 0;
+		return;
+	}
+
+	if (port == 0x03C9) {
+		PendingPaletteRGB[PendingPaletteComponent++] = data;
+		if (PendingPaletteComponent == 3) {
+			Set_Palette_Register(PendingPaletteRegister, PendingPaletteRGB[0], PendingPaletteRGB[1], PendingPaletteRGB[2]);
+			PendingPaletteRegister++;
+			PendingPaletteComponent = 0;
+		}
+	}
+}
+
+
+void outport(int port, unsigned short data)
+{
+	outportb(port, (unsigned char)data);
+	outportb(port + 1, (unsigned char)(data >> 8));
+}
+
+
+void outrgb(unsigned char red, unsigned char green, unsigned char blue)
+{
+	Set_Palette_Register(PendingPaletteRegister, red, green, blue);
+	PendingPaletteRegister++;
+	PendingPaletteComponent = 0;
+}
+
 
 /***********************************************************************************************
  * RGBClass::Adjust -- Adjust one RGB value toward another.                                    *
