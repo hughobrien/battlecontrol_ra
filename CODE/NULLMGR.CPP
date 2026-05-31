@@ -60,7 +60,9 @@ extern ModemRegistryEntryClass *ModemRegistry;
 
 
 // Turn off "expression is not meaningful".
+#if defined(__WATCOMC__)
 #pragma warning 628 9
+#endif
 
 
 // the following line was taken from Greenleaf's <ibmkeys.h> <asciidef.h>

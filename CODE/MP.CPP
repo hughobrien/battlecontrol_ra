@@ -315,7 +315,9 @@ unsigned XMP_Encode(unsigned char * to, unsigned tobytes, digit const * from, in
  * HISTORY:                                                                                    *
  *   07/01/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
+#if defined(__WATCOMC__)
 #pragma warning 364 9
+#endif
 unsigned XMP_Encode(unsigned char * to, digit const * from, int precision)
 {
 	assert(to != NULL);

@@ -1711,7 +1711,9 @@ bool DriveClass::Ok_To_Move(DirType ) const
 **	Track 11= back up into refinery
 **	Track 12= drive out of refinery
 */
+#if defined(__WATCOMC__)
 #pragma warn -ias
+#endif
 DriveClass::TrackType const DriveClass::Track1[24] = {
 	{0x00F50000L,(DirType)0},
 	{0x00EA0000L,(DirType)0},

@@ -244,7 +244,9 @@ int SHAEngine::Result(void * result) const
 **	_rotl() function is called but will NOT give the warning when the _lrotl() function
 **	is called even though they both have the same parameters and declaration attributes.
 */
+#if defined(__WATCOMC__)
 #pragma warn -sig
+#endif
 template<class T>
 T _rotl(T X, int n)
 {

@@ -56,7 +56,9 @@ typedef int bool;
 #endif
 
 
+#if defined(__WATCOMC__)
 #pragma warn -inl
+#endif
 
 /*
 **	This is a doubly linked list node. Typical use of this node is to derive
