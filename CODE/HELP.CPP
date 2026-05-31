@@ -47,6 +47,7 @@
  *   HelpClass::Set_Text -- Determines the overlap list and draw coordinates.                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 /*
@@ -285,7 +286,7 @@ void HelpClass::Draw_It(bool forced)
 
 				Plain_Text_Print(buffer, DrawX, DrawY+FontHeight, Color, BLACK, TPF_MAP|TPF_NOSHADOW);
 				LogicPage->Draw_Rect(DrawX-1, DrawY+FontHeight, DrawX+width+1, DrawY+FontHeight+FontHeight-1, Color);
-				LogicPage->Draw_Line(DrawX, DrawY+FontHeight, DrawX+min(width+1, Width)-1, DrawY+FontHeight, BLACK);
+				LogicPage->Draw_Line(DrawX, DrawY+FontHeight, DrawX+std::min(width+1, Width)-1, DrawY+FontHeight, BLACK);
 			}
 			LogicPage->Unlock();
 		}

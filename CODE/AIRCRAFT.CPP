@@ -94,6 +94,7 @@
  *   _Counts_As_Civ_Evac -- Is the specified object a candidate for civilian evac logic?       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 
@@ -995,7 +996,7 @@ short const * AircraftClass::Overlap_List(bool redraw) const
 #ifdef PARTIAL
 		Rect rect;
 		if (!IsSelected && Class->DimensionData != NULL && Class->IsFixedWing) {
-			int shapenum = min(Shape_Number(), Get_Build_Frame_Count(Class->Get_Image_Data())-1);
+			int shapenum = std::min(Shape_Number(), Get_Build_Frame_Count(Class->Get_Image_Data())-1);
 			if (!Class->DimensionData[shapenum].Is_Valid()) {
 				Class->DimensionData[shapenum] = Shape_Dimensions(Class->Get_Image_Data(), shapenum);
 			}
@@ -2082,7 +2083,7 @@ int AircraftClass::Process_Fly_To(bool slowdown, TARGET dest)
 	PrimaryFacing.Set_Desired(Direction(coord));
 
 	if (slowdown) {
-		int speed = min(distance, 0x0300);
+		int speed = std::min(distance, 0x0300);
 		speed = Bound(speed/3, 0x0020, 0x00FF);
 		if (Speed != speed) {
 			Set_Speed(speed);
@@ -3541,7 +3542,7 @@ void AircraftClass::Set_Speed(int speed)
 
 	FootClass::Set_Speed(speed);
 
-	MPHType sp = MPHType(min(Class->MaxSpeed * SpeedBias * House->AirspeedBias, MPH_LIGHT_SPEED));
+	MPHType sp = MPHType(std::min<int>(Class->MaxSpeed * SpeedBias * House->AirspeedBias, MPH_LIGHT_SPEED));
 	Fly_Speed(speed, sp);
 }
 
@@ -4225,7 +4226,7 @@ void AircraftClass::Movement_AI(void)
 			Mark(MARK_DOWN);
 		} else {
 			Mark(MARK_CHANGE_REDRAW);
-			if (Physics(Coord, PrimaryFacing) != RESULT_NONE) {
+			if (Physics(Coord, PrimaryFacing) != IMPACT_NONE) {
 				Mark(MARK_CHANGE_REDRAW);
 			}
 		}

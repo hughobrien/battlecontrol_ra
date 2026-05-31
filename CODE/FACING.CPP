@@ -39,6 +39,7 @@
  *   FacingClass::Set_Desired -- Sets the desired facing  value.                               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 #include	"FACING.H"
 
@@ -146,7 +147,7 @@ int FacingClass::Rotation_Adjust(int rate)
 	**	same as the current facing.
 	*/
 	if (Is_Rotating()) {
-		rate = min(rate, 127);
+		rate = std::min(rate, 127);
 
 		DirType oldfacing = CurrentFacing;
 		int diff = Difference();

@@ -254,7 +254,7 @@ class EventClass
 		};
 
 		static unsigned char EventLength[LAST_EVENT];
-		static char * EventNames[LAST_EVENT];
+		static char const * EventNames[LAST_EVENT];
 };
 
 #endif

@@ -133,6 +133,7 @@
  *   HouseClass::Random_Cell_In_Zone -- Find a (technically) legal cell in the zone specified. *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 #include	"VORTEX.H"
 
@@ -977,8 +978,8 @@ void HouseClass::AI(void)
 	**	and the fixed point fractional math involved with power adjustments. If the
 	**	power rating drops below zero, then make it zero.
 	*/
-	Power = max(Power, 0);
-	Drain = max(Drain, 0);
+	Power = std::max(Power, 0);
+	Drain = std::max(Drain, 0);
 
 	/*
 	**	If the base has been alerted to the enemy and should be attacking, then
@@ -1951,7 +1952,7 @@ int HouseClass::Adjust_Capacity(int adjust, bool inanger)
 	int retval = 0;
 
 	Capacity += adjust;
-	Capacity = max(Capacity, 0L);
+	Capacity = std::max(Capacity, 0L);
 	if (Tiberium > Capacity) {
 		retval = Tiberium - Capacity;
 		Tiberium = Capacity;
@@ -2895,6 +2896,9 @@ bool HouseClass::Place_Special_Blast(SpecialWeaponType id, CELL cell)
 
 				break;
 			}
+
+		default:
+			break;
 	}
 	return(true);
 }
@@ -3000,6 +3004,9 @@ bool HouseClass::Place_Object(RTTIType type, CELL cell)
 						case RTTI_AIRCRAFT:
 							JustBuiltAircraft = ((AircraftClass*)pending)->Class->Type;
 							IsBuiltSomething = true;
+							break;
+
+						default:
 							break;
 					}
 				} else {
@@ -3308,6 +3315,9 @@ TechnoTypeClass const * HouseClass::Suggest_New_Object(RTTIType objecttype, bool
 				return(&BuildingTypeClass::As_Reference(BuildStructure));
 			}
 			return(NULL);
+
+		default:
+			break;
 	}
 	return(techno);
 }
@@ -4387,19 +4397,19 @@ COORDINATE HouseClass::Find_Build_Location(BuildingClass * building) const
 		diff = zoneinfo.AntiAir-ZoneInfo[z].AirDefense;
 		if (z == ZONE_CORE) diff /= 2;
 		if (diff > 0) {
-			zonerating[z] += min(antiair, diff);
+			zonerating[z] += std::min(antiair, diff);
 		}
 
 		diff = zoneinfo.AntiArmor-ZoneInfo[z].ArmorDefense;
 		if (z == ZONE_CORE) diff /= 2;
 		if (diff > 0) {
-			zonerating[z] += min(antiarmor, diff);
+			zonerating[z] += std::min(antiarmor, diff);
 		}
 
 		diff = zoneinfo.AntiInfantry-ZoneInfo[z].InfantryDefense;
 		if (z == ZONE_CORE) diff /= 2;
 		if (diff > 0) {
-			zonerating[z] += min(antiinfantry, diff);
+			zonerating[z] += std::min(antiinfantry, diff);
 		}
 	}
 
@@ -4432,7 +4442,7 @@ COORDINATE HouseClass::Find_Build_Location(BuildingClass * building) const
 		if (zcell) return(zcell);
 	}
 
-	return(NULL);
+	return(0);
 }
 
 
@@ -4541,7 +4551,7 @@ void HouseClass::Recalc_Center(void)
 					radius += Distance(Center, b->Center_Coord());
 				}
 			}
-			Radius = max(radius / count, 2 * CELL_LEPTON_W);
+			Radius = std::max(radius / count, 2 * CELL_LEPTON_W);
 
 			/*
 			**	Determine the relative strength of each base defense zone.
@@ -5833,7 +5843,7 @@ int HouseClass::AI_Unit(void)
 
 					if (memtype->What_Am_I() == RTTI_UNITTYPE) {
 						int subtype = ((UnitTypeClass const *)memtype)->Type;
-						counter[subtype] = max(counter[subtype], team->Members[subindex].Quantity);
+						counter[subtype] = std::max(counter[subtype], team->Members[subindex].Quantity);
 					}
 				}
 			}
@@ -5964,7 +5974,7 @@ int HouseClass::AI_Vessel(void)
 					for (int subindex = 0; subindex < team->ClassCount; subindex++) {
 						if (team->Members[subindex].Class->What_Am_I() == RTTI_VESSELTYPE) {
 							int subtype = ((VesselTypeClass const *)(team->Members[subindex].Class))->Type;
-							counter[subtype] = max(counter[subtype], team->Members[subindex].Quantity);
+							counter[subtype] = std::max(counter[subtype], team->Members[subindex].Quantity);
 						}
 					}
 				}
@@ -6075,8 +6085,8 @@ int HouseClass::AI_Infantry(void)
 						if (team->Members[subindex].Class->What_Am_I() == RTTI_INFANTRYTYPE) {
 							int subtype = ((InfantryTypeClass const *)(team->Members[subindex].Class))->Type;
 //									counter[subtype] = 1;
-							counter[subtype] = max(counter[subtype], team->Members[subindex].Quantity);
-							counter[subtype] = min(counter[subtype], 5);
+							counter[subtype] = std::max(counter[subtype], team->Members[subindex].Quantity);
+							counter[subtype] = std::min(counter[subtype], 5);
 						}
 					}
 				}
@@ -6170,12 +6180,12 @@ int HouseClass::AI_Infantry(void)
 
 						case INFANTRY_RENOVATOR:
 							if (CurInfantry > 5) {
-								typetrack[count].Value = 1 - max(IQuantity[index], 0);
+								typetrack[count].Value = 1 - std::max(IQuantity[index], 0);
 							}
 							break;
 
 						case INFANTRY_TANYA:
-							typetrack[count].Value = 1 - max(IQuantity[index], 0);
+							typetrack[count].Value = 1 - std::max(IQuantity[index], 0);
 							break;
 
 						default:
@@ -7041,6 +7051,9 @@ void HouseClass::Set_Factory(RTTIType rtti, FactoryClass * factory)
 		case RTTI_AIRCRAFTTYPE:
 			factory_index = &AircraftFactory;
 			break;
+
+		default:
+			break;
 	}
 
 	assert(factory_index != NULL);
@@ -7700,27 +7713,27 @@ CELL HouseClass::Random_Cell_In_Zone(ZoneType zone) const
 			break;
 
 		case ZONE_NORTH:
-			maxdist = min(Radius*3, (Coord_Y(Center) - Cell_To_Lepton(Map.MapCellY)) - CELL_LEPTON_H);
+			maxdist = std::min(Radius*3, (Coord_Y(Center) - Cell_To_Lepton(Map.MapCellY)) - CELL_LEPTON_H);
 			if (maxdist < 0) break;
-			coord = Coord_Move(Center, (DirType)(Random_Pick(DIR_N, DIR_E)-((DirType)32)), Random_Pick(min(Radius*2, maxdist), min(Radius*3, maxdist)));
+			coord = Coord_Move(Center, (DirType)(Random_Pick(DIR_N, DIR_E)-((DirType)32)), Random_Pick(std::min(Radius*2, maxdist), std::min(Radius*3, maxdist)));
 			break;
 
 		case ZONE_EAST:
-			maxdist = min(Radius*3, (Cell_To_Lepton(Map.MapCellX + Map.MapCellWidth) - Coord_X(Center)) - CELL_LEPTON_W);
+			maxdist = std::min(Radius*3, (Cell_To_Lepton(Map.MapCellX + Map.MapCellWidth) - Coord_X(Center)) - CELL_LEPTON_W);
 			if (maxdist < 0) break;
-			coord = Coord_Move(Center, Random_Pick(DIR_NE, DIR_SE), Random_Pick(min(Radius*2, maxdist), min(Radius*3, maxdist)));
+			coord = Coord_Move(Center, Random_Pick(DIR_NE, DIR_SE), Random_Pick(std::min(Radius*2, maxdist), std::min(Radius*3, maxdist)));
 			break;
 
 		case ZONE_SOUTH:
-			maxdist = min(Radius*3, (Cell_To_Lepton(Map.MapCellY + Map.MapCellHeight) - Coord_Y(Center)) - CELL_LEPTON_H);
+			maxdist = std::min(Radius*3, (Cell_To_Lepton(Map.MapCellY + Map.MapCellHeight) - Coord_Y(Center)) - CELL_LEPTON_H);
 			if (maxdist < 0) break;
-			coord = Coord_Move(Center, Random_Pick(DIR_SE, DIR_SW), Random_Pick(min(Radius*2, maxdist), min(Radius*3, maxdist)));
+			coord = Coord_Move(Center, Random_Pick(DIR_SE, DIR_SW), Random_Pick(std::min(Radius*2, maxdist), std::min(Radius*3, maxdist)));
 			break;
 
 		case ZONE_WEST:
-			maxdist = min(Radius*3, (Coord_X(Center) - Cell_To_Lepton(Map.MapCellX)) - CELL_LEPTON_W);
+			maxdist = std::min(Radius*3, (Coord_X(Center) - Cell_To_Lepton(Map.MapCellX)) - CELL_LEPTON_W);
 			if (maxdist < 0) break;
-			coord = Coord_Move(Center, Random_Pick(DIR_SW, DIR_NW), Random_Pick(min(Radius*2, maxdist), min(Radius*3, maxdist)));
+			coord = Coord_Move(Center, Random_Pick(DIR_SW, DIR_NW), Random_Pick(std::min(Radius*2, maxdist), std::min(Radius*3, maxdist)));
 			break;
 	}
 

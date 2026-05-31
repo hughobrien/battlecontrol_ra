@@ -50,6 +50,7 @@
  *   UnitTypeClass::operator new -- Allocates an object from the unit type class heap.         *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 /*
@@ -1117,11 +1118,11 @@ void UnitTypeClass::One_Time(void)
 		((void const *&)uclass.ImageData) = ptr;
 		if (ptr != NULL) {
 
-			largest = max(largest, (int)Get_Build_Frame_Width(ptr));
-			largest = max(largest, (int)Get_Build_Frame_Height(ptr));
+			largest = std::max(largest, (int)Get_Build_Frame_Width(ptr));
+			largest = std::max(largest, (int)Get_Build_Frame_Height(ptr));
 		}
 
-		((int &)uclass.MaxSize) = max(largest, 8);
+		((int &)uclass.MaxSize) = std::max(largest, 8);
 	}
 
 	/*
@@ -1234,9 +1235,9 @@ UnitTypeClass & UnitTypeClass::As_Reference(UnitType type)
 void UnitTypeClass::Dimensions(int &width, int &height) const
 {
 	width = MaxSize-(MaxSize/4);
-	width = min(width, 48);
+	width = std::min(width, 48);
 	height = MaxSize-(MaxSize/4);
-	height = min(height, 48);
+	height = std::min(height, 48);
 }
 
 

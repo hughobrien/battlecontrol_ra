@@ -98,7 +98,7 @@ unsigned char EventClass::EventLength[EventClass::LAST_EVENT] = {
 #endif
 };
 
-char * EventClass::EventNames[EventClass::LAST_EVENT] = {
+char const * EventClass::EventNames[EventClass::LAST_EVENT] = {
 	"EMPTY",
 	"ALLY",
 	"MEGAMISSION",
@@ -506,7 +506,7 @@ void EventClass::Execute(void)
 //	RTTIType rt;
 
 	if (Debug_Print_Events) {
-		printf("(%d) Executing %s ID:%d Frame:%d ",
+		printf("(%ld) Executing %s ID:%d Frame:%d ",
 			::Frame, EventNames[Type], ID, Frame);
 	}
 
@@ -551,7 +551,7 @@ void EventClass::Execute(void)
 				Special = Data.Options.Data;
 				HouseClass * house = Houses.Raw_Ptr(ID);
 
-				sprintf(txt, Text_String(TXT_SPECIAL_WARNING), house->Name);
+				sprintf(txt, Text_String(TXT_SPECIAL_WARNING), house->Name());
 				Session.Messages.Add_Message(NULL, 0, txt,
 					house->RemapColor,
 					TPF_6PT_GRAD|TPF_USE_GRAD_PAL|TPF_FULLSHADOW, 1200);
@@ -675,10 +675,10 @@ void EventClass::Execute(void)
 
 		case MEGAMISSION:
 			if (Debug_Print_Events) {
-				printf("Whom:%x Tgt:%x Dest:%x ",
-					Data.MegaMission.Whom.As_TARGET(),
-					Data.MegaMission.Target.As_TARGET(),
-					Data.MegaMission.Destination.As_TARGET());
+				printf("Whom:%lx Tgt:%lx Dest:%lx ",
+					(unsigned long)Data.MegaMission.Whom.As_TARGET(),
+					(unsigned long)Data.MegaMission.Target.As_TARGET(),
+					(unsigned long)Data.MegaMission.Destination.As_TARGET());
 			}
 			techno = Data.MegaMission.Whom.As_Techno();
 			if (techno != NULL && techno->IsActive && techno->Strength > 0 && !techno->IsInLimbo) {
@@ -917,7 +917,7 @@ void EventClass::Execute(void)
 				printf("%d\n", ((char *)Data.Variable.Pointer)[i]);
 			}
 			if (ID != PlayerPtr->ID) {
-				delete [] Data.Variable.Pointer;
+				delete [] (char *)Data.Variable.Pointer;
 			}
 			break;
 
@@ -955,7 +955,7 @@ void EventClass::Execute(void)
 #endif	//WIN32
 #endif	//	!WOLAPI_INTEGRATION
 			if (Debug_Print_Events) {
-				printf("DesiredFrameRate:%d MaxAhead:%d ",
+				printf("DesiredFrameRate:%d MaxAhead:%lu ",
 					Session.DesiredFrameRate,
 					Session.MaxAhead);
 			}

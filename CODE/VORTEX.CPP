@@ -650,7 +650,7 @@ void ChronalVortexClass::Attack(void)
 	int chance = Random_Pick (0, 1000);
 	if (chance > Frame - LastAttackFrame) return;
 
-	for (i= 0; i < Map.Layer[LAYER_GROUND].Count(); i++) {
+	for (unsigned i= 0; i < Map.Layer[LAYER_GROUND].Count(); i++) {
 		ObjectClass * obj = Map.Layer[LAYER_GROUND][i];
 
 		if ( obj && obj->Is_Techno() ) {
