@@ -36,6 +36,7 @@
  *   WWMessageBox::Process -- Handles all the options graphic interface.                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 #include	"MSGBOX.H"
 #include "GADGET.H"
@@ -100,7 +101,7 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 	if (b2txt != NULL && *b2txt == '\0') b2txt = NULL;
 	if (b3txt != NULL && *b3txt == '\0') b3txt = NULL;
 
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_TEXT);
+	Fancy_Text_Print(TXT_NONE, 0, 0, nullptr, TBLACK, TPF_TEXT);
 
 	/*
 	**	Examine the optional button parameters. Fetch the width and starting
@@ -114,11 +115,11 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 		**	Build the button list.
 		*/
 		bheight = FontHeight + FontYSpacing + (2 * RESFACTOR);
-		bwidth = max((String_Pixel_Width(b1txt) + (8 * RESFACTOR)), (30 * RESFACTOR));
+		bwidth = std::max<int>((String_Pixel_Width(b1txt) + (8 * RESFACTOR)), (30 * RESFACTOR));
 
 		if (b2txt != NULL) {
 			numbuttons = 2;
-			bwidth = max((String_Pixel_Width( b2txt ) + (8 * RESFACTOR)), bwidth);
+			bwidth = std::max<int>((String_Pixel_Width( b2txt ) + (8 * RESFACTOR)), bwidth);
 
 			if (b3txt != NULL) {
 				numbuttons = 3;
@@ -135,13 +136,13 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 	*/
 	buffer[BUFFSIZE-1] = 0;
 	strncpy(buffer, msg, BUFFSIZE-1);
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_TEXT);
+	Fancy_Text_Print(TXT_NONE, 0, 0, nullptr, TBLACK, TPF_TEXT);
 	int width;
 	int height;
 	int lines = Format_Window_String(buffer, 255 * RESFACTOR, width, height);
 	TextPrintType tpf = TPF_TEXT;
 
-	width = max(width, (90 * RESFACTOR));
+	width = std::max(width, (90 * RESFACTOR));
 	width += 40 * RESFACTOR;
 	height += (numbuttons == 0) ? (40 * RESFACTOR) : (60 * RESFACTOR);
 
@@ -220,10 +221,10 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 	Hide_Mouse();
 	if (preserve) {
 #ifndef WIN32
-	preservex = max(0, x-4);
-	preservey = max(0, y-4);
-	preservew = min(width+8, 320-preservex);
-	preserveh = min(height+8, 200-preservey);
+	preservex = std::max(0, x-4);
+	preservey = std::max(0, y-4);
+	preservew = std::min(width+8, 320-preservex);
+	preserveh = std::min(height+8, 200-preservey);
 	back = new char[preservew * preserveh];
 	SeenBuff.To_Buffer(preservex, preservey, preservew, preserveh, back, preservew * preserveh);
 #else
@@ -305,7 +306,7 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 				input = KN_ESC;
 			}
 #endif
-			switch (input) {
+			switch ((int)input) {
 				case (KN_ESC):
 					selection = realval[numbuttons-1];
 					pressed = true;
@@ -459,7 +460,7 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 		}
 		SeenBuff.Unlock();
 
-		delete[] back;
+		delete[] (char *)back;
 		back = NULL;
 		Show_Mouse();
 	}
