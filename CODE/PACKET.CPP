@@ -38,6 +38,7 @@
 #include <stdlib.h>
 #include <mem.h>
 #include <string.h>
+#include <algorithm>
 
 #if !defined(__cplusplus) && defined(__WATCOMC__)
 enum {false=0,true=1};
@@ -458,7 +459,7 @@ bool PacketClass::Get_Field(char *id, void *data, int &length)
 {
 	FieldClass *field = Find_Field(id);
 	if (field) {
-		memcpy (data, field->Data, min(field->Size, length));
+		memcpy (data, field->Data, std::min((int)field->Size, length));
 		length = (int) field->Size;
 	}
 	return((field) ? true : false);

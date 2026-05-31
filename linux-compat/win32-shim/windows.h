@@ -404,6 +404,8 @@ BOOL CreateProcess(LPCSTR application_name, LPSTR command_line, LPSECURITY_ATTRI
 void Sleep(DWORD milliseconds);
 DWORD htonl(DWORD hostlong);
 DWORD ntohl(DWORD netlong);
+WORD htons(WORD hostshort);
+WORD ntohs(WORD netshort);
 #ifdef __cplusplus
 }
 #endif
