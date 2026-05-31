@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <syslog.h>
 #include <string.h>
-#include "odevice.h"
+#include "ODEVICE.H"
 
 class SyslogD : public OutputDevice
 {

@@ -39,7 +39,7 @@
 
 #ifndef FILETEMP_H
 // This should be removed once the library is all intacked.
-#include "filetemp.h"
+#include "FILETEMP.H"
 #endif
 
 /*=========================================================================*/

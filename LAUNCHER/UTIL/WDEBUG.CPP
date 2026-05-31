@@ -17,9 +17,9 @@
 */
 
 #include <stdlib.h>
-#include "wdebug.h"
-#include "streamer.h"
-#include "odevice.h"
+#include "WDEBUG.H"
+#include "STREAMER.H"
+#include "ODEVICE.H"
 
 
 static MsgManager         *msg_manager=NULL;

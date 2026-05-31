@@ -41,7 +41,7 @@
 #ifndef __WATCOMC__
 #include <pharlap.h>
 #else
-#include "realmode.h"
+#include "REALMODE.H"
 #endif
 
 /*---------------------------------------------------------------------------

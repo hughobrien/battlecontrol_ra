@@ -22,7 +22,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "odevice.h"
+#include "ODEVICE.H"
 
 ///////////////////////// WIN32 ONLY ///////////////////////////////////
 

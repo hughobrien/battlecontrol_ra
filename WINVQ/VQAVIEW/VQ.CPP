@@ -59,22 +59,22 @@
 
 #include <windows.h>
 #include <windowsx.h>
-#include <westwood.h>
-#include <file.h>
+#include <WESTWOOD.H>
+#include <FILE.H>
 #include <stdio.h>
-#include <memflag.h>
-#include <vq.h>
-#include <mainwind.h>
-#include <pal.h>
-#include <wwstd.h>
-#include <gbuffer.h>
-#include <main.h>
-#include <monochrm.h>
-#include <vidmode.h>
-#include <movies.h>
-#include <gametime.h>
-#include <dialogs.rh>
-#include <vqm32\compress.h>
+#include <MEMFLAG.H>
+#include <VQ.H>
+#include <MAINWIND.H>
+#include <PAL.H>
+#include <WWSTD.H>
+#include <GBUFFER.H>
+#include <MAIN.H>
+#include <MONOCHRM.H>
+#include <VIDMODE.H>
+#include <MOVIES.H>
+#include <GAMETIME.H>
+#include <DIALOGS.RH>
+#include <vqm32\COMPRESS.H>
 
 //==========================================================================
 // PRIVATE DEFINES

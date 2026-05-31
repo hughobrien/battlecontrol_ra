@@ -16,7 +16,7 @@
 **	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "syslogd.h"
+#include "SYSLOGD.H"
 
 SyslogD::SyslogD(char *ident,int logopt,int facility,int _priority)
 {

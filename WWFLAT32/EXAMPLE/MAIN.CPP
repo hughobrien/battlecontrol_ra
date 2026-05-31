@@ -34,7 +34,7 @@
  * Functions:                                                              *
  *   Main_Program -- user-defined main routine, called from startup.c      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-#include "function.h"
+#include "FUNCTION.H"
 
 
 /***************************************************************************

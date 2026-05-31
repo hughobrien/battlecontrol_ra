@@ -41,9 +41,9 @@
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<mem.h>
-#include	<wwstd.h>
-#include	<file.h>
-#include	<iff.h>
+#include	<WWSTD.H>
+#include	<FILE.H>
+#include	<IFF.H>
 
 unsigned long Misc;
 

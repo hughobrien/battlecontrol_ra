@@ -49,8 +49,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "vqaplayp.h"
-#include <vqm32\all.h>
+#include "VQAPLAYP.H"
+#include <vqm32\ALL.H>
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS

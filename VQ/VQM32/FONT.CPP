@@ -48,7 +48,7 @@
 #include <io.h>
 #include <string.h>
 #include <malloc.h>
-#include "font.h"
+#include "FONT.H"
 
 
 /*---------------------------------------------------------------------------

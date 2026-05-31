@@ -42,7 +42,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef GBUFFER_H
-#include "gbuffer.h"
+#include "GBUFFER.H"
 #endif
 #pragma inline
 

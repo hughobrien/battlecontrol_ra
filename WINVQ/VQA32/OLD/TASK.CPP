@@ -64,9 +64,9 @@
 #include <mem.h>
 #include <conio.h>
 #include <sys\timeb.h>
-#include <vqm32\all.h>
-#include "vqaplayp.h"
-#include <vqm32\font.h>
+#include <vqm32\ALL.H>
+#include "VQAPLAYP.H"
+#include <vqm32\FONT.H>
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS

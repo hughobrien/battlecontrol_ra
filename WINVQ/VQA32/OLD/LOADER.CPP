@@ -73,10 +73,10 @@
 #include <malloc.h>
 #include <mem.h>
 #include <dos.h>
-#include "vq.h"
-#include "vqaplayp.h"
-#include <vqm32\all.h>
-#include "caption.h"
+#include "VQ.H"
+#include "VQAPLAYP.H"
+#include <vqm32\ALL.H>
+#include "CAPTION.H"
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS

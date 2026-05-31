@@ -39,7 +39,7 @@
 *
 ****************************************************************************/
 
-#include "vqaplayp.h"
+#include "VQAPLAYP.H"
 
 #ifdef __WATCOMC__
 #define DEVNAME "Watcom/4GW"

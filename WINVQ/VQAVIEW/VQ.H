@@ -38,12 +38,12 @@
 // INCLUDES
 //==========================================================================
 
-#include <vqa32\vqaplay.h>
-#include <vidmode.h>
+#include <vqa32\VQAPLAY.H>
+#include <VIDMODE.H>
 #define bool BOOL
 #define true 1
 #define false 0
-#include <rawfile.h>
+#include <RAWFILE.H>
 
 //==========================================================================
 // PUBLIC FUNCTIONS

@@ -35,8 +35,8 @@
  *   Exit -- Exit routine with message.                                    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "wwstd.h"
-#include "misc.h"
+#include "WWSTD.H"
+#include "MISC.H"
 
 #include <time.h>
 #include <stdio.h>

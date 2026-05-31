@@ -271,8 +271,8 @@ typedef struct {
 /*
 **	VQ player specific includes.
 */
-#include <vqa32\vqaplay.h>
-#include <vqa32\vqafile.h>
+#include <vqa32\VQAPLAY.H>
+#include <vqa32\VQAFILE.H>
 
 extern bool GameActive;
 extern long LParam;

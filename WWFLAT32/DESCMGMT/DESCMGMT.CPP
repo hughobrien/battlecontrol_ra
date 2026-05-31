@@ -35,8 +35,8 @@
  * MAP_SEGMENT_TO_ADDRESS -- Maps a physical address into a selector       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "descmgmt.h"
-#include "misc.h"
+#include "DESCMGMT.H"
+#include "MISC.H"
 
 
 /***************************************************************************

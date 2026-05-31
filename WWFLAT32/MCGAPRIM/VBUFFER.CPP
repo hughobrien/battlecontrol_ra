@@ -44,7 +44,7 @@
  * VBC::~VideoBufferClass -- Destructor for the video buffer class      	*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "vbuffer.h"
+#include "VBUFFER.H"
 
 /*=========================================================================*/
 /* The following PRIVATE functions are in this file:                       */

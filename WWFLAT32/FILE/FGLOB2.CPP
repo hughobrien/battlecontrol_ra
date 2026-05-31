@@ -34,8 +34,8 @@
  * Functions:                                                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <wwstd.h>
-#include "_file.h"
+#include <WWSTD.H>
+#include "_FILE.H"
 
 /* Global varaiables */
 WORD Hard_Error_Occured=0;

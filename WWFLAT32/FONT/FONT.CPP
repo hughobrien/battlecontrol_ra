@@ -35,8 +35,8 @@
  *   Get_Next_Text_Print_XY -- Calculates X and Y given ret value from Text_P*
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <wwstd.h>
-#include "font.h"
+#include <WWSTD.H>
+#include "FONT.H"
 #include <malloc.h>
 #include <dos.h>
 #include <fcntl.h>

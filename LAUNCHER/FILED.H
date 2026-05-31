@@ -19,7 +19,7 @@
 #ifndef FILED_HEADER
 #define FILED_HEADER
 
-#include "odevice.h"
+#include "ODEVICE.H"
 
 class FileD : public OutputDevice
 {

@@ -43,8 +43,8 @@ your hashing function is good.
 #include <string.h>
 #include <assert.h>
 
-#include "wstypes.h"
-#include "wdebug.h"
+#include "WSTYPES.H"
+#include "WDEBUG.H"
 
 // Every entry in the hash dictionary must be an instance of the DNode
 // template.  'K' and 'V' denote Key and Value.

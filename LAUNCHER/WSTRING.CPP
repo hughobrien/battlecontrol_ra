@@ -34,7 +34,7 @@ string to it's own memory (for assignment or construction).
 #include <stdio.h>
 #include <string.h>
 
-#include "wstring.h"
+#include "WSTRING.H"
 
 Wstring::Wstring():str(NULL)
 { }

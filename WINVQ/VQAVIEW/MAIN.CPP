@@ -42,17 +42,17 @@
 
 #include <windows.h>
 #include <windowsx.h>
-#include <gbuffer.h>
+#include <GBUFFER.H>
 #include <ddraw.h>
-#include <file.h>
-#include <wwmem.h>
+#include <FILE.H>
+#include <WWMEM.H>
 
-#include <westwood.h>
-#include <main.h>
-#include <vidmode.h>
-#include <mainwind.h>
-#include <monochrm.h>
-#include <movies.h>
+#include <WESTWOOD.H>
+#include <MAIN.H>
+#include <VIDMODE.H>
+#include <MAINWIND.H>
+#include <MONOCHRM.H>
+#include <MOVIES.H>
 
 
 extern void VQA_Test( char *filename );

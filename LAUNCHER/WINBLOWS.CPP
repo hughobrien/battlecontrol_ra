@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-#include "winblows.h"
+#include "WINBLOWS.H"
 
 
 HINSTANCE Global_instance;

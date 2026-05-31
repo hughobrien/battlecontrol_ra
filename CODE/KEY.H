@@ -37,7 +37,7 @@
 #define KEYBOARD_H
 
 #if !defined(WIN32) && defined(__WATCOMC__)
-#include	"..\wwflat32\include\keyboard.h"
+#include	"..\wwflat32\include\KEYBOARD.H"
 #else
 
 #include	<windows.h>
