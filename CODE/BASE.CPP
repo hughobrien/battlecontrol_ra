@@ -43,75 +43,9 @@
  *   BaseClass::Read_INI -- INI reading routine                                                *
  *   BaseClass::Save -- saves to a saved game file                                             *
  *   BaseClass::Write_INI -- Writes all the base information to the INI database.              *
- *   BaseNodeClass::operator != -- inequality operator                                         *
- *   BaseNodeClass::operator == -- equality operator                                           *
- *   BaseNodeClass::operator > -- greater-than operator                                        *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "FUNCTION.H"
-
-
-/***********************************************************************************************
- * BaseNodeClass::operator == -- equality operator                                             *
- *                                                                                             *
- * INPUT:                                                                                      *
- *      node      node to test against                                                         *
- *                                                                                             *
- * OUTPUT:                                                                                     *
- *      true = equal, false = not equal                                                        *
- *                                                                                             *
- * WARNINGS:                                                                                   *
- *      none.                                                                                  *
- *                                                                                             *
- * HISTORY:                                                                                    *
- *   03/24/1995 BRR : Created.                                                                 *
- *=============================================================================================*/
-int BaseNodeClass::operator == (BaseNodeClass const & node)
-{
-	return(Type == node.Type && Cell == node.Cell);
-}
-
-
-/***********************************************************************************************
- * BaseNodeClass::operator != -- inequality operator                                           *
- *                                                                                             *
- * INPUT:                                                                                      *
- *      node      node to test against                                                         *
- *                                                                                             *
- * OUTPUT:                                                                                     *
- *      comparison result                                                                      *
- *                                                                                             *
- * WARNINGS:                                                                                   *
- *      none.                                                                                  *
- *                                                                                             *
- * HISTORY:                                                                                    *
- *   03/24/1995 BRR : Created.                                                                 *
- *=============================================================================================*/
-int BaseNodeClass::operator !=(BaseNodeClass const & node)
-{
-	return(!(*this == node));
-}
-
-
-/***********************************************************************************************
- * BaseNodeClass::operator > -- greater-than operator                                          *
- *                                                                                             *
- * INPUT:                                                                                      *
- *      node      node to test against                                                         *
- *                                                                                             *
- * OUTPUT:                                                                                     *
- *      comparison result                                                                      *
- *                                                                                             *
- * WARNINGS:                                                                                   *
- *      none.                                                                                  *
- *                                                                                             *
- * HISTORY:                                                                                    *
- *   03/24/1995 BRR : Created.                                                                 *
- *=============================================================================================*/
-int BaseNodeClass::operator > (BaseNodeClass const & )
-{
-	return(true);
-}
 
 
 /***********************************************************************************************
