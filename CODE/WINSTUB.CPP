@@ -161,7 +161,7 @@ void Check_For_Focus_Loss(void)
 
 
 
-extern BOOL InMovie;
+extern bool InMovie;
 
 long FAR PASCAL _export Windows_Procedure(HWND hwnd, UINT message, UINT wParam, LONG lParam)
 {
