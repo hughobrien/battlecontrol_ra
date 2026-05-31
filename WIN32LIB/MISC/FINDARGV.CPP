@@ -70,7 +70,7 @@ char * __cdecl Find_Argv(char const)
 char * __cdecl Find_Argv(char const *str)
 {
 	char   * ptr ;
-	static   startup_flag = 0 ;
+	static   int startup_flag = 0 ;
 
 	if ( ! startup_flag )
 	{

@@ -366,7 +366,7 @@ PRIVATE void Init_Bank_Table(void)
 int Set_Video_Mode(int mode)
 {
 	union   REGS inregs,outregs;
-	static  first_time = 0 ;
+	static  int first_time = 0 ;
 	int	  oldmode ;
  
 	/*======================================================================*/
