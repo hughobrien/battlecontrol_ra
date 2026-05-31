@@ -915,9 +915,20 @@ typedef enum ThreatType : uint16_t {
 	THREAT_FACTORIES=0x1000,	// Consider factories a greater target?
 	THREAT_BASE_DEFENSE=0x2000	// Consider base defense buildings a greater target?
 } ThreatType;
-inline ThreatType operator |(ThreatType, ThreatType);
-inline ThreatType operator &(ThreatType, ThreatType);
-inline ThreatType operator ~(ThreatType);
+inline ThreatType operator |(ThreatType a, ThreatType b)
+{
+	return (ThreatType)((uint16_t)a | (uint16_t)b);
+}
+
+inline ThreatType operator &(ThreatType a, ThreatType b)
+{
+	return (ThreatType)((uint16_t)a & (uint16_t)b);
+}
+
+inline ThreatType operator ~(ThreatType a)
+{
+	return (ThreatType)(~(uint16_t)a);
+}
 
 #define THREAT_GROUND	(THREAT_VEHICLES|THREAT_BUILDINGS|THREAT_INFANTRY)
 
@@ -2811,9 +2822,20 @@ typedef enum TextPrintType : uint16_t {
 	TPF_USE_GRAD_PAL	=0x4000		// Use a gradient palette based on fore color
 } TextPrintType;
 
-inline TextPrintType operator |(TextPrintType, TextPrintType);
-inline TextPrintType operator &(TextPrintType, TextPrintType);
-inline TextPrintType operator ~(TextPrintType);
+inline TextPrintType operator |(TextPrintType a, TextPrintType b)
+{
+	return (TextPrintType)((uint16_t)a | (uint16_t)b);
+}
+
+inline TextPrintType operator &(TextPrintType a, TextPrintType b)
+{
+	return (TextPrintType)((uint16_t)a & (uint16_t)b);
+}
+
+inline TextPrintType operator ~(TextPrintType a)
+{
+	return (TextPrintType)(~(uint16_t)a);
+}
 
 // Standard button text print flags.
 #define TPF_BUTTON	(TPF_CENTER|TPF_6PT_GRAD|TPF_NOSHADOW)
