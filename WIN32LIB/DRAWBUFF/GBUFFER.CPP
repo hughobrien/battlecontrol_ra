@@ -50,6 +50,7 @@
 #include "GBUFFER.H"
 #include "MISC.H"
 #endif
+#include <string.h>
 #pragma inline
 
 int		TotalLocks;
