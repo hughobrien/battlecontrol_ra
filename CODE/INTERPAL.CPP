@@ -46,20 +46,20 @@
 
 BOOL	InterpolationPaletteChanged = FALSE;
 extern "C" {
-extern void __cdecl Asm_Interpolate (unsigned char* src_ptr ,
-						 						unsigned char* dest_ptr ,
+extern void __cdecl Asm_Interpolate (uint8_t * src_ptr ,
+												uint8_t * dest_ptr ,
 												int				lines ,
 												int				src_width ,
 												int				dest_width);
 
-extern void __cdecl Asm_Interpolate_Line_Double (unsigned char* src_ptr ,
-						 						unsigned char* dest_ptr ,
+extern void __cdecl Asm_Interpolate_Line_Double (uint8_t * src_ptr ,
+												uint8_t * dest_ptr ,
 												int				lines ,
 												int				src_width ,
 												int				dest_width);
 
-extern void __cdecl Asm_Interpolate_Line_Interpolate (unsigned char* src_ptr ,
-						 						unsigned char* dest_ptr ,
+extern void __cdecl Asm_Interpolate_Line_Interpolate (uint8_t * src_ptr ,
+												uint8_t * dest_ptr ,
 												int				lines ,
 												int				src_width ,
 												int				dest_width);
@@ -68,8 +68,8 @@ extern void __cdecl Asm_Interpolate_Line_Interpolate (unsigned char* src_ptr ,
 
 #define SIZE_OF_PALETTE	256
 extern "C"{
-	unsigned char PaletteInterpolationTable[SIZE_OF_PALETTE][SIZE_OF_PALETTE];
-	unsigned char * InterpolationPalette;
+	uint8_t PaletteInterpolationTable[SIZE_OF_PALETTE][SIZE_OF_PALETTE];
+	uint8_t * InterpolationPalette;
 }
 
 
@@ -154,9 +154,9 @@ void Create_Palette_Interpolation_Table( void )
 	int 				i;
 	int 				j;
 	int 				p;
-	unsigned char	* first_palette_ptr;
-	unsigned char	* second_palette_ptr;
-	unsigned char	* match_pal_ptr;
+	uint8_t	* first_palette_ptr;
+	uint8_t	* second_palette_ptr;
+	uint8_t	* match_pal_ptr;
 	int				first_r;
 	int				first_g;
 	int				first_b;
@@ -176,7 +176,7 @@ void Create_Palette_Interpolation_Table( void )
 	//
 	// Create an interpolation table for the current palette.
 	//
-	first_palette_ptr = (unsigned char *) InterpolationPalette;
+	first_palette_ptr = InterpolationPalette;
 	for ( i = 0; i < SIZE_OF_PALETTE; i ++ ) {
 
 		//
@@ -189,7 +189,7 @@ void Create_Palette_Interpolation_Table( void )
 		first_b = *first_palette_ptr;
 		first_palette_ptr ++;
 
-		second_palette_ptr = (unsigned char *) InterpolationPalette;
+		second_palette_ptr = InterpolationPalette;
 		for  ( j = 0; j < SIZE_OF_PALETTE; j ++ ) {
 			//
 			// Get the second palette entry's RGB.
@@ -214,7 +214,7 @@ void Create_Palette_Interpolation_Table( void )
 			index_of_closest_color = 0;
 //			closest_distance = (256 * 256) * 3;
 			closest_distance = 500000;
-			match_pal_ptr = (unsigned char *) InterpolationPalette;
+			match_pal_ptr = InterpolationPalette;
 			for ( p = 0; p < SIZE_OF_PALETTE; p ++ ) {
 				diff_r = ( ((int) (*match_pal_ptr)) - dest_r );
 				match_pal_ptr ++;
@@ -230,7 +230,7 @@ void Create_Palette_Interpolation_Table( void )
 				}
 			}
 
-			PaletteInterpolationTable[ i ][ j ] = (unsigned char) index_of_closest_color;
+			PaletteInterpolationTable[ i ][ j ] = (uint8_t) index_of_closest_color;
 		}
 	}
 
@@ -288,9 +288,9 @@ void Increase_Palette_Luminance (uint8_t * palette , int red_percentage , int gr
 		green	= MIN (cap, green);
 		blue	= MIN (cap, blue);
 
-		*(palette+i)	=(unsigned char)red;
-		*(palette+i+1)	=(unsigned char)green;
-		*(palette+i+2)	=(unsigned char)blue;
+		*(palette+i)	=(uint8_t)red;
+		*(palette+i+1)	=(uint8_t)green;
+		*(palette+i+2)	=(uint8_t)blue;
 
 	}
 
@@ -324,10 +324,10 @@ int	CopyType	=0;
  *=========================================================================*/
 void Interpolate_2X_Scale( GraphicBufferClass * source, GraphicViewPortClass * dest , char const * palette_file_name)
 {
-	unsigned char	* src_ptr;
-	unsigned char	* dest_ptr;
-	unsigned char	* last_dest_ptr;
-	unsigned char	* end_of_source;
+	uint8_t	* src_ptr;
+	uint8_t	* dest_ptr;
+	uint8_t	* last_dest_ptr;
+	uint8_t	* end_of_source;
 	int	src_width;
 	int	dest_width;
 //	int	width_counter;
@@ -382,8 +382,8 @@ void Interpolate_2X_Scale( GraphicBufferClass * source, GraphicViewPortClass * d
 	//
 	// Get pointers to the source and destination buffers.
 	//
-	src_ptr = (unsigned char *) source->Get_Offset();
-	dest_ptr = (unsigned char *) dest->Get_Offset();
+	src_ptr = (uint8_t *) source->Get_Offset();
+	dest_ptr = (uint8_t *) dest->Get_Offset();
 	end_of_source = src_ptr + ( source->Get_Width() * source->Get_Height() );
 
 	//
@@ -457,7 +457,6 @@ void Interpolate_2X_Scale( GraphicBufferClass * source, GraphicViewPortClass * d
 //BG	Mono_Printf("Clock cycles: %08x\n",*longptr);
 }
 #endif
-
 
 
 

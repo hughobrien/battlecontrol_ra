@@ -2703,7 +2703,7 @@ long MixFileHandler(VQAHandle * vqa, long action, void * buffer, long nbytes)
 }
 
 
-void Rebuild_Interpolated_Palette(unsigned char * interpal)
+void Rebuild_Interpolated_Palette(uint8_t * interpal)
 {
 	for (int y=0; y<255; y++) {
 		for (int x=y+1; x<256; x++) {
@@ -2713,7 +2713,7 @@ void Rebuild_Interpolated_Palette(unsigned char * interpal)
 }
 
 
-unsigned char 	* InterpolatedPalettes[100];
+uint8_t 			* InterpolatedPalettes[100];
 BOOL				PalettesRead;
 unsigned			PaletteCounter;
 
@@ -2766,7 +2766,7 @@ int Load_Interpolated_Palettes(char const * filename, BOOL add)
 		file.Read(&num_palettes , 4);
 
 		for (i=0; i < num_palettes; i++) {
-			InterpolatedPalettes[i+start_palette] = (unsigned char *)malloc (65536);
+			InterpolatedPalettes[i+start_palette] = (uint8_t *)malloc (65536);
 			memset (InterpolatedPalettes[i+start_palette], 0, 65536);
 			for (int y = 0; y < 256; y++) {
 				file.Read (InterpolatedPalettes[i+start_palette] + y*256 , y+1);
