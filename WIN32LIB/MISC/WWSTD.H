@@ -208,7 +208,7 @@ typedef void 	VOID;
 **	November of '94. Until the compiler supports this, use the following
 **	definition.
 */
-#ifndef __BORLANDC__
+#if !defined(__cplusplus) && !defined(__BORLANDC__)
 #ifndef TRUE_FALSE_DEFINED
 #define TRUE_FALSE_DEFINED
 enum {false=0,true=1};

@@ -23,9 +23,11 @@
 #include	<ctype.h>
 #include	<string.h>
 
+#if !defined(__cplusplus)
 #define	true	1
 #define	false	0
 typedef int bool;
+#endif
 
 char KeyPhrase[128] = "";
 char KeyCheck[128] = "";

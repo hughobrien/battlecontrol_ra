@@ -47,7 +47,7 @@
 **	November of '94. Until the compiler supports this, use the following
 **	definition.
 */
-#if defined(__WATCOMC__)
+#if !defined(__cplusplus) && defined(__WATCOMC__)
 #ifndef TRUE_FALSE_DEFINED
 #define TRUE_FALSE_DEFINED
 enum {false=0,true=1};

@@ -53,9 +53,11 @@
 #include <io.h>
 #include <conio.h>
 
+#if !defined(__cplusplus)
 #define bool int
 #define true 1
 #define false 0
+#endif
 #define NAME_TABLE_SIZE 1000000					//Storage space for function names
 #define SAMPLE_START 1								//Offset (in dwords) of sample data in sample file
 
