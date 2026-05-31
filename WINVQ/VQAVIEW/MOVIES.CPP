@@ -40,12 +40,12 @@
 //==========================================================================
 
 #include <windows.h>
-#include <westwood.h>
-#include <vq.h>
-#include <movies.h>
-#include <mainwind.h>
-#include <main.h>
-#include <pal.h>
+#include <WESTWOOD.H>
+#include <VQ.H>
+#include <MOVIES.H>
+#include <MAINWIND.H>
+#include <MAIN.H>
+#include <PAL.H>
 
 //==========================================================================
 // PRIVATE FUNCTIONS

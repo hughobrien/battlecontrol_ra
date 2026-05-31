@@ -36,9 +36,9 @@
  *   Remove_Timer_System -- Removes the timer system.                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <wwstd.h>
-#include <descmgmt.h>
-#include "timer.H"
+#include <WWSTD.H>
+#include <DESCMGMT.H>
+#include "TIMER.H"
 
 /////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////// Defines /////////////////////////////////////

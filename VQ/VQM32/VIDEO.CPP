@@ -51,10 +51,10 @@
 #include <pharlap.h>
 #include <pldos32.h>
 #else
-#include "realmode.h"
+#include "REALMODE.H"
 #endif
 
-#include "video.h"
+#include "VIDEO.H"
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS

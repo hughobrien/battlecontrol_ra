@@ -105,7 +105,7 @@
  *   GVPC::Print -- stub function to print a long on a graphic view port   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "window.h"
+#include "WINDOW.H"
 
 #ifndef GBUFFER_H
 #define GBUFFER_H
@@ -116,15 +116,15 @@
 /*=========================================================================*/
 
 #ifndef WWSTD_H
-#include "wwstd.h"
+#include "WWSTD.H"
 #endif
 
 #ifndef MCGAPRIM_H
-#include "mcgaprim.h"
+#include "MCGAPRIM.H"
 #endif
 
 #ifndef BUFFER_H
-#include "buffer.h"
+#include "BUFFER.H"
 #endif
 
 #include <stdlib.h>

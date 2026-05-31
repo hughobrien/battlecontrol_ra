@@ -39,11 +39,11 @@
 #define FONT_H
 
 #ifndef GBUFFER_H
-#include <gbuffer.h>
+#include <GBUFFER.H>
 #endif
 
 #ifndef VBUFFER_H
-#include <vbuffer.h>
+#include <VBUFFER.H>
 #endif
 
 //////////////////////////////////////// Defines //////////////////////////////////////////

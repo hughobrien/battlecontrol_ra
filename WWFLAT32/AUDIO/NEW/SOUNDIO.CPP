@@ -48,20 +48,20 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #pragma pack(4)
-#include	"soundint.h"
+#include	"SOUNDINT.H"
 #include <dos.h>
 #include <mem.h>
 #include <stdio.h>
 #include <string.h>
 #include	<direct.h>
 #include	<stdlib.h>
-#include	<wwmem.h>
-#include	<keyboard.h>
-#include	<file.h>
+#include	<WWMEM.H>
+#include	<KEYBOARD.H>
+#include	<FILE.H>
 #include	<i86.h>
-#include <timer.h>
+#include <TIMER.H>
 #pragma pack(1)
-#include "audio.h"
+#include "AUDIO.H"
 #pragma pack(4)
 
 /*

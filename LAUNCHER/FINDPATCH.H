@@ -23,8 +23,8 @@
 #include <stdio.h>
 #include <windows.h>
 #include <direct.h>
-#include "wstypes.h"
-#include "configfile.h"
+#include "WSTYPES.H"
+#include "CONFIGFILE.H"
 
 int Find_Patch(OUT char *file,int maxlen, ConfigFile &config);
 bit8 Get_App_Dir(OUT char *file,int maxlen, ConfigFile &config, int index);

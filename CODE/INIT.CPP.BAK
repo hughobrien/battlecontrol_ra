@@ -58,17 +58,17 @@
  *   Select_Game -- The game's main menu                                                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include	"function.h"
-#include	"loaddlg.h"
+#include	"FUNCTION.H"
+#include	"LOADDLG.H"
 #ifdef WIN32
-#include	"tcpip.h"
+#include	"TCPIP.H"
 #endif
 #include	<conio.h>
 #include	<dos.h>
 #ifndef WIN32
 #include	<sys\timeb.h>
 #endif
-#include  "ccdde.h"
+#include  "CCDDE.H"
 
 #include <time.h>
 
@@ -126,7 +126,7 @@ bool Save_Recording_Values(CCFileClass & file);
  * HISTORY:                                                                                    *
  *   10/07/1992 JLB : Created.                                                                 *
  *=============================================================================================*/
-#include	"sha.h"
+#include	"SHA.H"
 //#include    <locale.h>
 bool Init_Game(int , char * [])
 {

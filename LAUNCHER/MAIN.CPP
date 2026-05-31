@@ -49,15 +49,15 @@
 \*****************************************************************************/
 
 
-#include "dialog.h"
-#include "patch.h"
-#include "findpatch.h"
+#include "DIALOG.H"
+#include "PATCH.H"
+#include "FINDPATCH.H"
 #include "process.h"
 
-#include "wdebug.h"
-#include "monod.h"
-#include "filed.h"
-#include "configfile.h"
+#include "WDEBUG.H"
+#include "MONOD.H"
+#include "FILED.H"
+#include "CONFIGFILE.H"
 #include <windows.h>
 
 #define UPDATE_RETVAL 123456789  // if a program returns this it means it wants to check for patches

@@ -41,7 +41,7 @@
 #include <errno.h>
 #include <string.h>
 #include <ctype.h>
-#include "captoken.h"
+#include "CAPTOKEN.H"
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS

@@ -37,7 +37,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include "wwstd.h"
+#include "WWSTD.H"
 #include <dos.h>
 #include <stdio.h>
 #include <string.h>

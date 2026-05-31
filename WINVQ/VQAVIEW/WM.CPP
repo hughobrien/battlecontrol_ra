@@ -40,15 +40,15 @@
 
 #include <windows.h>
 
-#include <westwood.h>
-#include <wm.h>
-#include <gbuffer.h>
-#include <main.h>
-#include <mainwind.h>
-#include <menus.rh>
+#include <WESTWOOD.H>
+#include <WM.H>
+#include <GBUFFER.H>
+#include <MAIN.H>
+#include <MAINWIND.H>
+#include <MENUS.RH>
 
-#include <movies.h>
-#include <vq.h>
+#include <MOVIES.H>
+#include <VQ.H>
 
 
 //==========================================================================

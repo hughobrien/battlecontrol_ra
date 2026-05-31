@@ -31,7 +31,7 @@ This is where all the code is for applying various types of patches.
 \*****************************************************************************/
 
 
-#include "patch.h"
+#include "PATCH.H"
 #include <shellapi.h>
 #include <direct.h>
 

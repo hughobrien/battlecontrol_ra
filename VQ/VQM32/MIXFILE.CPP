@@ -68,8 +68,8 @@
 #include <io.h>
 #include <mem.h>
 #include <string.h>
-#include "mixfile.h"
-#include "crc.h"
+#include "MIXFILE.H"
+#include "CRC.H"
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS

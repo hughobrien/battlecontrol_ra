@@ -65,12 +65,12 @@
 #include <process.h>
 #include <dos.h>
 
-#include <vqa32\vqaplay.h>
-#include <vqa32\vqafile.h>
-#include <vqm32\all.h>
+#include <vqa32\VQAPLAY.H>
+#include <vqa32\VQAFILE.H>
+#include <vqm32\ALL.H>
 
 #if(CAPTIONS)
-#include <vqm32\font.h>
+#include <vqm32\FONT.H>
 #endif
 
 /*---------------------------------------------------------------------------

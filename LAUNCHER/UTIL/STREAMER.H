@@ -25,7 +25,7 @@
 #include <iostream.h>
 #include <string.h>
 
-#include "odevice.h"
+#include "ODEVICE.H"
 
 #ifndef STREAMER_BUFSIZ
 // This limits the number of characters that can be sent to a single 'print'

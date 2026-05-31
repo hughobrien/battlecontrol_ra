@@ -45,8 +45,8 @@
 #include <dos.h>
 #include <stdio.h>
 #include <string.h>
-#include "wwstd.h"
-#include "misc.h"
+#include "WWSTD.H"
+#include "MISC.H"
 
 //PRIVATE unsigned Divide_With_Round(unsigned num, unsigned den);
 

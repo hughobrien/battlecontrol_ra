@@ -19,7 +19,7 @@
 #ifndef STDOUTD_HEADER
 #define STDOUTD_HEADER
 
-#include "odevice.h"
+#include "ODEVICE.H"
 
 class StdoutD : public OutputDevice
 {

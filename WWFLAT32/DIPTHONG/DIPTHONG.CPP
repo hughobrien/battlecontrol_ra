@@ -44,8 +44,8 @@
 
 //#include	"function.h"
 //#include	"ems.h"
-#include <keyboard.h>
-#include "dipthong.h"
+#include <KEYBOARD.H>
+#include "DIPTHONG.H"
 
 /***************************************************************************
  * Fixup_Text -- Converts dipthonged foreign text into normal text.        *

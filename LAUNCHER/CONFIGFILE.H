@@ -29,8 +29,8 @@ Last Update : June 17, 1997
 #ifndef CONFIGFILE_HEADER
 #define CONFIGFILE_HEADER
 
-#include "dictionary.h"
-#include "wstring.h"
+#include "DICTIONARY.H"
+#include "WSTRING.H"
 
 class ConfigFile
 {

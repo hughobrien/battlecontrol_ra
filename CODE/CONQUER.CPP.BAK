@@ -82,11 +82,11 @@ B<A> test;
 
 
 
-#include	"function.h"
+#include	"FUNCTION.H"
 #ifdef WIN32
-#include	"tcpip.h"
+#include	"TCPIP.H"
 #else
-#include	"fakesock.h"
+#include	"FAKESOCK.H"
 TcpipManagerClass	Winsock;
 #endif
 #include	<stdlib.h>
@@ -97,8 +97,8 @@ TcpipManagerClass	Winsock;
 #include	<io.h>
 #include	<dos.h>
 #include	<share.h>
-#include	"ccdde.h"
-#include	"vortex.h"
+#include	"CCDDE.H"
+#include	"VORTEX.H"
 
 #define SHAPE_TRANS		0x40
 

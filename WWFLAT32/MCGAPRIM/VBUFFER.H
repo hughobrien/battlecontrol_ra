@@ -131,7 +131,7 @@
 /*		load it.																					*/
 /*=========================================================================*/
 #ifndef WWSTD_H
-#include "wwstd.h"
+#include "WWSTD.H"
 #endif
 
 
@@ -140,7 +140,7 @@
 /*		include the definitions for that as well.										*/
 /*=========================================================================*/
 #ifndef BUFFER_H
-#include "buffer.h"
+#include "BUFFER.H"
 #endif
 
 /*=========================================================================*/
@@ -148,7 +148,7 @@
 /*		include the definitions for that as well.										*/
 /*=========================================================================*/
 #ifndef GBUFFER_H
-#include "gbuffer.h"
+#include "GBUFFER.H"
 #endif
 
 /*=========================================================================*/

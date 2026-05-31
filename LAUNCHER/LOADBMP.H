@@ -21,8 +21,8 @@
 
 #include<stdlib.h>
 #include<stdio.h>
-#include "wstypes.h"
-#include "winblows.h"
+#include "WSTYPES.H"
+#include "WINBLOWS.H"
 
 
 //

@@ -47,15 +47,15 @@
 #define WSA_H
 
 #ifndef WWSTD_H
-#include "wwstd.h"
+#include "WWSTD.H"
 #endif
 
 #ifndef GBUFFER_H
-#include "gbuffer.h"
+#include "GBUFFER.H"
 #endif
 
 #ifndef VBUFFER_H
-#include "vbuffer.h"
+#include "VBUFFER.H"
 #endif
 
 //lint -strong(AJX,WSAType)

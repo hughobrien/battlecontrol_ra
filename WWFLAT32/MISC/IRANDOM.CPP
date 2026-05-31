@@ -34,8 +34,8 @@
 
 #include <stdlib.h>
 #include <time.h>
-#include "wwstd.h"
-#include "misc.h"
+#include "WWSTD.H"
+#include "MISC.H"
 
 
 

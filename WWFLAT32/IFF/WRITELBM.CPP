@@ -44,9 +44,9 @@
 
 // At the end of this file there is an IFF definition for a .LBM file.
 
-#include <wwstd.h>
-#include "iff.h"
-#include "file.h"
+#include <WWSTD.H>
+#include "IFF.H"
+#include "FILE.H"
 #include <stdio.h>
 #include <string.h>
 

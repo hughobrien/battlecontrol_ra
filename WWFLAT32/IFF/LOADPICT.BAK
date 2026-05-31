@@ -39,11 +39,11 @@
  *   Load_Picture -- Loads a picture file (CPS or LBM format).             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <wwstd.h>
-#include "iff.h"
-#include "file.h"
-#include <video.h>	// For GraphicMode and MCGA_MODE.
-#include <wwmem.h>	// For Alloc.
+#include <WWSTD.H>
+#include "IFF.H"
+#include "FILE.H"
+#include <VIDEO.H>	// For GraphicMode and MCGA_MODE.
+#include <WWMEM.H>	// For Alloc.
 
 #if(IBM)
 #include <mem.h>

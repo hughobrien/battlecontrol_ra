@@ -36,8 +36,8 @@
 
 #include <dos.h>
 #include <mem.h>
-#include "soundint.h"
-#include "wwmem.h"
+#include "SOUNDINT.H"
+#include "WWMEM.H"
 
 LockedDataType LockedData;
 

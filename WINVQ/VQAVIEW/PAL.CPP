@@ -38,15 +38,15 @@
 
 #include <windows.h>
 
-#include <westwood.h>
-#include <vidmode.h>
-#include <pal.h>
-#include <gbuffer.h>
-#include <main.h>
-#include <monochrm.h>
-#include <wwlib.h>
-#include <memflag.h>
-#include <vq.h>
+#include <WESTWOOD.H>
+#include <VIDMODE.H>
+#include <PAL.H>
+#include <GBUFFER.H>
+#include <MAIN.H>
+#include <MONOCHRM.H>
+#include <WWLIB.H>
+#include <MEMFLAG.H>
+#include <VQ.H>
 
 
 //---------------------------------------------------------------------------------------------

@@ -34,7 +34,7 @@
 
 #ifndef  _SOS_DEFINED   
 #define  _SOS_DEFINED   
-#include "sosdefs.h"
+#include "SOSDEFS.H"
 
 #pragma pack(4)
  
@@ -559,7 +559,7 @@ typedef struct
 
 #pragma pack() 
 
-#include "sosdata.h"
-#include "sosfnct.h"
+#include "SOSDATA.H"
+#include "SOSFNCT.H"
 
 #endif

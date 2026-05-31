@@ -40,10 +40,10 @@
 /*
 ********************************* Includes **********************************
 */
-#include <wwstd.h>
-#include "wwstd.h"
-#include "iff.h"
-#include "palette.h"
+#include <WWSTD.H>
+#include "WWSTD.H"
+#include "IFF.H"
+#include "PALETTE.H"
 
 /*
 ********************************* Constants *********************************

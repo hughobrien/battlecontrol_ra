@@ -17,7 +17,7 @@
 */
 
 
-#include "streamer.h"
+#include "STREAMER.H"
 #ifdef _WIN32
   #include <windows.h>
 #endif

@@ -19,7 +19,7 @@
 #ifndef MBOXD_HEADER
 #define MBOXD_HEADER
 
-#include "odevice.h"
+#include "ODEVICE.H"
 
 class MboxD : public OutputDevice
 {
