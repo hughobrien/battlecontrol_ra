@@ -24,6 +24,26 @@ const PCONVCONTEXT = ?*anyopaque;
 const BYTE = u8;
 const TimerCallback = *const fn (event_id: UINT, reserved: UINT, user: DWORD, reserved1: DWORD, reserved2: DWORD) callconv(.c) void;
 
+const POINT = extern struct {
+    x: LONG,
+    y: LONG,
+};
+
+const RECT = extern struct {
+    left: LONG,
+    top: LONG,
+    right: LONG,
+    bottom: LONG,
+};
+
+const CriticalSectionState = struct {
+    gate: std.atomic.Mutex = .unlocked,
+    state_lock: std.atomic.Mutex = .unlocked,
+    owner: std.Thread.Id = undefined,
+    owner_valid: bool = false,
+    recursion: usize = 0,
+};
+
 const ERROR_FILE_NOT_FOUND: LONG = 2;
 const DMLERR_NO_ERROR: UINT = 0;
 const IDOK: c_int = 1;
@@ -52,6 +72,8 @@ const MemoryStatus = extern struct {
 var dde_strings: ?*DdeString = null;
 var timer_mutex: std.atomic.Mutex = .unlocked;
 var timers = [_]?*TimerEvent{null} ** 64;
+var cursor_x: LONG = 0;
+var cursor_y: LONG = 0;
 
 export var WindowsNT: bool = false;
 
@@ -67,6 +89,12 @@ const TimerEvent = struct {
 
 fn lockTimerTable() void {
     while (!timer_mutex.tryLock()) {
+        std.Thread.yield() catch {};
+    }
+}
+
+fn lockAtomic(mutex: *std.atomic.Mutex) void {
+    while (!mutex.tryLock()) {
         std.Thread.yield() catch {};
     }
 }
@@ -237,6 +265,140 @@ export fn UpdateWindow(window: HWND) callconv(.c) BOOL {
 
 export fn SetFocus(window: HWND) callconv(.c) HWND {
     return window;
+}
+
+export fn GetCursorPos(point: ?*POINT) callconv(.c) BOOL {
+    const out = point orelse return 0;
+    out.x = cursor_x;
+    out.y = cursor_y;
+    return 1;
+}
+
+export fn ClipCursor(rect: ?*const RECT) callconv(.c) BOOL {
+    _ = rect;
+    return 1;
+}
+
+export fn MapVirtualKey(code: UINT, map_type: UINT) callconv(.c) UINT {
+    _ = map_type;
+    return code;
+}
+
+export fn ToAscii(virtual_key: UINT, scan_code: UINT, key_state: ?[*]BYTE, translated: ?*WORD, flags: UINT) callconv(.c) c_int {
+    _ = scan_code;
+    _ = flags;
+    const out = translated orelse return 0;
+    const shifted = if (key_state) |state| (state[0x10] & 0x80) != 0 else false;
+    var value: u8 = @truncate(virtual_key & 0xff);
+    if (value >= 'A' and value <= 'Z') {
+        if (!shifted) value = value - 'A' + 'a';
+    }
+    out.* = value;
+    return 1;
+}
+
+export fn GetKeyState(key: c_int) callconv(.c) i16 {
+    _ = key;
+    return 0;
+}
+
+export fn GetAsyncKeyState(key: c_int) callconv(.c) i16 {
+    _ = key;
+    return 0;
+}
+
+export fn InitializeCriticalSection(critical_section: ?*anyopaque) callconv(.c) void {
+    const section: ?*extern struct {
+        DebugInfo: ?*anyopaque,
+        LockCount: i32,
+        RecursionCount: i32,
+        OwningThread: HANDLE,
+        LockSemaphore: HANDLE,
+        SpinCount: usize,
+    } = @ptrCast(@alignCast(critical_section));
+    const out = section orelse return;
+    const state = std.heap.c_allocator.create(CriticalSectionState) catch return;
+    state.* = .{};
+    out.DebugInfo = state;
+    out.LockCount = -1;
+    out.RecursionCount = 0;
+    out.OwningThread = null;
+    out.LockSemaphore = null;
+    out.SpinCount = 0;
+}
+
+export fn DeleteCriticalSection(critical_section: ?*anyopaque) callconv(.c) void {
+    const section: ?*extern struct {
+        DebugInfo: ?*anyopaque,
+        LockCount: i32,
+        RecursionCount: i32,
+        OwningThread: HANDLE,
+        LockSemaphore: HANDLE,
+        SpinCount: usize,
+    } = @ptrCast(@alignCast(critical_section));
+    const out = section orelse return;
+    const state: *CriticalSectionState = @ptrCast(@alignCast(out.DebugInfo orelse return));
+    std.heap.c_allocator.destroy(state);
+    out.DebugInfo = null;
+}
+
+export fn EnterCriticalSection(critical_section: ?*anyopaque) callconv(.c) void {
+    const section: ?*extern struct {
+        DebugInfo: ?*anyopaque,
+        LockCount: i32,
+        RecursionCount: i32,
+        OwningThread: HANDLE,
+        LockSemaphore: HANDLE,
+        SpinCount: usize,
+    } = @ptrCast(@alignCast(critical_section));
+    const out = section orelse return;
+    const state: *CriticalSectionState = @ptrCast(@alignCast(out.DebugInfo orelse return));
+    const thread_id = std.Thread.getCurrentId();
+    lockAtomic(&state.state_lock);
+    if (state.owner_valid and state.owner == thread_id) {
+        state.recursion += 1;
+        out.RecursionCount = @intCast(state.recursion);
+        state.state_lock.unlock();
+        return;
+    }
+    state.state_lock.unlock();
+
+    lockAtomic(&state.gate);
+    lockAtomic(&state.state_lock);
+    state.owner = thread_id;
+    state.owner_valid = true;
+    state.recursion = 1;
+    out.LockCount = 0;
+    out.RecursionCount = 1;
+    state.state_lock.unlock();
+}
+
+export fn LeaveCriticalSection(critical_section: ?*anyopaque) callconv(.c) void {
+    const section: ?*extern struct {
+        DebugInfo: ?*anyopaque,
+        LockCount: i32,
+        RecursionCount: i32,
+        OwningThread: HANDLE,
+        LockSemaphore: HANDLE,
+        SpinCount: usize,
+    } = @ptrCast(@alignCast(critical_section));
+    const out = section orelse return;
+    const state: *CriticalSectionState = @ptrCast(@alignCast(out.DebugInfo orelse return));
+    lockAtomic(&state.state_lock);
+    if (state.recursion == 0) {
+        state.state_lock.unlock();
+        return;
+    }
+    state.recursion -= 1;
+    out.RecursionCount = @intCast(state.recursion);
+    if (state.recursion == 0) {
+        state.owner_valid = false;
+        out.LockCount = -1;
+        state.state_lock.unlock();
+        state.gate.unlock();
+        return;
+    }
+    state.state_lock.unlock();
 }
 
 export fn RegisterWindowMessage(string: ?[*:0]const u8) callconv(.c) UINT {

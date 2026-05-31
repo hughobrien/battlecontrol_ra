@@ -35,6 +35,7 @@
 
 #include "MOUSE.H"
 #include <mmsystem.h>
+#include <string.h>
 
 static WWMouseClass *_Mouse=NULL;
 void CALLBACK Process_Mouse( UINT event_id, UINT res1 , DWORD user, DWORD  res2, DWORD  res3 );
