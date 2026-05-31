@@ -46,6 +46,7 @@
 
 //	Aftermath has, in a sense, used version 2.00. (Because of the text on title screen.) Call ourselves version 3.
 #define VERSION_RA_300				0x00030000	//	RA, CS, AM executables unified into one. All are now the same version. -ajw
+#define GAME_VERSION				0x00030003
 //	It seems that extra information, that didn't belong there, was being stuffed into version number. Namely, whether or not
 //	Counterstrike is installed. I'm going to change things back to the way they should be, as I see it. Version will describe
 //	the version of the executable only. When it comes to communicating whether or not a player has expansions present, separate
@@ -199,4 +200,3 @@ class VersionClass {
 };
 #endif
 /************************** end of version.h *******************************/
-
