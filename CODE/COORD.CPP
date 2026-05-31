@@ -51,6 +51,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include	"FUNCTION.H"
+#include	<stdint.h>
 
 
 /***********************************************************************************************
@@ -402,7 +403,8 @@ COORDINATE Coord_Scatter(COORDINATE coord, unsigned distance, bool lock)
 	return(newcoord);
 }
 
-extern int calcx(signed short, short distance);
+#if defined(__WATCOMC__)
+extern int calcx(int16_t, int16_t distance);
 #pragma aux calcx parm [ax] [bx] \
 	modify [eax dx] \
 	value [eax]		= 				\
@@ -414,7 +416,7 @@ extern int calcx(signed short, short distance);
 	"cwd"								\
 //	"and	eax,0FFFFh";
 
-extern int calcy(signed short, short distance);
+extern int calcy(int16_t, int16_t distance);
 #pragma aux calcy parm [ax] [bx] \
 	modify [eax dx] \
 	value [eax]		= 				\
@@ -426,6 +428,26 @@ extern int calcy(signed short, short distance);
 	"cwd"								\
 	"neg	eax";
 //	"and	eax,0FFFFh"				\
+#else
+static int coord_component(int16_t scalar, uint16_t distance)
+{
+	int32_t signed_distance = distance < 0x8000 ? (int32_t)distance : (int32_t)distance - 0x10000;
+	int32_t product = (int32_t)scalar * signed_distance;
+	uint32_t shifted = (uint32_t)product << 1;
+	uint32_t word = (shifted >> 8) & 0xFFFF;
+	return word < 0x8000 ? (int)word : (int)word - 0x10000;
+}
+
+static int calcx(int16_t scalar, uint16_t distance)
+{
+	return coord_component(scalar, distance);
+}
+
+static int calcy(int16_t scalar, uint16_t distance)
+{
+	return -coord_component(scalar, distance);
+}
+#endif
 
 void Move_Point(short &x, short &y, DirType dir, unsigned short distance)
 {
