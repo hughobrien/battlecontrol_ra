@@ -46,19 +46,19 @@
 
 BOOL	InterpolationPaletteChanged = FALSE;
 extern "C" {
-extern void __cdecl Asm_Interpolate (uint8_t * src_ptr ,
+void __cdecl Asm_Interpolate (uint8_t * src_ptr ,
 												uint8_t * dest_ptr ,
 												int				lines ,
 												int				src_width ,
 												int				dest_width);
 
-extern void __cdecl Asm_Interpolate_Line_Double (uint8_t * src_ptr ,
+void __cdecl Asm_Interpolate_Line_Double (uint8_t * src_ptr ,
 												uint8_t * dest_ptr ,
 												int				lines ,
 												int				src_width ,
 												int				dest_width);
 
-extern void __cdecl Asm_Interpolate_Line_Interpolate (uint8_t * src_ptr ,
+void __cdecl Asm_Interpolate_Line_Interpolate (uint8_t * src_ptr ,
 												uint8_t * dest_ptr ,
 												int				lines ,
 												int				src_width ,
@@ -309,6 +309,91 @@ void Increase_Palette_Luminance (uint8_t * palette , int red_percentage , int gr
 
 int	CopyType	=0;
 
+static uint8_t LineBuffer[640 * sizeof(uint32_t)];
+static uint8_t TopLine[640 * sizeof(uint32_t)];
+static uint8_t BottomLine[640 * sizeof(uint32_t)];
+
+static void Interpolate_Single_Line(uint8_t * source_ptr, uint8_t * dest_ptr, int source_width)
+{
+	int source_index = 0;
+	int pair_count = (source_width - 2) >> 1;
+
+	while (pair_count--) {
+		dest_ptr[0] = source_ptr[source_index];
+		dest_ptr[1] = PaletteInterpolationTable[source_ptr[source_index + 1]][source_ptr[source_index]];
+		dest_ptr[2] = source_ptr[source_index + 1];
+		dest_ptr[3] = PaletteInterpolationTable[source_ptr[source_index + 2]][source_ptr[source_index + 1]];
+		source_index += 2;
+		dest_ptr += 4;
+	}
+
+	dest_ptr[0] = source_ptr[source_index];
+	dest_ptr[1] = PaletteInterpolationTable[source_ptr[source_index + 1]][source_ptr[source_index]];
+	dest_ptr[2] = source_ptr[source_index + 1];
+	dest_ptr[3] = 0;
+}
+
+static void Interpolate_Between_Lines(uint8_t * source1, uint8_t * source2, uint8_t * destination, int source_width)
+{
+	int count = source_width * 2;
+
+	while (count--) {
+		*destination++ = PaletteInterpolationTable[*source2++][*source1++];
+	}
+}
+
+extern "C" void __cdecl Asm_Interpolate(uint8_t * src_ptr, uint8_t * dest_ptr, int lines, int src_width, int dest_width)
+{
+	while (lines--) {
+		Interpolate_Single_Line(src_ptr, dest_ptr, src_width);
+		src_ptr += src_width;
+		dest_ptr += dest_width;
+	}
+}
+
+extern "C" void __cdecl Asm_Interpolate_Line_Double(uint8_t * src_ptr, uint8_t * dest_ptr, int lines, int src_width, int dest_width)
+{
+	int dest_stride = dest_width >> 1;
+
+	while (lines--) {
+		Interpolate_Single_Line(src_ptr, dest_ptr, src_width);
+		Interpolate_Single_Line(src_ptr, LineBuffer, src_width);
+		memcpy(dest_ptr + dest_stride, LineBuffer, src_width * 2);
+		src_ptr += src_width;
+		dest_ptr += dest_width;
+	}
+}
+
+extern "C" void __cdecl Asm_Interpolate_Line_Interpolate(uint8_t * src_ptr, uint8_t * dest_ptr, int lines, int src_width, int dest_width)
+{
+	uint8_t * next_line = TopLine;
+	uint8_t * last_line = BottomLine;
+	int dest_stride = dest_width >> 1;
+
+	Interpolate_Single_Line(src_ptr, next_line, src_width);
+	uint8_t * swap_line = next_line;
+	next_line = last_line;
+	last_line = swap_line;
+	src_ptr += src_width;
+	lines--;
+
+	while (lines--) {
+		Interpolate_Single_Line(src_ptr, next_line, src_width);
+		Interpolate_Between_Lines(last_line, next_line, LineBuffer, src_width);
+		memcpy(dest_ptr, last_line, src_width * 2);
+		dest_ptr += dest_stride;
+		memcpy(dest_ptr, LineBuffer, src_width * 2);
+		dest_ptr += dest_stride;
+		src_ptr += src_width;
+		swap_line = next_line;
+		next_line = last_line;
+		last_line = swap_line;
+	}
+
+	Interpolate_Single_Line(src_ptr, next_line, src_width);
+	memcpy(dest_ptr, next_line, src_width * 2);
+}
+
 #ifdef WIN32
 /***************************************************************************
  * INTERPOLATE_2X_SCALE                                                    *
@@ -457,7 +542,6 @@ void Interpolate_2X_Scale( GraphicBufferClass * source, GraphicViewPortClass * d
 //BG	Mono_Printf("Clock cycles: %08x\n",*longptr);
 }
 #endif
-
 
 
 
