@@ -35,6 +35,7 @@ typedef int bool;
 #endif
 #endif
 
+#include	<stdint.h>
 #include	<stdlib.h>
 #include	"LISTNODE.H"
 #include	"PK.H"
@@ -58,9 +59,9 @@ class MixFileClass : public Node<MixFileClass>
 		static void const * Retrieve(char const *filename);
 
 		struct SubBlock {
-			long CRC;				// CRC code for embedded file.
-			long Offset;			// Offset from start of data section.
-			long Size;				// Size of data subfile.
+			int32_t CRC;			// CRC code for embedded file.
+			int32_t Offset;			// Offset from start of data section.
+			int32_t Size;			// Size of data subfile.
 
 			int operator < (SubBlock & two) const {return (CRC < two.CRC);};
 			int operator > (SubBlock & two) const {return (CRC > two.CRC);};
@@ -95,9 +96,13 @@ class MixFileClass : public Node<MixFileClass>
 		**	This is the initial file header. It tells how many files are embedded
 		**	within this mixfile and the total size of all embedded files.
 		*/
+#if defined(__GNUC__) || defined(__clang__)
+		typedef struct __attribute__((packed)) {
+#else
 		typedef struct {
-			short	count;
-			long	size;
+#endif
+			int16_t	count;
+			int32_t	size;
 		} FileHeader;
 
 		/*
