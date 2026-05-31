@@ -590,14 +590,18 @@ AnimClass::~AnimClass(void)
 			**	this animation is attached to. If there are no others, then inform the
 			**	attached object of this fact.
 			*/
+			bool any_other_attached = false;
 			for (int index = 0; index < Anims.Count(); index++) {
-				if (Anims.Ptr(index) != this && Anims.Ptr(index)->xObject == xObject) break;
+				if (Anims.Ptr(index) != this && Anims.Ptr(index)->xObject == xObject) {
+					any_other_attached = true;
+					break;
+				}
 			}
 
 			/*
 			**	Tell the object that it is no longer being damaged.
 			*/
-			if (index == Anims.Count()) {
+			if (!any_other_attached) {
 				to->Fire_Out();
 				to->Mark(MARK_OVERLAP_UP);
 				to->IsAnimAttached = false;

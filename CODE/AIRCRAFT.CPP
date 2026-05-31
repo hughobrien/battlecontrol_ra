@@ -1397,12 +1397,18 @@ int AircraftClass::Exit_Object(TechnoClass * unit)
 	/*
 	**	Find a free cell to drop the unit off at.
 	*/
+	FacingType exit_face = FACING_NONE;
 	for (FacingType face = FACING_N; face < FACING_COUNT; face++) {
 		cell = Adjacent_Cell(Coord_Cell(Coord), _toface[face]);
-		if (unit->Can_Enter_Cell(cell) == MOVE_OK) break;
+		if (unit->Can_Enter_Cell(cell) == MOVE_OK) {
+			exit_face = _toface[face];
+			break;
+		}
 	}
 
-	// Should perform a check here to see if no cell could be found.
+	if (exit_face == FACING_NONE) {
+		return(false);
+	}
 
 	/*
 	**	If the passenger can be placed on the map, then start it moving toward the
@@ -1410,7 +1416,7 @@ int AircraftClass::Exit_Object(TechnoClass * unit)
 	**	to make sure that the transport waits until the passenger is clear before
 	**	unloading the next passenger or taking off.
 	*/
-	if (unit->Unlimbo(Coord, Facing_Dir(_toface[face]))) {
+	if (unit->Unlimbo(Coord, Facing_Dir(exit_face))) {
 		unit->Assign_Mission(MISSION_MOVE);
 		unit->Assign_Destination(::As_Target(cell));
 		if (Transmit_Message(RADIO_HELLO, unit) == RADIO_ROGER) {

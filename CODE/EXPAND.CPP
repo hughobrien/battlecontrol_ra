@@ -556,9 +556,9 @@ bool Expansion_Dialog(void)
 	/*
 	**	Free up the allocations for the text lines in the list box.
 	*/
- 	for (index = 0; index < list.Count(); index++) {
- 		delete list.Get_Object(index);
- 	}
+	for (int index = 0; index < list.Count(); index++) {
+		delete list.Get_Object(index);
+	}
 
 	return(okval);
 
