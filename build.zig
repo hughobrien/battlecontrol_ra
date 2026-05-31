@@ -84,5 +84,17 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(win32_shim);
 
+    const win32_misc_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/win32-shim/win32_misc.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const win32_misc = b.addObject(.{
+        .name = "win32-misc-shim",
+        .root_module = win32_misc_module,
+    });
+    exe.root_module.addObject(win32_misc);
+
     b.installArtifact(exe);
 }
