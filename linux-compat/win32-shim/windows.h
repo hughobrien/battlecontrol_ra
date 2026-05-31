@@ -113,6 +113,24 @@ typedef struct _STARTUPINFO {
     HANDLE hStdError;
 } STARTUPINFO, *LPSTARTUPINFO;
 
+typedef struct _FILETIME {
+    DWORD dwLowDateTime;
+    DWORD dwHighDateTime;
+} FILETIME, *LPFILETIME;
+
+typedef struct _BY_HANDLE_FILE_INFORMATION {
+    DWORD dwFileAttributes;
+    FILETIME ftCreationTime;
+    FILETIME ftLastAccessTime;
+    FILETIME ftLastWriteTime;
+    DWORD dwVolumeSerialNumber;
+    DWORD nFileSizeHigh;
+    DWORD nFileSizeLow;
+    DWORD nNumberOfLinks;
+    DWORD nFileIndexHigh;
+    DWORD nFileIndexLow;
+} BY_HANDLE_FILE_INFORMATION, *LPBY_HANDLE_FILE_INFORMATION;
+
 typedef struct tagRECT {
     LONG left;
     LONG top;
@@ -308,6 +326,41 @@ typedef struct _RTL_CRITICAL_SECTION {
 #define MAXGETHOSTSTRUCT 1024
 #endif
 
+#ifndef INVALID_HANDLE_VALUE
+#define INVALID_HANDLE_VALUE ((HANDLE)(LONG_PTR)-1)
+#endif
+
+#ifndef GENERIC_READ
+#define GENERIC_READ 0x80000000u
+#endif
+#ifndef GENERIC_WRITE
+#define GENERIC_WRITE 0x40000000u
+#endif
+#ifndef FILE_SHARE_READ
+#define FILE_SHARE_READ 0x00000001u
+#endif
+#ifndef CREATE_ALWAYS
+#define CREATE_ALWAYS 2
+#endif
+#ifndef OPEN_EXISTING
+#define OPEN_EXISTING 3
+#endif
+#ifndef FILE_ATTRIBUTE_NORMAL
+#define FILE_ATTRIBUTE_NORMAL 0x00000080u
+#endif
+#ifndef FILE_BEGIN
+#define FILE_BEGIN 0
+#endif
+#ifndef FILE_CURRENT
+#define FILE_CURRENT 1
+#endif
+#ifndef FILE_END
+#define FILE_END 2
+#endif
+#ifndef SEM_FAILCRITICALERRORS
+#define SEM_FAILCRITICALERRORS 0x0001
+#endif
+
 #ifndef HKEY_CLASSES_ROOT
 #define HKEY_CLASSES_ROOT ((HKEY)(UINT_PTR)0x80000000u)
 #endif
@@ -329,12 +382,28 @@ BOOL PostMessage(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
 BOOL SetForegroundWindow(HWND window);
 BOOL ShowWindow(HWND window, int command_show);
 int MessageBox(HWND window, LPCSTR text, LPCSTR caption, UINT type);
+LPSTR lstrcpy(LPSTR dest, LPCSTR src);
+HANDLE CreateFile(LPCSTR file_name, DWORD desired_access, DWORD share_mode, LPSECURITY_ATTRIBUTES security_attributes, DWORD creation_disposition, DWORD flags_and_attributes, HANDLE template_file);
+BOOL ReadFile(HANDLE file, LPVOID buffer, DWORD bytes_to_read, LPDWORD bytes_read, LPVOID overlapped);
+BOOL WriteFile(HANDLE file, LPCVOID buffer, DWORD bytes_to_write, LPDWORD bytes_written, LPVOID overlapped);
+BOOL CloseHandle(HANDLE object);
+DWORD GetFileSize(HANDLE file, LPDWORD file_size_high);
+DWORD SetFilePointer(HANDLE file, LONG distance_to_move, LPLONG distance_to_move_high, DWORD move_method);
+BOOL DeleteFile(LPCSTR file_name);
+DWORD GetLastError(void);
+UINT SetErrorMode(UINT mode);
+BOOL GetFileInformationByHandle(HANDLE file, BY_HANDLE_FILE_INFORMATION *file_information);
+BOOL FileTimeToDosDateTime(const FILETIME *file_time, LPWORD fat_date, LPWORD fat_time);
+BOOL DosDateTimeToFileTime(WORD fat_date, WORD fat_time, LPFILETIME file_time);
+BOOL SetFileTime(HANDLE file, const FILETIME *creation_time, const FILETIME *last_access_time, const FILETIME *last_write_time);
 LONG RegOpenKeyEx(HKEY key, LPCSTR sub_key, DWORD options, DWORD sam_desired, HKEY *result);
 LONG RegQueryValue(HKEY key, LPCSTR sub_key, LPSTR data, LONG *size);
 LONG RegQueryValueEx(HKEY key, LPCSTR value_name, LPDWORD reserved, LPDWORD type, LPBYTE data, LPDWORD size);
 LONG RegCloseKey(HKEY key);
 BOOL CreateProcess(LPCSTR application_name, LPSTR command_line, LPSECURITY_ATTRIBUTES process_attributes, LPSECURITY_ATTRIBUTES thread_attributes, BOOL inherit_handles, DWORD creation_flags, LPVOID environment, LPCSTR current_directory, STARTUPINFO *startup_info, PROCESS_INFORMATION *process_information);
 void Sleep(DWORD milliseconds);
+DWORD htonl(DWORD hostlong);
+DWORD ntohl(DWORD netlong);
 #ifdef __cplusplus
 }
 #endif

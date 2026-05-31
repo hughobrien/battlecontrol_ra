@@ -385,7 +385,7 @@ bool MixFileClass<T>::Cache(Buffer const * buffer)
 	*/
 	if (buffer != NULL) {
 		if (buffer->Get_Size() == 0 || buffer->Get_Size() >= DataSize) {
-			Data = buffer->Get_Buffer();
+			Data = (char *)buffer->Get_Buffer();
 		}
 	} else {
 		Data = new char [DataSize];

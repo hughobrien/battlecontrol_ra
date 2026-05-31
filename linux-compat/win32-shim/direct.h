@@ -40,6 +40,7 @@
 extern "C" {
 #endif
 void _splitpath(char const *path, char *drive, char *dir, char *fname, char *ext);
+void _makepath(char *path, char const *drive, char const *dir, char const *fname, char const *ext);
 #ifdef __cplusplus
 }
 #endif

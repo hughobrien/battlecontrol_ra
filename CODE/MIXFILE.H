@@ -130,7 +130,7 @@ class MixFileClass : public Node<MixFileClass<T> >
 		/*
 		**	If the mixfile has been cached, then this points to the cached data.
 		*/
-		void * Data;						// Pointer to raw data.
+		char * Data;						// Pointer to raw data.
 
 		static List<MixFileClass> List;
 };
