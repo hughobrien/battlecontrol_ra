@@ -1367,7 +1367,7 @@ void WolapiObject::PullPlayerName_Into_From( char* szDest, const char* szSource 
 	//	Called "player" name because this is mainly designed for use in game channels.
 	//	Player name appears first in item, separated by a space from anything later.
 
-	char* pSpace = strstr( szSource, " " );
+	char const * pSpace = strstr( szSource, " " );
 	if( !pSpace )
 	{
 		//	No space character. Use entire item.	
@@ -1393,7 +1393,7 @@ HousesType WolapiObject::PullPlayerHouse_From( const char* szSource )
 //	++pChar;
 //	if( *pChar++ != '<' )		//	We know house has to be last, so if not the case, no house in item.
 //		return HOUSE_NONE;
-	char* pChar = strrchr( szSource, '<' );		//	Last < character.
+	char const * pChar = strrchr( szSource, '<' );		//	Last < character.
 	if( !pChar )
 		return HOUSE_NONE;
 	++pChar;
