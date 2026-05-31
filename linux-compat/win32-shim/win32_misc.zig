@@ -680,6 +680,17 @@ export fn Mem_Copy(source: ?*const anyopaque, dest: ?*anyopaque, bytes_to_copy: 
     _ = memmove(dst, src, @intCast(bytes_to_copy));
 }
 
+export fn Force_VM_Page_In(buffer: ?[*]u8, length: c_int) callconv(.c) void {
+    if (buffer == null or length <= 0) return;
+
+    const bytes: usize = @intCast(length);
+    var offset: usize = 0;
+    while (offset < bytes) : (offset += 4096) {
+        const page: *volatile u8 = &buffer.?[offset];
+        page.* = page.*;
+    }
+}
+
 export fn Apply_XOR_Delta(target: [*]u8, delta: [*]const u8) callconv(.c) c_uint {
     var dest = target;
     var src = delta;
@@ -733,6 +744,85 @@ export fn Apply_XOR_Delta(target: [*]u8, delta: [*]const u8) callconv(.c) c_uint
             }
         }
     }
+}
+
+export fn Apply_XOR_Delta_To_Page_Or_Viewport(target: [*]u8, delta: [*]const u8, width: c_int, nextrow: c_int, copy: c_int) callconv(.c) void {
+    if (width <= 0 or nextrow <= 0) return;
+
+    const row_width: usize = @intCast(width);
+    const pitch: usize = @intCast(nextrow);
+    const should_copy = copy != 0;
+    var src = delta;
+    var row_offset: usize = 0;
+    var column: usize = 0;
+
+    while (true) {
+        const op_code = src[0];
+        src += 1;
+        if (op_code == 0) {
+            var count = src[0];
+            src += 1;
+            const value = src[0];
+            src += 1;
+            while (count != 0) : (count -= 1) {
+                applyDeltaByte(target, row_width, pitch, should_copy, &row_offset, &column, value);
+            }
+        } else if (op_code < 0x80) {
+            var count = op_code;
+            while (count != 0) : (count -= 1) {
+                applyDeltaByte(target, row_width, pitch, should_copy, &row_offset, &column, src[0]);
+                src += 1;
+            }
+        } else {
+            const short_skip = op_code - 0x80;
+            if (short_skip != 0) {
+                skipDeltaBytes(row_width, pitch, &row_offset, &column, short_skip);
+                continue;
+            }
+            const word = @as(u16, src[0]) | (@as(u16, src[1]) << 8);
+            src += 2;
+            if (word == 0) return;
+            if ((word & 0x8000) == 0) {
+                skipDeltaBytes(row_width, pitch, &row_offset, &column, word);
+                continue;
+            }
+            var count = word - 0x8000;
+            if ((count & 0x4000) != 0) {
+                count -= 0x4000;
+                const value = src[0];
+                src += 1;
+                while (count != 0) : (count -= 1) {
+                    applyDeltaByte(target, row_width, pitch, should_copy, &row_offset, &column, value);
+                }
+            } else {
+                while (count != 0) : (count -= 1) {
+                    applyDeltaByte(target, row_width, pitch, should_copy, &row_offset, &column, src[0]);
+                    src += 1;
+                }
+            }
+        }
+    }
+}
+
+fn applyDeltaByte(target: [*]u8, row_width: usize, pitch: usize, should_copy: bool, row_offset: *usize, column: *usize, value: u8) void {
+    const dest_index = row_offset.* + column.*;
+    if (should_copy) {
+        target[dest_index] = value;
+    } else {
+        target[dest_index] ^= value;
+    }
+
+    column.* += 1;
+    if (column.* == row_width) {
+        column.* = 0;
+        row_offset.* += pitch;
+    }
+}
+
+fn skipDeltaBytes(row_width: usize, pitch: usize, row_offset: *usize, column: *usize, amount: usize) void {
+    const total = column.* + amount;
+    row_offset.* += (total / row_width) * pitch;
+    column.* = total % row_width;
 }
 
 // LCW command semantics from WIN32LIB/IFF/LCWUNCMP.ASM; length is an output cap.

@@ -1030,7 +1030,7 @@ template<> class DynamicVectorClass<EventChoiceClass *>;
 extern DynamicVectorClass<EventChoiceClass *> xxx2;
 template<> class DynamicVectorClass<ActionChoiceClass *>;
 extern DynamicVectorClass<ActionChoiceClass *> xxx3;
-template<> class DynamicVectorClass<EgoClass *>;
+extern template class DynamicVectorClass<EgoClass *>;
 extern DynamicVectorClass<EgoClass *> whatever;
 
 #endif
