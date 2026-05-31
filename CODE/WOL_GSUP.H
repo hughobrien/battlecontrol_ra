@@ -302,9 +302,8 @@ protected:
 
 	SCENARIO_GAMEKIND	ScenKindCurrent;		//	Describes what gamekind of scenarios we are viewing, if host.
 	DynamicVectorClass< const char* >	ar_szScenarios[ 4 ];	//	Lists of scenarios, by SCENARIO_GAMEKIND.
-	//	ar_szScenIndexes parallels ar_szScenarios, holds ScenarioIndex. It's actually an int, but I'm using void* to avoid
-	//	template instantiation problems and the need to change defines.h.
-	DynamicVectorClass< void* >			ar_szScenIndexes[ 4 ];
+	//	ar_szScenIndexes parallels ar_szScenarios and holds Session.Scenarios indexes.
+	DynamicVectorClass< int >				ar_szScenIndexes[ 4 ];
 
 	//------------------------------------------------------------------------
 	//	Button Enumerations
@@ -361,4 +360,3 @@ protected:
 };
 
 #endif
-
