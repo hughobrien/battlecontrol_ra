@@ -128,6 +128,52 @@ void Set_Window(int window, int x, int y, int w, int h)
 
 
 /***********************************************************************************************
+ * Bound -- Confines a value between the supplied limits.                                      *
+ *                                                                                             *
+ *    These overloads match the old Watcom assembly implementation, including its handling of  *
+ *    reversed limits.                                                                         *
+ *                                                                                             *
+ *=============================================================================================*/
+int Bound(signed int original, signed int minval, signed int maxval)
+{
+	if (minval > maxval) {
+		signed int temp = minval;
+		minval = maxval;
+		maxval = temp;
+	}
+	if (original < minval) return(minval);
+	if (original > maxval) return(maxval);
+	return(original);
+}
+
+
+unsigned Bound(unsigned original, unsigned minval, unsigned maxval)
+{
+	if (minval > maxval) {
+		unsigned temp = minval;
+		minval = maxval;
+		maxval = temp;
+	}
+	if (original < minval) return(minval);
+	if (original > maxval) return(maxval);
+	return(original);
+}
+
+
+long Bound(long original, long minval, long maxval)
+{
+	if (minval > maxval) {
+		long temp = minval;
+		minval = maxval;
+		maxval = temp;
+	}
+	if (original < minval) return(minval);
+	if (original > maxval) return(maxval);
+	return(original);
+}
+
+
+/***********************************************************************************************
  * Fatal -- General purpose fatal error handler.                                               *
  *                                                                                             *
  *    This is a very simple general purpose fatal error handler. It goes directly to text      *
