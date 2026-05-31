@@ -74,7 +74,7 @@
 static inline int _Scale_To_256(int val)
 {
 	val = fixed(100, 256) * val;
-	val = min(val, 255);
+	val = std::min(val, 255);
 	return(val);
 }
 
@@ -859,7 +859,7 @@ bool RulesClass::Land_Types(CCINIClass & ini)
 			gptr->Cost[SPEED_FOOT] = Sub_Saturate(ini.Get_Fixed(_lands[land], "Foot", 1), 1);
 			gptr->Cost[SPEED_TRACK] = Sub_Saturate(ini.Get_Fixed(_lands[land], "Track", 1), 1);
 			gptr->Cost[SPEED_WHEEL] = Sub_Saturate(ini.Get_Fixed(_lands[land], "Wheel", 1), 1);
-			gptr->Cost[SPEED_WINGED] = Sub_Saturate(1, 1);
+			gptr->Cost[SPEED_WINGED] = Sub_Saturate(fixed(1), 1);
 			gptr->Cost[SPEED_FLOAT] = Sub_Saturate(ini.Get_Fixed(_lands[land], "Float", 1), 1);
 			gptr->Build = ini.Get_Bool(_lands[land], "Buildable", false);
 		}
