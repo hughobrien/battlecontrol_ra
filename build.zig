@@ -160,6 +160,7 @@ pub fn build(b: *std.Build) void {
         "CODE/MP.CPP",
         "CODE/PROFILE.CPP",
         "CODE/READLINE.CPP",
+        "CODE/WOLSTRNG.CPP",
     };
     for (sources) |source| {
         exe_module.addCSourceFile(.{
