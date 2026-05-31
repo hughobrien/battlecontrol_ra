@@ -28,6 +28,9 @@ pub fn build(b: *std.Build) void {
     };
     const sources = [_][]const u8{
         "CODE/STARTUP.CPP",
+        "CODE/HEAP.CPP",
+        "CODE/VECTOR.CPP",
+        "WIN32LIB/DRAWBUFF/GBUFFER.CPP",
         "CODE/INTERNET.CPP",
         "CODE/IPXADDR.CPP",
         "CODE/RAWFILE.CPP",
