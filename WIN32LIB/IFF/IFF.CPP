@@ -44,12 +44,21 @@
 
 #include "IFF.H"
 #include "FILE.H"
+#include <stdint.h>
 
 #define ID_FORM			MAKE_ID('F','O','R','M')
 
 #ifdef MIN
 #undef MIN
 #endif
+
+static uint32_t Iff_File_Size(uint32_t number)
+{
+	return ((number & 0x000000FFU) << 24) |
+		((number & 0x0000FF00U) << 8) |
+		((number & 0x00FF0000U) >> 8) |
+		((number & 0xFF000000U) >> 24);
+}
 
 /***************************************************************************
  * OPEN_IFF_FILE -- Opens an IFF file for reading.                         *
@@ -74,7 +83,7 @@
 int __cdecl Open_Iff_File(char const *filename)
 {
 	int	fh;		// File handle.
-	long	type;		// IFF file type.
+	uint32_t	type = 0;		// IFF file type.
 
 
 	/* We want to be able to open the file for READ | WRITE, but we do not
@@ -91,7 +100,7 @@ int __cdecl Open_Iff_File(char const *filename)
 
 	Read_File(fh, &type, 4L);
 
-	if (type == ID_FORM) {
+	if (type == (uint32_t)ID_FORM) {
 
 		//	The file is valid (so far).  Position the read so that the actual
 		//	IFF file type code can be read.
@@ -146,24 +155,24 @@ void __cdecl Close_Iff_File(int fh)
  *=========================================================================*/
 unsigned long __cdecl Get_Iff_Chunk_Size(int fh, long id)
 {
-	long	form;					// Chunk iff form name.
-	long	chunksize;			// Size of the chunk.
+	uint32_t	form;					// Chunk iff form name.
+	uint32_t	chunksize;			// Size of the chunk.
 	char	first_iteration;	// Check once the current chunk name
 
 
 	first_iteration = TRUE;
 
 	for (;;) {
-		if (Read_File(fh, &form, 4L) != 4L && !first_iteration) break;
+		if (Read_File(fh, &form, 4L) != 4L) break;
 
 
-		if (Read_File(fh, (char *) &chunksize, 4L) != 4L && !first_iteration) break;
+		if (Read_File(fh, (char *) &chunksize, 4L) != 4L) break;
 
 #if(IBM)
-		chunksize = Reverse_Long(chunksize);
+		chunksize = Iff_File_Size(chunksize);
 #endif
 
-		if (id == form) {
+		if ((uint32_t)id == form) {
 			Seek_File(fh, -8L, SEEK_CUR);			// Seek back to the start of
 			return(chunksize);						// the chunk & return size
 		} else {
@@ -175,8 +184,8 @@ unsigned long __cdecl Get_Iff_Chunk_Size(int fh, long id)
 
 				/* Otherwise, go to the next chunk in the file */
 
-				chunksize = (chunksize + 1) & 0xFFFFFFFEL;
-				Seek_File(fh, chunksize, SEEK_CUR);
+				chunksize = (chunksize + 1) & 0xFFFFFFFEU;
+				Seek_File(fh, (long)chunksize, SEEK_CUR);
 			}
 		}
 	}
@@ -214,29 +223,31 @@ unsigned long __cdecl Get_Iff_Chunk_Size(int fh, long id)
  *=========================================================================*/
 unsigned long __cdecl Read_Iff_Chunk(int fh, long id, void *buffer, unsigned long maxsize)
 {
-	long	form;					// Chunk iff form name.
-	unsigned long	chunksize;			// Size of the chunk.
+	uint32_t	form;					// Chunk iff form name.
+	uint32_t	chunksize;			// Size of the chunk.
 	char	first_iteration;	// Check once the current chunk name
 
 	first_iteration = TRUE;
 
 	for (;;) {
-		if (Read_File(fh, &form, 4L) != 4L && !first_iteration) break;
+		if (Read_File(fh, &form, 4L) != 4L) break;
 
-		if (Read_File(fh, (char *) &chunksize, 4L) != 4L && !first_iteration) break;
+		if (Read_File(fh, (char *) &chunksize, 4L) != 4L) break;
 
 #if(IBM)
-		chunksize = Reverse_Long(chunksize);
+		chunksize = Iff_File_Size(chunksize);
 #endif
 
-		if (id == form) {
+		if ((uint32_t)id == form) {
 
-			maxsize = MIN(maxsize, chunksize);
+			if (maxsize > chunksize) {
+				maxsize = chunksize;
+			}
 			Read_File(fh, buffer, maxsize);		// Read the buffer.
 
-			chunksize = (chunksize + 1) & 0xFFFFFFFEL;
+			chunksize = (chunksize + 1) & 0xFFFFFFFEU;
 			if (maxsize < chunksize) {
-				Seek_File(fh, chunksize - maxsize, SEEK_CUR);
+				Seek_File(fh, (long)(chunksize - maxsize), SEEK_CUR);
 			}
 			return(maxsize);
 		} else {
@@ -249,8 +260,8 @@ unsigned long __cdecl Read_Iff_Chunk(int fh, long id, void *buffer, unsigned lon
 
 				/* Otherwise, go to the next chunk in the file */
 
-				chunksize = (chunksize + 1) & 0xFFFFFFFEL;
-				Seek_File(fh, chunksize, SEEK_CUR);
+				chunksize = (chunksize + 1) & 0xFFFFFFFEU;
+				Seek_File(fh, (long)chunksize, SEEK_CUR);
 			}
 		}
 	}
@@ -277,7 +288,7 @@ void __cdecl Write_Iff_Chunk(int file, long id, void *buffer, long length)
 	long	pos;		// Current position in the IFF file.
 	long	oldpos;	// Record of start of chunk offset.
 	long	endpos;	// end of file offset before we write our data
-	long	value;
+	uint32_t	value;
 	BOOL	odd;		// Is length odd?
 	char	pad = 0;	// Optional padding byte for even sized chunks.
 
@@ -289,7 +300,7 @@ void __cdecl Write_Iff_Chunk(int file, long id, void *buffer, long length)
 	Seek_File (file, pos, SEEK_SET);
 
 	if (length) {
-		value = id;
+		value = (uint32_t)id;
 		odd = (short)length & 0x01;
 
 		Write_File(file, &value, 4L);
@@ -305,7 +316,7 @@ void __cdecl Write_Iff_Chunk(int file, long id, void *buffer, long length)
 		**	Update the chunk size long.
 		*/
 		Seek_File(file, oldpos, SEEK_SET);
-		value = IFFize_LONG((pos - oldpos)-4);
+		value = Iff_File_Size((uint32_t)((pos - oldpos)-4));
 		Write_File(file, &value, 4L);
 
 		/*
@@ -314,7 +325,7 @@ void __cdecl Write_Iff_Chunk(int file, long id, void *buffer, long length)
 		// (MCC)
 		if ( endpos < pos ) {
 			Seek_File(file, 4L, SEEK_SET);
-			value = IFFize_LONG((pos+odd) - 8);
+			value = Iff_File_Size((uint32_t)((pos+odd) - 8));
 			Write_File(file, &value, 4L);
 		}
 
@@ -324,5 +335,3 @@ void __cdecl Write_Iff_Chunk(int file, long id, void *buffer, long length)
 		Seek_File(file, 0L, SEEK_END);
 	}
 }
-
-
