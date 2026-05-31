@@ -155,7 +155,7 @@ static inline char *WW_Strrev(char * text)
 
 
 // Fix deficiency in Watcom so that true/false will be defined.
-#ifndef __BORLANDC__
+#if !defined(__cplusplus) && !defined(__BORLANDC__)
 #ifndef TRUE_FALSE_DEFINED
 #define TRUE_FALSE_DEFINED
 enum {false=0,true=1};

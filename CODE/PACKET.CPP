@@ -39,7 +39,7 @@
 #include <mem.h>
 #include <string.h>
 
-#if defined(__WATCOMC__)
+#if !defined(__cplusplus) && defined(__WATCOMC__)
 enum {false=0,true=1};
 typedef int bool;
 #endif
