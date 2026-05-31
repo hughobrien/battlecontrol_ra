@@ -62,10 +62,10 @@
 #include	<windows.h>
 #include	<windowsx.h>
 #include	"dsound.h"
-#include	<wwstd.h>
-#include "soundint.h"
-#include "memflag.h"
-#include "audio.h"
+#include	<WWSTD.H>
+#include "SOUNDINT.H"
+#include "MEMFLAG.H"
+#include "AUDIO.H"
 
 extern	DebugBuffer[];
 

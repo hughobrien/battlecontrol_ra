@@ -47,8 +47,8 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #ifndef GBUFFER_H
-#include "gbuffer.h"
-#include "misc.h"
+#include "GBUFFER.H"
+#include "MISC.H"
 #endif
 #pragma inline
 

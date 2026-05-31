@@ -35,7 +35,7 @@
 #ifndef WW_MOUSE_H
 #define WW_MOUSE_H
 
-#include <gbuffer.h>
+#include <GBUFFER.H>
 
 class WWMouseClass {
 	public:

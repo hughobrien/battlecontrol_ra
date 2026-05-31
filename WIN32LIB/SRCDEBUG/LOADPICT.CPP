@@ -39,9 +39,9 @@
  *   Load_Picture -- Loads a picture file (CPS or LBM format).             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "iff.h"
-#include "file.h"
-#include <wwmem.h>	// For Alloc.
+#include "IFF.H"
+#include "FILE.H"
+#include <WWMEM.H>	// For Alloc.
 
 #if(IBM)
 #include <mem.h>

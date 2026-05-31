@@ -39,12 +39,12 @@
  *   Uncompress_Data -- Uncompresses data from one buffer to another.      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "iff.h"
-#include "file.h"
-#include <misc.h>
-#include <wwstd.h>
+#include "IFF.H"
+#include "FILE.H"
+#include <MISC.H>
+#include <WWSTD.H>
 #include <dos.h>
-#include <wwmem.h>
+#include <WWMEM.H>
 
 
 /*=========================================================================*/

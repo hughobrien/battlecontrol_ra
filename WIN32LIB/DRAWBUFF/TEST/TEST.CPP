@@ -57,13 +57,13 @@
 #define WIN32
 #include <windows.h>
 #include <windowsx.h>
-#include "..\gbuffer.h"
+#include "..\GBUFFER.H"
 #include <ddraw.h>
-#include <font.h>
-#include <tile.h>
-#include <file.h>
-#include <iconcach.h>
-#include <wwmem.h>
+#include <FONT.H>
+#include <TILE.H>
+#include <FILE.H>
+#include <ICONCACH.H>
+#include <WWMEM.H>
 
 #define NAME "DRAWBUFF test"
 #define TITLE "DRAWBUFF library test"

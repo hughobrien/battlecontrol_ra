@@ -52,7 +52,7 @@
 #include	<errno.h>
 #include	<windows.h>
 //#include	<algo.h>
-#include	"wwfile.h"
+#include	"WWFILE.H"
 
 #ifdef NEVER
 	/*

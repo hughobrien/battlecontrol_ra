@@ -63,12 +63,12 @@
  *- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include <wwstd.h>
-#include "wsa.h"
-#include <wwmem.h>
-#include <file.h>
-#include <misc.h>
-#include <iff.h>
+#include <WWSTD.H>
+#include "WSA.H"
+#include <WWMEM.H>
+#include <FILE.H>
+#include <MISC.H>
+#include <IFF.H>
 #include <mem.h>
 #include <string.h>
 

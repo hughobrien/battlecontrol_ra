@@ -37,15 +37,15 @@
  *   Change_File_Size -- Change the size of a writting file.               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #ifndef WWSTD_H
-#include "wwstd.h"
+#include "WWSTD.H"
 #endif	   
 
 #ifndef _FILE_H
-#include "_file.h"
+#include "_FILE.H"
 #endif
 
 #ifndef WWMEM_H
-#include <wwmem.h>
+#include <WWMEM.H>
 #endif
 
 #include <io.h>

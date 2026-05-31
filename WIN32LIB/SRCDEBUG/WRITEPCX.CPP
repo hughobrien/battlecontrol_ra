@@ -35,9 +35,9 @@
  * int Save_PCX_File (char* name, GraphicViewPortClass& pic, char* palette)*
  *= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =*/
 
-#include  <wwlib32.h>
-#include "filepcx.h"
-#include <wwmem.h>
+#include  <WWLIB32.H>
+#include "FILEPCX.H"
+#include <WWMEM.H>
 static void Write_Pcx_ScanLine ( int file_handle , int scansize , char * ptr );
 
 

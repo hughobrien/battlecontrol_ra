@@ -34,10 +34,10 @@
  * Functions:                                                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "wwlib32.h"
-#include "defines.h"
-#include "structs.h"
-#include	"externs.h"
+#include "WWLIB32.H"
+#include "DEFINES.H"
+#include "STRUCTS.H"
+#include	"EXTERNS.H"
 
 
 /*=========================================================================*/

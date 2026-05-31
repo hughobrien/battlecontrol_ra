@@ -38,7 +38,7 @@
  *   operator delete[] -- Overides the array version of delete[]           *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "wwmem.h"
+#include "WWMEM.H"
 
 
 /*=========================================================================*/
