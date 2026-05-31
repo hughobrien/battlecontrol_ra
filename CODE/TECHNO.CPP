@@ -2894,7 +2894,7 @@ int TechnoClass::Rearm_Delay(bool second, int which) const
  *   09/30/1996 BWG : Created.                                                                 *
  *   09/30/1996 JLB : Uses standard facing conversion and distance routines.                   *
  *=============================================================================================*/
-bool TechnoClass::Electric_Zap(TARGET target, int which, COORDINATE source_coord, unsigned char * remap)
+bool TechnoClass::Electric_Zap(TARGET target, int which, COORDINATE source_coord, uint8_t * remap)
 {
 	int x,y,x1,y1;
 	COORDINATE source;

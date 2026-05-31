@@ -138,7 +138,7 @@ class ChronalVortexClass {
 		** Members for setting up the lookup tables.
 		*/
 		void Build_Fading_Table (PaletteClass const & palette, void * dest, int color, int frac);
-		void Coordinate_Remap ( GraphicViewPortClass *inbuffer, int x, int y, int width, int height, unsigned char *remap_table);
+		void Coordinate_Remap ( GraphicViewPortClass *inbuffer, int x, int y, int width, int height, uint8_t *remap_table);
 
 		/*
 		** Misc internal functions
@@ -177,12 +177,12 @@ class ChronalVortexClass {
 		/*
 		** Color lookup tables for shading on vortex.
 		*/
-		unsigned char 	VortexRemapTables [MAX_REMAP_SHADES][256];
+		uint8_t 			VortexRemapTables [MAX_REMAP_SHADES][256];
 
 		/*
 		** Color lookup table to make the blue lightning orange.
 		*/
-		unsigned char	LightningRemap[256];
+		uint8_t			LightningRemap[256];
 
 		/*
 		** Is vortex currently active?
