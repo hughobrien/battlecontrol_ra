@@ -305,7 +305,9 @@ bool WWKeyboardClass::Down(unsigned short key)
 
 
 extern "C" {
-	void __cdecl Stop_Execution (void);
+	void __cdecl Stop_Execution (void)
+	{
+	}
 }
 
 
