@@ -46,9 +46,9 @@ class BaseNodeClass
 	public:
 		BaseNodeClass(void) {};
 		BaseNodeClass(StructType building, CELL cell) : Type(building), Cell(cell) {};
-		int operator == (BaseNodeClass const & node);
-		int operator != (BaseNodeClass const & node);
-		int operator > (BaseNodeClass const & node);
+		int operator == (BaseNodeClass const & node) {return(Type == node.Type && Cell == node.Cell);}
+		int operator != (BaseNodeClass const & node) {return(!(*this == node));}
+		int operator > (BaseNodeClass const & ) {return(true);}
 
 		StructType Type;
 		CELL Cell;
@@ -127,4 +127,3 @@ class BaseClass
 
 
 #endif
-
