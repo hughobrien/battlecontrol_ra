@@ -23,12 +23,19 @@ pub fn build(b: *std.Build) void {
     exe_module.addIncludePath(b.path("CODE"));
     exe_module.addIncludePath(b.path("WIN32LIB/INCLUDE"));
     exe_module.addIncludePath(b.path("VQ/INCLUDE"));
-    exe_module.addCSourceFile(.{
-        .file = b.path("CODE/STARTUP.CPP"),
-        .flags = &.{
-            "-std=c++17",
-        },
-    });
+    const cxx_flags = &.{
+        "-std=c++17",
+    };
+    const sources = [_][]const u8{
+        "CODE/STARTUP.CPP",
+        "CODE/INTERNET.CPP",
+    };
+    for (sources) |source| {
+        exe_module.addCSourceFile(.{
+            .file = b.path(source),
+            .flags = cxx_flags,
+        });
+    }
 
     const exe = b.addExecutable(.{
         .name = "ra",
