@@ -187,6 +187,7 @@ pub fn build(b: *std.Build) void {
         "CODE/DDE.CPP",
         "CODE/INI.CPP",
         "CODE/MIXFILE.CPP",
+        "CODE/MONOC.CPP",
         "CODE/STRAW.CPP",
         "CODE/PIPE.CPP",
         "CODE/XSTRAW.CPP",

@@ -38,6 +38,7 @@
 #ifndef MONOC_Hx
 #define MONOC_Hx
 
+#include <stdint.h>
 
 /*
 **	The "bool" integral type was defined by the C++ committee in
@@ -161,14 +162,14 @@ class MonoClass {
 		**	really made up of characters. This specifies which characters to use.
 		*/
 		struct BoxDataType {
-			char	UpperLeft;
-			char	TopEdge;
-			char	UpperRight;
-			char	RightEdge;
-			char	BottomRight;
-			char	BottomEdge;
-			char	BottomLeft;
-			char	LeftEdge;
+			uint8_t	UpperLeft;
+			uint8_t	TopEdge;
+			uint8_t	UpperRight;
+			uint8_t	RightEdge;
+			uint8_t	BottomRight;
+			uint8_t	BottomEdge;
+			uint8_t	BottomLeft;
+			uint8_t	LeftEdge;
 		};
 		static BoxDataType const CharData[4];
 
