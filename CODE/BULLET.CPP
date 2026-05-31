@@ -52,6 +52,7 @@
  *   BulletClass::~BulletClass -- Destructor for bullet objects.                               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 
@@ -716,15 +717,15 @@ bool BulletClass::Unlimbo(COORDINATE coord, DirType dir)
 			*/
 			if (/*Class->ROT != 0 ||*/ Class->IsArcing) {
 				int scatterdist = (::Distance(coord, tcoord)/16)-0x0040;
-				scatterdist = min(scatterdist, Rule.HomingScatter);
-				scatterdist = max(scatterdist, 0);
+				scatterdist = std::min<int>(scatterdist, Rule.HomingScatter);
+				scatterdist = std::max(scatterdist, 0);
 
 				dir = (DirType)((dir + (Random_Pick(0, 10)-5)) & 0x00FF);
 				tcoord = Coord_Scatter(tcoord, Random_Pick(0, scatterdist));
 			} else {
 				int scatterdist = (::Distance(coord, tcoord)/16)-0x0040;
-				scatterdist = min(scatterdist, Rule.BallisticScatter);
-				scatterdist = max(scatterdist, 0);
+				scatterdist = std::min<int>(scatterdist, Rule.BallisticScatter);
+				scatterdist = std::max(scatterdist, 0);
 				tcoord = Coord_Move(tcoord, dir, Random_Pick(0, scatterdist));
 			}
 		}
@@ -759,7 +760,7 @@ bool BulletClass::Unlimbo(COORDINATE coord, DirType dir)
 			/*
 			**	Set minimum speed (i.e., distance) for arcing projectiles.
 			*/
-			speed = max(speed, 25);
+			speed = std::max(speed, 25);
 		}
 		if (!Class->IsDropping) {
 			Fly_Speed(255, (MPHType)speed);
@@ -785,7 +786,7 @@ bool BulletClass::Unlimbo(COORDINATE coord, DirType dir)
 			IsFalling = true;
 			Height = 1;
 			Riser = ((Distance(tcoord)/2) / (speed+1)) * Rule.Gravity;
-			Riser = max(Riser, 10);
+			Riser = std::max(Riser, 10);
 		}
 		if (Class->IsDropping) {
 			IsFalling = true;

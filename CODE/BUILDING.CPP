@@ -107,6 +107,7 @@
  *   BuildingClass::~BuildingClass -- Destructor for building type objects.                    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 
@@ -305,6 +306,9 @@ RadioMessageType BuildingClass::Receive_Message(RadioClass * from, RadioMessageT
 					case STRUCT_REFINERY:
 						param = ::As_Target(Coord_Cell(Adjacent_Cell(Center_Coord(), DIR_S)));
 						break;
+
+					default:
+						break;
 				}
 
 				/*
@@ -318,7 +322,7 @@ RadioMessageType BuildingClass::Receive_Message(RadioClass * from, RadioMessageT
 					*/
 					Transmit_Message(RADIO_TETHER);
 					if (*this == STRUCT_REFINERY && Transmit_Message(RADIO_BACKUP_NOW, from) != RADIO_ROGER) {
-						from->Scatter(NULL, true, true);
+						from->Scatter(0, true, true);
 					}
 				}
 			}
@@ -679,11 +683,11 @@ int BuildingClass::Shape_Number(void) const
 					if (Health_Ratio() <= Rule.ConditionYellow) {
 						int last1 = Class->Anims[BSTATE_IDLE].Start + Class->Anims[BSTATE_IDLE].Count;
 						int last2 = Class->Anims[BSTATE_ACTIVE].Start + Class->Anims[BSTATE_ACTIVE].Count;
-						int largest = max(last1, last2);
+						int largest = std::max(last1, last2);
 						last2 = Class->Anims[BSTATE_AUX1].Start + Class->Anims[BSTATE_AUX1].Count;
-						largest = max(largest, last2);
+						largest = std::max(largest, last2);
 						last2 = Class->Anims[BSTATE_AUX2].Start + Class->Anims[BSTATE_AUX2].Count;
-						largest = max(largest, last2);
+						largest = std::max(largest, last2);
 						shapenum += largest;
 					}
 				}
@@ -5087,7 +5091,7 @@ void BuildingClass::Read_INI(CCINIClass & ini)
 				b->IsToRepair = rebuild || *b == STRUCT_CONST;
 
 				if (b->Unlimbo(Cell_Coord(cell), facing)) {
-					strength = min(strength, 0x100);
+					strength = std::min(strength, 0x100);
 					strength = b->Class->MaxStrength * fixed(strength, 256);
 					b->Strength = strength;
 					if (b->Strength > b->Class->MaxStrength-3) b->Strength = b->Class->MaxStrength;

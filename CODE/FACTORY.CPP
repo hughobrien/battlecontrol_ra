@@ -52,6 +52,7 @@
  *   FactoryClass::~FactoryClass -- Default destructor for factory objects.                    *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 
@@ -209,7 +210,7 @@ void FactoryClass::AI(void)
 
 				int cost = Cost_Per_Tick();
 
-				cost = min(cost, Balance);
+				cost = std::min(cost, Balance);
 
 				/*
 				**	Enough time has expired so that another production step can occur.
@@ -667,5 +668,4 @@ bool FactoryClass::Completed(void)
 	}
 	return(false);
 }
-
 

@@ -43,6 +43,7 @@
  *   SmudgeClass::operator new -- Creator of smudge objects.                                   *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 #include	"SMUDGE.H"
 
@@ -194,7 +195,7 @@ bool SmudgeClass::Mark(MarkType mark)
 							if (cell->Is_Clear_To_Move(SPEED_TRACK, true, true)) {
 								if (Class->IsCrater && cell->Smudge != SMUDGE_NONE && SmudgeTypeClass::As_Reference(cell->Smudge).IsCrater) {
 									cell->SmudgeData++;
-									cell->SmudgeData = (int)min((int)cell->SmudgeData, (int)4);
+					cell->SmudgeData = (int)std::min((int)cell->SmudgeData, (int)4);
 								}
 
 								if (cell->Smudge == SMUDGE_NONE) {

@@ -39,6 +39,7 @@
  *   FuseClass::Fuse_Write -- Writes the fuse data to the save game file.                      *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 
@@ -93,9 +94,9 @@ FuseClass::FuseClass(void)
  *=============================================================================================*/
 void FuseClass::Arm_Fuse(COORDINATE location, COORDINATE target, int timeto, int arming)
 {
-	timeto = max(timeto, arming);
-	Timer = min(timeto, 0xFF);
-	Arming = min(arming, 0xFF);
+	timeto = std::max(timeto, arming);
+	Timer = std::min(timeto, 0xFF);
+	Arming = std::min(arming, 0xFF);
 	HeadTo = target;
 	Proximity = Distance(location, target);
 }
@@ -193,5 +194,4 @@ void FuseClass::Fuse_Read(FileClass & file)
 	file.Read(&HeadTo, sizeof(HeadTo));
 	file.Read(&Proximity, sizeof(Proximity));
 }
-
 

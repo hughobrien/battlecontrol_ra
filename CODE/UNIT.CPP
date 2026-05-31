@@ -100,6 +100,7 @@
  *   UnitClass::~UnitClass -- Destructor for unit objects.                                     *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 
@@ -683,6 +684,9 @@ void UnitClass::Firing_AI(void)
 				Mark(MARK_OVERLAP_DOWN);
 				Do_Uncloak();
 				break;
+
+			default:
+				break;
 		}
 	}
 }
@@ -885,14 +889,17 @@ RadioMessageType UnitClass::Receive_Message(RadioClass * from, RadioMessageType 
 		**	When this message is received, it means that the other object
 		**	has already turned its radio off. Turn this radio off as well.
 		*/
-		case RADIO_OVER_OUT:
-			if (Mission == MISSION_RETURN) {
-				Assign_Mission(MISSION_GUARD);
-			}
-			DriveClass::Receive_Message(from, message, param);
-			return(RADIO_ROGER);
+			case RADIO_OVER_OUT:
+				if (Mission == MISSION_RETURN) {
+					Assign_Mission(MISSION_GUARD);
+				}
+				DriveClass::Receive_Message(from, message, param);
+				return(RADIO_ROGER);
 
-	}
+			default:
+				break;
+
+		}
 	return(DriveClass::Receive_Message(from, message, param));
 }
 
@@ -2288,7 +2295,7 @@ bool UnitClass::Harvesting(void)
 //		int reducer = (ptr->OverlayData % 6) + 1;
 		int reducer = 1;
 		OverlayType overlay = ptr->Overlay;
-		reducer = ptr->Reduce_Tiberium(min(reducer, Rule.BailCount-Tiberium));
+		reducer = ptr->Reduce_Tiberium(std::min(reducer, Rule.BailCount-Tiberium));
 		Tiberium += reducer;
 		switch (overlay) {
 			case OVERLAY_GOLD1:
@@ -4061,7 +4068,7 @@ DirType UnitClass::Fire_Direction(void) const
 			int diff2 = SecondaryFacing.Difference(DIR_W);
 			diff1 = ABS(diff1);
 			diff2 = ABS(diff2);
-			int diff = min(diff1, diff2);
+			int diff = std::min(diff1, diff2);
 			int adj = Fixed_To_Cardinal(ABS(SecondaryFacing.Difference(DIR_N)), 64-diff);
 			if (SecondaryFacing.Difference(DIR_N) < 0) {
 				return(DirType)(SecondaryFacing - (DirType)adj);
