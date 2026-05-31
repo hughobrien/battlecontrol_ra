@@ -43,7 +43,7 @@
 #define WIN32_LEAN_AND_MEAN
 #include <wwlib32.h>
 #include	<direct.h>
-#include "..\mouse.h"
+#include "..\MOUSE.H"
 #define NAME "KEYBOARD/MOUSE test"
 #define TITLE "KEYBOARD/MOUSE library test"
 
