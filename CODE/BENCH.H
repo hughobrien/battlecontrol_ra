@@ -62,8 +62,8 @@ typedef int bool;
 class PentiumTimerClass
 {
 	public:
-		unsigned long operator () (void) const {unsigned long h;unsigned long l = Get_CPU_Clock(h);return((l >> 4) | (h << 28));}
-		operator unsigned long (void) const {unsigned long h;unsigned long l = Get_CPU_Clock(h);return((l >> 4) | (h << 28));}
+		uint32_t operator () (void) const {uint32_t h;uint32_t l = Get_CPU_Clock(h);return((l >> 4) | (h << 28));}
+		operator uint32_t (void) const {uint32_t h;uint32_t l = Get_CPU_Clock(h);return((l >> 4) | (h << 28));}
 };
 
 
