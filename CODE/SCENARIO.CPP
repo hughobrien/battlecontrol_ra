@@ -558,7 +558,7 @@ void Fill_In_Data(void)
 	/*
 	**	Distribute the trigger pointers to the appropriate working lists.
 	*/
-	for (index = 0; index < TriggerTypes.Count(); index++) {
+	for (int index = 0; index < TriggerTypes.Count(); index++) {
 		TriggerTypeClass * tp = TriggerTypes.Ptr(index);
 
 		assert(tp != NULL);
@@ -611,7 +611,7 @@ void Fill_In_Data(void)
 	**	The "allow win" action is a special case that is handled here. The total number
 	**	of triggers that have this action must be recorded.
 	*/
-	for (index = 0; index < TriggerTypes.Count(); index++) {
+	for (int index = 0; index < TriggerTypes.Count(); index++) {
 		TriggerTypeClass * tp = TriggerTypes.Ptr(index);
 		if (tp->Action1.Action == TACTION_ALLOWWIN ||
 			(tp->ActionControl != MULTI_ONLY && tp->Action2.Action == TACTION_ALLOWWIN)) {
@@ -1315,7 +1315,7 @@ bool Restate_Mission(char const * name, int button1, int button2)
 #define	BUTTON_1		1
 #define	BUTTON_2		2
 #define	BUTTON_3		3
-#define	BUTTON_FLAG	0x8000
+#define	BUTTON_FLAG	KN_BUTTON
 int BGMessageBox(char const * msg, int btn1, int btn2)
 {
 #define BUFFSIZE 511
@@ -1404,17 +1404,17 @@ int BGMessageBox(char const * msg, int btn1, int btn2)
 		**	Build the button list.
 		*/
 		bheight = FontHeight + FontYSpacing + 2;
-		bwidth = max((String_Pixel_Width(b1txt) + 8), 80);
+		bwidth = std::max((int)String_Pixel_Width(b1txt) + 8, 80);
 		if (b2txt) {
 			numbuttons = 2;
 			b2char = toupper(b2txt[0]);
-			bwidth = max((String_Pixel_Width( b2txt ) + 8), bwidth);
+			bwidth = std::max((int)String_Pixel_Width( b2txt ) + 8, bwidth);
 //			b1x = x + 10;								// left side
 
 			if (b3txt) {
 				numbuttons = 3;
 				b3char = toupper(b3txt[0]);
-				bwidth = max((String_Pixel_Width( b3txt ) + 8), bwidth);
+				bwidth = std::max((int)String_Pixel_Width( b3txt ) + 8, bwidth);
 			}
 
 		} else {
@@ -1499,9 +1499,9 @@ int BGMessageBox(char const * msg, int btn1, int btn2)
 
 	PaletteClass temp;
 #ifdef WIN32
-	char *filename = "SOVPAPER.PCX";
+	char filename[] = "SOVPAPER.PCX";
 	if (PlayerPtr->Class->House != HOUSE_USSR && PlayerPtr->Class->House != HOUSE_UKRAINE) {
-		filename = "ALIPAPER.PCX";
+		strcpy(filename, "ALIPAPER.PCX");
 	}
 	Load_Title_Screen(filename, &HidPage, (uint8_t *)&temp[0]);
 #else
@@ -1517,7 +1517,7 @@ int BGMessageBox(char const * msg, int btn1, int btn2)
 	VisiblePage.Blit(seen_buff_save);
 	#endif
 
-	static char _scorepal[]={0,1,12,13,4,5,6,7,8,9,10,255,252,253,14,248};
+	static uint8_t _scorepal[]={0,1,12,13,4,5,6,7,8,9,10,255,252,253,14,248};
 	Set_Font_Palette(_scorepal);
 	temp.Set(FADE_PALETTE_MEDIUM, Call_Back);
 
@@ -1621,7 +1621,7 @@ int BGMessageBox(char const * msg, int btn1, int btn2)
 			*/
 			input = buttonlist->Input();
 			switch (input) {
-				case (BUTTON_1|BUTTON_FLAG):
+				case KeyNumType(BUTTON_1|BUTTON_FLAG):
 					selection = realval[0];
 					pressed = true;
 					break;
@@ -1636,12 +1636,12 @@ int BGMessageBox(char const * msg, int btn1, int btn2)
 					}
 					break;
 
-				case (BUTTON_2|BUTTON_FLAG):
+				case KeyNumType(BUTTON_2|BUTTON_FLAG):
 					selection = BUTTON_2;
 					pressed = true;
 					break;
 
-				case (BUTTON_3|BUTTON_FLAG):
+				case KeyNumType(BUTTON_3|BUTTON_FLAG):
 					selection = realval[1];
 					pressed = true;
 					break;
@@ -2265,7 +2265,7 @@ bool Read_Scenario_INI(char * fname, bool )
 		PlayerPtr->Assign_Handicap(Scen.Difficulty);
 		int carryover;
 		if (Scen.CarryOverCap != -1) {
-			carryover = min(Scen.CarryOverMoney * Scen.CarryOverPercent, Scen.CarryOverCap);
+			carryover = std::min(Scen.CarryOverMoney * Scen.CarryOverPercent, Scen.CarryOverCap);
 		} else {
 			carryover = Scen.CarryOverMoney * Scen.CarryOverPercent;
 		}
@@ -2402,8 +2402,8 @@ bool Read_Scenario_INI(char * fname, bool )
 		**	this scenario.
 		*/
 		if (Session.Options.Goodies) {
-			int count = max(Rule.CrateMinimum, Session.NumPlayers);
-			count = min(count, Rule.CrateMaximum);
+			int count = std::max(Rule.CrateMinimum, Session.NumPlayers);
+			count = std::min(count, Rule.CrateMaximum);
 			for (int index = 0; index < count; index++) {
 				Map.Place_Random_Crate();
 			}
@@ -2873,7 +2873,7 @@ static void Create_Units(bool official)
 	**	if there are 4 or fewer players. Unofficial maps will pick from all the
 	**	available waypoints.
 	*/
-	int look_for = max(4, Session.Players.Count()+Session.Options.AIPlayers);
+	int look_for = std::max(4, Session.Players.Count()+Session.Options.AIPlayers);
 	if (!official) {
 		look_for = 8;
 	}
@@ -3399,6 +3399,10 @@ static CELL Clip_Move(CELL cell, FacingType facing, int dist)
 		case FACING_NW:
 			x -= dist;
 			y -= dist;
+			break;
+
+		case FACING_NONE:
+		case FACING_COUNT:
 			break;
 	}
 
