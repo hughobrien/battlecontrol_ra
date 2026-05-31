@@ -227,7 +227,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 	char *ptr, *lockptr;//, *uncomp_ptr;
 	unsigned long offcurr, off16, offdiff;
 #endif
-	unsigned long offset[SUBFRAMEOFFS];
+	uint32_t offset[SUBFRAMEOFFS];
 	KeyFrameHeaderType *keyfr;
 	unsigned short buffsize, currframe, subframe;
 	unsigned long length = 0;
@@ -335,7 +335,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 			currframe = (unsigned short)offset[1];
 
 			ptr = (char *)Add_Long_To_Pointer( dataptr, (((unsigned long)currframe << 3) + sizeof(KeyFrameHeaderType)) );
-			Mem_Copy( ptr, &offset[0], (long)(SUBFRAMEOFFS * sizeof(unsigned long)) );
+			Mem_Copy( ptr, &offset[0], (long)(SUBFRAMEOFFS * sizeof(offset[0])) );
 		}
 
 		// key frame
@@ -405,7 +405,7 @@ unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void 
 					Mem_Copy( Add_Long_To_Pointer( dataptr,
 									(((unsigned long)currframe << 3) +
 									sizeof(KeyFrameHeaderType)) ),
-						&offset[0], (long)(SUBFRAMEOFFS * sizeof(unsigned long)) );
+						&offset[0], (long)(SUBFRAMEOFFS * sizeof(offset[0])) );
 					subframe = 0;
 				}
 			}
@@ -573,7 +573,7 @@ bool Get_Build_Frame_Palette(void const * dataptr, void * palette)
 {
 	if (dataptr && (((KeyFrameHeaderType const *)dataptr)->flags & 1)) {
 		char const * ptr = (char const *)Add_Long_To_Pointer( dataptr,
-							( (( (long)sizeof(unsigned long) << 1) *
+							( (( (long)sizeof(uint32_t) << 1) *
 								((KeyFrameHeaderType *) dataptr)->frames ) +
 							16 + sizeof(KeyFrameHeaderType) ) );
 
