@@ -402,6 +402,7 @@ template class VectorClass<FileEntryClass *>;
 template class VectorClass<MultiMission *>;
 template class VectorClass<NodeNameTag *>;
 template class VectorClass<PhoneEntryClass *>;
+template class VectorClass<EgoClass *>;
 template class VectorClass<CellClass>;
 
 //----------------------------------------------------------------------------------------------

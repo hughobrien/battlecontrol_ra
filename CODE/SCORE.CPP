@@ -102,9 +102,9 @@ int ControlQ;	// cheat key to skip past score/mapsel screens
 bool StillUpdating;
 
 #ifdef WIN32
-char *ScreenNames[2]={"ALIBACKH.PCX", "SOVBACKH.PCX"};
+char ScreenNames[2][13]={"ALIBACKH.PCX", "SOVBACKH.PCX"};
 #else
-char *ScreenNames[2]={"ALI-TRAN.WSA", "SOV-TRAN.WSA"};
+char ScreenNames[2][13]={"ALI-TRAN.WSA", "SOV-TRAN.WSA"};
 #endif
 
 //#ifdef WIN32
@@ -266,7 +266,7 @@ void ScorePrintClass::Update(void)
 }
 
 
-ScoreScaleClass::ScoreScaleClass(void const * string, int xpos, int ypos, char const palette[]) :
+ScoreScaleClass::ScoreScaleClass(void const * string, int xpos, int ypos, uint8_t const palette[]) :
 	ScoreAnimClass(xpos, ypos, string)
 {
 	Palette = &palette[0];
@@ -349,10 +349,10 @@ int Alloc_Object(ScoreAnimClass *obj)
  * HISTORY:                                                                                    *
  *   05/02/1994     : Created.                                                                 *
  *=============================================================================================*/
-static char const  _bluepal[]={0xC0,0xC1,0xC1,0xC3,0xC2,0xC5,0xC3,0xC7,0xC4,0xC9,0xCA,0xCB,0xCC,0xCD,0xC0,0xCF};
-static char const _greenpal[]={0x70,0x71,0x7C,0x73,0x7D,0x75,0x7E,0x77,0x7F,0x79,0x7A,0x7B,0x7C,0x7D,0x7C,0x7F};
-static char const   _redpal[]={0xD0,0xD1,0xD7,0xD3,0xD9,0xD5,0xDA,0xD7,0xDB,0xD9,0xDA,0xDB,0xDC,0xDD,0xD6,0xDF};
-static char const _yellowpal[]={0x0,0x0,0xEC,0x0,0xEB,0x0,0xEA,0x0,0xE9,0x0,0x0,0x0,0x0,0x0,0xED,0x0};
+static uint8_t const  _bluepal[]={0xC0,0xC1,0xC1,0xC3,0xC2,0xC5,0xC3,0xC7,0xC4,0xC9,0xCA,0xCB,0xCC,0xCD,0xC0,0xCF};
+static uint8_t const _greenpal[]={0x70,0x71,0x7C,0x73,0x7D,0x75,0x7E,0x77,0x7F,0x79,0x7A,0x7B,0x7C,0x7D,0x7C,0x7F};
+static uint8_t const   _redpal[]={0xD0,0xD1,0xD7,0xD3,0xD9,0xD5,0xDA,0xD7,0xDB,0xD9,0xDA,0xDB,0xDC,0xDD,0xD6,0xDF};
+static uint8_t const _yellowpal[]={0x0,0x0,0xEC,0x0,0xEB,0x0,0xEA,0x0,0xE9,0x0,0x0,0x0,0x0,0x0,0xED,0x0};
 void ScoreClass::Presentation(void)
 {
 #ifdef WIN32
@@ -563,12 +563,15 @@ void ScoreClass::Presentation(void)
 		case DIFF_HARD:
 			uspoints += 3500;
 			break;
+
+		case DIFF_COUNT:
+			break;
 	}
 
 
 	if (!leadership) leadership++;
 	leadership = 100*fixed(leadership, (house ? NKilled+NBKilled+leadership : GKilled+GBKilled+leadership));
-	leadership = min(150,leadership);
+	leadership = std::min(150,leadership);
 
 	/*
 	**	Determine economy rating.
@@ -577,11 +580,11 @@ void ScoreClass::Presentation(void)
 	int cred = PlayerPtr->Available_Money();
 
 	int economy = 100*fixed((unsigned)PlayerPtr->Available_Money()+1+PlayerPtr->StolenBuildingsCredits, PlayerPtr->HarvestedCredits + (unsigned)PlayerPtr->Control.InitialCredits+1);
-	economy=min(economy,150);
+	economy=std::min(economy,150);
 
 	int total = ((uspoints * leadership) / 100) + ((uspoints * economy) / 100);
 	if (total < -9999) total = -9999;
-	total = min(total, 99999);
+	total = std::min(total, 99999);
 
 Keyboard->Clear();
 	for (i = 0; i <= 130; i++) {
@@ -757,13 +760,14 @@ Keyboard->Clear();
 	*/
 	if (hallfame[NUMFAMENAMES-1].score >= total)
 								hallfame[NUMFAMENAMES-1].score = 0;
-	for (int index = 0; index < NUMFAMENAMES; index++) {
-		if (total > hallfame[index].score) {
-			if (index < (NUMFAMENAMES-1)) for (i = (NUMFAMENAMES-1); i > index; i--) hallfame[i] = hallfame[i-1];
-			hallfame[index].score = total;
-			hallfame[index].level = Scen.Scenario;
-			hallfame[index].name[0] = 0;	// blank out the name
-			hallfame[index].side = house;
+	int fame_index = NUMFAMENAMES;
+	for (fame_index = 0; fame_index < NUMFAMENAMES; fame_index++) {
+		if (total > hallfame[fame_index].score) {
+			if (fame_index < (NUMFAMENAMES-1)) for (i = (NUMFAMENAMES-1); i > fame_index; i--) hallfame[i] = hallfame[i-1];
+			hallfame[fame_index].score = total;
+			hallfame[fame_index].level = Scen.Scenario;
+			hallfame[fame_index].name[0] = 0;	// blank out the name
+			hallfame[fame_index].side = house;
 			break;
 		}
 	}
@@ -776,7 +780,7 @@ Keyboard->Clear();
 #ifdef WIN32
 	char maststr[NUMFAMENAMES*32];
 #endif
-	char const *pal;
+	uint8_t const *pal;
 	for (i = 0; i < NUMFAMENAMES; i++) {
 		pal = hallfame[i].side ? _redpal : _bluepal;
 		Alloc_Object(new ScorePrintClass(hallfame[i].name, HALLFAME_X, HALLFAME_Y + (i*8), pal));
@@ -808,9 +812,9 @@ Keyboard->Clear();
 	*/
 	Keyboard->Clear();
 
-	if (index < NUMFAMENAMES) {
-		pal = hallfame[index].side ? _redpal : _bluepal;
-		Input_Name(hallfame[index].name, HALLFAME_X, HALLFAME_Y + (index*8), pal);
+	if (fame_index < NUMFAMENAMES) {
+		pal = hallfame[fame_index].side ? _redpal : _bluepal;
+		Input_Name(hallfame[fame_index].name, HALLFAME_X, HALLFAME_Y + (fame_index*8), pal);
 
 		file.Open(WRITE);
 		for (i = 0; i < NUMFAMENAMES; i++) {
@@ -1058,7 +1062,7 @@ void ScoreClass::Do_GDI_Graph(void const * yellowptr, void const * redptr, int g
 #endif
 	int gdikilled = gkilled, nodkilled=nkilled;
 
-	maxval = max(gdikilled, nodkilled);
+	maxval = std::max(gdikilled, nodkilled);
 	if (!maxval) maxval=1;
 
 	gdikilled = (gdikilled * SIZEGBAR) / maxval;
@@ -1068,7 +1072,7 @@ void ScoreClass::Do_GDI_Graph(void const * yellowptr, void const * redptr, int g
 		nodkilled = nkilled * 5;
 	}
 
-	maxval = max(gdikilled, nodkilled);
+	maxval = std::max(gdikilled, nodkilled);
 	if (!maxval) maxval=1;
 
 	// Draw the white-flash shape on the hidpage
@@ -1171,7 +1175,7 @@ void ScoreClass::Do_Nod_Casualties_Graph(void)
 
 	gdikilled = GKilled;
 	nodkilled = NKilled;
-	maxval = max(gdikilled, nodkilled);
+	maxval = std::max(gdikilled, nodkilled);
 
 	if (!maxval) maxval=1;
 	if ((gdikilled > (MAX_BAR_X - BARGRAPH_X)) || (nodkilled > (MAX_BAR_X - BARGRAPH_X)) ) {
@@ -1179,7 +1183,7 @@ void ScoreClass::Do_Nod_Casualties_Graph(void)
 		nodkilled = (nodkilled * (MAX_BAR_X - BARGRAPH_X)) / maxval;
 	}
 
-	maxval = max(gdikilled, nodkilled);
+	maxval = std::max(gdikilled, nodkilled);
 	if (!maxval) maxval=1;
 
 	/*
@@ -1262,7 +1266,7 @@ void ScoreClass::Do_Nod_Casualties_Graph(void)
 }
 
 
-void ScoreClass::Show_Credits(int house, char const pal[])
+void ScoreClass::Show_Credits(int house, uint8_t const pal[])
 {
 	static int _credsx[2]={276,276};
 	static int _credsy[2]={173,58};
@@ -1372,7 +1376,7 @@ void ScoreClass::Print_Minutes(int minutes)
  * HISTORY:                                                                                    *
  *   04/07/1995 BWG : Created.                                                                 *
  *=============================================================================================*/
-void ScoreClass::Count_Up_Print(char *str, int percent, int maxval, int xpos, int ypos)
+void ScoreClass::Count_Up_Print(char const *str, int percent, int maxval, int xpos, int ypos)
 {
 	char destbuf[64];
 
@@ -1401,7 +1405,7 @@ void ScoreClass::Count_Up_Print(char *str, int percent, int maxval, int xpos, in
  * HISTORY:                                                                                    *
  *   05/15/1995 BWG : Created.                                                                 *
  *=============================================================================================*/
-void ScoreClass::Input_Name(char str[], int xpos, int ypos, char const pal[])
+void ScoreClass::Input_Name(char str[], int xpos, int ypos, uint8_t const pal[])
 {
 	int key = 0;
 	int ascii, index=0;
@@ -1647,9 +1651,9 @@ void Draw_Bar_Graphs(int i, int gkilled, int nkilled)
 {
 
 	if (gkilled) {
-		LogicPage->Fill_Rect(0,   0+4*RESFACTOR, 0+min(i, gkilled)*RESFACTOR,   0+5*RESFACTOR, RED);
-		LogicPage->Draw_Line(0+1*RESFACTOR, 0+6*RESFACTOR, (0+min(i, gkilled)+1)*RESFACTOR, 0+6*RESFACTOR, TBLACK);
-		LogicPage->Draw_Line((0+MIN(i, gkilled)+1)*RESFACTOR, 0+5*RESFACTOR, (0+min(i, gkilled)+1)*RESFACTOR, 0+5*RESFACTOR, TBLACK);
+		LogicPage->Fill_Rect(0,   0+4*RESFACTOR, 0+std::min(i, gkilled)*RESFACTOR,   0+5*RESFACTOR, RED);
+		LogicPage->Draw_Line(0+1*RESFACTOR, 0+6*RESFACTOR, (0+std::min(i, gkilled)+1)*RESFACTOR, 0+6*RESFACTOR, TBLACK);
+		LogicPage->Draw_Line((0+MIN(i, gkilled)+1)*RESFACTOR, 0+5*RESFACTOR, (0+std::min(i, gkilled)+1)*RESFACTOR, 0+5*RESFACTOR, TBLACK);
 		if (i <= gkilled) {
 			int anim = InfantryMan[i/11].anim;
 			if (anim!=-1 && anim < DO_GUN_DEATH) {
@@ -1663,9 +1667,9 @@ void Draw_Bar_Graphs(int i, int gkilled, int nkilled)
 		}
 	}
 	if (nkilled) {
-		LogicPage->Fill_Rect( 0,          0+16*RESFACTOR,  0+min(i, nkilled)*RESFACTOR,    0+17*RESFACTOR, LTCYAN);
-		LogicPage->Draw_Line( 0+1*RESFACTOR, 0+18*RESFACTOR, (0+min(i, nkilled)+1)*RESFACTOR, 0+18*RESFACTOR, TBLACK);
-		LogicPage->Draw_Line((0+MIN(i, nkilled)+1)*RESFACTOR, 0+17*RESFACTOR, (0+min(i, nkilled)+1)*RESFACTOR, 0+17*RESFACTOR, TBLACK);
+		LogicPage->Fill_Rect( 0,          0+16*RESFACTOR,  0+std::min(i, nkilled)*RESFACTOR,    0+17*RESFACTOR, LTCYAN);
+		LogicPage->Draw_Line( 0+1*RESFACTOR, 0+18*RESFACTOR, (0+std::min(i, nkilled)+1)*RESFACTOR, 0+18*RESFACTOR, TBLACK);
+		LogicPage->Draw_Line((0+MIN(i, nkilled)+1)*RESFACTOR, 0+17*RESFACTOR, (0+std::min(i, nkilled)+1)*RESFACTOR, 0+17*RESFACTOR, TBLACK);
 		if (i <= nkilled) {
 			int anim = InfantryMan[(NUMINFANTRYMEN/2)+(i/11)].anim;
 			if (anim!=-1 && anim < DO_GUN_DEATH) {
@@ -1878,7 +1882,7 @@ CopyType = 1;
 			Alloc_Object(new ScorePrintClass(Int_Print(Session.Score[i].Wins), 118, y, remap));
 			Call_Back_Delay(6);
 
-			for (k = 0; k <= min(Session.CurGame, MAX_MULTI_GAMES-2); k++) {
+			for (k = 0; k <= std::min(Session.CurGame, MAX_MULTI_GAMES-2); k++) {
 				if (Session.Score[i].Kills[k] >= 0) {
 					Alloc_Object(new ScorePrintClass(Int_Print(Session.Score[i].Kills[k]), 225+(24*k), y, remap));
 					Call_Back_Delay(6);

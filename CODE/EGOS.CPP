@@ -711,7 +711,7 @@ void Show_Who_Was_Responsible (void)
 	unsigned char *creditpal_ptr = (unsigned char *) &credit_palette;
 	memcpy (ComboPalette, CCPalette, sizeof (ComboPalette));
 
-	for (index = 0 ; index < 256 ; index++ ){
+	for (int index = 0 ; index < 256 ; index++ ){
 		if (PaletteLUT[index]) {
 			ComboPalPtr[index*3] = 0;
 			ComboPalPtr[index*3+1] = 0;
@@ -734,7 +734,7 @@ void Show_Who_Was_Responsible (void)
 	/*
 	** Loop through and load up all the slideshow pictures
 	*/
-	for (index = 0 ; index < NUM_SLIDES ; index++){
+	for (int index = 0 ; index < NUM_SLIDES ; index++){
 #ifdef WIN32
 		SlideBuffers[index] = new GraphicBufferClass;
 		SlideBuffers[index]->Init (SeenBuff.Get_Width(), SeenBuff.Get_Height(), NULL , 0 , (GBC_Enum)0);
@@ -962,7 +962,7 @@ void Show_Who_Was_Responsible (void)
 	Theme.Stop();
 	Options.Set_Score_Volume(oldvolume, false);
 
-	for (index = 0 ; index < NUM_SLIDES ; index++){
+	for (int index = 0 ; index < NUM_SLIDES ; index++){
 		delete SlideBuffers[index];
 	}
 
@@ -972,7 +972,6 @@ void Show_Who_Was_Responsible (void)
 
 	EgoList.Clear();
 }
-
 
 
 
