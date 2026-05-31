@@ -54,6 +54,7 @@ pub fn build(b: *std.Build) void {
         "CODE/FIELD.CPP",
         "CODE/PACKET.CPP",
         "CODE/2KEYFRAM.CPP",
+        "CODE/INTERPAL.CPP",
         "WIN32LIB/MEM/ALLOC.CPP",
         "CODE/WINSTUB.CPP",
         "CODE/DDE.CPP",
