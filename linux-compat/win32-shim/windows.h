@@ -131,6 +131,17 @@ typedef struct _BY_HANDLE_FILE_INFORMATION {
     DWORD nFileIndexLow;
 } BY_HANDLE_FILE_INFORMATION, *LPBY_HANDLE_FILE_INFORMATION;
 
+typedef struct _MEMORYSTATUS {
+    DWORD dwLength;
+    DWORD dwMemoryLoad;
+    DWORD dwTotalPhys;
+    DWORD dwAvailPhys;
+    DWORD dwTotalPageFile;
+    DWORD dwAvailPageFile;
+    DWORD dwTotalVirtual;
+    DWORD dwAvailVirtual;
+} MEMORYSTATUS, *LPMEMORYSTATUS;
+
 typedef struct tagRECT {
     LONG left;
     LONG top;
@@ -396,6 +407,7 @@ BOOL GetFileInformationByHandle(HANDLE file, BY_HANDLE_FILE_INFORMATION *file_in
 BOOL FileTimeToDosDateTime(const FILETIME *file_time, LPWORD fat_date, LPWORD fat_time);
 BOOL DosDateTimeToFileTime(WORD fat_date, WORD fat_time, LPFILETIME file_time);
 BOOL SetFileTime(HANDLE file, const FILETIME *creation_time, const FILETIME *last_access_time, const FILETIME *last_write_time);
+void GlobalMemoryStatus(LPMEMORYSTATUS buffer);
 LONG RegOpenKeyEx(HKEY key, LPCSTR sub_key, DWORD options, DWORD sam_desired, HKEY *result);
 LONG RegQueryValue(HKEY key, LPCSTR sub_key, LPSTR data, LONG *size);
 LONG RegQueryValueEx(HKEY key, LPCSTR value_name, LPDWORD reserved, LPDWORD type, LPBYTE data, LPDWORD size);
