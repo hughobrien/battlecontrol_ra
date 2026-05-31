@@ -32,4 +32,3 @@ Map		DD	?	; Icon map offset.
 	ENDS
 
 ICON256	EQU	1
-

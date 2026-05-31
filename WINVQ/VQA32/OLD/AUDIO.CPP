@@ -1328,5 +1328,3 @@ long VQA_TimerMethod(void)
 #ifdef __WATCOMC__
 #pragma pack(1);
 #endif
-
-

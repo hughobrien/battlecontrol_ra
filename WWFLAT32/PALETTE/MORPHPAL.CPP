@@ -170,5 +170,3 @@ PRIVATE WORD cdecl Palette_To_Palette(VOID *src_palette, VOID *dst_palette,
 
 
 /*************************** End of morphpal.cpp ***************************/
-
-

@@ -284,6 +284,3 @@ PROC DPMI_real_call C near
 ENDP DPMI_real_call
 
 END
-
-
-

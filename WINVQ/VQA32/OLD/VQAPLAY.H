@@ -324,5 +324,3 @@ char *VQA_Version(void);
 char *VQA_IDString(void);
 
 #endif /* VQAPLAY_H */
-
-

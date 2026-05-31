@@ -82,9 +82,3 @@ char * __cdecl Find_Argv(char const *str)
 	return strstr ( command , str ) ;
 #endif
 }
-
-
-
-
-
-
