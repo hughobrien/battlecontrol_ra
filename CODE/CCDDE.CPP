@@ -54,9 +54,10 @@
 
 #ifdef WIN32
 
-#include <WINDOWS.H>
+#include <windows.h>
 #include "CCDDE.H"
 #include <stdio.h>
+#include <string.h>
 #include <TIMER.H>
 
 DDEServerClass	DDEServer;				//Instance of the DDE Server class
@@ -117,7 +118,9 @@ DDEServerClass::DDEServerClass(void)
 	MPlayerGameInfo = NULL;		//Flag that we havnt received a start game info packet yet
 
 	//DDE_Class = new Instance_Class ("CONQUER", "WCHAT");
-	DDE_Class = new Instance_Class ("REDALERT", "WCHAT");
+	char local_name[] = "REDALERT";
+	char remote_name[] = "WCHAT";
+	DDE_Class = new Instance_Class (local_name, remote_name);
 
 	DDE_Class->Enable_Callback( TRUE );
 	IsEnabled = TRUE;
@@ -416,13 +419,13 @@ BOOL Send_Data_To_DDE_Server (char *data, int length, int packet_type)
 	if(DDE_Class->Poke_Server( (LPBYTE) poke_data, ntohl(*poke_data_int) ) == FALSE) {
 		WWDebugString("RA95 - POKE failed!\n");
 		DDE_Class->Close_Poke_Connection();		// close down the link
-		delete poke_data;
+		delete[] poke_data;
 		return (FALSE);
 	}
 
 	DDE_Class->Close_Poke_Connection();		// close down the link
 
-	delete poke_data;
+	delete[] poke_data;
 
 	return (TRUE);
 }
