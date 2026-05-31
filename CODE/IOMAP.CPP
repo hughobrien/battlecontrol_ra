@@ -350,7 +350,7 @@ bool MouseClass::Save(Pipe & file) const
 	**	Save cells that need it
 	*/
 	cellptr = &(*this)[(CELL)0];
-	for (cell = 0; cell < MAP_CELL_TOTAL; cell++) {
+	for (CELL cell = 0; cell < MAP_CELL_TOTAL; cell++) {
 		if (cellptr->Should_Save()) {
 			file.Put(&cell, sizeof(cell));
 			cellptr->Save(file);
@@ -496,5 +496,4 @@ void MapClass::Decode_Pointers(void)
 		cellptr++;
 	}
 }
-
 

@@ -41,6 +41,8 @@
 
 #include	"FUNCTION.H"
 
+#include <algorithm>
+
 
 /***********************************************************************************************
  * Modify_Damage -- Adjusts damage to reflect the nature of the target.                        *
@@ -120,11 +122,11 @@ int Modify_Damage(int damage, WarheadType warhead, ArmorType armor, int distance
 		**	that at least one damage point is done.
 		*/
 		if (distance < 4) {
-			damage = max(damage, Rule.MinDamage);
+			damage = std::max(damage, Rule.MinDamage);
 		}
 	}
 
-	damage = min(damage, Rule.MaxDamage);
+	damage = std::min(damage, Rule.MaxDamage);
 	return(damage);
 }
 
@@ -343,18 +345,18 @@ AnimType Combat_Anim(int damage, WarheadType warhead, LandType land)
 		case 4:
 			if (land == LAND_NONE) return(ANIM_FLAK);
 //	Fixed math error
-			if (land == LAND_WATER) return(_waterlist[(ARRAY_SIZE(_waterlist)-1) * fixed(min(damage, 90), 90)]);
-			return(_aplist[(ARRAY_SIZE(_aplist)-1) * fixed(min(damage, 90), 90)]);
+			if (land == LAND_WATER) return(_waterlist[(ARRAY_SIZE(_waterlist)-1) * fixed(std::min(damage, 90), 90)]);
+			return(_aplist[(ARRAY_SIZE(_aplist)-1) * fixed(std::min(damage, 90), 90)]);
 
 		case 5:
 			if (land == LAND_NONE) return(ANIM_FLAK);
-			if (land == LAND_WATER) return(_waterlist[(ARRAY_SIZE(_waterlist)-1) * fixed(min(damage, 130), 130)]);
-			return(_helist[(ARRAY_SIZE(_helist)-1) * fixed(min(damage, 130), 130)]);
+			if (land == LAND_WATER) return(_waterlist[(ARRAY_SIZE(_waterlist)-1) * fixed(std::min(damage, 130), 130)]);
+			return(_helist[(ARRAY_SIZE(_helist)-1) * fixed(std::min(damage, 130), 130)]);
 
 		case 3:
 			if (land == LAND_NONE) return(ANIM_FLAK);
-			if (land == LAND_WATER) return(_waterlist[(ARRAY_SIZE(_waterlist)-1) * fixed(min(damage, 150), 150)]);
-			return(_firelist[(ARRAY_SIZE(_firelist)-1) * fixed(min(damage, 150), 150)]);
+			if (land == LAND_WATER) return(_waterlist[(ARRAY_SIZE(_waterlist)-1) * fixed(std::min(damage, 150), 150)]);
+			return(_firelist[(ARRAY_SIZE(_firelist)-1) * fixed(std::min(damage, 150), 150)]);
 
 		case 1:
 			return(ANIM_PIFF);

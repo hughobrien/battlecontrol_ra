@@ -52,6 +52,8 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include	"FUNCTION.H"
+
+#include <algorithm>
 //#include	<string.h>
 
 /*
@@ -632,7 +634,7 @@ top_of_list:
 //				left = Follow_Edge(startcell, next, &pleft, COUNTERCLOCK, direction, threat, threat_stage, follow_len, threshhold);
 
 				if (left) {
-					follow_len = min(maxlen, pleft.Length + (pleft.Length >> 1));
+					follow_len = std::min(maxlen, pleft.Length + (pleft.Length >> 1));
 				}
 
 				Mem_Copy(&path, &pright, sizeof(PathType));
@@ -715,7 +717,7 @@ top_of_list:
 			**	this may not be the end of the find path logic.
 			*/
 			len = which->Length;
-			len = min(len, maxlen);
+			len = std::min(len, maxlen);
 			if (len > 0) {
 				memcpy(&path.Overlap[0], &which->Overlap[0], sizeof(LeftOverlap));
 				memcpy(&path.Command[0], &which->Command[0], len * sizeof(FacingType));
@@ -1291,4 +1293,3 @@ int FootClass::Passable_Cell(CELL cell, FacingType face, int threat, MoveType th
 	};
 	return(_value[move]);
 }
-

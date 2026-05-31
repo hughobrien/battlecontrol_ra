@@ -55,6 +55,8 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include	"FUNCTION.H"
+
+#include <algorithm>
 #define   VIC   1
 
 /***********************************************************************************************
@@ -356,7 +358,7 @@ IsTheaterShape = Class->IsTheater;
 	if (Class->Get_Image_Data() != NULL) {
 		int shapenum = Class->Start + Fetch_Stage();
 		int count = Get_Build_Frame_Count(Class->Get_Image_Data());
-		shapenum = min(shapenum, count-1);
+		shapenum = std::min(shapenum, count-1);
 
 		if (Class->DimensionData == NULL) {
 			Class->DimensionData = new Rect [count];
@@ -536,8 +538,8 @@ IsTheaterShape = false;
 		Map.Sight_From(Coord_Cell(coord), Rule.DropZoneRadius / CELL_LEPTON_W, PlayerPtr, false);
 	}
 
-	Loops = (unsigned char)(max(loop, 1) * Class->Loops);
-	Loops = (unsigned char)max(Loops, 1);
+	Loops = (unsigned char)(std::max<int>(loop, 1) * Class->Loops);
+	Loops = (unsigned char)std::max<int>(Loops, 1);
 
 	/*
 	**	If the animation starts immediately, then play the associated sound effect now.
@@ -1108,5 +1110,3 @@ void AnimClass::Do_Atom_Damage(HousesType ownerhouse, CELL cell)
 	}
 #endif
 }
-
-

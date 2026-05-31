@@ -67,6 +67,8 @@
 
 #include "FUNCTION.H"
 
+#include <stdint.h>
+
 
 /***********************************************************************************************
  * TeamTypeClass::Code_Pointers -- codes class's pointers for load/save                        *
@@ -371,7 +373,7 @@ void FactoryClass::Decode_Pointers(void)
 		assert(Object != NULL);
 	}
 
-	((HouseClass *&)House) = HouseClass::As_Pointer((HousesType)House);
+	((HouseClass *&)House) = HouseClass::As_Pointer((HousesType)(uintptr_t)House);
 	assert(House != NULL);
 }
 
@@ -629,7 +631,7 @@ void FootClass::Code_Pointers(void)
 	if (Member != NULL && Member->IsActive) {
 		Member = (FootClass *)Member->As_Target();
 	} else {
-		Member = TARGET_NONE;
+		Member = 0;
 	}
 
 	TechnoClass::Code_Pointers();
@@ -896,4 +898,3 @@ void ObjectClass::Decode_Pointers(void)
 		assert(Next != NULL);
 	}
 }
-
