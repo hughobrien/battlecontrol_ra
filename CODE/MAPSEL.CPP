@@ -155,7 +155,7 @@ char const * Map_Selection(void)
 //	Options.Set_Score_Volume(fixed(4, 10));
 	Theme.Queue_Song(THEME_MAP);
 
-	void *anim = Open_Animation(_filename, NULL, 0L, (WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE), mappalette);
+	void *anim = Open_Animation(_filename, NULL, 0L, (WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE), (uint8_t *)&mappalette[0]);
 
 	Keyboard->Clear();
 	SeenPage.Clear();

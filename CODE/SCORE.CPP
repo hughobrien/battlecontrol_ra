@@ -426,7 +426,7 @@ void ScoreClass::Presentation(void)
 	** Load the background for the score screen
 	*/
 #ifndef WIN32
-	void *anim = Open_Animation(ScreenNames[house], NULL, 0L, (WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE), ScorePalette);
+	void *anim = Open_Animation(ScreenNames[house], NULL, 0L, (WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE), (uint8_t *)&ScorePalette[0]);
 #endif
 
 	unsigned minutes = (unsigned)((ElapsedTime / (long)TIMER_MINUTE))+1;
@@ -1791,7 +1791,7 @@ void Multi_Score_Presentation(void)
 	SeenPage.Clear();
 	HidPage.Clear();
 	Hide_Mouse();
-	void *anim = Open_Animation("MLTIPLYR.WSA", NULL, 0L, (WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE), ScorePalette);
+	void *anim = Open_Animation("MLTIPLYR.WSA", NULL, 0L, (WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE), (uint8_t *)&ScorePalette[0]);
 	/*
 	** Display the background animation
 	*/
