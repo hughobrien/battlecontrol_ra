@@ -312,3 +312,4 @@ template class DynamicVectorClass<FileEntryClass *>;
 template class DynamicVectorClass<MultiMission *>;
 template class DynamicVectorClass<NodeNameTag *>;
 template class DynamicVectorClass<PhoneEntryClass *>;
+template class DynamicVectorClass<EgoClass *>;
