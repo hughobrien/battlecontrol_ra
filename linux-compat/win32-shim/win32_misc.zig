@@ -22,6 +22,7 @@ const HCONV = ?*anyopaque;
 const HDDEDATA = ?*anyopaque;
 const PCONVCONTEXT = ?*anyopaque;
 const BYTE = u8;
+const TimerCallback = *const fn (event_id: UINT, reserved: UINT, user: DWORD, reserved1: DWORD, reserved2: DWORD) callconv(.c) void;
 
 const ERROR_FILE_NOT_FOUND: LONG = 2;
 const DMLERR_NO_ERROR: UINT = 0;
@@ -30,6 +31,7 @@ const IDYES: c_int = 6;
 const MB_YESNO: UINT = 0x00000004;
 const SM_CXSCREEN: c_int = 0;
 const SM_CYSCREEN: c_int = 1;
+const TIME_PERIODIC: UINT = 0x0001;
 
 const DdeString = extern struct {
     next: ?*DdeString,
@@ -48,8 +50,26 @@ const MemoryStatus = extern struct {
 };
 
 var dde_strings: ?*DdeString = null;
+var timer_mutex: std.atomic.Mutex = .unlocked;
+var timers = [_]?*TimerEvent{null} ** 64;
 
 export var WindowsNT: bool = false;
+
+const TimerEvent = struct {
+    id: UINT,
+    delay_ms: UINT,
+    callback: TimerCallback,
+    user: DWORD,
+    flags: UINT,
+    active: std.atomic.Value(bool),
+    thread: std.Thread,
+};
+
+fn lockTimerTable() void {
+    while (!timer_mutex.tryLock()) {
+        std.Thread.yield() catch {};
+    }
+}
 
 extern fn readlink(path: [*:0]const u8, buffer: [*]u8, size: usize) isize;
 extern fn usleep(usec: c_uint) c_int;
@@ -268,6 +288,143 @@ export fn GlobalMemoryStatus(buffer: ?*MemoryStatus) callconv(.c) void {
         @intCast((100 * (total_phys - avail_phys)) / total_phys)
     else
         0;
+}
+
+export fn GetCurrentProcess() callconv(.c) HANDLE {
+    return @ptrFromInt(1);
+}
+
+export fn GetCurrentThread() callconv(.c) HANDLE {
+    return @ptrFromInt(2);
+}
+
+export fn DuplicateHandle(
+    source_process: HANDLE,
+    source_handle: HANDLE,
+    target_process: HANDLE,
+    target_handle: ?*HANDLE,
+    desired_access: DWORD,
+    inherit_handle: BOOL,
+    options: DWORD,
+) callconv(.c) BOOL {
+    _ = source_process;
+    _ = target_process;
+    _ = desired_access;
+    _ = inherit_handle;
+    _ = options;
+    if (target_handle) |out| out.* = source_handle;
+    return 1;
+}
+
+export fn OutputDebugString(string: ?[*:0]const u8) callconv(.c) void {
+    _ = string;
+}
+
+export fn timeBeginPeriod(period: UINT) callconv(.c) UINT {
+    _ = period;
+    return 0;
+}
+
+export fn timeEndPeriod(period: UINT) callconv(.c) UINT {
+    _ = period;
+    return 0;
+}
+
+export fn timeGetTime() callconv(.c) DWORD {
+    const ns = monotonicNanoseconds() orelse return 0;
+    return @truncate(ns / std.time.ns_per_ms);
+}
+
+fn monotonicNanoseconds() ?u64 {
+    var ts: std.c.timespec = undefined;
+    if (std.c.clock_gettime(std.c.CLOCK.MONOTONIC, &ts) != 0) return null;
+    return (@as(u64, @intCast(ts.sec)) * std.time.ns_per_s) + @as(u64, @intCast(ts.nsec));
+}
+
+fn timespecFromNanoseconds(ns: u64) std.c.timespec {
+    return .{
+        .sec = @intCast(ns / std.time.ns_per_s),
+        .nsec = @intCast(ns % std.time.ns_per_s),
+    };
+}
+
+fn sleepUntilNanoseconds(deadline_ns: u64) void {
+    const deadline = timespecFromNanoseconds(deadline_ns);
+    while (std.c.clock_nanosleep(std.c.CLOCK.MONOTONIC, .{ .ABSTIME = true }, &deadline, null) == @intFromEnum(std.c.E.INTR)) {}
+}
+
+fn timerThread(event: *TimerEvent) void {
+    const interval_ns = @as(u64, @max(@as(UINT, 1), event.delay_ms)) * std.time.ns_per_ms;
+    var next_deadline = (monotonicNanoseconds() orelse 0) + interval_ns;
+    while (event.active.load(.acquire)) {
+        sleepUntilNanoseconds(next_deadline);
+        if (!event.active.load(.acquire)) break;
+        event.callback(event.id, 0, event.user, 0, 0);
+        if ((event.flags & TIME_PERIODIC) == 0) break;
+
+        // Keep the original periodic cadence; if the callback ran late, the
+        // next loop dispatches overdue ticks instead of dropping them.
+        next_deadline += interval_ns;
+    }
+    event.active.store(false, .release);
+}
+
+export fn timeSetEvent(delay: UINT, resolution: UINT, callback: ?TimerCallback, user: DWORD, flags: UINT) callconv(.c) UINT {
+    _ = resolution;
+    const cb = callback orelse return 0;
+
+    lockTimerTable();
+    var slot: ?usize = null;
+    for (timers, 0..) |timer, index| {
+        if (timer == null) {
+            slot = index;
+            break;
+        }
+    }
+    if (slot == null) {
+        timer_mutex.unlock();
+        return 0;
+    }
+
+    const event = std.heap.c_allocator.create(TimerEvent) catch {
+        timer_mutex.unlock();
+        return 0;
+    };
+    event.* = .{
+        .id = @intCast(slot.? + 1),
+        .delay_ms = @max(@as(UINT, 1), delay),
+        .callback = cb,
+        .user = user,
+        .flags = flags,
+        .active = std.atomic.Value(bool).init(true),
+        .thread = undefined,
+    };
+    event.thread = std.Thread.spawn(.{}, timerThread, .{event}) catch {
+        std.heap.c_allocator.destroy(event);
+        timer_mutex.unlock();
+        return 0;
+    };
+    timers[slot.?] = event;
+    timer_mutex.unlock();
+    return event.id;
+}
+
+export fn timeKillEvent(timer_id: UINT) callconv(.c) UINT {
+    if (timer_id == 0 or timer_id > timers.len) return 1;
+    const index: usize = @intCast(timer_id - 1);
+
+    lockTimerTable();
+    const event = timers[index] orelse {
+        timer_mutex.unlock();
+        return 1;
+    };
+    timers[index] = null;
+    event.active.store(false, .release);
+    timer_mutex.unlock();
+
+    event.thread.join();
+    std.heap.c_allocator.destroy(event);
+    return 0;
 }
 
 export fn RegOpenKeyEx(key: HKEY, sub_key: ?[*:0]const u8, options: DWORD, sam_desired: DWORD, result: ?*HKEY) callconv(.c) LONG {

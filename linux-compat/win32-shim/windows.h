@@ -456,6 +456,9 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef SEM_FAILCRITICALERRORS
 #define SEM_FAILCRITICALERRORS 0x0001
 #endif
+#ifndef DUPLICATE_SAME_ACCESS
+#define DUPLICATE_SAME_ACCESS 0x00000002u
+#endif
 
 #ifndef HKEY_CLASSES_ROOT
 #define HKEY_CLASSES_ROOT ((HKEY)(UINT_PTR)0x80000000u)
@@ -509,6 +512,10 @@ BOOL FileTimeToDosDateTime(const FILETIME *file_time, LPWORD fat_date, LPWORD fa
 BOOL DosDateTimeToFileTime(WORD fat_date, WORD fat_time, LPFILETIME file_time);
 BOOL SetFileTime(HANDLE file, const FILETIME *creation_time, const FILETIME *last_access_time, const FILETIME *last_write_time);
 void GlobalMemoryStatus(LPMEMORYSTATUS buffer);
+HANDLE GetCurrentProcess(void);
+HANDLE GetCurrentThread(void);
+BOOL DuplicateHandle(HANDLE source_process, HANDLE source_handle, HANDLE target_process, HANDLE *target_handle, DWORD desired_access, BOOL inherit_handle, DWORD options);
+void OutputDebugString(LPCSTR string);
 LONG RegOpenKeyEx(HKEY key, LPCSTR sub_key, DWORD options, DWORD sam_desired, HKEY *result);
 LONG RegQueryValue(HKEY key, LPCSTR sub_key, LPSTR data, LONG *size);
 LONG RegQueryValueEx(HKEY key, LPCSTR value_name, LPDWORD reserved, LPDWORD type, LPBYTE data, LPDWORD size);
