@@ -40,7 +40,7 @@
  *   WWKeyboardClass::Get_Mouse_XY -- Returns the mouses x,y position via reference vars       * 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "keyboard.h"
+#include "KEYBOARD.H"
 
 /*********************************************************************************************** 
  * WWKeyboardClass::WWKeyBoardClass -- Construction for Westwood Keyboard Class                * 
