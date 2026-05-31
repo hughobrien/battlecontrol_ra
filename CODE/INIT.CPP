@@ -165,7 +165,7 @@ static void Load_Prolog_Page(void)
 {
 	Hide_Mouse();
 #ifdef WIN32
-	Load_Title_Screen("PROLOG.PCX", &HidPage, CCPalette);
+	Load_Title_Screen("PROLOG.PCX", &HidPage, (uint8_t *)&CCPalette[0]);
 	HidPage.Blit(SeenPage);
 #else
 	Load_Picture("PROLOG.CPS", HidPage, HidPage, CCPalette, BM_DEFAULT);
@@ -2511,7 +2511,7 @@ void Init_Random(void)
 void Load_Title_Page(bool visible)
 {
 #ifdef WIN32
-	Load_Title_Screen("TITLE.PCX", &HidPage, CCPalette);
+	Load_Title_Screen("TITLE.PCX", &HidPage, (uint8_t *)&CCPalette[0]);
 	if (visible) {
 		HidPage.Blit(SeenPage);
 	}

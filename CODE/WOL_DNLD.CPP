@@ -140,7 +140,7 @@ bool WOL_Download_Dialog( IDownload* pDownload, RADownloadEventSink* pDownloadSi
 				** Redraw backgound & dialog box
 				*/
 				Load_Title_Page(true);
-				Set_Palette(CCPalette);
+				Set_Palette((uint8_t *)&CCPalette[0]);
 
 				Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
 

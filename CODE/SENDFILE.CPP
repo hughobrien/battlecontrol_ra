@@ -367,7 +367,7 @@ bool Receive_Remote_File ( char *file_name, unsigned int file_length, int gamety
 				** Redraw backgound & dialog box
 				*/
 				Load_Title_Page(true);
-				Set_Palette(CCPalette);
+				Set_Palette((uint8_t *)&CCPalette[0]);
 
 				Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
 
@@ -736,7 +736,7 @@ bool Send_Remote_File ( char *file_name, int gametype )
 				** Redraw backgound & dialog box
 				*/
 				Load_Title_Page(true);
-				Set_Palette(CCPalette);
+				Set_Palette((uint8_t *)&CCPalette[0]);
 
 				Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
 
