@@ -470,7 +470,7 @@ bool PassedProximity;	// used in display.cpp
 ** These variables should all be set together.
 */
 HousesType Whom;							// Initial command line house choice.
-bool ScenarioInit;
+int ScenarioInit;
 bool SpecialFlag = false;
 
 
