@@ -1,0 +1,6 @@
+#ifndef BATTLECONTROL_RA_WIN32_SHIM_NEW_H
+#define BATTLECONTROL_RA_WIN32_SHIM_NEW_H
+
+#include <new>
+
+#endif
