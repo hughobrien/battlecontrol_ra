@@ -295,7 +295,7 @@ int Read_Game_Options(char *name)
 
 	PlanetWestwoodGameID = WWGetPrivateProfileInt("Internet", "GameID", 0, buffer);
 	PlanetWestwoodStartTime = WWGetPrivateProfileInt ("Internet", "StartTime", 0, buffer);
-	WChatHWND = (HWND) WWGetPrivateProfileInt("Internet", "HWND", (int)FindWindow("OWL_Window", "Westwood Chat"), buffer);
+	WChatHWND = (HWND)(intptr_t)WWGetPrivateProfileInt("Internet", "HWND", (int)(intptr_t)FindWindow("OWL_Window", "Westwood Chat"), buffer);
 
 	Session.Options.AIPlayers = WWGetPrivateProfileInt("Options", "AI", 0, buffer);		//Number of AI players
 	if (Session.Options.AIPlayers){
@@ -391,7 +391,7 @@ int Read_Game_Options(char *name)
 			** See if that scenario is available now. Its fatal if it isnt.
 			*/
 			Session.Options.ScenarioIndex = -1;
-			for (i = 0; i < Session.Scenarios.Count(); i++) {
+			for (int i = 0; i < Session.Scenarios.Count(); i++) {
 				if (!strcmp (Session.Scenarios[i]->Description(), Session.Options.ScenarioDescription) ){
 					Session.Options.ScenarioIndex = i;
 					break;
@@ -530,7 +530,7 @@ bool Is_User_WChat_Registered(char *buffer, int buffer_len)
 	}
 
 	RegCloseKey(key);
-	memcpy (buffer, user_handle, min(buffer_len, user_handle_size));
+	memcpy(buffer, user_handle, buffer_len < (int)user_handle_size ? buffer_len : (int)user_handle_size);
 
 	/*
 	** If the first char of the users name is non-numeric then return success
@@ -579,7 +579,7 @@ bool Spawn_WChat(bool can_launch)
 	/*
 	** WChat is already running. Minimize myself then try to give it focus.
 	*/
-		BlackPalette.Set();
+		Set_Palette(&BlackPalette);
 		VisiblePage.Clear();
 		ShowWindow (MainWindow, SW_MINIMIZE);
 		/*
@@ -658,7 +658,7 @@ bool Spawn_WChat(bool can_launch)
 	/*
 	** We found WChat in the registry. Minimize myself then try to spawn it.
 	*/
-	BlackPalette.Set();
+	Set_Palette(&BlackPalette);
 	VisiblePage.Clear();
 	ShowWindow (MainWindow, SW_MINIMIZE);
 	/*
@@ -842,7 +842,7 @@ bool Do_The_Internet_Menu_Thang(void)
 			if (!Spawn_WChat(true)){
 				Set_Logic_Page(SeenBuff);
 				Load_Title_Page(true);
-				Set_Palette((uint8_t *)&CCPalette[0]);
+				Set_Palette(&CCPalette);
 				WWMessageBox().Process(TXT_ERROR_UNABLE_TO_RUN_WCHAT, TXT_OK);
 				LogicPage->Clear();
 				return(false);
@@ -855,7 +855,7 @@ bool Do_The_Internet_Menu_Thang(void)
 
 				Set_Logic_Page(SeenBuff);
 				Load_Title_Page(true);
-				Set_Palette((uint8_t *)&CCPalette[0]);
+				Set_Palette(&CCPalette);
 
 				//WWMessageBox().Process(TXT_EXPLAIN_REGISTRATION, TXT_CANCEL);
 				WWMessageBox().Process(TXT_NO_REG_APP, TXT_CANCEL);
@@ -893,7 +893,7 @@ bool Do_The_Internet_Menu_Thang(void)
 			** Redraw backgound & dialog box
 			*/
 			Load_Title_Page(true);
-			Set_Palette((uint8_t *)&CCPalette[0]);
+			Set_Palette(&CCPalette);
 
 			Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
 
@@ -942,7 +942,7 @@ bool Do_The_Internet_Menu_Thang(void)
 			** Cancel. Just return to the main menu
 			*/
 			case (KN_ESC):
-			case (BUTTON_CANCEL | KN_BUTTON):
+			case KeyNumType(BUTTON_CANCEL | KN_BUTTON):
 				process = false;
 				Send_Data_To_DDE_Server (packet, strlen(packet), DDEServerClass::DDE_CONNECTION_FAILED);
 				GameStatisticsPacketSent = false;

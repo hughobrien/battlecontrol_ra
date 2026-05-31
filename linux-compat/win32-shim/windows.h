@@ -37,9 +37,11 @@ typedef void *HPALETTE;
 typedef void *HHOOK;
 typedef void *HKEY;
 typedef void *HGDIOBJ;
+typedef UINT_PTR SOCKET;
 
 typedef char *LPSTR;
 typedef const char *LPCSTR;
+typedef const char *LPCTSTR;
 typedef WCHAR *LPWSTR;
 typedef const WCHAR *LPCWSTR;
 typedef void *LPVOID;
@@ -54,6 +56,62 @@ typedef LONG HRESULT;
 typedef UINT_PTR WPARAM;
 typedef LONG_PTR LPARAM;
 typedef LONG_PTR LRESULT;
+
+typedef struct in_addr {
+    union {
+        struct {
+            BYTE s_b1;
+            BYTE s_b2;
+            BYTE s_b3;
+            BYTE s_b4;
+        } S_un_b;
+        DWORD S_addr;
+    } S_un;
+} IN_ADDR;
+
+typedef struct WSAData {
+    WORD wVersion;
+    WORD wHighVersion;
+    char szDescription[257];
+    char szSystemStatus[129];
+    WORD iMaxSockets;
+    WORD iMaxUdpDg;
+    char *lpVendorInfo;
+} WSADATA, *LPWSADATA;
+
+typedef struct _PROCESS_INFORMATION {
+    HANDLE hProcess;
+    HANDLE hThread;
+    DWORD dwProcessId;
+    DWORD dwThreadId;
+} PROCESS_INFORMATION, *LPPROCESS_INFORMATION;
+
+typedef struct _SECURITY_ATTRIBUTES {
+    DWORD nLength;
+    LPVOID lpSecurityDescriptor;
+    BOOL bInheritHandle;
+} SECURITY_ATTRIBUTES, *LPSECURITY_ATTRIBUTES;
+
+typedef struct _STARTUPINFO {
+    DWORD cb;
+    LPSTR lpReserved;
+    LPSTR lpDesktop;
+    LPSTR lpTitle;
+    DWORD dwX;
+    DWORD dwY;
+    DWORD dwXSize;
+    DWORD dwYSize;
+    DWORD dwXCountChars;
+    DWORD dwYCountChars;
+    DWORD dwFillAttribute;
+    DWORD dwFlags;
+    WORD wShowWindow;
+    WORD cbReserved2;
+    BYTE *lpReserved2;
+    HANDLE hStdInput;
+    HANDLE hStdOutput;
+    HANDLE hStdError;
+} STARTUPINFO, *LPSTARTUPINFO;
 
 typedef struct tagRECT {
     LONG left;
@@ -185,6 +243,9 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef S_OK
 #define S_OK ((HRESULT)0)
 #endif
+#ifndef ERROR_SUCCESS
+#define ERROR_SUCCESS 0
+#endif
 #ifndef E_FAIL
 #define E_FAIL ((HRESULT)0x80004005L)
 #endif
@@ -220,6 +281,9 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef WM_DESTROY
 #define WM_DESTROY 0x0002
 #endif
+#ifndef WM_USER
+#define WM_USER 0x0400
+#endif
 
 #ifndef SW_HIDE
 #define SW_HIDE 0
@@ -234,16 +298,42 @@ typedef struct _RTL_CRITICAL_SECTION {
 #define SW_MINIMIZE 6
 #endif
 
+#ifndef INVALID_SOCKET
+#define INVALID_SOCKET ((SOCKET)(UINT_PTR)-1)
+#endif
+#ifndef SOCKET_ERROR
+#define SOCKET_ERROR (-1)
+#endif
+#ifndef MAXGETHOSTSTRUCT
+#define MAXGETHOSTSTRUCT 1024
+#endif
+
+#ifndef HKEY_CLASSES_ROOT
+#define HKEY_CLASSES_ROOT ((HKEY)(UINT_PTR)0x80000000u)
+#endif
+#ifndef HKEY_LOCAL_MACHINE
+#define HKEY_LOCAL_MACHINE ((HKEY)(UINT_PTR)0x80000002u)
+#endif
+#ifndef KEY_READ
+#define KEY_READ 0x20019
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 DWORD GetModuleFileName(HMODULE module, LPSTR filename, DWORD size);
 DWORD GetVersion(void);
 HWND FindWindow(LPCSTR class_name, LPCSTR window_name);
+BOOL IsWindow(HWND window);
 BOOL PostMessage(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
 BOOL SetForegroundWindow(HWND window);
 BOOL ShowWindow(HWND window, int command_show);
 int MessageBox(HWND window, LPCSTR text, LPCSTR caption, UINT type);
+LONG RegOpenKeyEx(HKEY key, LPCSTR sub_key, DWORD options, DWORD sam_desired, HKEY *result);
+LONG RegQueryValue(HKEY key, LPCSTR sub_key, LPSTR data, LONG *size);
+LONG RegQueryValueEx(HKEY key, LPCSTR value_name, LPDWORD reserved, LPDWORD type, LPBYTE data, LPDWORD size);
+LONG RegCloseKey(HKEY key);
+BOOL CreateProcess(LPCSTR application_name, LPSTR command_line, LPSECURITY_ATTRIBUTES process_attributes, LPSECURITY_ATTRIBUTES thread_attributes, BOOL inherit_handles, DWORD creation_flags, LPVOID environment, LPCSTR current_directory, STARTUPINFO *startup_info, PROCESS_INFORMATION *process_information);
 void Sleep(DWORD milliseconds);
 #ifdef __cplusplus
 }
