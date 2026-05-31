@@ -253,6 +253,7 @@ typedef struct {
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<stddef.h>
+#include	<stdint.h>
 #include	<mem.h>
 #include	<dos.h>
 #include	<direct.h>
@@ -693,10 +694,10 @@ extern "C" {
 /*
 **	KEYFRAME.CPP
 */
-unsigned long Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr);
-unsigned short Get_Build_Frame_Count(void const *dataptr);
-unsigned short Get_Build_Frame_X(void const *dataptr);
-unsigned short Get_Build_Frame_Y(void const *dataptr);
+unsigned long Build_Frame(void const *dataptr, uint16_t framenumber, void *buffptr);
+uint16_t Get_Build_Frame_Count(void const *dataptr);
+uint16_t Get_Build_Frame_X(void const *dataptr);
+uint16_t Get_Build_Frame_Y(void const *dataptr);
 uint16_t Get_Build_Frame_Width(void const *dataptr);
 uint16_t Get_Build_Frame_Height(void const *dataptr);
 bool Get_Build_Frame_Palette(void const *dataptr, void *palette);
