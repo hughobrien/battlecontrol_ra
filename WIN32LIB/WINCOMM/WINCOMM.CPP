@@ -48,10 +48,10 @@
 
 
 //#include "function.h"
-#include 	"wincomm.h"
+#include 	"WINCOMM.H"
 #include	"TIMER.H"
-#include	"keyboard.h"
-#include	"misc.h"
+#include	"KEYBOARD.H"
+#include	"MISC.H"
 #include <io.h>
 #include <sys\types.h>
 #include <sys\stat.h>

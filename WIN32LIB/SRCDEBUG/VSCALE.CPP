@@ -33,7 +33,7 @@
  *-------------------------------------------------------------------------*
 */
 #include <mcgaprim.h>
-#include <gbuffer.h>
+#include <GBUFFER.H>
 #include <vbuffer.h>
 
 //VideoBufferClass		SeenPage(640,480);

@@ -122,23 +122,23 @@
 /*=========================================================================*/
 
 #ifndef WWSTD_H
-#include "wwstd.h"
+#include "WWSTD.H"
 #endif
 
 #ifndef DRAWBUFF_H
-#include "drawbuff.h"
+#include "DRAWBUFF.H"
 #endif
 
 #ifndef BUFFER_H
-#include "buffer.h"
+#include "BUFFER.H"
 #endif
 
 #ifndef WINDOWS_H
-#include "ww_win.h"
+#include "WW_WIN.H"
 #endif
 #include <stdlib.h>
 
-#include "iconcach.h"
+#include "ICONCACH.H"
 
 
 

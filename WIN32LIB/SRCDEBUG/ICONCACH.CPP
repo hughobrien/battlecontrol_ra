@@ -54,9 +54,9 @@
 
 #include <windows.h>
 #include "ddraw.h"
-#include "misc.h"
-#include "iconcach.h"
-#include "gbuffer.h"
+#include "MISC.H"
+#include "ICONCACH.H"
+#include "GBUFFER.H"
 
 
 static	DDSURFACEDESC	VideoSurfaceDescription;

@@ -47,7 +47,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 //#pragma inline
-#include	"mono.h"
+#include	"MONO.H"
 
 #include	<stdlib.h>
 #include	<stdio.h>

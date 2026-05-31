@@ -50,7 +50,7 @@
 
 
 
-#include "modemreg.h"
+#include "MODEMREG.H"
 #include <stdio.h>
 
 

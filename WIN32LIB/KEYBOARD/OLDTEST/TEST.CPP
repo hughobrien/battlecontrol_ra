@@ -38,7 +38,7 @@
  *   WWKeyboardClass::WWKeyBoardClass -- Construction for Westwood Keyboard* 
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <misc.h>
+#include <MISC.H>
 #include <stdio.h>
 #include "KEYBOARD.H"
 

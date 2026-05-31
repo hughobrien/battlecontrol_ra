@@ -40,19 +40,19 @@
  *   Init_File_Cache -- Initializes and allocs the file cache heap.        *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #ifndef WWSTD_H
-#include "wwstd.h"
+#include "WWSTD.H"
 #endif	   
 
 #ifndef _FILE_H
-#include "_file.h"
+#include "_FILE.H"
 #endif
 
 #ifndef WWMEM_H
-#include <wwmem.h>
+#include <WWMEM.H>
 #endif
 
 #ifndef MISC_H
-#include <misc.h>
+#include <MISC.H>
 #endif
 
 #include <direct.h>

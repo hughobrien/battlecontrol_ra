@@ -57,11 +57,11 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <windowsx.h>
-#include "..\gbuffer.h"
+#include "..\GBUFFER.H"
 #include <ddraw.h>
-#include <font.h>
-#include <tile.h>
-#include <file.h>
+#include <FONT.H>
+#include <TILE.H>
+#include <FILE.H>
 
 
 #define NAME "DRAWBUFF test"

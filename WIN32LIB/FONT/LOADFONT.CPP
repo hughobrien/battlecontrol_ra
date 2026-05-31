@@ -36,10 +36,10 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 
-#include "font.h"
-#include <file.h>
-#include <wwmem.h>
-#include <wwstd.h>
+#include "FONT.H"
+#include <FILE.H>
+#include <WWMEM.H>
+#include <WWSTD.H>
 
 #if(IBM)
 #include <fcntl.h>

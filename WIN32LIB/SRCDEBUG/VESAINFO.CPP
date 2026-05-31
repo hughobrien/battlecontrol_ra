@@ -39,14 +39,14 @@
 
 #include <dos.h>
 #include "iostream.h"
-#include "video.h"
-#include "descmgmt.h"
+#include "VIDEO.H"
+#include "DESCMGMT.H"
 #include "mcgaprim.h"
-#include "gbuffer.h"
+#include "GBUFFER.H"
 #include "vbuffer.h"
-#include "wwmem.h"
+#include "WWMEM.H"
 
-#include "playcd.h"
+#include "PLAYCD.H"
 
 
 /***************************************************************************

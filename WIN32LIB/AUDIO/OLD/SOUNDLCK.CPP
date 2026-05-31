@@ -43,9 +43,9 @@
 #include <objbase.h>
 #include "dsound.h"
 #include <mem.h>
-#include "wwmem.h"
-#include "wwstd.h"
-#include "soundint.h"
+#include "WWMEM.H"
+#include "WWSTD.H"
+#include "SOUNDINT.H"
 
 
 

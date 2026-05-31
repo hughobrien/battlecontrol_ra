@@ -37,7 +37,7 @@
  * Functions:                                                              *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "sound.h"
+#include "SOUND.H"
 
 /*
 ** Defines for true and false.  These are included because we do not allow
