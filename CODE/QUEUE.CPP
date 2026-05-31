@@ -803,10 +803,12 @@ static void Queue_AI_Multiplayer(void)
 	//------------------------------------------------------------------------
 #ifdef FIXIT_VERSION_3
 	int iFramesyncTimeout;
+#ifdef WOLAPI_INTEGRATION
 	if( Session.Type == GAME_INTERNET && pWolapi && pWolapi->GameInfoCurrent.iPlayerCount > 2 )
 		//	Shortened resync timeout for non-2 player games.
 		iFramesyncTimeout = 5 * 60;		//	One minute.
 	else
+#endif
 		iFramesyncTimeout = FRAMESYNC_TIMEOUT;
 
 	rc = Wait_For_Players (0, net,
