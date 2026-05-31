@@ -2615,14 +2615,14 @@ int UnitClass::Mission_Unload(void)
 							Mark(MARK_UP);
 							BuildingClass * building = new BuildingClass((House->ActLike == HOUSE_USSR || House->ActLike == HOUSE_UKRAINE || House->ActLike == HOUSE_BAD) ? STRUCT_APMINE : STRUCT_AVMINE, House->Class->House);
 							if (building != NULL) {
-								ScenarioInit = true;
-								if (building->Unlimbo(Coord)) {
+								ScenarioInit++;
+								bool placed = building->Unlimbo(Coord);
+								ScenarioInit--;
+								if (placed) {
 									Sound_Effect(VOC_MINELAY1, Coord);
-									ScenarioInit = false;
 									building->Revealed(House);
 									Ammo--;
 								}
-								ScenarioInit = false;
 							}
 							Status = CLOSING_DOOR;
 							Mark(MARK_DOWN);
