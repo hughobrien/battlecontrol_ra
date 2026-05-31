@@ -48,8 +48,10 @@
  *   RawFileClass::Write -- Writes the specified data to the buffer specified.                 *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#if !defined(__cplusplus)
  #define	true	1
  #define	false	0
+#endif
 
 #define	WIN32
 #define	_WIN32

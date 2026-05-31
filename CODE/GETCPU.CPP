@@ -48,7 +48,9 @@
 #include	<string.h>
 
 
+#if !defined(__cplusplus)
 #define	bool	int
+#endif
 
 /*
 ** Prototypes for linkage to assembly module
