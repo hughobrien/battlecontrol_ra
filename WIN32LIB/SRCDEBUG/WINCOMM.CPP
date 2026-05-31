@@ -49,7 +49,7 @@
 
 //#include "function.h"
 #include 	"wincomm.h"
-#include	"timer.h"
+#include	"TIMER.H"
 #include	"keyboard.h"
 #include	"misc.h"
 #include <io.h>

@@ -40,7 +40,7 @@
 */
 #include "wwstd.h"
 #include "palette.h"
-#include "timer.h"
+#include "TIMER.H"
 
 /*
 ********************************* Constants *********************************

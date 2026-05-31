@@ -55,7 +55,7 @@
 #include <windows.h>
 #include <wwstd.h>
 #include "wwmem.h"
-#include <timer.h>
+#include <TIMER.H>
 
 #include	<stddef.h>
 #include	<memory.h>
