@@ -299,6 +299,7 @@ int DynamicVectorClass<T>::Delete(int index)
 /************************** end of dynavec.cpp *****************************/
 
 template class DynamicVectorClass<void *>;
+template class DynamicVectorClass<int>;
 template class DynamicVectorClass<char *>;
 template class DynamicVectorClass<char const *>;
 template class DynamicVectorClass<ObjectClass *>;

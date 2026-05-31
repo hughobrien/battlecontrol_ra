@@ -569,7 +569,7 @@ RESULT_WOLGSUP WOL_GameSetupDialog::Show()
 					{
 	//					debugprint( " ---------------- Adding scenario %s as CS\n", szScenarioNameShow );
 						ar_szScenarios[ SCENARIO_CS ].Add( szScenarioNameShow );
-						ar_szScenIndexes[ SCENARIO_CS ].Add( (void*)i );
+						ar_szScenIndexes[ SCENARIO_CS ].Add( i );
 					}
 					else if( Is_Mission_Aftermath( (char*)( Session.Scenarios[i]->Get_Filename() ) ) )
 					{
@@ -580,21 +580,21 @@ RESULT_WOLGSUP WOL_GameSetupDialog::Show()
 							!bSpecialAftermathScenario( pMMission->Description() ) )
 						{
 							ar_szScenarios[ SCENARIO_AM ].Add( szScenarioNameShow );
-							ar_szScenIndexes[ SCENARIO_AM ].Add( (void*)i );
+							ar_szScenIndexes[ SCENARIO_AM ].Add( i );
 						}
 					}
 					else
 					{
 	//					debugprint( " ---------------- Adding scenario %s as RA\n", szScenarioNameShow );
 						ar_szScenarios[ SCENARIO_RA ].Add( szScenarioNameShow );
-						ar_szScenIndexes[ SCENARIO_RA ].Add( (void*)i );
+						ar_szScenIndexes[ SCENARIO_RA ].Add( i );
 					}
 				}
 				else
 				{
 	//				debugprint( " ---------------- Adding scenario %s as User\n", szScenarioNameShow );
 					ar_szScenarios[ SCENARIO_USER ].Add( szScenarioNameShow );
-					ar_szScenIndexes[ SCENARIO_USER ].Add( (void*)i );
+					ar_szScenIndexes[ SCENARIO_USER ].Add( i );
 				}
 			}
 
@@ -1351,7 +1351,7 @@ RESULT_WOLGSUP WOL_GameSetupDialog::Show()
 			{
 				if( pILScens->Count() )
 				{
-					int iSelectedScenIndex = (int)pILScens->Get_Item_ExtraDataPtr( pILScens->Current_Index() );
+					int iSelectedScenIndex = (int)(uintptr_t)pILScens->Get_Item_ExtraDataPtr( pILScens->Current_Index() );
 					if( iSelectedScenIndex != Session.Options.ScenarioIndex )
 					{
 						Session.Options.ScenarioIndex = iSelectedScenIndex;
@@ -1799,8 +1799,8 @@ void WOL_GameSetupDialog::ScenarioDisplayMode( SCENARIO_GAMEKIND ScenKind )
 	for( int i = 0; i != ar_szScenarios[ ScenKind ].Count(); i++ )
 	{
 		//	Put ScenarioIndex in as extradata to list item.
-		int iScenIndex = (int)ar_szScenIndexes[ ScenKind ][ i ];
-		int iIndexNew = pILScens->Add_Item( ar_szScenarios[ ScenKind ][ i ], NULL, NULL, ICON_DIB, NULL, (void*)iScenIndex );
+		int iScenIndex = ar_szScenIndexes[ ScenKind ][ i ];
+		int iIndexNew = pILScens->Add_Item( ar_szScenarios[ ScenKind ][ i ], NULL, NULL, ICON_DIB, NULL, (void *)(uintptr_t)iScenIndex );
 		if( iScenIndex == Session.Options.ScenarioIndex && !bFoundCurrentSelection )
 		{
 			//	(Choose first line of what can be multiline description of currently selected scenario.)
