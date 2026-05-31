@@ -508,4 +508,3 @@ PRIVATE VOID Sort_FileData_Table(VOID)
 		qsort(&FileData[NumPAKFiles], NumFiles, sizeof(FileDataType), QSort_Comp_Func);
 	}
 }
-

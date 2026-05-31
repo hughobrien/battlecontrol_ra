@@ -143,7 +143,3 @@ NewFacing16	DB	 3, 2, 4,-1, 1, 2,0,-1
 	ENDP	Desired_Facing16
 
 	END
-	
-
-
-

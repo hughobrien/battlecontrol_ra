@@ -80,4 +80,3 @@ typedef  VOID  huge  *  HPVOID;
 typedef  unsigned       HANDLE;
 
 #endif
-

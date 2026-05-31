@@ -165,4 +165,3 @@ extern ULONG LCW_Uncompress(VOID *source, VOID *dest, ULONG length);
 
 
 #endif //IFF_H
-

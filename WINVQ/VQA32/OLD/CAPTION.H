@@ -120,5 +120,3 @@ void CloseCaptions(CaptionInfo *cap);
 void DoCaptions(CaptionInfo *cap, unsigned long frame);
 
 #endif /* VQACAPTION_H */
-
-

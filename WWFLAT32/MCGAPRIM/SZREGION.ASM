@@ -99,5 +99,3 @@ CODESEG
 	ENDP	MCGA_Size_Of_Region
 
 	END
-
-

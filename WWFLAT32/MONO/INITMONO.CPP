@@ -69,7 +69,4 @@ int Initialize_Mono_Screen(void)
 	MonoScreen = 0xb0000	;
 
 	return (int)0;
-}			
-
-
-
+}

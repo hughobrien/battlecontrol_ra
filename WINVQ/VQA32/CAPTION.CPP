@@ -400,4 +400,3 @@ static void RemCaptionNode(CaptionList *list, CaptionNode *node)
 
 
 #endif // VQACAPTIONS_ON
-

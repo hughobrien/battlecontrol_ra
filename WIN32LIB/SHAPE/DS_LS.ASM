@@ -115,4 +115,3 @@ PROC	Left_Skip NOLANGUAGE NEAR
 	END
 
 ;**************************** End of ds_ls.asm *****************************
-

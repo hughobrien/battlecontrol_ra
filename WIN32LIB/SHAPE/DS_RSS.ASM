@@ -107,4 +107,3 @@ PROC	Right_Scale_Skip NOLANGUAGE NEAR
 	END
 
 ;*************************** End of ds_rss.asm *****************************
-

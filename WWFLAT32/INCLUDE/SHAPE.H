@@ -186,5 +186,3 @@ int  cdecl Get_Shape_Scaled_Height(VOID const *shape, WORD scale);
 #endif // SHAPE_H
 
 /****************************** End of shape.h *****************************/
-
-

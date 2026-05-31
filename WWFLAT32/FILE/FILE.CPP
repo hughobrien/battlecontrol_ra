@@ -1065,6 +1065,3 @@ BOOL cdecl Is_Handle_Valid(int handle, FileErrorType error, char const *name)
 
 	return (TRUE);
 }
-
-
-

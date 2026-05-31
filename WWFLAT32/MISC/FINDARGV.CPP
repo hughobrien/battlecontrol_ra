@@ -76,8 +76,3 @@ BYTE *cdecl Find_Argv(BYTE const *str)
 	return strstr ( command , str ) ;
 
 }
-
-
-
-
-

@@ -107,4 +107,3 @@ PROC	Right_Skip NOLANGUAGE NEAR
 	END
 
 ;**************************** End of ds_rs.asm ******************************
-

@@ -66,4 +66,3 @@ int IRandom(int minval, int maxval)
 	while( (num = (rand() & mask) + minval) > maxval ) ;
 	return(num);
 }
-

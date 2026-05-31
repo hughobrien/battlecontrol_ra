@@ -1124,5 +1124,3 @@ PROC	Not_Supported NOLANGUAGE NEAR
 	END
 
 ;************************** End of drawshp.asm *****************************
-
-

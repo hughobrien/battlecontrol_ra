@@ -653,5 +653,3 @@ PROC	Copy_Delta_Buffer C near
 ;	return(64000U);
 ;}
 ;
-
-
