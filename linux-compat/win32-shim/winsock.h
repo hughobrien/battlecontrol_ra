@@ -1,0 +1,6 @@
+#ifndef BATTLECONTROL_WIN32_SHIM_WINSOCK_H
+#define BATTLECONTROL_WIN32_SHIM_WINSOCK_H
+
+#include <windows.h>
+
+#endif

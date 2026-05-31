@@ -4,6 +4,7 @@ const BOOL = c_int;
 const DWORD = u32;
 const UINT = c_uint;
 const LONG = c_long;
+const WORD = u16;
 const WPARAM = usize;
 const LPARAM = isize;
 const HANDLE = ?*anyopaque;
@@ -180,6 +181,14 @@ export fn htonl(hostlong: DWORD) callconv(.c) DWORD {
 
 export fn ntohl(netlong: DWORD) callconv(.c) DWORD {
     return std.mem.bigToNative(DWORD, netlong);
+}
+
+export fn htons(hostshort: WORD) callconv(.c) WORD {
+    return std.mem.nativeToBig(WORD, hostshort);
+}
+
+export fn ntohs(netshort: WORD) callconv(.c) WORD {
+    return std.mem.bigToNative(WORD, netshort);
 }
 
 export fn DdeInitialize(instance: ?*DWORD, callback: ?*const anyopaque, command: DWORD, reserved: DWORD) callconv(.c) UINT {
