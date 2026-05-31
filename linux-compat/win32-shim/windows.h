@@ -121,6 +121,9 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef NULL
 #define NULL ((void *)0)
 #endif
+#ifndef INVALID_HANDLE_VALUE
+#define INVALID_HANDLE_VALUE ((HANDLE)(intptr_t)-1)
+#endif
 
 #ifndef FAR
 #define FAR
