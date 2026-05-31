@@ -29,6 +29,17 @@ pub fn build(b: *std.Build) void {
     const sources = [_][]const u8{
         "CODE/STARTUP.CPP",
         "CODE/INTERNET.CPP",
+        "CODE/RAWFILE.CPP",
+        "CODE/BFIOFILE.CPP",
+        "CODE/BUFF.CPP",
+        "CODE/CDFILE.CPP",
+        "CODE/CCFILE.CPP",
+        "CODE/CCDDE.CPP",
+        "CODE/DDE.CPP",
+        "CODE/INI.CPP",
+        "CODE/MIXFILE.CPP",
+        "CODE/PROFILE.CPP",
+        "CODE/READLINE.CPP",
     };
     for (sources) |source| {
         exe_module.addCSourceFile(.{

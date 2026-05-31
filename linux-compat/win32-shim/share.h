@@ -1,0 +1,12 @@
+#ifndef BATTLECONTROL_RA_WIN32_SHIM_SHARE_H
+#define BATTLECONTROL_RA_WIN32_SHIM_SHARE_H
+
+#ifndef SH_DENYNO
+#define SH_DENYNO 0x40
+#endif
+
+#ifndef SH_DENYWR
+#define SH_DENYWR 0x20
+#endif
+
+#endif
