@@ -285,7 +285,7 @@ int WWKeyboardClass::To_ASCII(int key)
 	return(key);
 }
 
-WWKeyboardClass::Down(int key)
+int WWKeyboardClass::Down(int key)
 {
 	return(GetAsyncKeyState(key&0xFF));
 }

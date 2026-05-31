@@ -362,7 +362,7 @@ char WWKeyboardClass::To_ASCII(unsigned short key)
  * HISTORY:                                                                                    *
  *   09/30/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-WWKeyboardClass::Down(unsigned short key)
+bool WWKeyboardClass::Down(unsigned short key)
 {
 	return(GetAsyncKeyState(key & 0xFF));
 }
