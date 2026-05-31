@@ -738,7 +738,7 @@ void Show_Who_Was_Responsible (void)
 #ifdef WIN32
 		SlideBuffers[index] = new GraphicBufferClass;
 		SlideBuffers[index]->Init (SeenBuff.Get_Width(), SeenBuff.Get_Height(), NULL , 0 , (GBC_Enum)0);
-		Load_Title_Screen(&SlideNames[index][0], SlideBuffers[index], (unsigned char*) &SlidePals[index][0]);
+		Load_Title_Screen(&SlideNames[index][0], SlideBuffers[index], (uint8_t *) &SlidePals[index][0]);
 #else	//WIN32
 		SlideBuffers[index] = new GraphicBufferClass (SeenBuff.Get_Width(), SeenBuff.Get_Height(), (void*)NULL);
 		Load_Picture(&LoresSlideNames[index][0], *SlideBuffers[index], *SlideBuffers[index], (unsigned char *)&SlidePals[index][0], BM_DEFAULT);
