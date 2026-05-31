@@ -15,9 +15,9 @@ Sie:
 # TXT_YOU
 Gegner:
 # TXT_ENEMY
-GebÑude vernichtet durch 
+Geb√§ude vernichtet durch
 # TXT_BUILD_DEST
-Einheiten zerstîrt durch 
+Einheiten zerst√∂rt durch
 # TXT_UNIT_DEST
 Erz gesammelt durch 
 # TXT_TIB_HARV
@@ -35,7 +35,7 @@ Neues Spiel starten
 # TXT_START_NEW_GAME
 Vorschau & Intro
 # TXT_INTRO
-ZurÅck
+Zur√ºck
 # TXT_CANCEL
 Felsen
 # TXT_ROCK
@@ -61,7 +61,7 @@ Wasser
 # TXT_WATER
 Strasse
 # TXT_ROAD
-HÅgel
+H√ºgel
 # TXT_SLOPE
 Schlamm
 # TXT_PATCH
@@ -71,19 +71,19 @@ Einsatz laden
 # TXT_LOAD_MISSION
 Einsatz sichern 
 # TXT_SAVE_MISSION
-Einsatz lîschen 
+Einsatz l√∂schen
 # TXT_DELETE_MISSION
 Laden
 # TXT_LOAD_BUTTON
 Sichern
 # TXT_SAVE_BUTTON
-Lîschen
+L√∂schen
 # TXT_DELETE_BUTTON
 Spielsteuerung 
 # TXT_GAME_CONTROLS
 Soundsteuerung 
 # TXT_SOUND_CONTROLS
-ZurÅck
+Zur√ºck
 # TXT_RESUME_MISSION
 Optische Steuerung 
 # TXT_VISUAL_CONTROLS
@@ -93,7 +93,7 @@ Spiel verlassen
 # TXT_EXIT_GAME
 Optionen
 # TXT_OPTIONS
-öberreste 
+√úberreste
 # TXT_SQUISH
 Krater
 # TXT_CRATER
@@ -101,11 +101,11 @@ Brandspuren
 # TXT_SCORCH
 Helligkeit:
 # TXT_BRIGHTNESS
-MusiklautstÑrke 
+Musiklautst√§rke
 # TXT_MUSIC
-GerÑuschlautstÑrke 
+Ger√§uschlautst√§rke
 # TXT_VOLUME
-Tînung:
+T√∂nung:
 # TXT_TINT
 Kontrast:
 # TXT_CONTRAST
@@ -115,13 +115,13 @@ Scrollgeschwindigkeit:
 # TXT_SCROLLRATE
 Farbe:
 # TXT_COLOR
-ZurÅck zum Spiel 
+Zur√ºck zum Spiel
 # TXT_RETURN_TO_GAME
 Gegnerischer Cyborg 
 # TXT_ENEMY_SOLDIER
 Gegnerisches Fahrzeug 
 # TXT_ENEMY_VEHICLE
-Gegnerisches GebÑude 
+Gegnerisches Geb√§ude
 # TXT_ENEMY_STRUCTURE
 Leichter Panzer 
 # TXT_LTANK
@@ -133,7 +133,7 @@ Mammutpanzer
 # TXT_HTANK
 Flak-Stellung 
 # TXT_SAM
-Ranger 4WD GelÑndewagen
+Ranger 4WD Gel√§ndewagen
 # TXT_JEEP
 Helitrans 
 # TXT_TRANS
@@ -141,7 +141,7 @@ Erztransporter
 # TXT_HARVESTER
 Artillerie
 # TXT_ARTY
-Cyborg "SchÅtze" 
+Cyborg "Sch√ºtze"
 # TXT_E1
 Cyborg "Grenadier"
 # TXT_E2
@@ -213,37 +213,37 @@ Pablos Verrufene Pinte
 # TXT_CIV22
 Dorfbrunnen
 # TXT_CIV23
-KamelhÑndler
+Kamelh√§ndler
 # TXT_CIV24
 Kirche
 # TXT_CIV25
 Alis Haus
 # TXT_CIV26
-KrÑmer Ted
+Kr√§mer Ted
 # TXT_CIV27
 Meneliks Heim
 # TXT_CIV28
 Prestor Johns Haus
 # TXT_CIV29
-Schîpfbrunnen
+Sch√∂pfbrunnen
 # TXT_CIV30
-HÅtte des Medizinmanns
+H√ºtte des Medizinmanns
 # TXT_CIV31
-Rikitikitembos HÅtte
+Rikitikitembos H√ºtte
 # TXT_CIV32
-Roarkes HÅtte
+Roarkes H√ºtte
 # TXT_CIV33
-Mubasas HÅtte
+Mubasas H√ºtte
 # TXT_CIV34
-Aksums HÅtte
+Aksums H√ºtte
 # TXT_CIV35
-Mambos HÅtte
+Mambos H√ºtte
 # TXT_CIV36
 Das Studio
 # TXT_CIV37
 Technologiezentrum
 # TXT_CIVMISS
-GeschÅtzturm
+Gesch√ºtzturm
 # TXT_TURRET
 Rak-Kreuzer
 # TXT_GUNBOAT
@@ -257,9 +257,9 @@ Krankenhaus
 # TXT_HOSPITAL
 Cyborgfabrik
 # TXT_BARRACKS
-ôlfîrderpumpe 
+√ñlf√∂rderpumpe
 # TXT_PUMP
-ôltanker 
+√ñltanker
 # TXT_TANKER
 Sandsack-Barriere
 # TXT_SANDBAG_WALL
@@ -279,7 +279,7 @@ Bio-Forschungslabor
 # TXT_BIO_LAB
 Werkstatt
 # TXT_FIX_IT
-SeitenmenÅ
+Seitenmen√º
 # TXT_TAB_SIDEBAR
 Optionen
 # TXT_TAB_BUTTON_CONTROLS
@@ -287,7 +287,7 @@ Datenbank
 # TXT_TAB_BUTTON_DATABASE
 Unbekanntes Terrain
 # TXT_SHADOW
-Optionen-MenÅ
+Optionen-Men√º
 # TXT_OPTIONS_MENU
 STOP
 # TXT_STOP
@@ -297,9 +297,9 @@ ZUFALL
 # TXT_SHUFFLE
 ENDLOS
 # TXT_REPEAT
-MusiklautstÑrke:
+Musiklautst√§rke:
 # TXT_MUSIC_VOLUME
-GerÑuschlautstÑrke:
+Ger√§uschlautst√§rke:
 # TXT_SOUND_VOLUME
 An
 # TXT_ON
@@ -307,11 +307,11 @@ Aus
 # TXT_OFF
 Mehrspieler-Modus
 # TXT_MULTIPLAYER_GAME
-Keine Dateien verfÅgbar
+Keine Dateien verf√ºgbar
 # TXT_NO_FILES
-Wollen Sie diese Datei lîschen?
+Wollen Sie diese Datei l√∂schen?
 # TXT_DELETE_SINGLE_FILE
-Wollen Sie %d Dateien lîschen?
+Wollen Sie %d Dateien l√∂schen?
 # TXT_DELETE_MULTIPLE_FILES
 Standardwerte
 # TXT_RESET_MENU
@@ -347,11 +347,11 @@ Langsam
 # TXT_SLOWER
 Luftangriff
 # TXT_AIR_STRIKE
-StahlbehÑlter 
+Stahlbeh√§lter
 # TXT_STEEL_CRATE
 Holzkiste 
 # TXT_WOOD_CRATE
-WasserbehÑlter 
+Wasserbeh√§lter
 # TXT_WATER_CRATE
 Flagge 
 # TXT_FLAG_SPOT
@@ -359,17 +359,17 @@ Kann Szenario nicht lesen!
 # TXT_UNABLE_READ_SCENARIO
 Fehler beim Laden des Spieles!
 # TXT_ERROR_LOADING_GAME
-öberholter gespeicherter Spielstand.
+√úberholter gespeicherter Spielstand.
 # TXT_OBSOLETE_SAVEGAME
-Sie mÅssen eine Beschreibung eingeben!
+Sie m√ºssen eine Beschreibung eingeben!
 # TXT_MUSTENTER_DESCRIPTION
 Fehler beim Sichern des Spieles!
 # TXT_ERROR_SAVING_GAME
-Diese Datei lîschen?
+Diese Datei l√∂schen?
 # TXT_DELETE_FILE_QUERY
 [NOCH FREI]
 # TXT_EMPTY_SLOT
-Mehrspielermodus wÑhlen
+Mehrspielermodus w√§hlen
 # TXT_SELECT_MPLAYER_GAME
 Modem/Seriell
 # TXT_MODEM_SERIAL
@@ -401,7 +401,7 @@ Szenario:
 # TXT_NOT_FOUND
 Geld beim Spielstart:
 # TXT_START_CREDITS_COLON
-StÅtzpunkte:
+St√ºtzpunkte:
 # TXT_BASES_COLON
 Erz:
 # TXT_TIBERIUM_COLON
@@ -415,13 +415,13 @@ Kann nicht starten; Szenario nicht gefunden.
 # TXT_UNABLE_PLAY_WAAUGH
 Niemand da zum Mitspielen!
 # TXT_NOTHING_TO_JOIN
-Sie mÅssen einen Namen eingeben!
+Sie m√ºssen einen Namen eingeben!
 # TXT_NAME_ERROR
 Doppelte Namen sind nicht erlaubt.
 # TXT_DUPENAMES_NOTALLOWED
-Ihre Spielversion ist zu alt und Åberholt.
+Ihre Spielversion ist zu alt und √ºberholt.
 # TXT_YOURGAME_OUTDATED
-Gegnerische Spielversion ist zu alt und Åberholt.
+Gegnerische Spielversion ist zu alt und √ºberholt.
 # TXT_DESTGAME_OUTDATED
 Das Spiel von %s
 # TXT_THATGUYS_GAME
@@ -431,11 +431,11 @@ Netzwerk-Spieleinstellungen
 # TXT_NETGAME_SETUP
 Ablehnen
 # TXT_REJECT
-He, Du kannst Dich doch nicht selbst ablehnen! MÅsstest Du doch langsam wissen... 
+He, Du kannst Dich doch nicht selbst ablehnen! M√ºsstest Du doch langsam wissen...
 # TXT_CANT_REJECT_SELF
-Sie mÅssen schon aussuchen, wen Sie ablehnen wollen...
+Sie m√ºssen schon aussuchen, wen Sie ablehnen wollen...
 # TXT_SELECT_PLAYER_REJECT
-StÅtzpunkte
+St√ºtzpunkte
 # TXT_BASES
 Kisten
 # TXT_CRATES
@@ -463,13 +463,13 @@ Verbindung mit %s abgebrochen!
 # TXT_PLAYER_DEFEATED
 Warte auf Verbindung...
 # TXT_WAITING_CONNECT
-Verbindungsfehler!\rBitte Kabel ÅberprÅfen.\rVersuche neue Verbindung...
+Verbindungsfehler!\rBitte Kabel √ºberpr√ºfen.\rVersuche neue Verbindung...
 # TXT_NULL_CONNERR_CHECK_CABLES
-Verbindungsabbruch!\rWÑhle neu an...
+Verbindungsabbruch!\rW√§hle neu an...
 # TXT_MODEM_CONNERR_REDIALING
 Verbindungsabbruch!\rWarte auf Anruf...
 # TXT_MODEM_CONNERR_WAITING
-WÑhle seriellen Modus
+W√§hle seriellen Modus
 # TXT_SELECT_SERIAL_GAME
 Anrufen
 # TXT_DIAL_MODEM
@@ -505,9 +505,9 @@ Telefonbuch
 # TXT_PHONE_LIST
 Dazu
 # TXT_ADD
-éndern
+√Ñndern
 # TXT_EDIT
-WÑhlen
+W√§hlen
 # TXT_DIAL
 Standard
 # TXT_DEFAULT
@@ -521,19 +521,19 @@ Name:
 # TXT_NAME_COLON
 Nummer:
 # TXT_NUMBER_COLON
-Kann Modem nicht finden.\rBitte Netzanschluss und Kabel ÅberprÅfen.
+Kann Modem nicht finden.\rBitte Netzanschluss und Kabel √ºberpr√ºfen.
 # TXT_UNABLE_FIND_MODEM
-Kein TrÑgersignal.
+Kein Tr√§gersignal.
 # TXT_NO_CARRIER
 Besetzt.
 # TXT_LINE_BUSY
-UngÅltige Nummer.
+Ung√ºltige Nummer.
 # TXT_NUMBER_INVALID
 Der andere Rechner antwortet nicht!
 # TXT_SYSTEM_NOT_RESPONDING
-Das Spiel lÑuft nicht mehr synchron!
+Das Spiel l√§uft nicht mehr synchron!
 # TXT_OUT_OF_SYNC
-Datenpaket zu spÑt angekommen!
+Datenpaket zu sp√§t angekommen!
 # TXT_PACKET_TOO_LATE
 Der andere Spieler hat das Spiel beendet.
 # TXT_PLAYER_LEFT_GAME
@@ -541,7 +541,7 @@ Von %s: %s
 # TXT_FROM
 ZEIT:
 # TXT_SCORE_TIME
-FöHRUNG:
+F√úHRUNG:
 # TXT_SCORE_LEAD
 EFFIZIENZ:
 # TXT_SCORE_EFFI
@@ -551,9 +551,9 @@ VERLUSTE:
 # TXT_SCORE_CASU
 NEUTRAL:
 # TXT_SCORE_NEUT
-GEBéUDE VERLOREN
+GEB√ÑUDE VERLOREN
 # TXT_SCORE_BUIL
-GEBéUDE
+GEB√ÑUDE
 # TXT_SCORE_BUIL1
 VERLOREN:
 # TXT_SCORE_BUIL2
@@ -565,7 +565,7 @@ GELD BEI SPIELENDE:
 # TXT_SCORE_TIMEFORMAT1
 %dm
 # TXT_SCORE_TIMEFORMAT2
-WÑhle an...
+W√§hle an...
 # TXT_DIALING
 Anwahl abgebrochen
 # TXT_DIALING_CANCELED
@@ -581,7 +581,7 @@ Kein Nullmodem-Kabel angeschlossen! Das ist ein Modem- oder Schleifenkabel.
 # TXT_MODEM_OR_LOOPBACK
 Karte
 # TXT_MAP
-BlÅtenbaum 
+Bl√ºtenbaum
 # TXT_BLOSSOM_TREE
 Einsatzziel
 # TXT_RESTATE_MISSION
@@ -593,7 +593,7 @@ Tech.-Stufe:
 # TXT_LEVEL
 Gegner
 # TXT_OPPONENT
-Zerstîrt:
+Zerst√∂rt:
 # TXT_KILLS_COLON
 Video
 # TXT_VIDEO
@@ -605,13 +605,13 @@ Einsatzziel
 # TXT_OBJECTIVE
 Einsatz
 # TXT_MISSION
-Keine gespeicherten SpielstÑnde! 
+Keine gespeicherten Spielst√§nde!
 # TXT_NO_SAVES
-GebÑude 
+Geb√§ude
 # TXT_CIVILIAN_BUILDING
 Technobot
 # TXT_TECHNICIAN
-Im Mehrspielermodus ist kein Zugriff auf gespeicherte SpielstÑnde gestattet.
+Im Mehrspielermodus ist kein Zugriff auf gespeicherte Spielst√§nde gestattet.
 # TXT_NO_SAVELOAD
 Spezialagent
 # TXT_DELPHI
@@ -623,7 +623,7 @@ Bitte warten Sie %02d Sekunden.
 # TXT_PLEASE_WAIT
 Wollen Sie etwa kapitulieren? 
 # TXT_SURRENDER
-Nachricht wÑhlen 
+Nachricht w√§hlen
 # TXT_SEL_TRANS
 Der Spielname darf nur einmal vorkommen. 
 # TXT_GAMENAME_MUSTBE_UNIQUE
@@ -637,7 +637,7 @@ Warte auf Verbindungen...
 # TXT_WAITING_FOR_CONNECTIONS
 Erlaubte Wartezeit: %02d Sekunden
 # TXT_TIME_ALLOWED
-ESC drÅcken, um abzubrechen
+ESC dr√ºcken, um abzubrechen
 # TXT_PRESS_ESC
 Vom Rechner: Jetzt gibt's nur noch uns beide! 
 # TXT_JUST_YOU_AND_ME
@@ -645,21 +645,21 @@ Erobere die Flagge:
 # TXT_CAPTURE_THE_FLAG_COLON
 Spezialagent
 # TXT_CHAN
-%s hat sich mit %s verbÅndet
+%s hat sich mit %s verb√ºndet
 # TXT_HAS_ALLIED
-%s erklÑrt %s den Krieg.
+%s erkl√§rt %s den Krieg.
 # TXT_AT_WAR
-Ziel wÑhlen 
+Ziel w√§hlen
 # TXT_SEL_TARGET
 Aufgeben 
 # TXT_RESIGN
-Erz wÑchst schnell
+Erz w√§chst schnell
 # TXT_TIBERIUM_FAST
 Antworte...
 # TXT_ANSWERING
 Initialisiere Modem...
 # TXT_INITIALIZING_MODEM
-Szenarien stimmen nicht Åberein. 
+Szenarien stimmen nicht √ºberein.
 # TXT_SCENARIOS_DO_NOT_MATCH
 Energieleistung 
 # TXT_POWER_OUTPUT
@@ -669,7 +669,7 @@ Weiter
 # TXT_CONTINUE
 Daten-Warteschlange zu voll 
 # TXT_QUEUE_FULL
-%s hat die Spieloptionen geÑndert!
+%s hat die Spieloptionen ge√§ndert!
 # TXT_SPECIAL_WARNING
 Bitte legen Sie eine 'Alarmstufe Rot'-CD in das CD-ROM-Laufwerk. 
 # TXT_CD_DIALOG_1
@@ -681,9 +681,9 @@ Keine Soundkarte entdeckt
 # TXT_NO_SOUND_CARD
 UNBEKANNT
 # TXT_UNKNOWN
-(Åberholt)
+(√ºberholt)
 # TXT_OLD_GAME
-Zuwenig Festplattenplatz fÅr Alarmstufe Rot.
+Zuwenig Festplattenplatz f√ºr Alarmstufe Rot.
 # TXT_NO_SPACE
 Sie brauchen %d Megabytes freien Festplattenplatz.
 # TXT_MUST_HAVE_SPACE
@@ -691,17 +691,17 @@ Starten Sie erst das SETUP-Programm.
 # TXT_RUN_SETUP
 Warte auf Gegner 
 # TXT_WAITING_FOR_OPPONENT
-Bitte wÑhlen Sie 'Einstellungen', um die Standard-Konfiguration einzustellen. 
+Bitte w√§hlen Sie 'Einstellungen', um die Standard-Konfiguration einzustellen.
 # TXT_SELECT_SETTINGS
-GefÑngnis
+Gef√§ngnis
 # TXT_PRISON
 Einsatz gespeichert 
 # TXT_GAME_WAS_SAVED
-Zuwenig Festplattenplatz zum Speichern des Spielstandes. Bitte einen frÅher gesicherten Spielstand lîschen, um Platz freizumachen, und erneut versuchen. 
+Zuwenig Festplattenplatz zum Speichern des Spielstandes. Bitte einen fr√ºher gesicherten Spielstand l√∂schen, um Platz freizumachen, und erneut versuchen.
 # TXT_SPACE_CANT_SAVE
-Port/Adresse ungÅltig. COM 1-4 ODER ADRESSE
+Port/Adresse ung√ºltig. COM 1-4 ODER ADRESSE
 # TXT_INVALID_PORT_ADDRESS
-Port und/oder IRQ-Einstellung ungÅltig. 
+Port und/oder IRQ-Einstellung ung√ºltig.
 # TXT_INVALID_SETTINGS
 IRQ bereits belegt 
 # TXT_IRQ_ALREADY_IN_USE
@@ -721,11 +721,11 @@ Panzermine
 # TXT_AVMINE
 Tretmine 
 # TXT_APMINE
-Neue EinsÑtze 
+Neue Eins√§tze
 # TXT_NEW_MISSIONS
 D.I.E.B.-Einheit
 # TXT_THIEF
-RadarstîrgerÑt 
+Radarst√∂rger√§t
 # TXT_MRJ
 Schattengenerator
 # TXT_GAP_GENERATOR
@@ -733,7 +733,7 @@ Bunker
 # TXT_PILLBOX
 Tarnbunker 
 # TXT_CAMOPILLBOX
-ChronosphÑre
+Chronosph√§re
 # TXT_CHRONOSPHERE
 England
 # TXT_ENGLAND
@@ -749,15 +749,15 @@ Griechenland
 # TXT_GREECE
 Frankreich
 # TXT_FRANCE
-TÅrkei
+T√ºrkei
 # TXT_TURKEY
 Ufer
 # TXT_SHORE
-Gegenstand auswÑhlen 
+Gegenstand ausw√§hlen
 # TXT_PLACE_OBJECT
 U-Boot
 # TXT_SS
-Zerstîrer
+Zerst√∂rer
 # TXT_DD
 Schlachtkreuzer
 # TXT_CA
@@ -773,17 +773,17 @@ Spiel sichern...
 # TXT_SAVING_GAME
 Spiel ist voll.
 # TXT_GAME_FULL
-Sie mÅssen ein Spiel auswÑhlen! 
+Sie m√ºssen ein Spiel ausw√§hlen!
 # TXT_MUST_SELECT_GAME
 %s spielt %s
 # TXT_S_PLAYING_S
-Nur der Spielleiter kann diese Option Ñndern. 
+Nur der Spielleiter kann diese Option √§ndern.
 # TXT_ONLY_HOST_CAN_MODIFY
 Spiel wurde abgebrochen. 
 # TXT_GAME_CANCELLED
-%s hat ein neues Spiel erîffnet.
+%s hat ein neues Spiel er√∂ffnet.
 # TXT_S_FORMED_NEW_GAME
-Das Spiel von %s lÑuft jetzt.
+Das Spiel von %s l√§uft jetzt.
 # TXT_GAME_NOW_IN_PROGRESS
 Teslaspule 
 # TXT_TESLA
@@ -801,7 +801,7 @@ Lufttransporter
 # TXT_BADGER
 MiG-Jagdbomber 
 # TXT_MIG
-Yak-AngriffsjÑger 
+Yak-Angriffsj√§ger
 # TXT_YAK
 Stacheldraht 
 # TXT_FENCE
@@ -833,7 +833,7 @@ Terminator-Wachhund
 # TXT_GUARD_DOG
 Spionage-Info 
 # TXT_SPY_INFO
-GebÑude
+Geb√§ude
 # TXT_BUILDNGS
 Einheiten
 # TXT_UNITS
@@ -909,11 +909,11 @@ Vector
 # TXT_THEME_VECTOR1A
 Team-Cyborgs 
 # TXT_TEAM_MEMBERS
-BrÅcke
+Br√ºcke
 # TXT_BRIDGE
 Fass
 # TXT_BARREL
-VerbÅndeter
+Verb√ºndeter
 # TXT_GOODGUY
 Gegner
 # TXT_BADGUY
@@ -941,8 +941,8 @@ Schwer
 # TXT_HARD
 Normal
 # TXT_NORMAL
-Bitte wÑhlen Sie die Schwierigkeitsstufe.
-Sie bleibt dann  wÑhrend des gesamten Feldzuges gÅltig.
+Bitte w√§hlen Sie die Schwierigkeitsstufe.
+Sie bleibt dann  w√§hrend des gesamten Feldzuges g√ºltig.
 # TXT_DIFFICULTY
 Allianz
 # TXT_ALLIES
@@ -950,7 +950,7 @@ Sowjets
 # TXT_SOVIET
 Vorspannmusik 
 # TXT_THEME_INTRO
-Schatten wÑchst 
+Schatten w√§chst
 # TXT_SHADOW_REGROWS
 Erz breitet sich aus 
 # TXT_ORE_SPREADS
@@ -962,9 +962,9 @@ Eis
 # TXT_ICE
 Kisten
 # TXT_CRATE
-GeplÑnkel
+Gepl√§nkel
 # TXT_SKIRMISH
-Seite auswÑhlen
+Seite ausw√§hlen
 # TXT_CHOOSE
 Wertvolle Mineralien 
 # TXT_MINERALS
@@ -984,7 +984,7 @@ Fehler - Modem antwortet nicht auf Befehl 'disable modem auto answer'.
 # TXT_ERROR_NO_DISABLE
 Fehler - Zu viele Fehler beim Initialisieren des Modems. Abbruch. 
 # TXT_ERROR_TOO_MANY
-Fehler - Modem gibt Fehlermeldung zurÅck. 
+Fehler - Modem gibt Fehlermeldung zur√ºck.
 # TXT_ERROR_ERROR
 Fehler - Zeit abgelaufen beim Warten auf Verbindung.
 # TXT_ERROR_TIMEOUT
@@ -996,13 +996,13 @@ Empfange Szenario vom Spielleiter.
 # TXT_RECEIVING_SCENARIO
 Sende Szenario an Spieler.
 # TXT_SENDING_SCENARIO
-Fehler - Modem antwortet nicht auf den Befehl 'flow control'. Ihre Windows-Konfiguration kînnte falsch sein. 
+Fehler - Modem antwortet nicht auf den Befehl 'flow control'. Ihre Windows-Konfiguration k√∂nnte falsch sein.
 # TXT_NO_FLOW_CONTROL_RESPONSE
-Fehler - Modem antwortet nicht auf den Befehl 'compression disable'. Ihre Windows-Konfiguration kînnte falsch sein. 
+Fehler - Modem antwortet nicht auf den Befehl 'compression disable'. Ihre Windows-Konfiguration k√∂nnte falsch sein.
 # TXT_NO_COMPRESSION_RESPONSE
-Fehler - Modem antwortet nicht auf den Befehl 'error correction disable". Ihre Windows-Konfiguration kînnte falsch sein. 
+Fehler - Modem antwortet nicht auf den Befehl 'error correction disable". Ihre Windows-Konfiguration k√∂nnte falsch sein.
 # TXT_NO_ERROR_CORRECTION_RESPONSE
-Um Alarmstufe Rot Åber das Internet zu spielen, mÅssen Sie mit einem Internet-Provider verbunden und beim Planeten Westwood registriert sein. 
+Um Alarmstufe Rot √ºber das Internet zu spielen, m√ºssen Sie mit einem Internet-Provider verbunden und beim Planeten Westwood registriert sein.
 # TXT_EXPLAIN_REGISTRATION
 Fehler - kann WChat nicht starten.
 # TXT_ERROR_UNABLE_TO_RUN_WCHAT
@@ -1014,9 +1014,9 @@ Kein eingetragenes Modem
 # TXT_NO_REGISTERED_MODEM
 Chronoport
 # TXT_CHRONOSHIFT
-UngÅltiger oder besetzter Port 
+Ung√ºltiger oder besetzter Port
 # TXT_UNABLE_TO_OPEN_PORT
-Kein WÑhlton. Vergewissern Sie sich, dass Ihr Modem an die Telefonleitung angeschlossen ist, und versuchen Sie es erneut.
+Kein W√§hlton. Vergewissern Sie sich, dass Ihr Modem an die Telefonleitung angeschlossen ist, und versuchen Sie es erneut.
 # TXT_NO_DIAL_TONE
 Fehler - der andere Spieler hat dieses Erweiterungsszenario nicht. 
 # TXT_NO_EXPANSION_SCENARIO
@@ -1034,11 +1034,11 @@ Kommandeur:
 # TXT_COMMANDER
 Siege:
 # TXT_BATTLES_WON
-Ihre Version des Spiels mu· mîglicherweise upgedated werden. Die neuesten 
-Informationen Åber Updates erhalten Sie auf unserer Webseite - 
+Ihre Version des Spiels mu√ü m√∂glicherweise upgedated werden. Die neuesten
+Informationen √ºber Updates erhalten Sie auf unserer Webseite -
 www.westwood.com
 # TXT_MISMATCH
-Nicht-kompatible Datei mit Spieldaten entdeckt. Diese Spieldatei kînnte defekt sein.
+Nicht-kompatible Datei mit Spieldaten entdeckt. Diese Spieldatei k√∂nnte defekt sein.
 # TXT_SCENARIO_ERROR
 Wird verbunden
 # TXT_CONNECTING
@@ -1048,7 +1048,7 @@ Datenkompression
 # TXT_DATA_COMPRESSION
 Fehlerkorrektur
 # TXT_ERROR_CORRECTION
-Hardware-Datenflu·kontrolle
+Hardware-Datenflu√ükontrolle
 # TXT_HARDWARE_FLOW_CONTROL
 Fortgeschritten
 # TXT_ADVANCED
@@ -1068,11 +1068,11 @@ Under3
 # TXT_THEME_UNDER3
 VR2
 # TXT_THEME_VR2
-Der andere Rechner reagiert nicht. Mîchten Sie eine Notspeicherung versuchen? Damit das funktionieren kann, mÅssen beide Spieler sichern.
+Der andere Rechner reagiert nicht. M√∂chten Sie eine Notspeicherung versuchen? Damit das funktionieren kann, m√ºssen beide Spieler sichern.
 # TXT_ASK_EMERGENCY_SAVE_NOT_RESPONDING
-Der andere Rechner hat aufgelegt. Mîchten Sie eine Notspeicherung versuchen? Damit das funktionieren kann, mÅssen beide Spieler sichern.
+Der andere Rechner hat aufgelegt. M√∂chten Sie eine Notspeicherung versuchen? Damit das funktionieren kann, m√ºssen beide Spieler sichern.
 # TXT_ASK_EMERGENCY_SAVE_HUNG_UP
-Alarmstufe Rot kann die Registrierungssoftware nicht starten. Sie mÅssen Westwood Chat von der Alarmstufe-Rot-CD aus starten, um sich registrieren zu lassen.
+Alarmstufe Rot kann die Registrierungssoftware nicht starten. Sie m√ºssen Westwood Chat von der Alarmstufe-Rot-CD aus starten, um sich registrieren zu lassen.
 # TXT_NO_REG_APP
 Ein Spieler in dieser Runde hat dieses Erweiterungsszenario nicht.
 # TXT_NO_CS_SCENARIOS
@@ -1108,6 +1108,6 @@ Traction
 # TXT_THEME_TRACTION
 Wasteland
 # TXT_THEME_WASTELND
-HÇlitransporter
+H√©litransporter
 # TXT_CARRIER
 
