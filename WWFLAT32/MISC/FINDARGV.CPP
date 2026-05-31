@@ -64,7 +64,7 @@ static char command [ 256 ] ;
 BYTE *cdecl Find_Argv(BYTE const *str)
 {
 	char   * ptr ;
-	static   startup_flag = 0 ;
+	static   int startup_flag = 0 ;
 
 	if ( ! startup_flag ) 
 	{
