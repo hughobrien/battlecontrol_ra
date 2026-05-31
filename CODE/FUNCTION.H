@@ -449,7 +449,7 @@ extern void Free_Interpolated_Palettes(void);
 extern int Load_Interpolated_Palettes(char const *filename, BOOL add=FALSE);
 extern void Rebuild_Interpolated_Palette(unsigned char *interpal);
 extern void Interpolate_2X_Scale( GraphicBufferClass *source, GraphicViewPortClass *dest ,char const *palette_file_name);
-void Increase_Palette_Luminance (unsigned char *palette , int red_percentage , int green_percentage , int blue_percentage ,int cap);
+void Increase_Palette_Luminance (uint8_t *palette , int red_percentage , int green_percentage , int blue_percentage ,int cap);
 #endif
 
 /*
@@ -660,7 +660,7 @@ extern	BOOL	InterpolationPaletteChanged;
 extern	void 	Interpolate_2X_Scale( GraphicBufferClass *source, GraphicViewPortClass *dest ,char const *palette_file_name);
 void Read_Interpolation_Palette (char const *palette_file_name);
 void Write_Interpolation_Palette (char const *palette_file_name);
-void Increase_Palette_Luminance(unsigned char *InterpolationPalette ,	int RedPercentage ,int GreenPercentage ,int BluePercentage ,int cap);
+void Increase_Palette_Luminance(uint8_t *InterpolationPalette ,	int RedPercentage ,int GreenPercentage ,int BluePercentage ,int cap);
 extern "C"{
 	extern unsigned char PaletteInterpolationTable[SIZE_OF_PALETTE][SIZE_OF_PALETTE];
 	extern unsigned char *InterpolationPalette;
@@ -971,7 +971,7 @@ ArmorType Armor_From_Name(char const * name);
 /*
 ** Winstub.cpp
 */
-void Load_Title_Screen(char *name, GraphicViewPortClass *video_page, unsigned char *palette);
+void Load_Title_Screen(char *name, GraphicViewPortClass *video_page, uint8_t *palette);
 
 /*
 ** Egos.CPP

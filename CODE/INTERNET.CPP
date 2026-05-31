@@ -842,7 +842,7 @@ bool Do_The_Internet_Menu_Thang(void)
 			if (!Spawn_WChat(true)){
 				Set_Logic_Page(SeenBuff);
 				Load_Title_Page(true);
-				Set_Palette(CCPalette);
+				Set_Palette((uint8_t *)&CCPalette[0]);
 				WWMessageBox().Process(TXT_ERROR_UNABLE_TO_RUN_WCHAT, TXT_OK);
 				LogicPage->Clear();
 				return(false);
@@ -855,7 +855,7 @@ bool Do_The_Internet_Menu_Thang(void)
 
 				Set_Logic_Page(SeenBuff);
 				Load_Title_Page(true);
-				Set_Palette(CCPalette);
+				Set_Palette((uint8_t *)&CCPalette[0]);
 
 				//WWMessageBox().Process(TXT_EXPLAIN_REGISTRATION, TXT_CANCEL);
 				WWMessageBox().Process(TXT_NO_REG_APP, TXT_CANCEL);
@@ -893,7 +893,7 @@ bool Do_The_Internet_Menu_Thang(void)
 			** Redraw backgound & dialog box
 			*/
 			Load_Title_Page(true);
-			Set_Palette(CCPalette);
+			Set_Palette((uint8_t *)&CCPalette[0]);
 
 			Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
 

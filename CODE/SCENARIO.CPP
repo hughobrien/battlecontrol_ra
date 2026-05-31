@@ -1502,7 +1502,7 @@ int BGMessageBox(char const * msg, int btn1, int btn2)
 	if (PlayerPtr->Class->House != HOUSE_USSR && PlayerPtr->Class->House != HOUSE_UKRAINE) {
 		filename = "ALIPAPER.PCX";
 	}
-	Load_Title_Screen(filename, &HidPage, temp);
+	Load_Title_Screen(filename, &HidPage, (uint8_t *)&temp[0]);
 #else
 	char *filename = "SOVPAPER.CPS";
 	if (PlayerPtr->Class->House != HOUSE_USSR && PlayerPtr->Class->House != HOUSE_UKRAINE) {

@@ -268,7 +268,7 @@ void Create_Palette_Interpolation_Table( void )
  *    12/12/95 12:16PM ST : Created                                                            *
  *=============================================================================================*/
 
-void Increase_Palette_Luminance (unsigned char * palette , int red_percentage , int green_percentage , int blue_percentage , int cap)
+void Increase_Palette_Luminance (uint8_t * palette , int red_percentage , int green_percentage , int blue_percentage , int cap)
 {
 
 	unsigned	int	red;
