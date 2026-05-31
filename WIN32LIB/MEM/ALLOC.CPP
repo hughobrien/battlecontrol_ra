@@ -74,7 +74,7 @@ static unsigned long TotalRam = 0L;
 static unsigned long Memory_Calls = 0L;
 
 void (*Memory_Error)(void) = NULL;
-extern void (*Memory_Error_Exit)(char *string)=NULL;
+void (*Memory_Error_Exit)(char *string)=NULL;
 
 
 //#define MEM_CHECK
@@ -97,7 +97,7 @@ extern "C"{
  * HISTORY:                                                                *
  *   06/23/1995 PWG : Created.                                             *
  *=========================================================================*/
-#include"mono.h"
+#include"MONO.H"
 void DPMI_Lock(VOID const *, long const )
 {
 }
@@ -509,4 +509,3 @@ long Total_Ram_Free(MemoryFlagType )
 
 	return ( 64*1024*1024 );
 }
-
