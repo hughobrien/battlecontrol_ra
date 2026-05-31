@@ -4,12 +4,18 @@ const BOOL = c_int;
 const DWORD = u32;
 const UINT = c_uint;
 const LONG = c_long;
+const LRESULT = isize;
 const WORD = u16;
+const ATOM = WORD;
+const INT_PTR = isize;
 const WPARAM = usize;
 const LPARAM = isize;
 const HANDLE = ?*anyopaque;
 const HWND = ?*anyopaque;
 const HMODULE = ?*anyopaque;
+const HICON = ?*anyopaque;
+const HINSTANCE = ?*anyopaque;
+const HMENU = ?*anyopaque;
 const HKEY = ?*anyopaque;
 const HSZ = ?*anyopaque;
 const HCONV = ?*anyopaque;
@@ -22,6 +28,8 @@ const DMLERR_NO_ERROR: UINT = 0;
 const IDOK: c_int = 1;
 const IDYES: c_int = 6;
 const MB_YESNO: UINT = 0x00000004;
+const SM_CXSCREEN: c_int = 0;
+const SM_CYSCREEN: c_int = 1;
 
 const DdeString = extern struct {
     next: ?*DdeString,
@@ -65,10 +73,6 @@ export fn lstrcpy(dest: [*:0]u8, src: [*:0]const u8) callconv(.c) [*:0]u8 {
     return dest;
 }
 
-export fn _Z13WWDebugStringPKc(string: ?[*:0]const u8) callconv(.c) void {
-    _ = string;
-}
-
 export fn GetModuleFileName(module: HMODULE, filename: [*:0]u8, size: DWORD) callconv(.c) DWORD {
     _ = module;
     if (size == 0) return 0;
@@ -104,6 +108,49 @@ export fn PostMessage(window: HWND, message: UINT, wparam: WPARAM, lparam: LPARA
     return 1;
 }
 
+export fn PeekMessage(msg: ?*anyopaque, window: HWND, filter_min: UINT, filter_max: UINT, remove_msg: UINT) callconv(.c) BOOL {
+    _ = msg;
+    _ = window;
+    _ = filter_min;
+    _ = filter_max;
+    _ = remove_msg;
+    return 0;
+}
+
+export fn GetMessage(msg: ?*anyopaque, window: HWND, filter_min: UINT, filter_max: UINT) callconv(.c) BOOL {
+    _ = msg;
+    _ = window;
+    _ = filter_min;
+    _ = filter_max;
+    return 0;
+}
+
+export fn TranslateMessage(msg: ?*const anyopaque) callconv(.c) BOOL {
+    _ = msg;
+    return 1;
+}
+
+export fn DispatchMessage(msg: ?*const anyopaque) callconv(.c) LRESULT {
+    _ = msg;
+    return 0;
+}
+
+export fn DefWindowProc(window: HWND, message: UINT, wparam: WPARAM, lparam: LPARAM) callconv(.c) LRESULT {
+    _ = window;
+    _ = message;
+    _ = wparam;
+    _ = lparam;
+    return 0;
+}
+
+export fn PostQuitMessage(exit_code: c_int) callconv(.c) void {
+    _ = exit_code;
+}
+
+export fn ExitProcess(exit_code: UINT) callconv(.c) void {
+    std.process.exit(@intCast(exit_code & 0xff));
+}
+
 export fn SetForegroundWindow(window: HWND) callconv(.c) BOOL {
     _ = window;
     return 0;
@@ -112,6 +159,81 @@ export fn SetForegroundWindow(window: HWND) callconv(.c) BOOL {
 export fn ShowWindow(window: HWND, command_show: c_int) callconv(.c) BOOL {
     _ = window;
     _ = command_show;
+    return 0;
+}
+
+export fn LoadIcon(instance: HINSTANCE, icon_name: ?[*:0]const u8) callconv(.c) HICON {
+    _ = instance;
+    _ = icon_name;
+    return null;
+}
+
+export fn RegisterClass(window_class: ?*const anyopaque) callconv(.c) ATOM {
+    _ = window_class;
+    return 1;
+}
+
+export fn CreateWindowEx(
+    ex_style: DWORD,
+    class_name: ?[*:0]const u8,
+    window_name: ?[*:0]const u8,
+    style: DWORD,
+    x: c_int,
+    y: c_int,
+    width: c_int,
+    height: c_int,
+    parent: HWND,
+    menu: HMENU,
+    instance: HINSTANCE,
+    param: ?*anyopaque,
+) callconv(.c) HWND {
+    _ = ex_style;
+    _ = class_name;
+    _ = window_name;
+    _ = style;
+    _ = x;
+    _ = y;
+    _ = width;
+    _ = height;
+    _ = parent;
+    _ = menu;
+    _ = instance;
+    _ = param;
+    return @ptrFromInt(1);
+}
+
+export fn GetSystemMetrics(index: c_int) callconv(.c) c_int {
+    return switch (index) {
+        SM_CXSCREEN => 640,
+        SM_CYSCREEN => 480,
+        else => 0,
+    };
+}
+
+export fn UpdateWindow(window: HWND) callconv(.c) BOOL {
+    _ = window;
+    return 1;
+}
+
+export fn SetFocus(window: HWND) callconv(.c) HWND {
+    return window;
+}
+
+export fn RegisterWindowMessage(string: ?[*:0]const u8) callconv(.c) UINT {
+    _ = string;
+    return 0x0400 + 50;
+}
+
+export fn DialogBox(instance: HANDLE, template_name: ?[*:0]const u8, owner: HWND, dialog_proc: ?*const anyopaque) callconv(.c) INT_PTR {
+    _ = instance;
+    _ = template_name;
+    _ = owner;
+    _ = dialog_proc;
+    return 0;
+}
+
+export fn ShowCursor(show: BOOL) callconv(.c) c_int {
+    _ = show;
     return 0;
 }
 

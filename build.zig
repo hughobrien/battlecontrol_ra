@@ -40,6 +40,7 @@ pub fn build(b: *std.Build) void {
         "CODE/PACKET.CPP",
         "CODE/2KEYFRAM.CPP",
         "WIN32LIB/MEM/ALLOC.CPP",
+        "CODE/WINSTUB.CPP",
         "CODE/DDE.CPP",
         "CODE/INI.CPP",
         "CODE/MIXFILE.CPP",
