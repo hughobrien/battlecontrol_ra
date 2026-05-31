@@ -43,6 +43,14 @@
 #include "SLIDER.H"
 #include <algorithm>
 
+void Plain_Text_Print(int text, unsigned x, unsigned y, unsigned fore, unsigned back, TextPrintType flag, ...);
+
+#ifdef WIN32
+extern GraphicViewPortClass SeenBuff;
+#else
+extern GraphicBufferClass SeenBuff;
+#endif
+
 
 /***************************************************************************
  * ListClass -- Like a Windows ListBox structure									*
@@ -272,7 +280,7 @@ TListClass<T>::TListClass(int id, int x, int y, int w, int h, TextPrintType flag
 	/*
 	**	Set the list box to a default state.
 	*/
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TextFlags);
+	Plain_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TextFlags);
 	LineHeight = FontHeight+FontYSpacing-1;
 	LineCount = (h-1) / LineHeight;
 }
