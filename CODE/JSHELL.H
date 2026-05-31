@@ -40,6 +40,7 @@
 
 
 #include	<assert.h>
+#include	<stdint.h>
 
 #ifdef WIN32
 //#define getch	Get_Key_Num
@@ -207,6 +208,7 @@ inline ShapeFlags_Type operator &(ShapeFlags_Type, ShapeFlags_Type);
 inline ShapeFlags_Type operator ~(ShapeFlags_Type);
 
 
+#if defined(__WATCOMC__)
 void Set_Bit(void * array, int bit, int value);
 #pragma aux Set_Bit parm [esi] [ecx] [eax] \
 	modify [esi ebx] = 			\
@@ -218,7 +220,21 @@ void Set_Bit(void * array, int bit, int value);
 	"jz	ok"						\
 	"bts	[esi+ebx*4],ecx"		\
 	"ok:"
+#else
+inline void Set_Bit(void * array, int bit, int value)
+{
+	uint32_t * words = (uint32_t *)array;
+	uint32_t bit_index = (uint32_t)bit;
+	uint32_t mask = (uint32_t)1 << (bit_index & 0x1F);
+	if (value) {
+		words[bit_index >> 5] |= mask;
+	} else {
+		words[bit_index >> 5] &= ~mask;
+	}
+}
+#endif
 
+#if defined(__WATCOMC__)
 int Get_Bit(void const * array, int bit);
 #pragma aux Get_Bit parm [esi] [eax] \
 	modify [esi ebx] \
@@ -228,7 +244,16 @@ int Get_Bit(void const * array, int bit);
 	"and	eax,01Fh"				\
 	"bt	[esi+ebx*4],eax"		\
 	"setc	al"
+#else
+inline int Get_Bit(void const * array, int bit)
+{
+	uint32_t const * words = (uint32_t const *)array;
+	uint32_t bit_index = (uint32_t)bit;
+	return (int)((words[bit_index >> 5] >> (bit_index & 0x1F)) & 1);
+}
+#endif
 
+#if defined(__WATCOMC__)
 int First_True_Bit(void const * array);
 #pragma aux First_True_Bit parm [esi] \
 	modify [esi ebx] \
@@ -241,7 +266,28 @@ int First_True_Bit(void const * array);
 	"bsf	ebx,ebx"					\
 	"jz	again"					\
 	"add	eax,ebx"
+#else
+inline int First_True_Bit(void const * array)
+{
+	uint32_t const * words = (uint32_t const *)array;
+	int bit = 0;
 
+	while (*words == 0) {
+		words++;
+		bit += 32;
+	}
+
+	uint32_t word = *words;
+	while ((word & 1) == 0) {
+		word >>= 1;
+		bit++;
+	}
+
+	return bit;
+}
+#endif
+
+#if defined(__WATCOMC__)
 int First_False_Bit(void const * array);
 #pragma aux First_False_Bit parm [esi] \
 	modify [esi ebx] \
@@ -255,6 +301,26 @@ int First_False_Bit(void const * array);
 	"bsf	ebx,ebx"					\
 	"jz	again"					\
 	"add	eax,ebx"
+#else
+inline int First_False_Bit(void const * array)
+{
+	uint32_t const * words = (uint32_t const *)array;
+	int bit = 0;
+
+	while (*words == ~(uint32_t)0) {
+		words++;
+		bit += 32;
+	}
+
+	uint32_t word = ~*words;
+	while ((word & 1) == 0) {
+		word >>= 1;
+		bit++;
+	}
+
+	return bit;
+}
+#endif
 
 #ifdef OBSOLETE
 extern int Bound(int original, int min, int max);
@@ -289,6 +355,7 @@ extern unsigned Bound(unsigned original, unsigned min, unsigned max);
 #endif
 
 
+#if defined(__WATCOMC__)
 unsigned Fixed_To_Cardinal(unsigned base, unsigned fixed);
 #pragma aux Fixed_To_Cardinal parm [eax] [edx] \
 	modify [edx] \
@@ -300,8 +367,20 @@ unsigned Fixed_To_Cardinal(unsigned base, unsigned fixed);
 	"mov	eax,000FFFFFFh"		\
 	"ok:"								\
 	"shr	eax,8"
+#else
+inline unsigned Fixed_To_Cardinal(unsigned base, unsigned fixed)
+{
+	uint32_t product = (uint32_t)((uint32_t)base * (uint32_t)fixed);
+	product += 0x80;
+	if (product & 0xFF000000) {
+		product = 0x00FFFFFF;
+	}
+	return (unsigned)(product >> 8);
+}
+#endif
 
 
+#if defined(__WATCOMC__)
 unsigned Cardinal_To_Fixed(unsigned base, unsigned cardinal);
 #pragma aux Cardinal_To_Fixed parm [ebx] [eax] \
 	modify [edx] \
@@ -312,6 +391,15 @@ unsigned Cardinal_To_Fixed(unsigned base, unsigned cardinal);
 	"xor	edx,edx"					\
 	"div	ebx"						\
 	"fini:"
+#else
+inline unsigned Cardinal_To_Fixed(unsigned base, unsigned cardinal)
+{
+	if (base == 0) {
+		return cardinal;
+	}
+	return (unsigned)(((uint32_t)cardinal << 8) / (uint32_t)base);
+}
+#endif
 
 
 #ifndef OUTPORTB
