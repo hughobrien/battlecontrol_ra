@@ -52,11 +52,11 @@
  * These are static members of Instance_Class
  *=========================================================================*/
 
-static DWORD	Instance_Class::id_inst;			// instance identifier set by DdeInitialize
-static BOOL		Instance_Class::process_pokes;	// controls response to pokes
-static char 	Instance_Class::ascii_name[32];	// name of server
+DWORD	Instance_Class::id_inst;			// instance identifier set by DdeInitialize
+BOOL		Instance_Class::process_pokes;	// controls response to pokes
+char 	Instance_Class::ascii_name[32];	// name of server
 
-static BOOL CALLBACK	(*Instance_Class::callback) (
+BOOL CALLBACK	(*Instance_Class::callback) (
 			LPBYTE pointer,		// pointer to received data
 			long	length			// length of received data or advisory flag
 			) = NULL;

@@ -83,10 +83,10 @@ extern "C" {
 	extern void (*_AbortModemFunctionPtr)(int);
 }
 
-static void (*NullModemClass::OrigAbortModemFunc)(int);
+void (*NullModemClass::OrigAbortModemFunc)(int);
 
-static KeyNumType NullModemClass::Input;
-static GadgetClass *NullModemClass::Commands;		// button list
+KeyNumType NullModemClass::Input;
+GadgetClass *NullModemClass::Commands;		// button list
 
 /*
 ** Ugly hack: this string stores the string received from the modem
