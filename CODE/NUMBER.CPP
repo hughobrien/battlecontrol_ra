@@ -65,7 +65,7 @@ int Greatest_Common_Divisor(int x, int y)
 			x = y % x;
 			y = greatest;
 	}
-	return(g);
+	return(greatest);
 }
 
 
@@ -79,7 +79,7 @@ int Grestest_Common_Divisor(int count, int * data)
 		return(0);
 	}
 
-	greatest = data[0];
+	int greatest = data[0];
 	for (int i = 1; i < count; i++) {
 		greatest = Greatest_Common_Divisor(greatest, data[i]);
 		if (greatest == 1) {
