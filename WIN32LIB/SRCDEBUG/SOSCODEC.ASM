@@ -166,8 +166,8 @@ LABEL	LockedCodeStart	BYTE
 ;*     486 and Pentium processors.  Changing, inserting, or moving any
 ;*     instructions will most likely slow down the code, in some cases by
 ;*     as much as 20%.  It can burst-decompress 16384 samples in about
-;*     1940æs on a Pentium 90Mhz, and about 3960æs on a 486 66Mhz.
-;*     Instruction reordering could bring this down to below 1870æs on
+;*     1940Âµs on a Pentium 90Mhz, and about 3960Âµs on a 486 66Mhz.
+;*     Instruction reordering could bring this down to below 1870Âµs on
 ;*     the Pentium, but this would cause a great degradation in 486
 ;*     performance.  Since slow 486's are the reason this code was
 ;*     written to be fast, it has been optimized for the Pentium only where
