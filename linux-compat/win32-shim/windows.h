@@ -277,6 +277,9 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef __stdcall
 #define __stdcall
 #endif
+#ifndef __declspec
+#define __declspec(x)
+#endif
 #ifndef _export
 #define _export
 #endif
@@ -469,6 +472,10 @@ typedef struct _RTL_CRITICAL_SECTION {
 #define INVALID_HANDLE_VALUE ((HANDLE)(LONG_PTR)-1)
 #endif
 
+#ifndef MAX_PATH
+#define MAX_PATH 260
+#endif
+
 #ifndef GENERIC_READ
 #define GENERIC_READ 0x80000000u
 #endif
@@ -561,6 +568,7 @@ BOOL DeleteFile(LPCSTR file_name);
 DWORD GetLastError(void);
 UINT SetErrorMode(UINT mode);
 BOOL GetFileInformationByHandle(HANDLE file, BY_HANDLE_FILE_INFORMATION *file_information);
+BOOL GetVolumeInformation(LPCSTR root_path_name, LPSTR volume_name_buffer, unsigned long volume_name_size, unsigned long *volume_serial_number, unsigned long *maximum_component_length, unsigned long *file_system_flags, LPSTR file_system_name_buffer, unsigned long file_system_name_size);
 BOOL FileTimeToDosDateTime(const FILETIME *file_time, LPWORD fat_date, LPWORD fat_time);
 BOOL DosDateTimeToFileTime(WORD fat_date, WORD fat_time, LPFILETIME file_time);
 BOOL SetFileTime(HANDLE file, const FILETIME *creation_time, const FILETIME *last_access_time, const FILETIME *last_write_time);

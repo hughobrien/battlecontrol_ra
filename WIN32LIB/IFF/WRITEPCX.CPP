@@ -75,7 +75,7 @@ int Write_PCX_File (char* name, GraphicViewPortClass& pic, unsigned char* palett
 
 	// Open file name
 	file_handle = Open_File ( name , WRITE ) ;
-	if ( file_handle == ERROR ) return FALSE ;
+	if ( file_handle == WW_ERROR ) return FALSE ;
 
 
 	header.width  = pic.Get_Width() - 1 ;
@@ -125,7 +125,7 @@ int Write_PCX_File (char* name, GraphicViewPortClass& pic, unsigned char* palett
 
 #define	POOL_SIZE 2048
 #define WRITE_CHAR(x) {	\
-								* file_ptr ++ = x ; \
+								* file_ptr ++ = (char)(x) ; \
 							   if ( file_ptr >= & pool [ POOL_SIZE ]	) { \
 								  Write_File ( file_handle, pool , POOL_SIZE ) ; \
 								  file_ptr = pool ; \
@@ -176,6 +176,5 @@ void Write_Pcx_ScanLine ( int file_handle , int scansize , char * ptr )
 		}
 	}
 
-	Write_File ( file_handle, pool , ( int ) file_ptr - ( int ) pool ) ;
+	Write_File ( file_handle, pool , ( int )(file_ptr - pool) ) ;
 }
-
