@@ -41,7 +41,7 @@
  *   Check_Key -- compatability routine for old 32 bit library             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include "keyboard.h"
+#include "KEYBOARD.H"
 
 void Message_Loop(void);
 
