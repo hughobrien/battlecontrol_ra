@@ -4,7 +4,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#ifndef BOOL
 typedef int BOOL;
+#endif
 typedef unsigned char BOOLEAN;
 typedef unsigned char BYTE;
 typedef uint16_t WORD;
@@ -21,7 +23,9 @@ typedef intptr_t LONG_PTR;
 typedef uintptr_t ULONG_PTR;
 typedef uintptr_t DWORD_PTR;
 typedef wchar_t WCHAR;
+#ifndef VOID
 typedef void VOID;
+#endif
 
 typedef void *HANDLE;
 typedef void *HWND;
