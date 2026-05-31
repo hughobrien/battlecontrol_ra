@@ -249,7 +249,7 @@ typedef int bool;
 
 
 // Inline Routines
-//ÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ
+//â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 //
 // These Template functions are generally used
 // by classes when they havce over loaded > and <.

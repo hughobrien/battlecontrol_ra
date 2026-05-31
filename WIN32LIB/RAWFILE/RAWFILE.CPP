@@ -146,9 +146,9 @@ void RawFileClass::Error(int error, int , char const *)
 	if (canretry) {
 		if (GraphicMode == TXT_MODE) strcat(message, "\n");
 #ifdef GERMAN
-		strcat(message, " Beliebige Taste dr갷ken f걊 erneuten Versuch.");
+		strcat(message, " Beliebige Taste dr체cken f체r erneuten Versuch.");
 		if (GraphicMode == TXT_MODE) strcat(message, "\n");
-		strcat(message, " <ESC> dr갷ken, um das Programm zu verlassen.");
+		strcat(message, " <ESC> dr체cken, um das Programm zu verlassen.");
 #else
 #ifdef FRENCH
 		strcat(message, " Appuyez sur une touche pour recommencer.");
@@ -164,7 +164,7 @@ void RawFileClass::Error(int error, int , char const *)
 	} else {
 		if (GraphicMode == TXT_MODE) strcat(message, "\n");
 #ifdef GERMAN
-		strcat(message, " Beliebige Taste dr갷ken, um das Programm zu verlassen.");
+		strcat(message, " Beliebige Taste dr체cken, um das Programm zu verlassen.");
 #else
 #ifdef FRENCH
 		strcat(message, " Appuyez sur une touche pour quitter le programme.");
