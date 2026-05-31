@@ -121,11 +121,14 @@ extern "C" void Set_Palette_Register(int number, int red, int green, int blue)
 {
 	if (number < 0 || number >= PALETTE_SIZE) return;
 
-	unsigned char *entry = &CurrentPalette[number * RGB_BYTES];
+	unsigned char palette[PALETTE_BYTES];
+	memcpy(palette, CurrentPalette, PALETTE_BYTES);
+
+	unsigned char *entry = &palette[number * RGB_BYTES];
 	entry[0] = (unsigned char)(red & 63);
 	entry[1] = (unsigned char)(green & 63);
 	entry[2] = (unsigned char)(blue & 63);
-	Set_DD_Palette(CurrentPalette);
+	Set_DD_Palette(palette);
 }
 
 
