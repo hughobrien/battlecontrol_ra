@@ -114,7 +114,7 @@ extern int NameIDOverride[25];
 
 #ifdef WIN32
 extern bool					GameInFocus;
-extern unsigned char 	*InterpolatedPalettes[100];
+extern uint8_t 			*InterpolatedPalettes[100];
 extern BOOL					PalettesRead;
 extern unsigned			PaletteCounter;
 extern int 					AllDone;
@@ -502,4 +502,3 @@ extern MPGSettings* MpgSettings;
 #endif
 
 #endif
-
