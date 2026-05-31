@@ -246,7 +246,6 @@ long __cdecl Calculate_CRC(void *buffer, long length);
 
 extern WORD __cdecl  Processor(void);
 extern WORD __cdecl Operating_System(void);
-extern unsigned long random ( unsigned long mod )  ;
 //extern void  randomize ( void ) ;
 
 extern int __cdecl Clip_Rect ( int * x , int * y , int * dw , int * dh ,
