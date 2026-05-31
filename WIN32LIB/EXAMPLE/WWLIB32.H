@@ -43,11 +43,11 @@
 #include <FILE.H>
 #include <FONT.H>
 #include <GBUFFER.H>
-#include <vbuffer.h>
+#include <VBUFFER.H>
 #include <IFF.H>
 #include <FILEPCX.H>
 #include <KEYBOARD.H>
-#include <mcgaprim.h>
+#include <MCGAPRIM.H>
 #include <MISC.H>
 #include <MONO.H>
 #include <PALETTE.H>
