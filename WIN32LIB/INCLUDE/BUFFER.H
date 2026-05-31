@@ -89,7 +89,7 @@ class BufferClass {
 		BufferClass &operator=(BufferClass const &);
 
 	protected:
-		void	*Buffer;
+		unsigned char	*Buffer;
 		long	Size;
 		BOOL	Allocated;
 };

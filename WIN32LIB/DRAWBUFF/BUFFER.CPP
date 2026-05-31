@@ -62,15 +62,15 @@
  * HISTORY:                                                                *
  *   06/01/1994 PWG : Created.                                             *
  *=========================================================================*/
-BufferClass::BufferClass(VOID *buffer, LONG size)
+BufferClass::BufferClass(void *buffer, long size)
 {
 	Size			= size;								// find size of physical buffer
 
 	if (buffer) {										// if buffer is specified
-		Buffer			= (BYTE *)buffer;			//		point to it and mark
+		Buffer			= (unsigned char *)buffer;	//		point to it and mark
 		Allocated		= FALSE;						//		it as user allocated
 	} else {
-		Buffer			= new BYTE[Size];			// otherwise allocate it and
+		Buffer			= new unsigned char[Size];	// otherwise allocate it and
 		Allocated		= TRUE;						//		mark it system alloced
 	}
 }
@@ -85,10 +85,10 @@ BufferClass::BufferClass(VOID *buffer, LONG size)
  * HISTORY:                                                                *
  *   06/01/1994 PWG : Created.                                             *
  *=========================================================================*/
-BufferClass::BufferClass(LONG size)
+BufferClass::BufferClass(long size)
 {
 	Size				= size;
-	Buffer			= new BYTE[Size];			// otherwise allocate it and
+	Buffer			= new unsigned char[Size];	// otherwise allocate it and
 	Allocated		= TRUE;						//		mark it system alloced
 }
 
@@ -106,7 +106,7 @@ BufferClass::BufferClass(LONG size)
  * HISTORY:                                                                *
  *   06/01/1994 PWG : Created.                                             *
  *=========================================================================*/
-BufferClass::BufferClass(VOID)
+BufferClass::BufferClass(void)
 {
 	Buffer		= NULL;
 	Size			= 0;
@@ -123,7 +123,7 @@ BufferClass::BufferClass(VOID)
  * HISTORY:                                                                *
  *   06/01/1994 PWG : Created.                                             *
  *=========================================================================*/
-BufferClass::~BufferClass(VOID)
+BufferClass::~BufferClass(void)
 {
 	if (Allocated) {
 		delete[] Buffer;

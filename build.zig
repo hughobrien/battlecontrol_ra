@@ -31,6 +31,7 @@ pub fn build(b: *std.Build) void {
         "CODE/HEAP.CPP",
         "CODE/VECTOR.CPP",
         "CODE/DYNAVEC.CPP",
+        "WIN32LIB/DRAWBUFF/BUFFER.CPP",
         "WIN32LIB/DRAWBUFF/GBUFFER.CPP",
         "WIN32LIB/TIMER/TIMER.CPP",
         "WIN32LIB/TIMER/TIMERDWN.CPP",
