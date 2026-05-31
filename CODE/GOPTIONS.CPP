@@ -36,6 +36,7 @@
  *   OptionsClass::Process -- Handles all the options graphic interface.                       *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include <algorithm>
 #include "FUNCTION.H"
 
 #include "GOPTIONS.H"
@@ -228,7 +229,7 @@ void GameOptionsClass::Process(void)
 	*/
 	GadgetClass * g = buttons;
 	while (g != NULL) {
-		g->Width = max(maxwidth, 90 * RESFACTOR);
+		g->Width = std::max(maxwidth, 90 * RESFACTOR);
 		g->X = OptionX+(OptionWidth-g->Width)/2;
 		g = g->Get_Next();
 	}
@@ -356,7 +357,7 @@ void GameOptionsClass::Process(void)
 		/*
 		**	Process Input.
 		*/
-		switch (input) {
+		switch ((int)input) {
 			case (BUTTON_RESTATE | KN_BUTTON):
 				selection = BUTTON_RESTATE;
 				pressed = true;
