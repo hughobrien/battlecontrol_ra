@@ -37,7 +37,7 @@
  *= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =*/
 
 #include	"FUNCTION.H"
-#include "pcx.h"
+#include "FILEPCX.H"
 
 
 static void Write_Pcx_ScanLine(FileClass & file, int scansize, char * ptr);

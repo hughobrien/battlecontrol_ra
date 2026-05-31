@@ -399,7 +399,7 @@ CELL Coord_Cell(COORDINATE coord);
 #include	"VORTEX.H"
 #include "EGOS.H"
 #ifdef WIN32
-#include	"pcx.h"
+#include	"FILEPCX.H"
 #endif
 
 #if(TEN)
