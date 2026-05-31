@@ -533,7 +533,9 @@ enum
 
 #pragma pack()
 
+#if defined(__WATCOMC__)
 #pragma aux int_3 = "int 3"
+#endif
 
 #pragma pack( 1 )
 typedef struct
