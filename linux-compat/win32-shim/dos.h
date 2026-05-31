@@ -18,11 +18,19 @@ struct find_t {
     char name[_MAX_PATH];
 };
 
+struct diskfree_t {
+    unsigned avail_clusters;
+    unsigned total_clusters;
+    unsigned bytes_per_sector;
+    unsigned sectors_per_cluster;
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 int _dos_findfirst(const char *filespec, unsigned attrib, struct find_t *fileinfo);
+int _dos_getdiskfree(unsigned drive, struct diskfree_t *diskspace);
 
 static inline int _dos_getdrive(unsigned int *drive)
 {
