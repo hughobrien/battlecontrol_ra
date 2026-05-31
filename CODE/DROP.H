@@ -38,8 +38,12 @@
 #ifndef DROP_H
 #define DROP_H
 
+#include	<stdint.h>
 #include	"list.h"
 #include	"edit.h"
+
+extern uint16_t Get_Build_Frame_Width(void const * dataptr);
+extern uint16_t Get_Build_Frame_Height(void const * dataptr);
 
 class DropListClass : public EditClass {
 	public:
