@@ -89,7 +89,7 @@
 #include <file.h>
 #include "profile.h"
 #include <vdmdbg.h>
-#include <timer.h>
+#include <TIMER.H>
 
 #define PROFILE
 

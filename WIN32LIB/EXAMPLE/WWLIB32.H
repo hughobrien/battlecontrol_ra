@@ -53,7 +53,7 @@
 #include <palette.h>
 #include <playcd.h>
 #include <shape.h>
-#include <timer.h>
+#include <TIMER.H>
 #include <video.h>
 #include <wsa.h>
 #include <wwmem.h>

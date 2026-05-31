@@ -53,7 +53,7 @@
 
 #include <wwstd.h>
 #include "wwmem.h"
-#include <timer.h>
+#include <TIMER.H>
 
 #include	<stddef.h>
 #include	<mem.h>

@@ -34,7 +34,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "wwstd.h"
-#include "timer.h"
+#include "TIMER.H"
 #include "video.h"
 		   	 
 BOOL VertBlank;
