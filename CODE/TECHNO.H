@@ -323,7 +323,7 @@ class TechnoClass :	public RadioClass,
 		bool Evaluate_Cell(ThreatType method, int mask, CELL cell, int range, TechnoClass const ** object, int & value, int zone=0) const;
 		bool Evaluate_Object(ThreatType method, int mask, int range, TechnoClass const * object, int & value, int zone=-1) const;
 		int Evaluate_Just_Cell(CELL cell) const;
-		virtual bool Electric_Zap (TARGET target, int which, COORDINATE target_coord=0L, unsigned char * remap=NULL);
+		virtual bool Electric_Zap (TARGET target, int which, COORDINATE target_coord=0L, uint8_t * remap=NULL);
 
 		/*
 		**	AI.

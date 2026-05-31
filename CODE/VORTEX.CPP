@@ -764,14 +764,14 @@ void ChronalVortexClass::Zap_Target (void)
  * HISTORY:                                                                                    *
  *    8/29/96 4:48PM ST : Created                                                              *
  *=============================================================================================*/
-void ChronalVortexClass::Coordinate_Remap ( GraphicViewPortClass *inbuffer, int x, int y, int width, int height, unsigned char *remap_table)
+void ChronalVortexClass::Coordinate_Remap ( GraphicViewPortClass *inbuffer, int x, int y, int width, int height, uint8_t *remap_table)
 {
-	unsigned char	getx,gety, remap_color, pixel_color;
+	uint8_t	getx,gety, remap_color, pixel_color;
 
 
 	BufferClass destbuf (width * height);
 
-	unsigned char *destptr = (unsigned char*) destbuf.Get_Buffer();
+	uint8_t *destptr = (uint8_t*) destbuf.Get_Buffer();
 
 	int destx = x;
 	int desty = y;
@@ -784,7 +784,7 @@ void ChronalVortexClass::Coordinate_Remap ( GraphicViewPortClass *inbuffer, int 
 		/*
 		** Get a pointer to the section of buffer we are going to work on.
 		*/
-		unsigned char *bufptr = (unsigned char *) inbuffer->Get_Offset()
+		uint8_t *bufptr = (uint8_t *) inbuffer->Get_Offset()
 															 + destx
 #ifdef WIN32
 															 + desty* (inbuffer->Get_Width() + inbuffer->Get_XAdd() + inbuffer->Get_Pitch());
@@ -987,7 +987,7 @@ void ChronalVortexClass::Render (void)
 											Lepton_To_Pixel(Coord_Y(Coord_Fraction(Position))),
 											64,
 											64,
-											(unsigned char*) lut_ptr);
+											(uint8_t *) lut_ptr);
 
 
 			/*
@@ -1196,7 +1196,7 @@ void ChronalVortexClass::Setup_Remap_Tables (TheaterType theater)
 void ChronalVortexClass::Build_Fading_Table(PaletteClass const & palette, void * dest, int color, int frac)
 {
 	if (dest) {
-		unsigned char * ptr = (unsigned char *)dest;
+		uint8_t * ptr = (uint8_t *)dest;
 
 		/*
 		**	Find an appropriate remap color index for every color in the palette.
