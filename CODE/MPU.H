@@ -39,6 +39,8 @@
 #ifndef MPU_H
 #define MPU_H
 
+#include	<stdint.h>
+
 
 /***********************************************************************************************
  * Get_CPU_Clock -- Fetches the current CPU clock time.                                        *
@@ -57,8 +59,8 @@
  * HISTORY:                                                                                    *
  *   07/17/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
-unsigned long Get_CPU_Clock(unsigned long & high);
-#ifndef __BORLANDC__
+uint32_t Get_CPU_Clock(uint32_t & high);
+#if defined(__WATCOMC__)
 #pragma aux Get_CPU_Clock parm [esi] \
 	modify [edx] \
 	value [eax] = \
