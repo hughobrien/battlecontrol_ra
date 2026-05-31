@@ -89,6 +89,8 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include	"FUNCTION.H"
+
+#include <algorithm>
 #include	"VORTEX.H"
 
 /*
@@ -939,16 +941,16 @@ void DisplayClass::Get_Occupy_Dimensions(int & w, int & h, short const * list) c
 			x = (*list) % MAP_CELL_W;
 			y = (*list) / MAP_CELL_H;
 
-			max_x = max(max_x, x);
-			min_x = min(min_x, x);
-			max_y = max(max_y, y);
-			min_y = min(min_y, y);
+			max_x = std::max(max_x, x);
+			min_x = std::min(min_x, x);
+			max_y = std::max(max_y, y);
+			min_y = std::min(min_y, y);
 
 			list++;
 		}
 
-		w = max(1, max_x - min_x + 1);
-		h = min(1, max_y - min_y + 1);
+		w = std::max(1, max_x - min_x + 1);
+		h = std::min(1, max_y - min_y + 1);
 	}
 }
 
@@ -2429,10 +2431,10 @@ CELL DisplayClass::Calculated_Cell(SourceType dir, WAYPOINT waypoint, CELL cell,
 	*/
 	if (trycell != -1) {
 		x = Cell_X(trycell) - MapCellX;
-		x = min(x, (-Cell_X(trycell) + (MapCellX+MapCellWidth)));
+		x = std::min(x, (-Cell_X(trycell) + (MapCellX+MapCellWidth)));
 
 		y = Cell_Y(trycell) - MapCellY;
-		y = min(y, (-Cell_Y(trycell) + (MapCellY+MapCellHeight)));
+		y = std::min(y, (-Cell_Y(trycell) + (MapCellY+MapCellHeight)));
 
 		if (x < y) {
 			vert = true;
@@ -3335,6 +3337,9 @@ void DisplayClass::Mouse_Left_Up(CELL cell, bool shadow, ObjectClass * object, A
 
 						case RTTI_BUILDING:
 							text = TXT_ENEMY_STRUCTURE;
+							break;
+
+						default:
 							break;
 					}
 				}

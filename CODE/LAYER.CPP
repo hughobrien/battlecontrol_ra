@@ -143,8 +143,9 @@ int LayerClass::Sorted_Add(ObjectClass const * const object)
 	/*
 	**	There is room for the new object now. Add it to the right sorted position.
 	*/
-	for (int index = 0; index < ActiveCount; index++) {
-		if ((*(*this)[index]) > (*object)) {
+	int insertion_index;
+	for (insertion_index = 0; insertion_index < ActiveCount; insertion_index++) {
+		if ((*(*this)[insertion_index]) > (*object)) {
 			break;
 		}
 	}
@@ -152,12 +153,11 @@ int LayerClass::Sorted_Add(ObjectClass const * const object)
 	/*
 	**	Make room if the insertion spot is not at the end of the vector.
 	*/
-	for (int i = ActiveCount-1; i >= index; i--) {
+	for (int i = ActiveCount-1; i >= insertion_index; i--) {
 		(*this)[i+1] = (*this)[i];
 	}
-	(*this)[index] = (ObjectClass *)object;
+	(*this)[insertion_index] = (ObjectClass *)object;
 	ActiveCount++;
 	return(true);
 }
-
 

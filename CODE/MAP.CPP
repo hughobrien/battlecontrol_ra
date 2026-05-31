@@ -65,6 +65,8 @@
 #include "FUNCTION.H"
 #include <stdint.h>
 
+#include <algorithm>
+
 #define	MCW	MAP_CELL_W
 int const MapClass::RadiusOffset[] = {
 	/* 0  */	0,
@@ -1016,7 +1018,7 @@ void MapClass::Logic(void)
 	**	Tiberium cells that can grow or spread.
 	*/
 	int subcount = MAP_CELL_TOTAL / (Rule.GrowthRate * TICKS_PER_MINUTE);
-	subcount = max(subcount, 1);
+	subcount = std::max(subcount, 1);
 	int index;
 	for (index = TiberiumScan; index < MAP_CELL_TOTAL; index++) {
 		CELL cell = index;
@@ -1588,7 +1590,7 @@ int MapClass::Zone_Span(CELL cell, int zone, MZoneType check)
 			break;
 		}
 	}
-	xbegin = max(xbegin, MapCellX);
+	xbegin = std::max(xbegin, MapCellX);
 
 	/*
 	**	Scan rightward until a boundary is reached. This will then define the
@@ -1601,7 +1603,7 @@ int MapClass::Zone_Span(CELL cell, int zone, MZoneType check)
 			break;
 		}
 	}
-	xend = min(xend, MapCellX+MapCellWidth-1);
+	xend = std::min(xend, MapCellX+MapCellWidth-1);
 
 	/*
 	**	At this point we know the bounds of the current span. Fill in the zone values
@@ -1884,6 +1886,8 @@ bool MapClass::Destroy_Bridge_At(CELL cell)
 						ttype++;
 						new TemplateClass(TemplateType(ttype), cell);
 						break;
+					default:
+						break;
 		 		}
 
 				/*
@@ -1934,6 +1938,8 @@ bool MapClass::Destroy_Bridge_At(CELL cell)
 						case TEMPLATE_BRIDGE_3D:
 							new TemplateClass(TemplateType(TEMPLATE_BRIDGE_3F), cell2);
 							break;
+						default:
+							break;
 					}
 				} else {
 					if (cellptr->TType == TEMPLATE_BRIDGE_2C) {
@@ -1947,6 +1953,8 @@ bool MapClass::Destroy_Bridge_At(CELL cell)
 								break;
 							case TEMPLATE_BRIDGE_3E:
 								new TemplateClass(TemplateType(TEMPLATE_BRIDGE_3F), cell2);
+								break;
+							default:
 								break;
 						}
 					}
