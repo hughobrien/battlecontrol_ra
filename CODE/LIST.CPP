@@ -57,6 +57,7 @@
  *   ListClass::~ListClass -- Destructor for list class objects.                               *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 
@@ -92,10 +93,10 @@ ListClass::ListClass (int id, int x, int y, int w, int h, TextPrintType flags, v
 	UpGadget.X -= UpGadget.Width;
 	DownGadget.X -= DownGadget.Width;
 	DownGadget.Y -= DownGadget.Height;
-	ScrollGadget.X -= max(UpGadget.Width, DownGadget.Width);
+	ScrollGadget.X -= std::max(UpGadget.Width, DownGadget.Width);
 	ScrollGadget.Y = Y+UpGadget.Height;
 	ScrollGadget.Height -= UpGadget.Height + DownGadget.Height;
-	ScrollGadget.Width = max(UpGadget.Width, DownGadget.Width);
+	ScrollGadget.Width = std::max(UpGadget.Width, DownGadget.Width);
 
 	/*
 	**	Set the list box to a default state.
@@ -137,10 +138,10 @@ void ListClass::Set_Position(int x, int y)
 	UpGadget.Y = y;
 	DownGadget.X = x + Width - DownGadget.Width;
 	DownGadget.Y = y + Height - DownGadget.Height;
-	ScrollGadget.X = x + Width - max(UpGadget.Width, DownGadget.Width);
+	ScrollGadget.X = x + Width - std::max(UpGadget.Width, DownGadget.Width);
 	ScrollGadget.Y = y + UpGadget.Height;
 	ScrollGadget.Height = Height - (UpGadget.Height + DownGadget.Height);
-	ScrollGadget.Width = max(UpGadget.Width, DownGadget.Width);
+	ScrollGadget.Width = std::max(UpGadget.Width, DownGadget.Width);
 }
 
 
@@ -331,7 +332,7 @@ int ListClass::Action(unsigned flags, KeyNumType & key)
 			int index = Get_Mouse_Y() - (Y+1);
 			index = index / LineHeight;
 			SelectedIndex = CurrentTopIndex + index;
-			SelectedIndex = min(SelectedIndex, List.Count()-1);
+			SelectedIndex = std::min(SelectedIndex, List.Count()-1);
 			if (SelectedIndex == -1) SelectedIndex = 0;
 		}
 	}
@@ -468,7 +469,7 @@ char const * ListClass::Get_Item(int index) const
 	if (List.Count() == 0) {
 		return NULL;
 	}
-	index = min(index, List.Count()-1);
+	index = std::min(index, List.Count()-1);
 	return(List[index]);
 }
 
@@ -576,7 +577,7 @@ void ListClass::Peer_To_Peer(unsigned flags, KeyNumType &, ControlClass & whom)
  *=============================================================================================*/
 int ListClass::Set_View_Index(int index)
 {
-	index = Bound(index, 0, max(0, List.Count() - LineCount));
+	index = Bound(index, 0, std::max(0, List.Count() - LineCount));
 	if (index != CurrentTopIndex) {
 		CurrentTopIndex = index;
 		Flag_To_Redraw();

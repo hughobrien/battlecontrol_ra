@@ -38,6 +38,7 @@
  *   ScrollClass::Set_Autoscroll -- Turns autoscrolling on or off.                             *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 #ifdef WIN32
@@ -124,18 +125,18 @@ void ScrollClass::AI(KeyNumType &input, int x, int y)
 					*/
 					int altx = x;
 					if (altx < 50 * RESFACTOR) altx -= ((50 * RESFACTOR)-altx);
-					altx = max(altx, 0);
+					altx = std::max(altx, 0);
 					if (altx > ((320-50) * RESFACTOR)) altx += altx-((320-50) * RESFACTOR);
-					altx = min(altx, (320 * RESFACTOR));
+					altx = std::min(altx, (320 * RESFACTOR));
 					if (altx > (50 * RESFACTOR) && altx < ((320-50) * RESFACTOR)) {
 						altx += (((320/2) * RESFACTOR)-altx)/2;
 					}
 
 					int alty = y;
 					if (alty < (50 * RESFACTOR)) alty -= (50 * RESFACTOR)-alty;
-					alty = max(alty, 0);
+					alty = std::max(alty, 0);
 					if (alty > (150 * RESFACTOR)) alty += alty-(150 * RESFACTOR);
-					alty = min(alty, 200 * RESFACTOR);
+					alty = std::min(alty, 200 * RESFACTOR);
 
 					direction = (DirType)Desired_Facing256((320/2) * RESFACTOR, (200/2) * RESFACTOR, altx, alty);
 				}
@@ -265,5 +266,4 @@ bool ScrollClass::Set_Autoscroll(int control)
 	}
 	return(old);
 }
-
 

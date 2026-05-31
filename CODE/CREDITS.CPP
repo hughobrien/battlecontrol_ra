@@ -38,6 +38,7 @@
  *   CreditClass::Graphic_Logic -- Handles the credit redraw logic.                            *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 
@@ -199,7 +200,7 @@ void CreditClass::AI(bool forced)
 	/*
 	**	Make sure that the credit counter doesn't drop below zero.
 	*/
-	Credits = max(Credits, 0L);
+	Credits = std::max(Credits, 0L);
 
 	if (Scen.MissionTimer.Is_Active() || Scen.MissionTimer) {
 		IsToRedraw = true;

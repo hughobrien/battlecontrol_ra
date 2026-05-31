@@ -69,6 +69,7 @@
  *   RadarClass::Zoom_Mode(void) -- Handles toggling zoom on the map                           *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+#include	<algorithm>
 #include	"FUNCTION.H"
 
 
@@ -367,7 +368,7 @@ void RadarClass::Draw_It(bool forced)
 {
 	DisplayClass::Draw_It(forced);
 
-	static char * _hiresradarnames[]={
+	static char const * _hiresradarnames[]={
 		"natoradr.shp",	//HOUSE_SPAIN,
 		"natoradr.shp",   //HOUSE_GREECE,
 		"ussrradr.shp",   //HOUSE_USSR,
@@ -379,7 +380,7 @@ void RadarClass::Draw_It(bool forced)
 		"natoradr.shp",	//HOUSE_GOOD
 		"ussrradr.shp",	//HOUSE_BAD
 	};
-	static char * _frames[]={
+	static char const * _frames[]={
 		"nradrfrm.shp",   //HOUSE_SPAIN,
 		"nradrfrm.shp",   //HOUSE_GREECE,
 		"uradrfrm.shp",   //HOUSE_USSR,
@@ -741,16 +742,16 @@ void RadarClass::Render_Infantry(CELL cell, int x, int y, int size)
 //			int color = ColorRemaps[((InfantryClass *)obj)->House->RemapColor].BrightColor;
 			int xoff;
 			int yoff;
-			int subsize = max(1, size/3);
+			int subsize = std::max(1, size/3);
 
 			switch (obj->What_Am_I()) {
 				case RTTI_INFANTRY:
 					xoff = (Coord_XLepton(obj->Coord) / (CELL_LEPTON_W/(size+1))) - subsize/2;
-					xoff = max(xoff, 0);
-					xoff = min(xoff, size-subsize);
+					xoff = std::max(xoff, 0);
+					xoff = std::min(xoff, size-subsize);
 					yoff = (Coord_YLepton(obj->Coord) / (CELL_LEPTON_H/(size+1))) - subsize/2;
-					yoff = max(yoff, 0);
-					yoff = min(yoff, size-subsize);
+					yoff = std::max(yoff, 0);
+					yoff = std::min(yoff, size-subsize);
 
 					/*
 					** Draw the infantryman's pixel.  If he's a spy, draw in my house color
@@ -884,7 +885,7 @@ void RadarClass::Zoom_Mode(CELL cell)
 	if (!IsZoomed) {
 		int xfactor			= RadIWidth / MapCellWidth;
 		int yfactor			= RadIHeight / MapCellHeight;
-		ZoomFactor			= max(min(xfactor, yfactor) , 1);
+		ZoomFactor			= std::max(std::min(xfactor, yfactor) , 1);
 		map_c_width			= MapCellWidth;
 		map_c_height      = MapCellHeight;
 	} else {
@@ -899,21 +900,21 @@ void RadarClass::Zoom_Mode(CELL cell)
 	*/
 #ifdef FIXIT_CSII	//	checked - ajw 9/28/98
 #ifdef WIN32
-	map_c_width			= min(map_c_width, RadIWidth);
-	map_c_width			= min(map_c_width, MapCellWidth);
-	map_c_height		= min(map_c_height, RadIHeight);
-	map_c_height		= min(map_c_height, MapCellHeight);
+	map_c_width			= std::min(map_c_width, RadIWidth);
+	map_c_width			= std::min(map_c_width, MapCellWidth);
+	map_c_height		= std::min(map_c_height, RadIHeight);
+	map_c_height		= std::min(map_c_height, MapCellHeight);
 #else
-	map_c_width			= min(map_c_width, 62 * RESFACTOR);
-	map_c_width			= min(map_c_width, MapCellWidth);
-	map_c_height		= min(map_c_height, 62 * RESFACTOR);
-	map_c_height		= min(map_c_height, MapCellHeight);
+	map_c_width			= std::min(map_c_width, 62 * RESFACTOR);
+	map_c_width			= std::min(map_c_width, MapCellWidth);
+	map_c_height		= std::min(map_c_height, 62 * RESFACTOR);
+	map_c_height		= std::min(map_c_height, MapCellHeight);
 #endif
 #else
-	map_c_width			= min(map_c_width, 62 * RESFACTOR);
-	map_c_width			= min(map_c_width, MapCellWidth);
-	map_c_height		= min(map_c_height, 62 * RESFACTOR);
-	map_c_height		= min(map_c_height, MapCellHeight);
+	map_c_width			= std::min(map_c_width, 62 * RESFACTOR);
+	map_c_width			= std::min(map_c_width, MapCellWidth);
+	map_c_height		= std::min(map_c_height, 62 * RESFACTOR);
+	map_c_height		= std::min(map_c_height, MapCellHeight);
 #endif
 
 	/*
@@ -977,7 +978,7 @@ bool RadarClass::Is_Zoomable(void) const
 {
 	int xfactor = RadIWidth / MapCellWidth;
 	int yfactor = RadIHeight / MapCellHeight;
-	int factor = max(min(xfactor, yfactor) , 1);
+	int factor = std::max(std::min(xfactor, yfactor) , 1);
 	if (factor == 3) {
 		return(false);
 	}
@@ -1867,9 +1868,9 @@ int RadarClass::RTacticalClass::Action(unsigned flags, KeyNumType & key)
 						int cellx = Cell_X(cell);
 						int celly = Cell_Y(cell);
 						cellx -= Lepton_To_Cell(Map.TacLeptonWidth) / 2;
-						cellx = max(cellx, Map.MapCellX);
+						cellx = std::max(cellx, Map.MapCellX);
 						celly -= Lepton_To_Cell(Map.TacLeptonHeight) / 2;
-						celly = max(celly, Map.MapCellY);
+						celly = std::max(celly, Map.MapCellY);
 						cell = XY_Cell(cellx, celly);
 						shadow = (!Map[cell].IsMapped && !Debug_Unshroud);
 //						shadow = (!Map[cell].IsVisible && !Debug_Unshroud);

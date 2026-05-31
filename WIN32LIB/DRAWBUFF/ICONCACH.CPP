@@ -50,9 +50,9 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #define	WIN32_LEAN_AND_MEAN
-#define	_WIN32
 
 #include <windows.h>
+#include <string.h>
 #include "ddraw.h"
 #include "MISC.H"
 #include "ICONCACH.H"
@@ -217,7 +217,8 @@ BOOL Cache_New_Icon (int icon_index, void *icon_ptr)
  *=============================================================================================*/
 void Invalidate_Cached_Icons (void)
 {
-	for (int i=0 ; i<MAX_CACHED_ICONS ; i++){
+	int i;
+	for (i=0 ; i<MAX_CACHED_ICONS ; i++){
 		CachedIcons[i].Uncache_It();
 	}
 
@@ -599,11 +600,10 @@ void IconCacheClass::Draw_It (LPDIRECTDRAWSURFACE dest_surface , int x_pixel, in
 
 	if ( return_code != DDERR_SURFACELOST && return_code != DD_OK ) {
 		char temp[100];
-		sprintf(temp,"DD Error code %d\n", return_code & 0xFFFF);
+		sprintf(temp,"DD Error code %ld\n", return_code & 0xFFFF);
 		OutputDebugString(temp);
 	}
 
 	TimesDrawn++;
 
 }
-
