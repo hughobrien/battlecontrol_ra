@@ -1,0 +1,43 @@
+* text=auto eol=lf
+
+# Legacy binary artifacts.
+*.[eE][xX][eE] binary
+*.[eE][xX][eE].[oO][lL][dD] binary
+*.[lL][iI][bB] binary
+*.[iI][cC][oO] binary
+*.[fF][nN][tT] binary
+
+# Source and build metadata with legacy extensions.
+*.[aA][sS][mM] text eol=lf
+*.[bB][aA][tT] text eol=lf
+*.[bB][oO][rR] text eol=lf
+*.[cC] text eol=lf
+*.[cC][fF][gG] text eol=lf
+*.[cC][pP][pP] text eol=lf
+*.[dD][eE][fF] text eol=lf
+*.[dD][sS][pP] text eol=lf
+*.[dD][sS][wW] text eol=lf
+*.[hH] text eol=lf
+*.[iI] text eol=lf
+*.[iI][bB][nN] text eol=lf
+*.[iI][dD][eE] text eol=lf
+*.[iI][nN][cC] text eol=lf
+*.[lL][nN][tT] text eol=lf
+*.[mM][aA][cC] text eol=lf
+*.[mM][aA][kK] text eol=lf
+*.[mM][dD] text eol=lf
+*.[nN][iI][xX] text eol=lf
+*.[pP][jJ][tT] text eol=lf
+*.[rR][cC] text eol=lf
+*.[rR][hH] text eol=lf
+*.[tT][hH][kK] text eol=lf
+*.[tT][xX][tT] text eol=lf
+*.[wW][aA][tT] text eol=lf
+*.[zZ][iI][gG] text eol=lf
+*.[1][6] text eol=lf
+**/[mM][aA][kK][eE][fF][iI][lL][eE] text eol=lf
+flake.lock text eol=lf
+
+# Generated thunk ASM files contain NUL padding and are binary to Git today.
+IPX/OLTHIPX.ASM binary
+IPX/OK/OLTHIPX.ASM binary
