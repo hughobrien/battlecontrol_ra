@@ -246,7 +246,7 @@ int VectorClass<T>::operator == (VectorClass<T> const & vector) const
 template<class T>
 inline int VectorClass<T>::ID(T const * ptr)
 {
-	return(((unsigned long)ptr - (unsigned long)&(*this)[0]) / sizeof(T));
+	return(ptr - &(*this)[0]);
 }
 
 
@@ -685,4 +685,3 @@ void BooleanVectorClass::Fixup(int index) const
 		((int &)LastIndex) = index;
 	}
 }
-
