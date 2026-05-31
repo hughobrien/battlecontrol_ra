@@ -203,9 +203,20 @@ T _rotl(T X, int n)
 **	The shape flags are likely to be "or"ed together and other such bitwise
 **	manipulations. These instatiated operator templates allow this.
 */
-inline ShapeFlags_Type operator |(ShapeFlags_Type, ShapeFlags_Type);
-inline ShapeFlags_Type operator &(ShapeFlags_Type, ShapeFlags_Type);
-inline ShapeFlags_Type operator ~(ShapeFlags_Type);
+inline ShapeFlags_Type operator |(ShapeFlags_Type a, ShapeFlags_Type b)
+{
+	return (ShapeFlags_Type)((int)a | (int)b);
+}
+
+inline ShapeFlags_Type operator &(ShapeFlags_Type a, ShapeFlags_Type b)
+{
+	return (ShapeFlags_Type)((int)a & (int)b);
+}
+
+inline ShapeFlags_Type operator ~(ShapeFlags_Type a)
+{
+	return (ShapeFlags_Type)(~(int)a);
+}
 
 
 #if defined(__WATCOMC__)

@@ -249,9 +249,20 @@ class GadgetClass : public LinkClass
 		virtual int Clicked_On(KeyNumType & key, unsigned flags, int x, int y);
 };
 
-inline GadgetClass::FlagEnum operator |(GadgetClass::FlagEnum, GadgetClass::FlagEnum);
-inline GadgetClass::FlagEnum operator &(GadgetClass::FlagEnum, GadgetClass::FlagEnum);
-inline GadgetClass::FlagEnum operator ~(GadgetClass::FlagEnum);
+inline GadgetClass::FlagEnum operator |(GadgetClass::FlagEnum a, GadgetClass::FlagEnum b)
+{
+	return (GadgetClass::FlagEnum)((int)a | (int)b);
+}
+
+inline GadgetClass::FlagEnum operator &(GadgetClass::FlagEnum a, GadgetClass::FlagEnum b)
+{
+	return (GadgetClass::FlagEnum)((int)a & (int)b);
+}
+
+inline GadgetClass::FlagEnum operator ~(GadgetClass::FlagEnum a)
+{
+	return (GadgetClass::FlagEnum)(~(int)a);
+}
 
 
 #endif
