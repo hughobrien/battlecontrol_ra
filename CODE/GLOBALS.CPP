@@ -100,34 +100,34 @@ TFixedIHeapClass<SmudgeTypeClass>	SmudgeTypes;
 **	for that type are not allowed. For every case of a TFixedIHeap manager of
 **	game objects, then a CCPtr can be instantiated for it.
 */
-template<class T> FixedIHeapClass * CCPtr<AircraftClass>::Heap = &Aircraft;
-template<class T> FixedIHeapClass * CCPtr<AnimClass>::Heap = &Anims;
-template<class T> FixedIHeapClass * CCPtr<BuildingClass>::Heap = &Buildings;
-template<class T> FixedIHeapClass * CCPtr<BulletClass>::Heap = &Bullets;
-template<class T> FixedIHeapClass * CCPtr<FactoryClass>::Heap = &Factories;
-template<class T> FixedIHeapClass * CCPtr<HouseClass>::Heap = &Houses;
-template<class T> FixedIHeapClass * CCPtr<InfantryClass>::Heap = &Infantry;
-template<class T> FixedIHeapClass * CCPtr<OverlayClass>::Heap = &Overlays;
-template<class T> FixedIHeapClass * CCPtr<SmudgeClass>::Heap = &Smudges;
-template<class T> FixedIHeapClass * CCPtr<TeamClass>::Heap = &Teams;
-template<class T> FixedIHeapClass * CCPtr<TeamTypeClass>::Heap = &TeamTypes;
-template<class T> FixedIHeapClass * CCPtr<TemplateClass>::Heap = &Templates;
-template<class T> FixedIHeapClass * CCPtr<TerrainClass>::Heap = &Terrains;
-template<class T> FixedIHeapClass * CCPtr<TriggerClass>::Heap = &Triggers;
-template<class T> FixedIHeapClass * CCPtr<TriggerTypeClass>::Heap = &TriggerTypes;
+template<> FixedIHeapClass * CCPtr<AircraftClass>::Heap = &Aircraft;
+template<> FixedIHeapClass * CCPtr<AnimClass>::Heap = &Anims;
+template<> FixedIHeapClass * CCPtr<BuildingClass>::Heap = &Buildings;
+template<> FixedIHeapClass * CCPtr<BulletClass>::Heap = &Bullets;
+template<> FixedIHeapClass * CCPtr<FactoryClass>::Heap = &Factories;
+template<> FixedIHeapClass * CCPtr<HouseClass>::Heap = &Houses;
+template<> FixedIHeapClass * CCPtr<InfantryClass>::Heap = &Infantry;
+template<> FixedIHeapClass * CCPtr<OverlayClass>::Heap = &Overlays;
+template<> FixedIHeapClass * CCPtr<SmudgeClass>::Heap = &Smudges;
+template<> FixedIHeapClass * CCPtr<TeamClass>::Heap = &Teams;
+template<> FixedIHeapClass * CCPtr<TeamTypeClass>::Heap = &TeamTypes;
+template<> FixedIHeapClass * CCPtr<TemplateClass>::Heap = &Templates;
+template<> FixedIHeapClass * CCPtr<TerrainClass>::Heap = &Terrains;
+template<> FixedIHeapClass * CCPtr<TriggerClass>::Heap = &Triggers;
+template<> FixedIHeapClass * CCPtr<TriggerTypeClass>::Heap = &TriggerTypes;
 
-template<class T> FixedIHeapClass * CCPtr<HouseTypeClass>::Heap = &HouseTypes;
-template<class T> FixedIHeapClass * CCPtr<BuildingTypeClass>::Heap = &BuildingTypes;
-template<class T> FixedIHeapClass * CCPtr<AircraftTypeClass>::Heap = &AircraftTypes;
-template<class T> FixedIHeapClass * CCPtr<InfantryTypeClass>::Heap = &InfantryTypes;
-template<class T> FixedIHeapClass * CCPtr<BulletTypeClass>::Heap = &BulletTypes;
-template<class T> FixedIHeapClass * CCPtr<AnimTypeClass>::Heap = &AnimTypes;
-template<class T> FixedIHeapClass * CCPtr<UnitTypeClass>::Heap = &UnitTypes;
-template<class T> FixedIHeapClass * CCPtr<VesselTypeClass>::Heap = &VesselTypes;
-template<class T> FixedIHeapClass * CCPtr<TemplateTypeClass>::Heap = &TemplateTypes;
-template<class T> FixedIHeapClass * CCPtr<TerrainTypeClass>::Heap = &TerrainTypes;
-template<class T> FixedIHeapClass * CCPtr<OverlayTypeClass>::Heap = &OverlayTypes;
-template<class T> FixedIHeapClass * CCPtr<SmudgeTypeClass>::Heap = &SmudgeTypes;
+template<> FixedIHeapClass * CCPtr<HouseTypeClass>::Heap = &HouseTypes;
+template<> FixedIHeapClass * CCPtr<BuildingTypeClass>::Heap = &BuildingTypes;
+template<> FixedIHeapClass * CCPtr<AircraftTypeClass>::Heap = &AircraftTypes;
+template<> FixedIHeapClass * CCPtr<InfantryTypeClass>::Heap = &InfantryTypes;
+template<> FixedIHeapClass * CCPtr<BulletTypeClass>::Heap = &BulletTypes;
+template<> FixedIHeapClass * CCPtr<AnimTypeClass>::Heap = &AnimTypes;
+template<> FixedIHeapClass * CCPtr<UnitTypeClass>::Heap = &UnitTypes;
+template<> FixedIHeapClass * CCPtr<VesselTypeClass>::Heap = &VesselTypes;
+template<> FixedIHeapClass * CCPtr<TemplateTypeClass>::Heap = &TemplateTypes;
+template<> FixedIHeapClass * CCPtr<TerrainTypeClass>::Heap = &TerrainTypes;
+template<> FixedIHeapClass * CCPtr<OverlayTypeClass>::Heap = &OverlayTypes;
+template<> FixedIHeapClass * CCPtr<SmudgeTypeClass>::Heap = &SmudgeTypes;
 
 
 /* These variables are used to keep track of the slowest speed of a team */

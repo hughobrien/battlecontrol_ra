@@ -1015,17 +1015,17 @@ extern CCPtr<TemplateTypeClass>	y24;
 extern CCPtr<TerrainTypeClass>	y25;
 extern CCPtr<OverlayTypeClass>	y26;
 extern CCPtr<SmudgeTypeClass>		y27;
-class DynamicVectorClass<CCPtr<TeamTypeClass> >;
+template<> class DynamicVectorClass<CCPtr<TeamTypeClass> >;
 extern DynamicVectorClass<CCPtr<TeamTypeClass> > y002;
-class DynamicVectorClass<CCPtr<TriggerTypeClass> >;
+template<> class DynamicVectorClass<CCPtr<TriggerTypeClass> >;
 extern DynamicVectorClass<CCPtr<TriggerTypeClass> > y001;
-class DynamicVectorClass<TeamMissionClass *>;
+template<> class DynamicVectorClass<TeamMissionClass *>;
 extern DynamicVectorClass<TeamMissionClass *> xxx1;
-class DynamicVectorClass<EventChoiceClass *>;
+template<> class DynamicVectorClass<EventChoiceClass *>;
 extern DynamicVectorClass<EventChoiceClass *> xxx2;
-class DynamicVectorClass<ActionChoiceClass *>;
+template<> class DynamicVectorClass<ActionChoiceClass *>;
 extern DynamicVectorClass<ActionChoiceClass *> xxx3;
-class DynamicVectorClass<EgoClass *>;
+template<> class DynamicVectorClass<EgoClass *>;
 extern DynamicVectorClass<EgoClass *> whatever;
 
 #endif
