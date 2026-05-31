@@ -486,8 +486,8 @@ void MixFileClass<T>::Free(void)
 
 int compfunc(void const * ptr1, void const * ptr2)
 {
-	if (*(long const *)ptr1 < *(long const *)ptr2) return(-1);
-	if (*(long const *)ptr1 > *(long const *)ptr2) return(1);
+	if (*(int32_t const *)ptr1 < *(int32_t const *)ptr2) return(-1);
+	if (*(int32_t const *)ptr1 > *(int32_t const *)ptr2) return(1);
 	return(0);
 }
 
@@ -539,7 +539,7 @@ assert(filename != NULL);//BG
 	char * filename_upper = new char[filename_length + 1];
 	strcpy(filename_upper, filename);
 	strupr(filename_upper);
-	long crc = Calculate_CRC(filename_upper, (long)filename_length);
+	int32_t crc = Calculate_CRC(filename_upper, (long)filename_length);
 	delete [] filename_upper;
 	SubBlock key;
 	key.CRC = crc;
