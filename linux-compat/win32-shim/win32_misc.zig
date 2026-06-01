@@ -13,6 +13,7 @@ const LPARAM = isize;
 const HANDLE = ?*anyopaque;
 const HWND = ?*anyopaque;
 const HMODULE = ?*anyopaque;
+const FARPROC = ?*anyopaque;
 const HICON = ?*anyopaque;
 const HINSTANCE = ?*anyopaque;
 const HMENU = ?*anyopaque;
@@ -75,8 +76,6 @@ var timers = [_]?*TimerEvent{null} ** 64;
 var cursor_x: LONG = 0;
 var cursor_y: LONG = 0;
 
-export var WindowsNT: bool = false;
-
 const TimerEvent = struct {
     id: UINT,
     delay_ms: UINT,
@@ -135,6 +134,22 @@ export fn GetModuleFileName(module: HMODULE, filename: [*:0]u8, size: DWORD) cal
 
 export fn GetVersion() callconv(.c) DWORD {
     return 0x80000000 | 4;
+}
+
+export fn LoadLibrary(library_name: ?[*:0]const u8) callconv(.c) HINSTANCE {
+    _ = library_name;
+    return null;
+}
+
+export fn GetProcAddress(module: HMODULE, procedure_name: ?[*:0]const u8) callconv(.c) FARPROC {
+    _ = module;
+    _ = procedure_name;
+    return null;
+}
+
+export fn FreeLibrary(module: HMODULE) callconv(.c) BOOL {
+    _ = module;
+    return 0;
 }
 
 export fn FindWindow(class_name: ?[*:0]const u8, window_name: ?[*:0]const u8) callconv(.c) HWND {
@@ -972,4 +987,12 @@ export fn DdeAccessData(data: HDDEDATA, data_size: ?*DWORD) callconv(.c) ?[*]BYT
 export fn DdeUnaccessData(data: HDDEDATA) callconv(.c) BOOL {
     _ = data;
     return 1;
+}
+
+test "legacy DLL loading reports absent modules" {
+    try std.testing.expectEqual(@as(HINSTANCE, null), LoadLibrary("THIPX32.DLL"));
+}
+
+test "procedure lookup fails for absent modules" {
+    try std.testing.expectEqual(@as(FARPROC, null), GetProcAddress(null, "_IPX_Shut_Down95"));
 }

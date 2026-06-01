@@ -60,6 +60,7 @@ pub fn build(b: *std.Build) void {
         "WIN32LIB/KEYBOARD/MOUSE.CPP",
         "CODE/INTERNET.CPP",
         "CODE/IPXADDR.CPP",
+        "CODE/IPX95.CPP",
         "CODE/RAWFILE.CPP",
         "CODE/BFIOFILE.CPP",
         "CODE/BUFF.CPP",
