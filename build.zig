@@ -323,6 +323,17 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(wwlib_shape_buffer);
 
+    const wwlib_icon_cache_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/wwlib/icon_cache.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const wwlib_icon_cache = b.addObject(.{
+        .name = "wwlib-icon-cache",
+        .root_module = wwlib_icon_cache_module,
+    });
+    exe.root_module.addObject(wwlib_icon_cache);
+
     const game_algorithms_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/game_algorithms.zig"),
         .target = target,
