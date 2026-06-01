@@ -25,6 +25,33 @@ const PCONVCONTEXT = ?*anyopaque;
 const BYTE = u8;
 const TimerCallback = *const fn (event_id: UINT, reserved: UINT, user: DWORD, reserved1: DWORD, reserved2: DWORD) callconv(.c) void;
 
+const Tm = extern struct {
+    tm_sec: c_int,
+    tm_min: c_int,
+    tm_hour: c_int,
+    tm_mday: c_int,
+    tm_mon: c_int,
+    tm_year: c_int,
+    tm_wday: c_int,
+    tm_yday: c_int,
+    tm_isdst: c_int,
+    tm_gmtoff: c_long,
+    tm_zone: ?[*:0]const u8,
+};
+
+const SYSTEMTIME = extern struct {
+    wYear: WORD,
+    wMonth: WORD,
+    wDayOfWeek: WORD,
+    wDay: WORD,
+    wHour: WORD,
+    wMinute: WORD,
+    wSecond: WORD,
+    wMilliseconds: WORD,
+};
+
+extern fn localtime_r(timep: *const std.c.time_t, result: *Tm) ?*Tm;
+
 const POINT = extern struct {
     x: LONG,
     y: LONG,
@@ -499,6 +526,55 @@ export fn OutputDebugString(string: ?[*:0]const u8) callconv(.c) void {
     _ = string;
 }
 
+export fn GetSystemTime(system_time: ?*SYSTEMTIME) callconv(.c) void {
+    const realtime_ns = realtimeNanoseconds() orelse 0;
+    fillUtcSystemTime(system_time, realtime_ns / std.time.ns_per_ms);
+}
+
+export fn GetLocalTime(system_time: ?*SYSTEMTIME) callconv(.c) void {
+    const out = system_time orelse return;
+    const realtime_ns = realtimeNanoseconds() orelse 0;
+    const unix_millis = realtime_ns / std.time.ns_per_ms;
+    const seconds: std.c.time_t = @intCast(unix_millis / std.time.ms_per_s);
+    var tm: Tm = undefined;
+    if (localtime_r(&seconds, &tm) == null) {
+        fillUtcSystemTime(system_time, unix_millis);
+        return;
+    }
+
+    out.* = .{
+        .wYear = @intCast(tm.tm_year + 1900),
+        .wMonth = @intCast(tm.tm_mon + 1),
+        .wDayOfWeek = @intCast(tm.tm_wday),
+        .wDay = @intCast(tm.tm_mday),
+        .wHour = @intCast(tm.tm_hour),
+        .wMinute = @intCast(tm.tm_min),
+        .wSecond = @intCast(tm.tm_sec),
+        .wMilliseconds = @intCast(unix_millis % std.time.ms_per_s),
+    };
+}
+
+fn fillUtcSystemTime(system_time: ?*SYSTEMTIME, unix_millis: u64) void {
+    const out = system_time orelse return;
+    const seconds = unix_millis / std.time.ms_per_s;
+    const epoch_seconds = std.time.epoch.EpochSeconds{ .secs = seconds };
+    const epoch_day = epoch_seconds.getEpochDay();
+    const year_day = epoch_day.calculateYearDay();
+    const month_day = year_day.calculateMonthDay();
+    const day_seconds = epoch_seconds.getDaySeconds();
+
+    out.* = .{
+        .wYear = year_day.year,
+        .wMonth = @intCast(@intFromEnum(month_day.month)),
+        .wDayOfWeek = @intCast((epoch_day.day + 4) % 7),
+        .wDay = @as(WORD, month_day.day_index) + 1,
+        .wHour = day_seconds.getHoursIntoDay(),
+        .wMinute = day_seconds.getMinutesIntoHour(),
+        .wSecond = day_seconds.getSecondsIntoMinute(),
+        .wMilliseconds = @intCast(unix_millis % std.time.ms_per_s),
+    };
+}
+
 export fn timeBeginPeriod(period: UINT) callconv(.c) UINT {
     _ = period;
     return 0;
@@ -517,6 +593,12 @@ export fn timeGetTime() callconv(.c) DWORD {
 fn monotonicNanoseconds() ?u64 {
     var ts: std.c.timespec = undefined;
     if (std.c.clock_gettime(std.c.CLOCK.MONOTONIC, &ts) != 0) return null;
+    return (@as(u64, @intCast(ts.sec)) * std.time.ns_per_s) + @as(u64, @intCast(ts.nsec));
+}
+
+fn realtimeNanoseconds() ?u64 {
+    var ts: std.c.timespec = undefined;
+    if (std.c.clock_gettime(std.c.CLOCK.REALTIME, &ts) != 0) return null;
     return (@as(u64, @intCast(ts.sec)) * std.time.ns_per_s) + @as(u64, @intCast(ts.nsec));
 }
 
@@ -1001,4 +1083,32 @@ test "procedure lookup fails for absent modules" {
 
 test "legacy CPU type starts unknown" {
     try std.testing.expectEqual(@as(u8, 0), CPUType);
+}
+
+test "system time fills Win32 SYSTEMTIME ranges" {
+    var system_time: SYSTEMTIME = undefined;
+    GetSystemTime(&system_time);
+
+    try std.testing.expect(system_time.wYear >= 1970);
+    try std.testing.expect(system_time.wMonth >= 1 and system_time.wMonth <= 12);
+    try std.testing.expect(system_time.wDayOfWeek <= 6);
+    try std.testing.expect(system_time.wDay >= 1 and system_time.wDay <= 31);
+    try std.testing.expect(system_time.wHour <= 23);
+    try std.testing.expect(system_time.wMinute <= 59);
+    try std.testing.expect(system_time.wSecond <= 59);
+    try std.testing.expect(system_time.wMilliseconds <= 999);
+}
+
+test "UTC system time conversion matches Win32 SYSTEMTIME fields" {
+    var system_time: SYSTEMTIME = undefined;
+    fillUtcSystemTime(&system_time, (1 * std.time.s_per_day + 2 * std.time.s_per_hour + 3 * std.time.s_per_min + 4) * std.time.ms_per_s + 567);
+
+    try std.testing.expectEqual(@as(WORD, 1970), system_time.wYear);
+    try std.testing.expectEqual(@as(WORD, 1), system_time.wMonth);
+    try std.testing.expectEqual(@as(WORD, 5), system_time.wDayOfWeek);
+    try std.testing.expectEqual(@as(WORD, 2), system_time.wDay);
+    try std.testing.expectEqual(@as(WORD, 2), system_time.wHour);
+    try std.testing.expectEqual(@as(WORD, 3), system_time.wMinute);
+    try std.testing.expectEqual(@as(WORD, 4), system_time.wSecond);
+    try std.testing.expectEqual(@as(WORD, 567), system_time.wMilliseconds);
 }

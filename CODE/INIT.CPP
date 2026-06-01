@@ -118,7 +118,7 @@ static void Init_Keys(void);
 extern int UnitBuildPenalty;
 
 extern "C" {
-extern long RandNumb;
+extern int32_t RandNumb;
 }
 #ifndef WIN32
 static int UsePageFaultHandler = 1;				// 1 = install PFH
@@ -1090,7 +1090,7 @@ bool Select_Game(bool fade)
 
 									}
 									WWDebugString ("RA95 - About to delete scrap memory.\n");
-									delete temp_buffer;
+									delete [] temp_buffer;
 
 
 
@@ -1170,6 +1170,8 @@ bool Select_Game(bool fade)
 #endif	//WIN32
 #endif	//	!WOLAPI_INTEGRATION
 
+						default:
+							break;
 					}
 #ifdef WOLAPI_INTEGRATION
 					}	//	if( !pWolapi )
@@ -1332,6 +1334,8 @@ bool Select_Game(bool fade)
 							break;
 #endif	// MPATH
 
+						default:
+							break;
 					}
 					break;
 
@@ -1438,12 +1442,14 @@ bool Select_Game(bool fade)
 //			debugprint( "Non Internet game: NewUnitsEnabled = %i\n", NewUnitsEnabled );
 			break;
 		case GAME_INTERNET:
+#ifdef WOLAPI_INTEGRATION
 			if( !pWolapi )
 			{
 //				debugprint( "pWolapi is null on internet game!" );
 				Fatal( "pWolapi is null on internet game!" );
 			}
 			//if( pWolapi->bEnableNewAftermathUnits )
+#endif
 			if( bAftermathMultiplayer )
 				NewUnitsEnabled = true;
 			else
@@ -1682,8 +1688,10 @@ void Anim_Init(void)
 	if (SlowPalette) {
 		AnimControl.OptionFlags |= VQAOPTF_SLOWPAL;
 	}
+#if defined(VQADIRECT_SOUND) && VQADIRECT_SOUND
 	AnimControl.SoundObject = SoundObject;
 	AnimControl.PrimaryBufferPtr = PrimaryBufferPtr;
+#endif
 	if (MonoClass::Is_Enabled()) {
 		AnimControl.OptionFlags |= VQAOPTF_MONO;
 	}
@@ -2849,7 +2857,8 @@ static void Init_CDROM_Access(void)
 		int error;
 
 		do {
-			error = CCFileClass::Set_Search_Drives("?:\\");
+			char search_drives[] = "?:\\";
+			error = CCFileClass::Set_Search_Drives(search_drives);
 			switch (error) {
 				case 1:
 					VisiblePage.Clear();
