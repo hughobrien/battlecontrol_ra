@@ -17,6 +17,12 @@
 */
 
 
+#include <string.h>
+
+#ifndef WOLAPI_INTEGRATION
+#include "FUNCTION.H"
+#endif
+
 #ifdef WOLAPI_INTEGRATION			//	Now implies also WINSOCK_IPX, WIN32, and FIXIT_CSII must be true
 
 #include "WOL_GSUP.H"

@@ -2,25 +2,6 @@ const std = @import("std");
 
 export var RandNumb: i32 = 0x12349876;
 
-// The original Win32 unsigned long accumulator was 32-bit; keep the wrap width.
-fn addCrc(crc: *u32, value: u32) void {
-    const high_bit: u32 = if ((crc.* & 0x80000000) != 0) 1 else 0;
-    crc.* = (crc.* << 1) +% value +% high_bit;
-}
-
-fn computeNameCRC(name: [*:0]u8) callconv(.c) c_ulong {
-    var crc: u32 = 0;
-    var index: usize = 0;
-    while (name[index] != 0) : (index += 1) {
-        addCrc(&crc, std.ascii.toUpper(name[index]));
-    }
-    return crc;
-}
-
-comptime {
-    @export(&computeNameCRC, .{ .name = "_Z16Compute_Name_CRCPc", .linkage = .strong });
-}
-
 fn writeByte(dest: [*]u8, out_index: *usize, value: u8) void {
     dest[out_index.*] = value;
     out_index.* += 1;
@@ -202,22 +183,6 @@ fn expectLcwRoundTrip(input: []const u8, compressed: []u8, decompressed: []u8) !
     try std.testing.expectEqual(input.len, decompressed_len);
     try std.testing.expectEqualSlices(u8, input, decompressed[0..decompressed_len]);
     return @intCast(compressed_len);
-}
-
-test "Compute_Name_CRC uppercases names before adding CRC values" {
-    var empty = [_:0]u8{};
-    var lower = [_:0]u8{ 'r', 'e', 'd' };
-    var upper = [_:0]u8{ 'R', 'E', 'D' };
-    var mixed = [_:0]u8{ 'R', 'e', 'd', ' ', 'A', 'l', 'e', 'r', 't' };
-    var max_session_name = [_:0]u8{ 'r', 'e', 'd', 'a', 'l', 'e', 'r', 't', '1', '2', '3' };
-    var wrap = [_:0]u8{'Z'} ** 40;
-
-    try std.testing.expectEqual(@as(c_ulong, 0), computeNameCRC(&empty));
-    try std.testing.expectEqual(computeNameCRC(&upper), computeNameCRC(&lower));
-    try std.testing.expectEqual(@as(c_ulong, 534), computeNameCRC(&lower));
-    try std.testing.expectEqual(@as(c_ulong, 37_372), computeNameCRC(&mixed));
-    try std.testing.expectEqual(@as(c_ulong, 154_427), computeNameCRC(&max_session_name));
-    try std.testing.expectEqual(@as(c_ulong, 22_822), computeNameCRC(&wrap));
 }
 
 test "LCW_Comp emits a literal packet for short unique data" {
