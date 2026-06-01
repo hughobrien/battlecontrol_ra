@@ -61,6 +61,18 @@ static inline int WW_Stricmp(char const * left, char const * right)
 	return tolower((uint8_t)*left) - tolower((uint8_t)*right);
 }
 
+static inline int WW_Strnicmp(char const * left, char const * right, size_t length)
+{
+	for (size_t index = 0; index < length; index++) {
+		int l = tolower((uint8_t)left[index]);
+		int r = tolower((uint8_t)right[index]);
+		if (l != r || l == 0 || r == 0) {
+			return l - r;
+		}
+	}
+	return 0;
+}
+
 static inline int WW_Memicmp(void const * left, void const * right, size_t length)
 {
 	uint8_t const * lptr = (uint8_t const *)left;
@@ -108,6 +120,8 @@ static inline char *WW_Strrev(char * text)
 #define stricmp WW_Stricmp
 #define strcmpi WW_Stricmp
 #define _stricmp WW_Stricmp
+#define strnicmp WW_Strnicmp
+#define _strnicmp WW_Strnicmp
 #define memicmp WW_Memicmp
 #define strupr WW_Strupr
 #define _strlwr WW_Strlwr
