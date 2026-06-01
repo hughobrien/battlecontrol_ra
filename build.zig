@@ -263,11 +263,23 @@ pub fn build(b: *std.Build) void {
             .flags = cxx_flags,
         });
     }
-
     const exe = b.addExecutable(.{
         .name = "ra",
         .root_module = exe_module,
     });
+
+    const serial_disabled_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/serial_disabled.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+        .link_libcpp = true,
+    });
+    const serial_disabled = b.addObject(.{
+        .name = "serial-disabled-shim",
+        .root_module = serial_disabled_module,
+    });
+    exe.root_module.addObject(serial_disabled);
 
     const win32_shim_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/file_path.zig"),
