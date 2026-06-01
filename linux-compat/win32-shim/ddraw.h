@@ -1,0 +1,449 @@
+#ifndef BATTLECONTROL_RA_WIN32_SHIM_DDRAW_H
+#define BATTLECONTROL_RA_WIN32_SHIM_DDRAW_H
+
+#include "objbase.h"
+
+#define DD_OK ((HRESULT)0)
+#define DDERR(code) ((HRESULT)(int32_t)(0x88760000u + (uint32_t)(code)))
+
+#define DDERR_ALREADYINITIALIZED DDERR(5)
+#define DDERR_BLTFASTCANTCLIP DDERR(574)
+#define DDERR_CANNOTATTACHSURFACE DDERR(10)
+#define DDERR_CANNOTDETACHSURFACE DDERR(20)
+#define DDERR_CANTCREATEDC DDERR(585)
+#define DDERR_CANTDUPLICATE DDERR(583)
+#define DDERR_CANTLOCKSURFACE DDERR(435)
+#define DDERR_CLIPPERISUSINGHWND DDERR(567)
+#define DDERR_COLORKEYNOTSET DDERR(400)
+#define DDERR_CURRENTLYNOTAVAIL DDERR(40)
+#define DDERR_DIRECTDRAWALREADYCREATED DDERR(562)
+#define DDERR_EXCEPTION DDERR(55)
+#define DDERR_EXCLUSIVEMODEALREADYSET DDERR(581)
+#define DDERR_GENERIC ((HRESULT)(int32_t)0x80004005u)
+#define DDERR_HEIGHTALIGN DDERR(90)
+#define DDERR_HWNDALREADYSET DDERR(571)
+#define DDERR_HWNDSUBCLASSED DDERR(570)
+#define DDERR_IMPLICITLYCREATED DDERR(588)
+#define DDERR_INCOMPATIBLEPRIMARY DDERR(95)
+#define DDERR_INVALIDCAPS DDERR(100)
+#define DDERR_INVALIDCLIPLIST DDERR(110)
+#define DDERR_INVALIDDIRECTDRAWGUID DDERR(561)
+#define DDERR_INVALIDMODE DDERR(120)
+#define DDERR_INVALIDOBJECT DDERR(130)
+#define DDERR_INVALIDPARAMS ((HRESULT)(int32_t)0x80070057u)
+#define DDERR_INVALIDPIXELFORMAT DDERR(145)
+#define DDERR_INVALIDPOSITION DDERR(579)
+#define DDERR_INVALIDRECT DDERR(150)
+#define DDERR_INVALIDSURFACETYPE DDERR(592)
+#define DDERR_LOCKEDSURFACES DDERR(160)
+#define DDERR_NO3D DDERR(170)
+#define DDERR_NOALPHAHW DDERR(180)
+/* Legacy names used by Process_DD_Result but absent from Zig's bundled ddraw.h. */
+#define DDERR_NOANTITEARHW DDERR(0x0b5)
+#define DDERR_NOBLTHW DDERR(575)
+#define DDERR_NOBLTQUEUEHW DDERR(0x0b7)
+#define DDERR_NOCLIPLIST DDERR(205)
+#define DDERR_NOCLIPPERATTACHED DDERR(568)
+#define DDERR_NOCOLORCONVHW DDERR(210)
+#define DDERR_NOCOLORKEY DDERR(215)
+#define DDERR_NOCOLORKEYHW DDERR(220)
+#define DDERR_NOCOOPERATIVELEVELSET DDERR(212)
+#define DDERR_NODC DDERR(586)
+#define DDERR_NODDROPSHW DDERR(576)
+#define DDERR_NODIRECTDRAWHW DDERR(563)
+#define DDERR_NODIRECTDRAWSUPPORT DDERR(222)
+#define DDERR_NOEMULATION DDERR(565)
+#define DDERR_NOEXCLUSIVEMODE DDERR(225)
+#define DDERR_NOFLIPHW DDERR(230)
+#define DDERR_NOGDI DDERR(240)
+#define DDERR_NOHWND DDERR(569)
+#define DDERR_NOMIRRORHW DDERR(250)
+#define DDERR_NOOVERLAYDEST DDERR(578)
+#define DDERR_NOOVERLAYHW DDERR(260)
+#define DDERR_NOPALETTEATTACHED DDERR(572)
+#define DDERR_NOPALETTEHW DDERR(573)
+#define DDERR_NORASTEROPHW DDERR(280)
+#define DDERR_NOROTATIONHW DDERR(290)
+#define DDERR_NOSTRETCHHW DDERR(310)
+#define DDERR_NOT4BITCOLOR DDERR(316)
+#define DDERR_NOT4BITCOLORINDEX DDERR(317)
+#define DDERR_NOT8BITCOLOR DDERR(320)
+#define DDERR_NOTAOVERLAYSURFACE DDERR(580)
+#define DDERR_NOTEXTUREHW DDERR(330)
+#define DDERR_NOTFLIPPABLE DDERR(582)
+#define DDERR_NOTFOUND DDERR(255)
+#define DDERR_NOTLOCKED DDERR(584)
+#define DDERR_NOTPALETTIZED DDERR(589)
+#define DDERR_NOVSYNCHW DDERR(335)
+#define DDERR_NOZBUFFERHW DDERR(340)
+#define DDERR_NOZOVERLAYHW DDERR(350)
+#define DDERR_OUTOFCAPS DDERR(360)
+#define DDERR_OUTOFMEMORY ((HRESULT)(int32_t)0x8007000eu)
+#define DDERR_OUTOFVIDEOMEMORY DDERR(380)
+#define DDERR_OVERLAYCANTCLIP DDERR(382)
+#define DDERR_OVERLAYCOLORKEYONLYONEACTIVE DDERR(384)
+#define DDERR_OVERLAYNOTVISIBLE DDERR(577)
+#define DDERR_PALETTEBUSY DDERR(387)
+#define DDERR_PRIMARYSURFACEALREADYEXISTS DDERR(564)
+#define DDERR_REGIONTOOSMALL DDERR(566)
+#define DDERR_SURFACEALREADYATTACHED DDERR(410)
+#define DDERR_SURFACEALREADYDEPENDENT DDERR(420)
+#define DDERR_SURFACEBUSY DDERR(430)
+#define DDERR_SURFACEISOBSCURED DDERR(440)
+#define DDERR_SURFACELOST DDERR(450)
+#define DDERR_SURFACENOTATTACHED DDERR(460)
+#define DDERR_TOOBIGHEIGHT DDERR(470)
+#define DDERR_TOOBIGSIZE DDERR(480)
+#define DDERR_TOOBIGWIDTH DDERR(490)
+#define DDERR_UNSUPPORTED ((HRESULT)(int32_t)0x80004001u)
+#define DDERR_UNSUPPORTEDFORMAT DDERR(510)
+#define DDERR_UNSUPPORTEDMASK DDERR(520)
+#define DDERR_VERTICALBLANKINPROGRESS DDERR(537)
+#define DDERR_WASSTILLDRAWING DDERR(540)
+#define DDERR_WRONGMODE DDERR(587)
+#define DDERR_XALIGN DDERR(560)
+
+#define DDSD_CAPS 0x00000001L
+#define DDSD_HEIGHT 0x00000002L
+#define DDSD_WIDTH 0x00000004L
+#define DDSD_PITCH 0x00000008L
+#define DDSD_LPSURFACE 0x00000800L
+
+#define DDSCAPS_PRIMARYSURFACE 0x00000200L
+#define DDSCAPS_OFFSCREENPLAIN 0x00000040L
+#define DDSCAPS_SYSTEMMEMORY 0x00000800L
+#define DDSCAPS_MODEX 0x00200000L
+
+#define DDSCL_FULLSCREEN 0x00000001L
+#define DDSCL_ALLOWMODEX 0x00000040L
+#define DDSCL_EXCLUSIVE 0x00000010L
+#define DDSCL_NORMAL 0x00000008L
+
+#define DDLOCK_WAIT 0x00000001L
+
+#define DDBLT_ASYNC 0x00000200L
+#define DDBLT_COLORFILL 0x00000400L
+#define DDBLT_KEYSRC 0x00008000L
+#define DDBLT_WAIT 0x01000000L
+
+#define DDGBS_CANBLT 0x00000001L
+#define DDGBS_ISBLTDONE 0x00000002L
+
+#define DDPCAPS_8BIT 0x00000004L
+#define DDPCAPS_ALLOW256 0x00000040L
+#define DDPSETPAL_VSYNC 0x00000001L
+
+#define DDWAITVB_BLOCKBEGIN 0x00000001L
+
+#define DDCAPS_BLT 0x00000040L
+#define DDCAPS_BLTQUEUE 0x00000080L
+#define DDCAPS_BLTCOLORFILL 0x04000000L
+#define DDCAPS_BANKSWITCHED 0x08000000L
+#define DDCAPS_CANBLTSYSMEM 0x80000000u
+#define DDCAPS_NOHARDWARE 0x02000000L
+#define DDCAPS_PALETTEVSYNC 0x00010000L
+
+typedef struct _DDSCAPS {
+    DWORD dwCaps;
+} DDSCAPS, *LPDDSCAPS;
+
+typedef struct _DDCOLORKEY {
+    DWORD dwColorSpaceLowValue;
+    DWORD dwColorSpaceHighValue;
+} DDCOLORKEY, *LPDDCOLORKEY;
+
+typedef struct _DDPIXELFORMAT {
+    DWORD dwSize;
+    DWORD dwFlags;
+    DWORD dwFourCC;
+    union {
+        DWORD dwRGBBitCount;
+        DWORD dwYUVBitCount;
+        DWORD dwZBufferBitDepth;
+        DWORD dwAlphaBitDepth;
+        DWORD dwLuminanceBitCount;
+        DWORD dwBumpBitCount;
+        DWORD dwPrivateFormatBitCount;
+    };
+    union {
+        DWORD dwRBitMask;
+        DWORD dwYBitMask;
+        DWORD dwStencilBitDepth;
+        DWORD dwLuminanceBitMask;
+        DWORD dwBumpDuBitMask;
+        DWORD dwOperations;
+    };
+    union {
+        DWORD dwGBitMask;
+        DWORD dwUBitMask;
+        DWORD dwZBitMask;
+        DWORD dwBumpDvBitMask;
+        struct {
+            WORD wFlipMSTypes;
+            WORD wBltMSTypes;
+        } MultiSampleCaps;
+    };
+    union {
+        DWORD dwBBitMask;
+        DWORD dwVBitMask;
+        DWORD dwStencilBitMask;
+        DWORD dwBumpLuminanceBitMask;
+    };
+    union {
+        DWORD dwRGBAlphaBitMask;
+        DWORD dwYUVAlphaBitMask;
+        DWORD dwLuminanceAlphaBitMask;
+        DWORD dwRGBZBitMask;
+        DWORD dwYUVZBitMask;
+    };
+} DDPIXELFORMAT, *LPDDPIXELFORMAT;
+
+typedef struct _DDCAPS {
+    DWORD dwSize;
+    DWORD dwCaps;
+    DWORD dwCaps2;
+    DWORD dwCKeyCaps;
+    DWORD dwFXCaps;
+    DWORD dwFXAlphaCaps;
+    DWORD dwPalCaps;
+    DWORD dwSVCaps;
+    DWORD dwAlphaBltConstBitDepths;
+    DWORD dwAlphaBltPixelBitDepths;
+    DWORD dwAlphaBltSurfaceBitDepths;
+    DWORD dwAlphaOverlayConstBitDepths;
+    DWORD dwAlphaOverlayPixelBitDepths;
+    DWORD dwAlphaOverlaySurfaceBitDepths;
+    DWORD dwZBufferBitDepths;
+    DWORD dwVidMemTotal;
+    DWORD dwVidMemFree;
+    DWORD dwMaxVisibleOverlays;
+    DWORD dwCurrVisibleOverlays;
+    DWORD dwNumFourCCCodes;
+    DWORD dwAlignBoundarySrc;
+    DWORD dwAlignSizeSrc;
+    DWORD dwAlignBoundaryDest;
+    DWORD dwAlignSizeDest;
+    DWORD dwAlignStrideAlign;
+    DWORD dwRops[8];
+    DDSCAPS ddsCaps;
+    DWORD dwMinOverlayStretch;
+    DWORD dwMaxOverlayStretch;
+    DWORD dwMinLiveVideoStretch;
+    DWORD dwMaxLiveVideoStretch;
+    DWORD dwMinHwCodecStretch;
+    DWORD dwMaxHwCodecStretch;
+    DWORD dwReserved1;
+    DWORD dwReserved2;
+    DWORD dwReserved3;
+    DWORD dwSVBCaps;
+    DWORD dwSVBCKeyCaps;
+    DWORD dwSVBFXCaps;
+    DWORD dwSVBRops[8];
+    DWORD dwVSBCaps;
+    DWORD dwVSBCKeyCaps;
+    DWORD dwVSBFXCaps;
+    DWORD dwVSBRops[8];
+    DWORD dwSSBCaps;
+    DWORD dwSSBCKeyCaps;
+    DWORD dwSSBFXCaps;
+    DWORD dwSSBRops[8];
+    DWORD dwReserved4;
+    DWORD dwReserved5;
+    DWORD dwReserved6;
+} DDCAPS, *LPDDCAPS;
+
+typedef struct _DDSURFACEDESC {
+    DWORD dwSize;
+    DWORD dwFlags;
+    DWORD dwHeight;
+    DWORD dwWidth;
+    union {
+        int32_t lPitch;
+        DWORD dwLinearSize;
+    };
+    DWORD dwBackBufferCount;
+    union {
+        DWORD dwMipMapCount;
+        DWORD dwZBufferBitDepth;
+        DWORD dwRefreshRate;
+    };
+    DWORD dwAlphaBitDepth;
+    DWORD dwReserved;
+    LPVOID lpSurface;
+    DDCOLORKEY ddckCKDestOverlay;
+    DDCOLORKEY ddckCKDestBlt;
+    DDCOLORKEY ddckCKSrcOverlay;
+    DDCOLORKEY ddckCKSrcBlt;
+    DDPIXELFORMAT ddpfPixelFormat;
+    DDSCAPS ddsCaps;
+} DDSURFACEDESC, *LPDDSURFACEDESC;
+
+typedef struct _DDBLTFX {
+    DWORD dwSize;
+    DWORD dwDDFX;
+    DWORD dwROP;
+    DWORD dwDDROP;
+    DWORD dwRotationAngle;
+    DWORD dwZBufferOpCode;
+    DWORD dwZBufferLow;
+    DWORD dwZBufferHigh;
+    DWORD dwZBufferBaseDest;
+    DWORD dwZDestConstBitDepth;
+    union {
+        DWORD dwZDestConst;
+        LPVOID lpDDSZBufferDest;
+    };
+    DWORD dwZSrcConstBitDepth;
+    union {
+        DWORD dwZSrcConst;
+        LPVOID lpDDSZBufferSrc;
+    };
+    DWORD dwAlphaEdgeBlendBitDepth;
+    DWORD dwAlphaEdgeBlend;
+    DWORD dwReserved;
+    DWORD dwAlphaDestConstBitDepth;
+    union {
+        DWORD dwAlphaDestConst;
+        LPVOID lpDDSAlphaDest;
+    };
+    DWORD dwAlphaSrcConstBitDepth;
+    union {
+        DWORD dwAlphaSrcConst;
+        LPVOID lpDDSAlphaSrc;
+    };
+    union {
+        DWORD dwFillColor;
+        DWORD dwFillDepth;
+        DWORD dwFillPixel;
+        LPVOID lpDDSPattern;
+    };
+    DDCOLORKEY ddckDestColorkey;
+    DDCOLORKEY ddckSrcColorkey;
+} DDBLTFX, *LPDDBLTFX;
+
+#ifdef __cplusplus
+
+struct IDirectDraw;
+struct IDirectDraw2;
+struct IDirectDrawClipper;
+struct IDirectDrawSurface;
+struct IDirectDrawPalette;
+
+typedef IDirectDraw *LPDIRECTDRAW;
+typedef IDirectDraw2 *LPDIRECTDRAW2;
+typedef IDirectDrawClipper *LPDIRECTDRAWCLIPPER;
+typedef IDirectDrawSurface *LPDIRECTDRAWSURFACE;
+typedef IDirectDrawPalette *LPDIRECTDRAWPALETTE;
+typedef struct _DDBLTBATCH *LPDDBLTBATCH;
+typedef struct _DDOVERLAYFX *LPDDOVERLAYFX;
+typedef LPVOID LPDDENUMMODESCALLBACK;
+typedef LPVOID LPDDENUMSURFACESCALLBACK;
+
+DECLARE_INTERFACE_(IDirectDrawSurface, IUnknown) {
+    STDMETHOD(AddAttachedSurface)(LPDIRECTDRAWSURFACE) PURE;
+    STDMETHOD(AddOverlayDirtyRect)(LPRECT) PURE;
+    STDMETHOD(Blt)(LPRECT, LPDIRECTDRAWSURFACE, LPRECT, DWORD, LPDDBLTFX) PURE;
+    STDMETHOD(BltBatch)(LPDDBLTBATCH, DWORD, DWORD) PURE;
+    STDMETHOD(BltFast)(DWORD, DWORD, LPDIRECTDRAWSURFACE, LPRECT, DWORD) PURE;
+    STDMETHOD(DeleteAttachedSurface)(DWORD, LPDIRECTDRAWSURFACE) PURE;
+    STDMETHOD(EnumAttachedSurfaces)(LPVOID, LPDDENUMSURFACESCALLBACK) PURE;
+    STDMETHOD(EnumOverlayZOrders)(DWORD, LPVOID, LPDDENUMSURFACESCALLBACK) PURE;
+    STDMETHOD(Flip)(LPDIRECTDRAWSURFACE, DWORD) PURE;
+    STDMETHOD(GetAttachedSurface)(LPDDSCAPS, LPDIRECTDRAWSURFACE *) PURE;
+    STDMETHOD(GetBltStatus)(DWORD) PURE;
+    STDMETHOD(GetCaps)(LPDDSCAPS) PURE;
+    STDMETHOD(GetClipper)(LPDIRECTDRAWCLIPPER *) PURE;
+    STDMETHOD(GetColorKey)(DWORD, LPDDCOLORKEY) PURE;
+    STDMETHOD(GetDC)(HDC *) PURE;
+    STDMETHOD(GetFlipStatus)(DWORD) PURE;
+    STDMETHOD(GetOverlayPosition)(LPLONG, LPLONG) PURE;
+    STDMETHOD(GetPalette)(LPDIRECTDRAWPALETTE *) PURE;
+    STDMETHOD(GetPixelFormat)(LPDDPIXELFORMAT) PURE;
+    STDMETHOD(GetSurfaceDesc)(LPDDSURFACEDESC) PURE;
+    STDMETHOD(Initialize)(LPDIRECTDRAW, LPDDSURFACEDESC) PURE;
+    STDMETHOD(IsLost)(void) PURE;
+    STDMETHOD(Lock)(LPRECT, LPDDSURFACEDESC, DWORD, HANDLE) PURE;
+    STDMETHOD(ReleaseDC)(HDC) PURE;
+    STDMETHOD(Restore)(void) PURE;
+    STDMETHOD(SetClipper)(LPDIRECTDRAWCLIPPER) PURE;
+    STDMETHOD(SetColorKey)(DWORD, LPDDCOLORKEY) PURE;
+    STDMETHOD(SetOverlayPosition)(LONG, LONG) PURE;
+    STDMETHOD(SetPalette)(LPDIRECTDRAWPALETTE) PURE;
+    STDMETHOD(Unlock)(LPVOID) PURE;
+    STDMETHOD(UpdateOverlay)(LPRECT, LPDIRECTDRAWSURFACE, LPRECT, DWORD, LPDDOVERLAYFX) PURE;
+    STDMETHOD(UpdateOverlayDisplay)(DWORD) PURE;
+    STDMETHOD(UpdateOverlayZOrder)(DWORD, LPDIRECTDRAWSURFACE) PURE;
+};
+
+DECLARE_INTERFACE_(IDirectDrawPalette, IUnknown) {
+    STDMETHOD(GetCaps)(LPDWORD) PURE;
+    STDMETHOD(GetEntries)(DWORD, DWORD, DWORD, LPPALETTEENTRY) PURE;
+    STDMETHOD(Initialize)(LPDIRECTDRAW, DWORD, LPPALETTEENTRY) PURE;
+    STDMETHOD(SetEntries)(DWORD, DWORD, DWORD, LPPALETTEENTRY) PURE;
+};
+
+DECLARE_INTERFACE_(IDirectDraw, IUnknown) {
+    STDMETHOD(Compact)(void) PURE;
+    STDMETHOD(CreateClipper)(DWORD, LPDIRECTDRAWCLIPPER *, IUnknown *) PURE;
+    STDMETHOD(CreatePalette)(DWORD, LPPALETTEENTRY, LPDIRECTDRAWPALETTE *, IUnknown *) PURE;
+    STDMETHOD(CreateSurface)(LPDDSURFACEDESC, LPDIRECTDRAWSURFACE *, IUnknown *) PURE;
+    STDMETHOD(DuplicateSurface)(LPDIRECTDRAWSURFACE, LPDIRECTDRAWSURFACE *) PURE;
+    STDMETHOD(EnumDisplayModes)(DWORD, LPDDSURFACEDESC, LPVOID, LPDDENUMMODESCALLBACK) PURE;
+    STDMETHOD(EnumSurfaces)(DWORD, LPDDSURFACEDESC, LPVOID, LPDDENUMSURFACESCALLBACK) PURE;
+    STDMETHOD(FlipToGDISurface)(void) PURE;
+    STDMETHOD(GetCaps)(LPDDCAPS, LPDDCAPS) PURE;
+    STDMETHOD(GetDisplayMode)(LPDDSURFACEDESC) PURE;
+    STDMETHOD(GetFourCCCodes)(LPDWORD, LPDWORD) PURE;
+    STDMETHOD(GetGDISurface)(LPDIRECTDRAWSURFACE *) PURE;
+    STDMETHOD(GetMonitorFrequency)(LPDWORD) PURE;
+    STDMETHOD(GetScanLine)(LPDWORD) PURE;
+    STDMETHOD(GetVerticalBlankStatus)(LPBOOL) PURE;
+    STDMETHOD(Initialize)(LPGUID) PURE;
+    STDMETHOD(RestoreDisplayMode)(void) PURE;
+    STDMETHOD(SetCooperativeLevel)(HWND, DWORD) PURE;
+    STDMETHOD(SetDisplayMode)(DWORD, DWORD, DWORD) PURE;
+    STDMETHOD(WaitForVerticalBlank)(DWORD, HANDLE) PURE;
+};
+
+DECLARE_INTERFACE_(IDirectDraw2, IUnknown) {
+    STDMETHOD(Compact)(void) PURE;
+    STDMETHOD(CreateClipper)(DWORD, LPDIRECTDRAWCLIPPER *, IUnknown *) PURE;
+    STDMETHOD(CreatePalette)(DWORD, LPPALETTEENTRY, LPDIRECTDRAWPALETTE *, IUnknown *) PURE;
+    STDMETHOD(CreateSurface)(LPDDSURFACEDESC, LPDIRECTDRAWSURFACE *, IUnknown *) PURE;
+    STDMETHOD(DuplicateSurface)(LPDIRECTDRAWSURFACE, LPDIRECTDRAWSURFACE *) PURE;
+    STDMETHOD(EnumDisplayModes)(DWORD, LPDDSURFACEDESC, LPVOID, LPDDENUMMODESCALLBACK) PURE;
+    STDMETHOD(EnumSurfaces)(DWORD, LPDDSURFACEDESC, LPVOID, LPDDENUMSURFACESCALLBACK) PURE;
+    STDMETHOD(FlipToGDISurface)(void) PURE;
+    STDMETHOD(GetCaps)(LPDDCAPS, LPDDCAPS) PURE;
+    STDMETHOD(GetDisplayMode)(LPDDSURFACEDESC) PURE;
+    STDMETHOD(GetFourCCCodes)(LPDWORD, LPDWORD) PURE;
+    STDMETHOD(GetGDISurface)(LPDIRECTDRAWSURFACE *) PURE;
+    STDMETHOD(GetMonitorFrequency)(LPDWORD) PURE;
+    STDMETHOD(GetScanLine)(LPDWORD) PURE;
+    STDMETHOD(GetVerticalBlankStatus)(LPBOOL) PURE;
+    STDMETHOD(Initialize)(LPGUID) PURE;
+    STDMETHOD(RestoreDisplayMode)(void) PURE;
+    STDMETHOD(SetCooperativeLevel)(HWND, DWORD) PURE;
+    STDMETHOD(SetDisplayMode)(DWORD, DWORD, DWORD, DWORD, DWORD) PURE;
+    STDMETHOD(WaitForVerticalBlank)(DWORD, HANDLE) PURE;
+    STDMETHOD(GetAvailableVidMem)(LPDDSCAPS, LPDWORD, LPDWORD) PURE;
+};
+
+extern "C" {
+HRESULT WINAPI DirectDrawCreate(LPGUID, LPDIRECTDRAW *, IUnknown *);
+extern const IID IID_IDirectDraw2;
+}
+
+#else
+
+typedef struct IDirectDraw *LPDIRECTDRAW;
+typedef struct IDirectDraw2 *LPDIRECTDRAW2;
+typedef struct IDirectDrawSurface *LPDIRECTDRAWSURFACE;
+typedef struct IDirectDrawPalette *LPDIRECTDRAWPALETTE;
+
+HRESULT WINAPI DirectDrawCreate(LPGUID, LPDIRECTDRAW *, IUnknown *);
+extern const IID IID_IDirectDraw2;
+
+#endif
+
+#endif
