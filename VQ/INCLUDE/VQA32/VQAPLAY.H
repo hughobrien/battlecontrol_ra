@@ -63,7 +63,7 @@
 #else
 #define VQASTANDALONE 0  /* Stand alone player */
 #define VQAVOC_ON     0  /* Enable VOC file override */
-#define	VQAMONO_ON    1  /* Mono display output enable/disable */
+#define	VQAMONO_ON    0  /* Mono display output enable/disable */
 #define VQAAUDIO_ON   0  /* Audio playback enable/disable */
 #define VQAVIDEO_ON   0  /* Video manager enable/disable */
 #define VQAMCGA_ON    1  /* MCGA enable/disable */
