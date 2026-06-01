@@ -279,5 +279,16 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(wwlib_clip_rect);
 
+    const wwlib_font_palette_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/wwlib/font_palette.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const wwlib_font_palette = b.addObject(.{
+        .name = "wwlib-font-palette",
+        .root_module = wwlib_font_palette_module,
+    });
+    exe.root_module.addObject(wwlib_font_palette);
+
     b.installArtifact(exe);
 }
