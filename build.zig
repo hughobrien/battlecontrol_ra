@@ -293,6 +293,17 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(win32_misc);
 
+    const win32_mpeg_movie_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/win32-shim/mpeg_movie.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const win32_mpeg_movie = b.addObject(.{
+        .name = "win32-mpeg-movie-shim",
+        .root_module = win32_mpeg_movie_module,
+    });
+    exe.root_module.addObject(win32_mpeg_movie);
+
     const win32_tcpip_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/tcpip.zig"),
         .target = target,
