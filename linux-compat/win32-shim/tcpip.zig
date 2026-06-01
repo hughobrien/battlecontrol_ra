@@ -37,6 +37,12 @@ fn tcpipRead(this: ?*anyopaque, buffer: ?*anyopaque, buffer_len: c_int) callconv
     return 0;
 }
 
+fn tcpipWrite(this: ?*anyopaque, buffer: ?*anyopaque, buffer_len: c_int) callconv(.c) void {
+    _ = this;
+    _ = buffer;
+    _ = buffer_len;
+}
+
 fn tcpipSetHostAddress(this: ?*anyopaque, address: ?[*:0]u8) callconv(.c) void {
     _ = this;
     _ = address;
@@ -56,6 +62,7 @@ comptime {
     @export(&tcpipStartServer, .{ .name = "_ZN17TcpipManagerClass12Start_ServerEv", .linkage = .strong });
     @export(&tcpipStartClient, .{ .name = "_ZN17TcpipManagerClass12Start_ClientEv", .linkage = .strong });
     @export(&tcpipRead, .{ .name = "_ZN17TcpipManagerClass4ReadEPvi", .linkage = .strong });
+    @export(&tcpipWrite, .{ .name = "_ZN17TcpipManagerClass5WriteEPvi", .linkage = .strong });
     @export(&tcpipSetHostAddress, .{ .name = "_ZN17TcpipManagerClass16Set_Host_AddressEPc", .linkage = .strong });
     @export(&tcpipMessageHandler, .{ .name = "_ZN17TcpipManagerClass15Message_HandlerEPvjjl", .linkage = .strong });
 }
@@ -63,6 +70,11 @@ comptime {
 test "fake Winsock object leaves Connected false" {
     try std.testing.expectEqual(@as(c_int, 0), Winsock.Connected);
     try std.testing.expect(!Server);
+}
+
+test "disabled TcpipManager Write accepts dropped packets" {
+    var payload = [_]u8{ 0x12, 0x34, 0x56 };
+    tcpipWrite(&Winsock, &payload, @intCast(payload.len));
 }
 
 test "fake Winsock object size matches TcpipManagerClass layout" {
