@@ -520,6 +520,16 @@ typedef struct _RTL_CRITICAL_SECTION {
 #define KEY_READ 0x20019
 #endif
 
+#ifndef DRIVE_UNKNOWN
+#define DRIVE_UNKNOWN 0
+#define DRIVE_NO_ROOT_DIR 1
+#define DRIVE_REMOVABLE 2
+#define DRIVE_FIXED 3
+#define DRIVE_REMOTE 4
+#define DRIVE_CDROM 5
+#define DRIVE_RAMDISK 6
+#endif
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -568,6 +578,7 @@ BOOL DeleteFile(LPCSTR file_name);
 DWORD GetLastError(void);
 UINT SetErrorMode(UINT mode);
 BOOL GetFileInformationByHandle(HANDLE file, BY_HANDLE_FILE_INFORMATION *file_information);
+UINT GetDriveType(LPCSTR root_path_name);
 BOOL GetVolumeInformation(LPCSTR root_path_name, LPSTR volume_name_buffer, unsigned long volume_name_size, unsigned long *volume_serial_number, unsigned long *maximum_component_length, unsigned long *file_system_flags, LPSTR file_system_name_buffer, unsigned long file_system_name_size);
 BOOL FileTimeToDosDateTime(const FILETIME *file_time, LPWORD fat_date, LPWORD fat_time);
 BOOL DosDateTimeToFileTime(WORD fat_date, WORD fat_time, LPFILETIME file_time);

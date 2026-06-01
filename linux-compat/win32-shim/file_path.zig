@@ -18,6 +18,8 @@ const FILE_CURRENT: DWORD = 1;
 const FILE_END: DWORD = 2;
 const FILE_ATTRIBUTE_HIDDEN: DWORD = 0x00000002;
 const FILE_ATTRIBUTE_DIRECTORY: DWORD = 0x00000010;
+const DRIVE_NO_ROOT_DIR: UINT = 1;
+const DRIVE_FIXED: UINT = 3;
 const S_IFMT: c_uint = 0o170000;
 const S_IFDIR: c_uint = 0o040000;
 
@@ -754,6 +756,16 @@ export fn GetFileInformationByHandle(file: HANDLE, file_information: ?*BY_HANDLE
     };
     clearLastError();
     return 1;
+}
+
+export fn GetDriveType(root_path_name: ?[*:0]const u8) callconv(.c) UINT {
+    const input = root_path_name orelse return DRIVE_NO_ROOT_DIR;
+    var translated_buf: [1024]u8 = undefined;
+    const translated = translatePath(input, &translated_buf) orelse return DRIVE_NO_ROOT_DIR;
+    var st: Stat = undefined;
+    if (stat(translated.ptr, &st) != 0) return DRIVE_NO_ROOT_DIR;
+    if ((st.st_mode & S_IFMT) != S_IFDIR) return DRIVE_NO_ROOT_DIR;
+    return DRIVE_FIXED;
 }
 
 export fn FileTimeToDosDateTime(file_time: *const FILETIME, fat_date: ?*WORD, fat_time: ?*WORD) callconv(.c) BOOL {

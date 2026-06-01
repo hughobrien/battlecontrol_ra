@@ -43,6 +43,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <dos.h>
+#include <windows.h>
 
 #include "WWSTD.H"
 #include "PLAYCD.H"
@@ -121,4 +122,3 @@ GetCDClass::~GetCDClass(VOID)
 }
 
 /* ==================================================================== */
-
