@@ -9,13 +9,25 @@
 #define _A_SUBDIR 0x10
 #endif
 
+#ifndef _A_NORMAL
+#define _A_NORMAL 0x00
+#endif
+
 #ifndef _MAX_PATH
 #define _MAX_PATH 260
 #endif
 
 struct find_t {
     unsigned attrib;
+    unsigned wr_time;
+    unsigned wr_date;
+    unsigned long size;
     char name[_MAX_PATH];
+    unsigned bc_match_index;
+    unsigned bc_attrib;
+    int bc_active;
+    char bc_dir_path[1024];
+    char bc_pattern[_MAX_PATH];
 };
 
 struct diskfree_t {
@@ -30,6 +42,7 @@ extern "C" {
 #endif
 
 int _dos_findfirst(const char *filespec, unsigned attrib, struct find_t *fileinfo);
+int _dos_findnext(struct find_t *fileinfo);
 int _dos_getdiskfree(unsigned drive, struct diskfree_t *diskspace);
 
 static inline int _dos_getdrive(unsigned int *drive)

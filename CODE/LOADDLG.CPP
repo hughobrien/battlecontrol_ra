@@ -372,6 +372,9 @@ int LoadOptionsClass::Process(void)
 						toggle->IsPressed = true;
 					}
 					break;
+
+				case NONE:
+					break;
 			}
 			Hide_Mouse();
 			commands->Draw_All(true);
@@ -386,7 +389,7 @@ int LoadOptionsClass::Process(void)
 			** Load: if load fails, present a message, and stay in the dialog
 			** to allow the user to try another game
 			*/
-			case (BUTTON_LOAD | KN_BUTTON):
+			case KeyNumType(BUTTON_LOAD | KN_BUTTON):
 				game_idx = listbtn.Current_Index();
 				game_num = Files[game_idx]->Num;
 				if (Files[game_idx]->Valid) {
@@ -432,9 +435,9 @@ int LoadOptionsClass::Process(void)
 			/*
 			** Save: Save the game & exit the dialog
 			*/
-			case (BUTTON_EDIT | KN_BUTTON):
+			case KeyNumType(BUTTON_EDIT | KN_BUTTON):
 
-			case (BUTTON_SAVE | KN_BUTTON):
+			case KeyNumType(BUTTON_SAVE | KN_BUTTON):
 				if (!strlen(game_descr)) {
 					WWMessageBox().Process(TXT_MUSTENTER_DESCRIPTION);
 					firsttime = true;
@@ -478,7 +481,7 @@ int LoadOptionsClass::Process(void)
 			** Delete: delete the file & stay in the dialog, to allow the user
 			** to delete multiple files.
 			*/
-			case (BUTTON_DELETE | KN_BUTTON):
+			case KeyNumType(BUTTON_DELETE | KN_BUTTON):
 				game_idx = listbtn.Current_Index();
 				game_num = Files[game_idx]->Num;
 				if (WWMessageBox().Process(TXT_DELETE_FILE_QUERY, TXT_YES, TXT_NO)==0) {
@@ -506,7 +509,7 @@ int LoadOptionsClass::Process(void)
 			** item; if so, and if we're in SAVE mode, copy the list item into
 			** the save-game description field.
 			*/
-			case (BUTTON_LIST | KN_BUTTON):
+			case KeyNumType(BUTTON_LIST | KN_BUTTON):
 				if (Style != SAVE) {
 					break;
 				}
@@ -543,7 +546,7 @@ int LoadOptionsClass::Process(void)
 			** ESC/Cancel: break
 			*/
 			case (KN_ESC):
-			case (BUTTON_CANCEL | KN_BUTTON):
+			case KeyNumType(BUTTON_CANCEL | KN_BUTTON):
 				cancel = true;
 				process = false;
 				break;
@@ -591,7 +594,7 @@ void LoadOptionsClass::Clear_List(ListClass * list)
 	/*
 	** Clear the array of game numbers
 	*/
-	for (i = 0; i < Files.Count(); i++) {
+	for (int i = 0; i < Files.Count(); i++) {
 		delete Files[i];
 	}
 	Files.Clear();
@@ -702,10 +705,11 @@ void LoadOptionsClass::Fill_List(ListClass * list)
 		** in the list; if any number isn't found, use that number; otherwise,
 		** use 'N + 1'.
 		*/
-		for (int i = 0; i < Files.Count(); i++) {		// i = the # we're searching for
+		int empty_slot = 0;
+		for (; empty_slot < Files.Count(); empty_slot++) {		// empty_slot = the # we're searching for
 			id = -1;											// mark as 'not found'
 			for (int j = 0; j < Files.Count(); j++) {	// loop through all game ID's
-				if (Files[j]->Num==i) {					// if found, mark as found
+				if (Files[j]->Num==empty_slot) {		// if found, mark as found
 					id = j;
 					break;
 				}
@@ -713,7 +717,7 @@ void LoadOptionsClass::Fill_List(ListClass * list)
 			if (id == -1)	break;							// if ID not found, use this one
 		}
 
-		Files[0]->Num = i;								// set the empty slot's ID
+		Files[0]->Num = empty_slot;					// set the empty slot's ID
 	}
 
 	/*
@@ -781,4 +785,3 @@ int LoadOptionsClass::Compare(const void * p1, const void * p2)
 	if (fe1->DateTime < fe2->DateTime) return(1);
 	return(0);
 }
-
