@@ -11,6 +11,7 @@ const FakeTcpipManager = extern struct {
 };
 
 export var Winsock: FakeTcpipManager align(8) = .{};
+export var Server: bool = false;
 
 fn tcpipClose(this: ?*anyopaque) callconv(.c) void {
     _ = this;
@@ -31,6 +32,7 @@ comptime {
 
 test "fake Winsock object leaves Connected false" {
     try std.testing.expectEqual(@as(c_int, 0), Winsock.Connected);
+    try std.testing.expect(!Server);
 }
 
 test "fake Winsock object size matches TcpipManagerClass layout" {
