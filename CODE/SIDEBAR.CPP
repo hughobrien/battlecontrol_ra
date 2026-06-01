@@ -396,7 +396,7 @@ void SidebarClass::Init_Theater(TheaterType theater)
  *=============================================================================================*/
 void SidebarClass::Reload_Sidebar(void)
 {
-	static char * sidebarnames[]={
+	static char const * const sidebarnames[]={
 		"SIDE?NA.SHP",		//NATO
 		"SIDE?NA.SHP",
 		"SIDE?US.SHP",		//USSR
@@ -414,12 +414,13 @@ void SidebarClass::Reload_Sidebar(void)
 		houseloaded = PlayerPtr->ActLike;
 	}
 
-	char * sidename = sidebarnames[houseloaded];
-	*(sidename+4) = '1';
+	char sidename[sizeof("SIDE?NA.SHP")];
+	strcpy(sidename, sidebarnames[houseloaded]);
+	sidename[4] = '1';
 	SidebarShape = (void*)MFCD::Retrieve(sidename);
-	*(sidename+4) = '2';
+	sidename[4] = '2';
 	SidebarMiddleShape = (void*)MFCD::Retrieve(sidename);
-	*(sidename+4) = '3';
+	sidename[4] = '3';
 	SidebarBottomShape = (void*)MFCD::Retrieve(sidename);
 
 	Column[0].Reload_LogoShapes();
@@ -1273,7 +1274,7 @@ void SidebarClass::StripClass::Reload_LogoShapes(void)
 	/*
 	** Load hi-res strip art here since it is player side specific
 	*/
-	static char * stripnames[]={
+	static char const * const stripnames[]={
 		"stripna.shp",		//Nato
 		"stripna.shp",
 		"stripus.shp",		//USSR
