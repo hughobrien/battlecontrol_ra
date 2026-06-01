@@ -4161,8 +4161,8 @@ int Get_CD_Index (int cd_drive, int timeout)
 	{
 	char		volume_name[128];
 	char		buffer[128];
-	unsigned	filename_length;
-	unsigned	misc_dword;
+	DWORD		filename_length;
+	DWORD		misc_dword;
 	int		count = 0;
 
 	CountDownTimerClass timer;
@@ -4178,9 +4178,9 @@ int Get_CD_Index (int cd_drive, int timeout)
 		sprintf(buffer, "%c:\\", 'A' + cd_drive);
 
 		if (GetVolumeInformation ((char const *)buffer, &volume_name[0] ,
-				(unsigned long)sizeof(volume_name), (unsigned long *)NULL ,
-				(unsigned long *)&filename_length, (unsigned long *)&misc_dword,
-				(char *)NULL, (unsigned long)0))
+				(DWORD)sizeof(volume_name), (DWORD *)NULL ,
+				&filename_length, &misc_dword,
+				(char *)NULL, (DWORD)0))
 			{
 			/*
 			** Try opening 'movies.mix' to verify that the CD is really there and is what
