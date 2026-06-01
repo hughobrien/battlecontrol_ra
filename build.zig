@@ -312,5 +312,16 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(wwlib_draw_buffer);
 
+    const game_algorithms_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/game_algorithms.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const game_algorithms = b.addObject(.{
+        .name = "game-algorithms",
+        .root_module = game_algorithms_module,
+    });
+    exe.root_module.addObject(game_algorithms);
+
     b.installArtifact(exe);
 }
