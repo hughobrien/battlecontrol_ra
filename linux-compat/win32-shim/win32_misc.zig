@@ -81,7 +81,7 @@ const MB_YESNO: UINT = 0x00000004;
 const SM_CXSCREEN: c_int = 0;
 const SM_CYSCREEN: c_int = 1;
 const TIME_PERIODIC: UINT = 0x0001;
-const DDERR_NODIRECTDRAWSUPPORT: HRESULT = 0x887600de;
+const DDERR_NODIRECTDRAWSUPPORT: HRESULT = @as(i32, @bitCast(@as(u32, 0x887600de)));
 
 const DdeString = extern struct {
     next: ?*DdeString,

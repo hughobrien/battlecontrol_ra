@@ -70,8 +70,8 @@ BOOL						OverlappedVideoBlits = TRUE;	// Can video driver blit overlapped regio
 /*
 ** Function to call if we detect focus loss
 */
-extern	void (*Misc_Focus_Loss_Function)(void) = NULL;
-extern	void (*Misc_Focus_Restore_Function)(void) = NULL;
+void (*Misc_Focus_Loss_Function)(void) = NULL;
+void (*Misc_Focus_Restore_Function)(void) = NULL;
 
 
 /***********************************************************************************************
@@ -385,7 +385,7 @@ void Process_DD_Result(HRESULT result, int display_ok_msg)
 			break;
 		default:
 			char string[256];
-			sprintf (string, "Unrecognised Direct Draw result code: %d", result & 0xffff);
+			sprintf (string, "Unrecognised Direct Draw result code: %d", (int)(result & 0xffff));
 			MessageBox(MainWindow, string,"Note", MB_ICONEXCLAMATION|MB_OK);
 			break;
 	}
