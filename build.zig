@@ -381,6 +381,17 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(wwlib_audio_state);
 
+    const wwlib_mouse_asm_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/wwlib/mouse_asm.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const wwlib_mouse_asm = b.addObject(.{
+        .name = "wwlib-mouse-asm",
+        .root_module = wwlib_mouse_asm_module,
+    });
+    exe.root_module.addObject(wwlib_mouse_asm);
+
     const wwlib_profile_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/wwlib/profile.zig"),
         .target = target,
