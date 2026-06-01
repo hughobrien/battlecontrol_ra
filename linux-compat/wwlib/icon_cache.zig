@@ -13,13 +13,13 @@ const IControl = extern struct {
     allocated: u16,
     map_width: u16,
     map_height: u16,
-    size: c_long,
-    icons: c_long,
-    palettes: c_long,
-    remaps: c_long,
-    trans_flag: c_long,
-    color_map: c_long,
-    map: c_long,
+    size: c_int,
+    icons: c_int,
+    palettes: c_int,
+    remaps: c_int,
+    trans_flag: c_int,
+    color_map: c_int,
+    map: c_int,
 };
 
 const IconSetRegistration = extern struct {
@@ -146,13 +146,13 @@ fn findRegisteredIconSet(icon_set: *const IControl) ?IconSetRegistration {
     return null;
 }
 
-fn addByteOffset(base: *const anyopaque, offset: c_long) [*]u8 {
+fn addByteOffset(base: *const anyopaque, offset: c_int) [*]u8 {
     const address = @intFromPtr(base);
     if (offset >= 0) return @ptrFromInt(address + @as(usize, @intCast(offset)));
     return @ptrFromInt(address - @as(usize, @intCast(-offset)));
 }
 
-fn addByteOffsetConst(base: *const anyopaque, offset: c_long) [*]const u8 {
+fn addByteOffsetConst(base: *const anyopaque, offset: c_int) [*]const u8 {
     return @ptrCast(addByteOffset(base, offset));
 }
 
@@ -237,21 +237,21 @@ test "Is_Icon_Cached returns an existing cache table hit" {
     try std.testing.expectEqual(@as(c_int, -1), test_state.cache_new_icon_index);
 }
 
-test "IControl layout matches TILE.H on the active C target" {
+test "IControl layout matches the 32-bit STAMP.INC structure" {
     try std.testing.expectEqual(@as(usize, 0), @offsetOf(IControl, "width"));
     try std.testing.expectEqual(@as(usize, 2), @offsetOf(IControl, "height"));
     try std.testing.expectEqual(@as(usize, 4), @offsetOf(IControl, "count"));
     try std.testing.expectEqual(@as(usize, 6), @offsetOf(IControl, "allocated"));
     try std.testing.expectEqual(@as(usize, 8), @offsetOf(IControl, "map_width"));
     try std.testing.expectEqual(@as(usize, 10), @offsetOf(IControl, "map_height"));
-    try std.testing.expectEqual(std.mem.alignForward(usize, 12, @alignOf(c_long)), @offsetOf(IControl, "size"));
-    try std.testing.expectEqual(@offsetOf(IControl, "size") + @sizeOf(c_long), @offsetOf(IControl, "icons"));
-    try std.testing.expectEqual(@offsetOf(IControl, "icons") + @sizeOf(c_long), @offsetOf(IControl, "palettes"));
-    try std.testing.expectEqual(@offsetOf(IControl, "palettes") + @sizeOf(c_long), @offsetOf(IControl, "remaps"));
-    try std.testing.expectEqual(@offsetOf(IControl, "remaps") + @sizeOf(c_long), @offsetOf(IControl, "trans_flag"));
-    try std.testing.expectEqual(@offsetOf(IControl, "trans_flag") + @sizeOf(c_long), @offsetOf(IControl, "color_map"));
-    try std.testing.expectEqual(@offsetOf(IControl, "color_map") + @sizeOf(c_long), @offsetOf(IControl, "map"));
-    try std.testing.expectEqual(@offsetOf(IControl, "map") + @sizeOf(c_long), @sizeOf(IControl));
+    try std.testing.expectEqual(@as(usize, 12), @offsetOf(IControl, "size"));
+    try std.testing.expectEqual(@as(usize, 16), @offsetOf(IControl, "icons"));
+    try std.testing.expectEqual(@as(usize, 20), @offsetOf(IControl, "palettes"));
+    try std.testing.expectEqual(@as(usize, 24), @offsetOf(IControl, "remaps"));
+    try std.testing.expectEqual(@as(usize, 28), @offsetOf(IControl, "trans_flag"));
+    try std.testing.expectEqual(@as(usize, 32), @offsetOf(IControl, "color_map"));
+    try std.testing.expectEqual(@as(usize, 36), @offsetOf(IControl, "map"));
+    try std.testing.expectEqual(@as(usize, 40), @sizeOf(IControl));
 }
 
 test "IconSetRegistration layout matches ICONCACH.H on the active C target" {
