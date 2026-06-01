@@ -147,6 +147,7 @@ pub fn build(b: *std.Build) void {
         "CODE/SCROLL.CPP",
         "CODE/SCORE.CPP",
         "CODE/SDATA.CPP",
+        "CODE/SESSION.CPP",
         "CODE/SHAPEBTN.CPP",
         "CODE/SIDEBAR.CPP",
         "CODE/SLIDER.CPP",
