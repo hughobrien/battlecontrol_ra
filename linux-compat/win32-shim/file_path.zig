@@ -16,6 +16,10 @@ const OPEN_EXISTING: DWORD = 3;
 const FILE_BEGIN: DWORD = 0;
 const FILE_CURRENT: DWORD = 1;
 const FILE_END: DWORD = 2;
+const FILE_ATTRIBUTE_HIDDEN: DWORD = 0x00000002;
+const FILE_ATTRIBUTE_DIRECTORY: DWORD = 0x00000010;
+const S_IFMT: c_uint = 0o170000;
+const S_IFDIR: c_uint = 0o040000;
 
 const O_RDONLY: c_int = 0;
 const O_WRONLY: c_int = 1;
@@ -48,9 +52,28 @@ const BY_HANDLE_FILE_INFORMATION = extern struct {
     nFileIndexLow: DWORD,
 };
 
+const WIN32_FIND_DATA = extern struct {
+    dwFileAttributes: DWORD,
+    ftCreationTime: FILETIME,
+    ftLastAccessTime: FILETIME,
+    ftLastWriteTime: FILETIME,
+    nFileSizeHigh: DWORD,
+    nFileSizeLow: DWORD,
+    dwReserved0: DWORD,
+    dwReserved1: DWORD,
+    cFileName: [260]u8,
+    cAlternateFileName: [14]u8,
+};
+
 const DosFind = extern struct {
     attrib: c_uint,
     name: [260]u8,
+};
+
+const FindHandle = extern struct {
+    dir: ?*DIR,
+    dir_path: [1024]u8,
+    pattern: [260]u8,
 };
 
 const Timespec = extern struct {
@@ -100,6 +123,7 @@ extern fn close(fd: c_int) c_int;
 extern fn lseek(fd: c_int, offset: c_long, whence: c_int) c_long;
 extern fn unlink(pathname: [*:0]const u8) c_int;
 extern fn utime(filename: [*:0]const u8, times: ?*const utimbuf) c_int;
+extern fn stat(pathname: [*:0]const u8, statbuf: *Stat) c_int;
 extern fn fstat(fd: c_int, statbuf: *Stat) c_int;
 extern fn opendir(name: [*:0]const u8) ?*DIR;
 extern fn readdir(dirp: *DIR) ?*Dirent;
@@ -243,6 +267,68 @@ fn wildcardMatch(pattern: []const u8, name: []const u8) bool {
     return p == pattern.len;
 }
 
+fn copyFixedZ(dest: []u8, src: []const u8) void {
+    @memset(dest, 0);
+    if (dest.len == 0) return;
+    const count = @min(src.len, dest.len - 1);
+    @memcpy(dest[0..count], src[0..count]);
+}
+
+fn fillFindData(info: *WIN32_FIND_DATA, dir_path: []const u8, name: []const u8, file_type: u8) void {
+    info.* = .{
+        .dwFileAttributes = 0,
+        .ftCreationTime = .{ .dwLowDateTime = 0, .dwHighDateTime = 0 },
+        .ftLastAccessTime = .{ .dwLowDateTime = 0, .dwHighDateTime = 0 },
+        .ftLastWriteTime = .{ .dwLowDateTime = 0, .dwHighDateTime = 0 },
+        .nFileSizeHigh = 0,
+        .nFileSizeLow = 0,
+        .dwReserved0 = 0,
+        .dwReserved1 = 0,
+        .cFileName = [_]u8{0} ** 260,
+        .cAlternateFileName = [_]u8{0} ** 14,
+    };
+    var stat_buf: [1280]u8 = undefined;
+    const path = std.fmt.bufPrintZ(&stat_buf, "{s}/{s}", .{ dir_path, name }) catch null;
+    if (path) |stat_path| {
+        var st: Stat = undefined;
+        if (stat(stat_path.ptr, &st) == 0) {
+            if ((st.st_mode & S_IFMT) == S_IFDIR) info.dwFileAttributes |= FILE_ATTRIBUTE_DIRECTORY;
+            const size: u64 = if (st.st_size < 0) 0 else @intCast(st.st_size);
+            const ft = unixSecondsToFileTime(@intCast(st.st_mtim.tv_sec));
+            info.ftCreationTime = ft;
+            info.ftLastAccessTime = unixSecondsToFileTime(@intCast(st.st_atim.tv_sec));
+            info.ftLastWriteTime = ft;
+            info.nFileSizeHigh = @intCast(size >> 32);
+            info.nFileSizeLow = @intCast(size & 0xffffffff);
+        } else if (file_type == DT_DIR) {
+            info.dwFileAttributes |= FILE_ATTRIBUTE_DIRECTORY;
+        }
+    } else if (file_type == DT_DIR) {
+        info.dwFileAttributes |= FILE_ATTRIBUTE_DIRECTORY;
+    }
+    if (name.len > 0 and name[0] == '.') info.dwFileAttributes |= FILE_ATTRIBUTE_HIDDEN;
+    copyFixedZ(info.cFileName[0..], name);
+}
+
+fn findNext(handle: *FindHandle, info: *WIN32_FIND_DATA) bool {
+    const dir = handle.dir orelse return false;
+    const dir_path = std.mem.sliceTo(handle.dir_path[0..], 0);
+    const pattern = std.mem.sliceTo(handle.pattern[0..], 0);
+    while (readdir(dir)) |entry| {
+        const name = std.mem.sliceTo(entry.d_name[0..], 0);
+        if (std.mem.eql(u8, name, ".") or std.mem.eql(u8, name, "..")) {
+            continue;
+        }
+        if (wildcardMatch(pattern, name)) {
+            fillFindData(info, dir_path, name, entry.d_type);
+            clearLastError();
+            return true;
+        }
+    }
+    last_error = 18;
+    return false;
+}
+
 export fn _dos_findfirst(filespec: [*:0]const u8, attrib: c_uint, fileinfo: ?*DosFind) callconv(.c) c_int {
     _ = attrib;
     var translated_buf: [1024]u8 = undefined;
@@ -292,6 +378,86 @@ export fn _dos_findfirst(filespec: [*:0]const u8, attrib: c_uint, fileinfo: ?*Do
 
     last_error = 2;
     return -1;
+}
+
+export fn FindFirstFile(file_name: [*:0]const u8, find_file_data: ?*WIN32_FIND_DATA) callconv(.c) HANDLE {
+    const info = find_file_data orelse {
+        last_error = 87;
+        return INVALID_HANDLE_VALUE;
+    };
+    var translated_buf: [1024]u8 = undefined;
+    const translated = translatePath(file_name, &translated_buf) orelse {
+        last_error = 206;
+        return INVALID_HANDLE_VALUE;
+    };
+
+    const path = translated[0..translated.len];
+    var slash: ?usize = null;
+    for (path, 0..) |ch, idx| {
+        if (ch == '/') slash = idx;
+    }
+
+    const dir_name = if (slash) |s| path[0..s] else ".";
+    const pattern = if (slash) |s| path[s + 1 ..] else path;
+    const effective_pattern = if (pattern.len == 0) "*" else pattern;
+
+    var dir_buf: [1024]u8 = undefined;
+    const dir_path = std.fmt.bufPrintZ(&dir_buf, "{s}", .{dir_name}) catch {
+        last_error = 206;
+        return INVALID_HANDLE_VALUE;
+    };
+
+    const dir = opendir(dir_path.ptr) orelse {
+        setLastErrorFromErrno();
+        return INVALID_HANDLE_VALUE;
+    };
+
+    const mem = std.c.malloc(@sizeOf(FindHandle)) orelse {
+        _ = closedir(dir);
+        last_error = 8;
+        return INVALID_HANDLE_VALUE;
+    };
+    const handle: *FindHandle = @ptrCast(@alignCast(mem));
+    handle.dir = dir;
+    copyFixedZ(handle.dir_path[0..], dir_name);
+    copyFixedZ(handle.pattern[0..], effective_pattern);
+
+    if (!findNext(handle, info)) {
+        _ = closedir(dir);
+        std.c.free(handle);
+        last_error = 2;
+        return INVALID_HANDLE_VALUE;
+    }
+
+    return @ptrCast(handle);
+}
+
+export fn FindNextFile(find_file: HANDLE, find_file_data: ?*WIN32_FIND_DATA) callconv(.c) BOOL {
+    const info = find_file_data orelse {
+        last_error = 87;
+        return 0;
+    };
+    if (find_file == null or find_file == INVALID_HANDLE_VALUE) {
+        last_error = 6;
+        return 0;
+    }
+    const handle: *FindHandle = @ptrCast(@alignCast(find_file.?));
+    return if (findNext(handle, info)) 1 else 0;
+}
+
+export fn FindClose(find_file: HANDLE) callconv(.c) BOOL {
+    if (find_file == null or find_file == INVALID_HANDLE_VALUE) {
+        last_error = 6;
+        return 0;
+    }
+    const handle: *FindHandle = @ptrCast(@alignCast(find_file.?));
+    if (handle.dir) |dir| {
+        _ = closedir(dir);
+        handle.dir = null;
+    }
+    std.c.free(handle);
+    clearLastError();
+    return 1;
 }
 
 export fn CreateFile(file_name: [*:0]const u8, desired_access: DWORD, share_mode: DWORD, security_attributes: ?*anyopaque, creation_disposition: DWORD, flags_and_attributes: DWORD, template_file: HANDLE) callconv(.c) HANDLE {
