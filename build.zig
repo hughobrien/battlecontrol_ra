@@ -345,6 +345,17 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(wwlib_audio_state);
 
+    const wwlib_profile_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/wwlib/profile.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const wwlib_profile = b.addObject(.{
+        .name = "wwlib-profile",
+        .root_module = wwlib_profile_module,
+    });
+    exe.root_module.addObject(wwlib_profile);
+
     const game_algorithms_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/game_algorithms.zig"),
         .target = target,
