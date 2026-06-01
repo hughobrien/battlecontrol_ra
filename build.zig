@@ -315,6 +315,18 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(win32_tcpip);
 
+    const vqa_video_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/vqa_video.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const vqa_video = b.addObject(.{
+        .name = "vqa-video-shim",
+        .root_module = vqa_video_module,
+    });
+    exe.root_module.addObject(vqa_video);
+
     const wwlib_clip_rect_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/wwlib/clip_rect.zig"),
         .target = target,
