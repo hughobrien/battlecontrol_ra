@@ -579,7 +579,7 @@ DWORD GetLastError(void);
 UINT SetErrorMode(UINT mode);
 BOOL GetFileInformationByHandle(HANDLE file, BY_HANDLE_FILE_INFORMATION *file_information);
 UINT GetDriveType(LPCSTR root_path_name);
-BOOL GetVolumeInformation(LPCSTR root_path_name, LPSTR volume_name_buffer, unsigned long volume_name_size, unsigned long *volume_serial_number, unsigned long *maximum_component_length, unsigned long *file_system_flags, LPSTR file_system_name_buffer, unsigned long file_system_name_size);
+BOOL GetVolumeInformation(LPCSTR root_path_name, LPSTR volume_name_buffer, DWORD volume_name_size, LPDWORD volume_serial_number, LPDWORD maximum_component_length, LPDWORD file_system_flags, LPSTR file_system_name_buffer, DWORD file_system_name_size);
 BOOL FileTimeToDosDateTime(const FILETIME *file_time, LPWORD fat_date, LPWORD fat_time);
 BOOL DosDateTimeToFileTime(WORD fat_date, WORD fat_time, LPFILETIME file_time);
 BOOL SetFileTime(HANDLE file, const FILETIME *creation_time, const FILETIME *last_access_time, const FILETIME *last_write_time);
