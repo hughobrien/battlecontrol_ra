@@ -50,7 +50,7 @@
 #include	"FUNCTION.H"
 #include <stdio.h>
 #include <mem.h>
-#include <sys\timeb.h>
+#include <sys/timeb.h>
 #include "CONNECT.H"
 
 #include "WOLDEBUG.H"
@@ -834,5 +834,4 @@ char *ConnectionClass::Command_Name(int command)
 }	/* end of Command_Name */
 
 /************************** end of connect.cpp *****************************/
-
 

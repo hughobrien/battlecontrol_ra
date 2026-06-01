@@ -120,6 +120,7 @@
 
 #include <time.h>
 #include <dos.h>
+#include <algorithm>
 
 #include "WOLDEBUG.H"
 
@@ -1962,7 +1963,8 @@ static int Net_Join_Dialog(void)
 				if (Session.Options.ScenarioDescription[0]) {
 
 					// EW - Scenario language translation goes here!!!!!!!! VG
-					for (int ii = 0; EngMisStr[ii] != NULL;  ii++) {
+					int ii;
+					for (ii = 0; EngMisStr[ii] != NULL;  ii++) {
 						if (!strcmp(Session.Options.ScenarioDescription, EngMisStr[ii])) {
 							#if defined(GERMAN) || defined(FRENCH)
 								sprintf(txt, "%s %s", p, EngMisStr[ii+1]);
@@ -2037,7 +2039,7 @@ static int Net_Join_Dialog(void)
 		//.....................................................................
 		//	Process input
 		//.....................................................................
-		switch (input) {
+		switch ((int)input) {
 
 			//..................................................................
 			// Mouse Click:
@@ -2952,7 +2954,7 @@ static int Net_Join_Dialog(void)
 		//	a chance to get to the other system.  If he doesn't get our ACK,
 		// he'll be waiting the whole time we load MIX files.
 		//.....................................................................
-		i = max(Ipx.Global_Response_Time() * 2, 60);
+		i = (int)std::max<unsigned long>(Ipx.Global_Response_Time() * 2, 60);
 		starttime = TickCount;
 		while (TickCount - starttime < i) {
 			Ipx.Service();
@@ -2965,7 +2967,7 @@ static int Net_Join_Dialog(void)
 	//------------------------------------------------------------------------
 //	Ipx.Set_Timing (Ipx.Global_Response_Time() + 2, -1,
 //		Ipx.Global_Response_Time() * 4);
-	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120, Ipx.Global_Response_Time () * 8));
+	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, std::max<unsigned long> (120, Ipx.Global_Response_Time () * 8));
 
 
 	//------------------------------------------------------------------------
@@ -4533,7 +4535,7 @@ static int Net_New_Dialog(void)
 		//.....................................................................
 		//	Process input
 		//.....................................................................
-		switch (input) {
+		switch ((int)input) {
 
 			//..................................................................
 			//	New Scenario selected.
@@ -4717,7 +4719,7 @@ static int Net_New_Dialog(void)
 				//	an OK; force a wait longer than 1 second (to give all players
 				//	a chance to know about this new guy)
 				//...............................................................
-				i = max(Ipx.Global_Response_Time() * 2, 60);
+				i = (int)std::max<unsigned long>(Ipx.Global_Response_Time() * 2, 60);
 				while (TickCount - ok_timer < i) {
 					Ipx.Service();
 				}
@@ -5042,12 +5044,12 @@ static int Net_New_Dialog(void)
 		//	  value, 4 more to convert from ticks to frames)
 		//.....................................................................
 		if (Session.CommProtocol == COMM_PROTOCOL_MULTI_E_COMP) {
-			Session.MaxAhead = max( ((((Ipx.Global_Response_Time() / 8) +
+			Session.MaxAhead = std::max<unsigned long>( ((((Ipx.Global_Response_Time() / 8) +
 				(Session.FrameSendRate - 1)) / Session.FrameSendRate) *
 				Session.FrameSendRate), (Session.FrameSendRate * 2) );
 		}
 		else {
-			Session.MaxAhead = max( (Ipx.Global_Response_Time() / 8),
+			Session.MaxAhead = std::max<unsigned long>( (Ipx.Global_Response_Time() / 8),
 										  NETWORK_MIN_MAX_AHEAD );
 		}
 
@@ -5140,7 +5142,7 @@ static int Net_New_Dialog(void)
 	//	of what our retry delta & timeout should be.
 	//------------------------------------------------------------------------
 	//Ipx.Set_Timing (Ipx.Global_Response_Time() + 2, -1, Ipx.Global_Response_Time() * 4);
-	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120, Ipx.Global_Response_Time () * 8));
+	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, std::max<unsigned long> (120, Ipx.Global_Response_Time () * 8));
 
 	//------------------------------------------------------------------------
 	//	Clear all lists, but NOT the Games or Players vectors.
@@ -5604,7 +5606,7 @@ void Net_Reconnect_Dialog(int reconn, int fresh, int oldest_index,
 					sprintf(buf1,Text_String(TXT_RECONNECTING_TO),
 						Ipx.Connection_Name(id));
 				} else {
-					sprintf(buf1,Text_String(TXT_WAITING_FOR_CONNECTIONS));
+					sprintf(buf1, "%s", Text_String(TXT_WAITING_FOR_CONNECTIONS));
 				}
 				break;
 
@@ -5616,7 +5618,7 @@ void Net_Reconnect_Dialog(int reconn, int fresh, int oldest_index,
 						Ten->Connection_Name(id));
 				}
 				else {
-					sprintf(buf1,Text_String(TXT_WAITING_FOR_CONNECTIONS));
+					sprintf(buf1, "%s", Text_String(TXT_WAITING_FOR_CONNECTIONS));
 				}
 #endif	// TEN
 
@@ -5628,32 +5630,34 @@ void Net_Reconnect_Dialog(int reconn, int fresh, int oldest_index,
 						MPath->Connection_Name(id));
 				}
 				else {
-					sprintf(buf1,Text_String(TXT_WAITING_FOR_CONNECTIONS));
+					sprintf(buf1, "%s", Text_String(TXT_WAITING_FOR_CONNECTIONS));
 				}
 #endif	// MPATH
+			default:
+				break;
 		}
 
 		sprintf(buf2,Text_String(TXT_TIME_ALLOWED), timeval + 1);
 		buf3 = Text_String(TXT_PRESS_ESC);
 
-		w = max(String_Pixel_Width(buf1),String_Pixel_Width(buf2));
+		w = std::max((int)String_Pixel_Width(buf1), (int)String_Pixel_Width(buf2));
 
-#ifdef FIXIT_VERSION_3
+#if defined(FIXIT_VERSION_3) && defined(WOLAPI_INTEGRATION)
 		char szNewCancelMessage[ 300 ];
 		sprintf( szNewCancelMessage, "%s%s", buf3, TXT_WOL_CANCELMEANSFORFEIT );
 
 		if( Session.Type == GAME_INTERNET && pWolapi && pWolapi->GameInfoCurrent.bTournament )
 		{
-			w = max(String_Pixel_Width(szNewCancelMessage), w);	// * RESFACTOR;		why was it ever multiplied by this!!!?
+			w = std::max((int)String_Pixel_Width(szNewCancelMessage), w);	// * RESFACTOR;		why was it ever multiplied by this!!!?
 			w += (d_margin * 12);
 		}
 		else
 		{
-			w = max(String_Pixel_Width(buf3), w) * RESFACTOR;
+			w = std::max((int)String_Pixel_Width(buf3), w) * RESFACTOR;
 			w += (d_margin * 5);
 		}
 #else
-		w = max(String_Pixel_Width(buf3), w) * RESFACTOR;
+		w = std::max((int)String_Pixel_Width(buf3), w) * RESFACTOR;
 		w += (d_margin * 5);
 #endif
 
@@ -5669,7 +5673,7 @@ void Net_Reconnect_Dialog(int reconn, int fresh, int oldest_index,
 
 		Fancy_Text_Print (buf2, 160*RESFACTOR, y + (d_margin * 2) + d_txt6_h + d_margin, scheme, TBLACK, TPF_CENTER | TPF_TEXT);
 
-#ifdef FIXIT_VERSION_3
+#if defined(FIXIT_VERSION_3) && defined(WOLAPI_INTEGRATION)
 		if( Session.Type == GAME_INTERNET && pWolapi && pWolapi->GameInfoCurrent.bTournament )
 			Fancy_Text_Print (szNewCancelMessage, 160*RESFACTOR, y + (d_margin * 2) + (d_txt6_h + d_margin) * 2, scheme, TBLACK, TPF_CENTER | TPF_TEXT);
 		else
@@ -6216,7 +6220,7 @@ static int Net_Fake_New_Dialog(void)
 	bool	player_joined = false;
 	CountDownTimerClass join_timer;
 
-	Fancy_Text_Print(TXT_NONE,0,0,TBLACK,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE, 0, 0, nullptr, TBLACK, TPF_6PT_GRAD | TPF_NOSHADOW);
 	Format_Window_String((char*)TXT_HACKHACK, SeenBuff.Get_Height(), width, height);
 
 	//------------------------------------------------------------------------
@@ -6390,7 +6394,7 @@ static int Net_Fake_New_Dialog(void)
 		//.....................................................................
 		//	Process input
 		//.....................................................................
-		switch (input) {
+		switch ((int)input) {
 
 			case (KN_ESC):
 			case (BUTTON_CANCEL | KN_BUTTON):
@@ -6466,7 +6470,7 @@ static int Net_Fake_New_Dialog(void)
 						rc = TRUE;
 						process = FALSE;
 					} else {
-						WWMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,NULL);
+						WWMessageBox().Process (TXT_ONLY_ONE, TXT_OOPS, TXT_NONE);
 						display = REDRAW_ALL;
 						Sound_Effect(VOC_SYS_ERROR);
 					}
@@ -6784,7 +6788,7 @@ static int Net_Fake_New_Dialog(void)
 	//------------------------------------------------------------------------
 	//Ipx.Set_Timing (Ipx.Global_Response_Time() + 2, -1,
 	//	Ipx.Global_Response_Time() * 4);
-	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120, Ipx.Global_Response_Time () * 8));
+	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, std::max<unsigned long> (120, Ipx.Global_Response_Time () * 8));
 
 	Clear_Listbox(&playerlist);
 
@@ -7006,7 +7010,7 @@ static int Net_Fake_Join_Dialog(void)
 	int	width;
 	int	height;
 
-	Fancy_Text_Print(TXT_NONE,0,0,TBLACK,TBLACK,TPF_6PT_GRAD | TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE, 0, 0, nullptr, TBLACK, TPF_6PT_GRAD | TPF_NOSHADOW);
 	Format_Window_String((char*)TXT_HACKHACK, SeenBuff.Get_Height(), width, height);
 	char * item;
 	unsigned long starttime;
@@ -7185,7 +7189,7 @@ static int Net_Fake_Join_Dialog(void)
 		//.....................................................................
 		//	Process input
 		//.....................................................................
-		switch (input) {
+		switch ((int)input) {
 
 			//..................................................................
 			// ESC / CANCEL: send a SIGN_OFF
@@ -7674,7 +7678,7 @@ static int Net_Fake_Join_Dialog(void)
 	//------------------------------------------------------------------------
 	//Ipx.Set_Timing (Ipx.Global_Response_Time() + 2, -1,
 	//	Ipx.Global_Response_Time() * 4);
-	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, max (120, Ipx.Global_Response_Time () * 8));
+	Ipx.Set_Timing (Ipx.Global_Response_Time () + 2, (unsigned long) -1, std::max<unsigned long> (120, Ipx.Global_Response_Time () * 8));
 
 	//------------------------------------------------------------------------
 	//	Clear all lists, but NOT the Games & Players vectors.

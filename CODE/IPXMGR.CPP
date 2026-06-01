@@ -70,7 +70,9 @@
 #include	"FUNCTION.H"
 #include <stdio.h>
 #include <mem.h>
+#if defined(__WATCOMC__)
 #include <i86.h>
+#endif
 #include "IPXMGR.H"
 #include "WWLIB32.H"	// to enable mono output
 

@@ -399,7 +399,7 @@ int DDEServerClass::Time_Since_Heartbeat(void)
  * HISTORY:                                                                                    *
  *    6/9/96 11:07PM ST : Created                                                              *
  *=============================================================================================*/
-BOOL Send_Data_To_DDE_Server (char *data, int length, int packet_type)
+BOOL Send_Data_To_DDE_Server (char const *data, int length, int packet_type)
 {
 	if( DDE_Class->Open_Poke_Connection(DDE_Class->remote_name) == FALSE) {
 		WWDebugString("RA95 - Failed to connect for POKE!");

@@ -62,7 +62,9 @@
 #include "FUNCTION.H"
 #include <stdio.h>
 #include <mem.h>
+#if defined(__WATCOMC__)
 #include <i86.h>
+#endif
 #include "IPX.H"
 
 #ifdef WIN32
