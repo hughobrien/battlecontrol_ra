@@ -75,7 +75,7 @@
 #include <dos.h>
 #include "VQ.H"
 #include "VQAPLAYP.H"
-#include <vqm32\ALL.H>
+#include <VQM32/ALL.H>
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS
@@ -2829,4 +2829,3 @@ static void Load_AudFrame(VQAHandleP *vqap)
 }
 #endif /* VQAVOC_ON */
 #endif /* VQAAUDIO_ON */
-

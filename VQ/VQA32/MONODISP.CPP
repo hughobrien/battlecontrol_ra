@@ -50,7 +50,7 @@
 #include <string.h>
 #include "VQ.H"
 #include "VQAPLAYP.H"
-#include <vqm32\ALL.H>
+#include <VQM32/ALL.H>
 
 #if(VQAMONO_ON)
 
@@ -509,4 +509,3 @@ void VQA_UpdateMono(VQAHandleP *vqap)
 }
 
 #endif /* VQAMONO_ON */
-

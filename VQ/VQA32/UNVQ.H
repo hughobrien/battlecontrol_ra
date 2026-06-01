@@ -44,6 +44,7 @@
 #ifdef PHARLAP_TNT
 #include <pltypes.h>
 #endif
+#include <windows.h>
 
 /*---------------------------------------------------------------------------
  * FUNCTION PROTOTYPES

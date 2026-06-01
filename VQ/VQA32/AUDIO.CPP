@@ -63,9 +63,9 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <mem.h>
-#include <sys\timeb.h>
+#include <sys/timeb.h>
 #include "VQAPLAYP.H"
-#include <vqm32\ALL.H>
+#include <VQM32/ALL.H>
 
 #ifdef __WATCOMC__
 #pragma pack(4);
@@ -1305,4 +1305,3 @@ long VQA_TimerMethod(void)
 #ifdef __WATCOMC__
 #pragma pack(1);
 #endif
-

@@ -49,8 +49,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <WATCOM.H>
 #include "VQAPLAYP.H"
-#include <vqm32\ALL.H>
+#include <VQM32/ALL.H>
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS
@@ -72,7 +73,7 @@ static VQAConfig _defaultconfig = {
 	/* NotifyFlags: Flags representing the events the client wishes to be
 	 * notified about during playback.
 	 */
-	NULL,
+	0,
 
 	/* Vmode: Video mode to use. */
 	MCGA,
@@ -268,6 +269,7 @@ VideoModeTag VideoModeTags[] = {
 void VQA_INIConfig(VQAConfig *config)
 {
 	char *ininame;
+	char default_ininame[] = "PLAYER.INI";
 	char buf[80];
 	long i;
 
@@ -278,7 +280,7 @@ void VQA_INIConfig(VQAConfig *config)
 	 * it is provided.
 	 */
 	if ((ininame = getenv("VQACFG")) == NULL) {
-		ininame = "PLAYER.INI";
+		ininame = default_ininame;
 	}
 
 	/*-------------------------------------------------------------------------
@@ -426,7 +428,7 @@ void VQA_INIConfig(VQAConfig *config)
 	if (!stricmp(buf, "-1")) {
 		config->DigiPort = -1;
 	} else {
-		sscanf(buf, "%x", &config->DigiPort);
+		sscanf(buf, "%lx", &config->DigiPort);
 	}
 
 	GetINIString("Player", "IRQ", "-1", buf, 80, ininame);
@@ -497,7 +499,3 @@ void VQA_DefaultConfig(VQAConfig *config)
 {
 	memcpy(config, &_defaultconfig, sizeof(VQAConfig));
 }
-
-
-
-
