@@ -77,6 +77,48 @@ fn clipHalfOpen(view: *const GraphicViewPort, x_pixel: c_int, y_pixel: c_int, pi
     return clipped;
 }
 
+fn scaleClipToSource(source_view: *const GraphicViewPort, source_rect: *ClippedRect, dest_rect: *ClippedRect, src_x: c_int, src_y: c_int, dst_x: c_int, dst_y: c_int, src_width: c_int, src_height: c_int, dst_width: c_int, dst_height: c_int) bool {
+    if (source_rect.x0 < 0) {
+        source_rect.x0 = 0;
+        dest_rect.x0 = @intCast(@divTrunc(@as(c_longlong, -src_x) * @as(c_longlong, dst_width), src_width) + dst_x);
+    }
+    if (source_rect.y0 < 0) {
+        source_rect.y0 = 0;
+        dest_rect.y0 = @intCast(@divTrunc(@as(c_longlong, -src_y) * @as(c_longlong, dst_height), src_height) + dst_y);
+    }
+    if (source_rect.x1 > source_view.width) {
+        source_rect.x1 = source_view.width;
+        dest_rect.x1 = @intCast(@divTrunc(@as(c_longlong, source_view.width - src_x) * @as(c_longlong, dst_width), src_width) + dst_x);
+    }
+    if (source_rect.y1 > source_view.height) {
+        source_rect.y1 = source_view.height;
+        dest_rect.y1 = @intCast(@divTrunc(@as(c_longlong, source_view.height - src_y) * @as(c_longlong, dst_height), src_height) + dst_y);
+    }
+
+    return source_rect.x0 < source_rect.x1 and source_rect.y0 < source_rect.y1;
+}
+
+fn scaleClipToDest(dest_view: *const GraphicViewPort, source_rect: *ClippedRect, dest_rect: *ClippedRect, src_x: c_int, src_y: c_int, dst_x: c_int, dst_y: c_int, src_width: c_int, src_height: c_int, dst_width: c_int, dst_height: c_int) bool {
+    if (dest_rect.x0 < 0) {
+        dest_rect.x0 = 0;
+        source_rect.x0 = @intCast(@divTrunc(@as(c_longlong, -dst_x) * @as(c_longlong, src_width), dst_width) + src_x);
+    }
+    if (dest_rect.y0 < 0) {
+        dest_rect.y0 = 0;
+        source_rect.y0 = @intCast(@divTrunc(@as(c_longlong, -dst_y) * @as(c_longlong, src_height), dst_height) + src_y);
+    }
+    if (dest_rect.x1 > dest_view.width) {
+        dest_rect.x1 = dest_view.width;
+        source_rect.x1 = @intCast(@divTrunc(@as(c_longlong, dest_view.width - dst_x) * @as(c_longlong, src_width), dst_width) + src_x);
+    }
+    if (dest_rect.y1 > dest_view.height) {
+        dest_rect.y1 = dest_view.height;
+        source_rect.y1 = @intCast(@divTrunc(@as(c_longlong, dest_view.height - dst_y) * @as(c_longlong, src_height), dst_height) + src_y);
+    }
+
+    return source_rect.x0 < source_rect.x1 and source_rect.y0 < source_rect.y1 and dest_rect.x0 < dest_rect.x1 and dest_rect.y0 < dest_rect.y1;
+}
+
 fn copyForward(destination: [*]u8, source: [*]const u8, count: usize) void {
     var index: usize = 0;
     while (index != count) : (index += 1) {
@@ -350,6 +392,94 @@ export fn Buffer_Draw_Line(this_object: *GraphicViewPort, x1_pixel: c_int, y1_pi
             }
         }
     }
+}
+
+export fn Linear_Scale_To_Linear(
+    this_object: *GraphicViewPort,
+    dest: *GraphicViewPort,
+    src_x: c_int,
+    src_y: c_int,
+    dst_x: c_int,
+    dst_y: c_int,
+    src_width: c_int,
+    src_height: c_int,
+    dst_width: c_int,
+    dst_height: c_int,
+    trans: c_int,
+    remap_ptr: ?*const anyopaque,
+) callconv(.c) c_int {
+    if (src_width == 0 or src_height == 0 or dst_width == 0 or dst_height == 0) return 0;
+
+    var source_rect = ClippedRect{
+        .x0 = src_x,
+        .y0 = src_y,
+        .x1 = src_x +% src_width,
+        .y1 = src_y +% src_height,
+        .clipped_left = 0,
+        .clipped_top = 0,
+    };
+    var dest_rect = ClippedRect{
+        .x0 = dst_x,
+        .y0 = dst_y,
+        .x1 = dst_x +% dst_width,
+        .y1 = dst_y +% dst_height,
+        .clipped_left = 0,
+        .clipped_top = 0,
+    };
+
+    if (!scaleClipToSource(this_object, &source_rect, &dest_rect, src_x, src_y, dst_x, dst_y, src_width, src_height, dst_width, dst_height)) return 0;
+    if (!scaleClipToDest(dest, &source_rect, &dest_rect, src_x, src_y, dst_x, dst_y, src_width, src_height, dst_width, dst_height)) return 0;
+
+    const scaled_width = dest_rect.width();
+    const scaled_height = dest_rect.height();
+    if (scaled_width <= 0 or scaled_height <= 0) return 0;
+
+    const source_stride = bytesPerRow(this_object);
+    const dest_stride = bytesPerRow(dest);
+    const source_base = basePointer(this_object);
+    const dest_base = basePointer(dest);
+    const remap: ?[*]const u8 = if (remap_ptr) |ptr| @ptrCast(ptr) else null;
+
+    const dx_fixed: u32 = @intCast(@divTrunc(@as(c_longlong, src_width) << 16, dst_width));
+    const dx_integer: usize = @intCast(dx_fixed >> 16);
+    const dx_fraction: u32 = dx_fixed << 16;
+    const dy_integer_rows: usize = @intCast(@divTrunc(src_height, dst_height));
+    const dy_fraction: c_int = @rem(src_height, dst_height);
+
+    var source_row = source_base + @as(usize, @intCast(source_rect.y0)) * source_stride + @as(usize, @intCast(source_rect.x0));
+    var dest_row = dest_base + @as(usize, @intCast(dest_rect.y0)) * dest_stride + @as(usize, @intCast(dest_rect.x0));
+    var dy_acc = -dst_height;
+
+    var remaining_rows: c_int = scaled_height;
+    while (remaining_rows != 0) : (remaining_rows -= 1) {
+        var source_pixel = source_row;
+        var dest_pixel = dest_row;
+        var dx_acc: u32 = 0;
+        var remaining_columns: c_int = scaled_width;
+
+        while (remaining_columns != 0) : (remaining_columns -= 1) {
+            const source_value = source_pixel[0];
+            if (trans == 0 or source_value != 0) {
+                dest_pixel[0] = if (remap) |table| table[source_value] else source_value;
+            }
+
+            const old_acc = dx_acc;
+            dx_acc +%= dx_fraction;
+            source_pixel += dx_integer;
+            if (dx_acc < old_acc) source_pixel += 1;
+            dest_pixel += 1;
+        }
+
+        dest_row += dest_stride;
+        source_row += dy_integer_rows * source_stride;
+        dy_acc += dy_fraction;
+        if (dy_acc > 0) {
+            source_row += source_stride;
+            dy_acc -= dst_height;
+        }
+    }
+
+    return 1;
 }
 
 test "GraphicViewPort layout matches the C++ object layout on the current target" {
@@ -635,6 +765,97 @@ test "Buffer_To_Page copies tile-sized source buffers into staging viewports" {
 
     try std.testing.expectEqual(@as(c_long, 24), copied_width);
     try std.testing.expectEqualSlices(u8, &tile, &stage);
+}
+
+test "Linear_Scale_To_Linear scales radar icon buffers with transparency and remap" {
+    var source_buffer = [_]u8{
+        1, 0, 2,
+        3, 4, 0,
+        0, 5, 6,
+    };
+    var dest_buffer = [_]u8{99} ** 64;
+    var remap = [_]u8{0} ** 256;
+    for (&remap, 0..) |*value, index| value.* = @intCast((index + 10) & 0xff);
+
+    var source = testView(&source_buffer, 3, 3, 0, 0);
+    var dest = testView(&dest_buffer, 8, 8, 0, 0);
+
+    try std.testing.expectEqual(@as(c_int, 1), Linear_Scale_To_Linear(&source, &dest, 0, 0, 1, 1, 3, 3, 6, 6, 1, &remap));
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        99, 99, 99, 99, 99, 99, 99, 99,
+        99, 11, 11, 99, 99, 12, 12, 99,
+        99, 11, 11, 99, 99, 12, 12, 99,
+        99, 11, 11, 99, 99, 12, 12, 99,
+        99, 13, 13, 14, 14, 99, 99, 99,
+        99, 13, 13, 14, 14, 99, 99, 99,
+        99, 99, 99, 15, 15, 16, 16, 99,
+        99, 99, 99, 99, 99, 99, 99, 99,
+    }, &dest_buffer);
+}
+
+test "Linear_Scale_To_Linear scales tile stage buffers down with asm stepping" {
+    var source_buffer = [_]u8{0} ** (24 * 24);
+    for (&source_buffer, 0..) |*value, index| value.* = @intCast(index & 0xff);
+    var dest_buffer = [_]u8{0} ** (6 * 6);
+
+    var source = testView(&source_buffer, 24, 24, 0, 0);
+    var dest = testView(&dest_buffer, 6, 6, 0, 0);
+
+    try std.testing.expectEqual(@as(c_int, 1), Linear_Scale_To_Linear(&source, &dest, 0, 0, 0, 0, 24, 24, 6, 6, 1, null));
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        0,   4,   8,   12,  16,  20,
+        96,  100, 104, 108, 112, 116,
+        192, 196, 200, 204, 208, 212,
+        32,  36,  40,  44,  48,  52,
+        128, 132, 136, 140, 144, 148,
+        224, 228, 232, 236, 240, 244,
+    }, &dest_buffer);
+}
+
+test "Linear_Scale_To_Linear destination clipping shifts the source origin" {
+    var source_buffer = [_]u8{
+        1,  2,  3,  4,
+        5,  6,  7,  8,
+        9,  10, 11, 12,
+        13, 14, 15, 16,
+    };
+    var dest_buffer = [_]u8{0} ** 16;
+
+    var source = testView(&source_buffer, 4, 4, 0, 0);
+    var dest = testView(&dest_buffer, 4, 4, 0, 0);
+
+    try std.testing.expectEqual(@as(c_int, 1), Linear_Scale_To_Linear(&source, &dest, 0, 0, -1, -1, 4, 4, 4, 4, 0, null));
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        6,  7,  8,  0,
+        10, 11, 12, 0,
+        14, 15, 16, 0,
+        0,  0,  0,  0,
+    }, &dest_buffer);
+}
+
+test "Linear_Scale_To_Linear source clipping shifts the destination origin" {
+    var source_buffer = [_]u8{
+        1,  2,  3,  4,
+        5,  6,  7,  8,
+        9,  10, 11, 12,
+        13, 14, 15, 16,
+    };
+    var dest_buffer = [_]u8{0} ** 16;
+
+    var source = testView(&source_buffer, 4, 4, 0, 0);
+    var dest = testView(&dest_buffer, 4, 4, 0, 0);
+
+    try std.testing.expectEqual(@as(c_int, 1), Linear_Scale_To_Linear(&source, &dest, -1, -1, 0, 0, 4, 4, 4, 4, 0, null));
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        0, 0, 0,  0,
+        0, 1, 2,  3,
+        0, 5, 6,  7,
+        0, 9, 10, 11,
+    }, &dest_buffer);
 }
 
 test "Buffer_To_Page ignores null source buffers" {
