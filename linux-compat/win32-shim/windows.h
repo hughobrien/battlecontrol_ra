@@ -31,6 +31,7 @@ typedef void *HANDLE;
 typedef void *HWND;
 typedef void *HINSTANCE;
 typedef void *HMODULE;
+typedef void *FARPROC;
 typedef void *HDC;
 typedef void *HBITMAP;
 typedef void *HCURSOR;
@@ -506,6 +507,9 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef SEM_FAILCRITICALERRORS
 #define SEM_FAILCRITICALERRORS 0x0001
 #endif
+#ifndef SEM_NOOPENFILEERRORBOX
+#define SEM_NOOPENFILEERRORBOX 0x8000
+#endif
 #ifndef DUPLICATE_SAME_ACCESS
 #define DUPLICATE_SAME_ACCESS 0x00000002u
 #endif
@@ -535,6 +539,9 @@ extern "C" {
 #endif
 DWORD GetModuleFileName(HMODULE module, LPSTR filename, DWORD size);
 DWORD GetVersion(void);
+HINSTANCE LoadLibrary(LPCSTR library_name);
+FARPROC GetProcAddress(HMODULE module, LPCSTR procedure_name);
+BOOL FreeLibrary(HMODULE module);
 HWND FindWindow(LPCSTR class_name, LPCSTR window_name);
 BOOL IsWindow(HWND window);
 BOOL PostMessage(HWND window, UINT message, WPARAM wparam, LPARAM lparam);
