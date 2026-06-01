@@ -290,5 +290,16 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(wwlib_font_palette);
 
+    const wwlib_fading_table_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/wwlib/fading_table.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const wwlib_fading_table = b.addObject(.{
+        .name = "wwlib-fading-table",
+        .root_module = wwlib_fading_table_module,
+    });
+    exe.root_module.addObject(wwlib_fading_table);
+
     b.installArtifact(exe);
 }
