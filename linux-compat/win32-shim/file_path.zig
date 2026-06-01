@@ -109,6 +109,29 @@ const Stat = extern struct {
     __glibc_reserved: [3]c_long,
 };
 
+const Statvfs = extern struct {
+    f_bsize: c_ulong,
+    f_frsize: c_ulong,
+    f_blocks: c_ulong,
+    f_bfree: c_ulong,
+    f_bavail: c_ulong,
+    f_files: c_ulong,
+    f_ffree: c_ulong,
+    f_favail: c_ulong,
+    f_fsid: c_ulong,
+    f_flag: c_ulong,
+    f_namemax: c_ulong,
+    f_type: c_uint,
+    __f_spare: [5]c_int,
+};
+
+const Diskfree = extern struct {
+    avail_clusters: c_uint,
+    total_clusters: c_uint,
+    bytes_per_sector: c_uint,
+    sectors_per_cluster: c_uint,
+};
+
 const DIR = opaque {};
 
 const Dirent = extern struct {
@@ -135,6 +158,7 @@ extern fn unlink(pathname: [*:0]const u8) c_int;
 extern fn utime(filename: [*:0]const u8, times: ?*const utimbuf) c_int;
 extern fn stat(pathname: [*:0]const u8, statbuf: *Stat) c_int;
 extern fn fstat(fd: c_int, statbuf: *Stat) c_int;
+extern fn statvfs(pathname: [*:0]const u8, buf: *Statvfs) c_int;
 extern fn opendir(name: [*:0]const u8) ?*DIR;
 extern fn readdir(dirp: *DIR) ?*Dirent;
 extern fn closedir(dirp: *DIR) c_int;
@@ -192,6 +216,25 @@ fn copyZ(dest: ?[*:0]u8, src: []const u8) void {
         dest.?[i] = src[i];
     }
     dest.?[i] = 0;
+}
+
+fn copyBoundedZ(dest: ?[*:0]u8, capacity: DWORD, src: []const u8) void {
+    const out = dest orelse return;
+    if (capacity == 0) return;
+    const max_len: usize = capacity;
+    const count = @min(src.len, max_len - 1);
+    @memcpy(out[0..count], src[0..count]);
+    out[count] = 0;
+}
+
+fn clampToCUint(value: u64) c_uint {
+    return @intCast(@min(value, std.math.maxInt(c_uint)));
+}
+
+fn isDosDriveRoot(path: []const u8) bool {
+    if (path.len < 2 or path[1] != ':') return false;
+    if (path.len == 2) return true;
+    return path.len == 3 and (path[2] == '\\' or path[2] == '/');
 }
 
 export fn _splitpath(path: [*:0]const u8, drive: ?[*:0]u8, dir: ?[*:0]u8, fname: ?[*:0]u8, ext: ?[*:0]u8) callconv(.c) void {
@@ -713,6 +756,69 @@ export fn SetErrorMode(mode: UINT) callconv(.c) UINT {
     return 0;
 }
 
+export fn _dos_getdiskfree(drive: c_uint, diskspace: ?*Diskfree) callconv(.c) c_int {
+    const out = diskspace orelse {
+        last_error = 87;
+        return -1;
+    };
+    if (drive != 0 and drive != 3) {
+        last_error = 15;
+        return -1;
+    }
+
+    const current: [:0]const u8 = ".";
+    var fs: Statvfs = undefined;
+    if (statvfs(current.ptr, &fs) != 0) {
+        setLastErrorFromErrno();
+        return -1;
+    }
+
+    const block_size = if (fs.f_frsize != 0) fs.f_frsize else fs.f_bsize;
+    if (block_size != 0 and block_size % 512 == 0) {
+        out.bytes_per_sector = 512;
+        out.sectors_per_cluster = clampToCUint(block_size / 512);
+    } else {
+        out.bytes_per_sector = clampToCUint(block_size);
+        out.sectors_per_cluster = 1;
+    }
+    out.avail_clusters = clampToCUint(fs.f_bavail);
+    out.total_clusters = clampToCUint(fs.f_blocks);
+    clearLastError();
+    return 0;
+}
+
+export fn GetVolumeInformation(root_path_name: ?[*:0]const u8, volume_name_buffer: ?[*:0]u8, volume_name_size: DWORD, volume_serial_number: ?*DWORD, maximum_component_length: ?*DWORD, file_system_flags: ?*DWORD, file_system_name_buffer: ?[*:0]u8, file_system_name_size: DWORD) callconv(.c) BOOL {
+    var path_buf: [1024]u8 = undefined;
+    const path = if (root_path_name) |root| blk: {
+        const input = std.mem.span(root);
+        if (isDosDriveRoot(input)) {
+            last_error = 15;
+            return 0;
+        }
+        break :blk translatePath(root, &path_buf) orelse {
+            last_error = 206;
+            return 0;
+        };
+    } else ".";
+
+    var st: Stat = undefined;
+    if (stat(path.ptr, &st) != 0) {
+        setLastErrorFromErrno();
+        return 0;
+    }
+    if ((st.st_mode & S_IFMT) != S_IFDIR) {
+        last_error = 87;
+        return 0;
+    }
+
+    copyBoundedZ(volume_name_buffer, volume_name_size, "");
+    copyBoundedZ(file_system_name_buffer, file_system_name_size, "");
+    if (volume_serial_number) |out| out.* = 0;
+    if (maximum_component_length) |out| out.* = 255;
+    if (file_system_flags) |out| out.* = 0;
+    clearLastError();
+    return 1;
+}
 fn unixSecondsToFileTime(seconds: i64) FILETIME {
     const intervals: u64 = @intCast((seconds + 11644473600) * 10000000);
     return .{
