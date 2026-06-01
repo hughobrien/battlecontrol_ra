@@ -205,7 +205,7 @@ void Send_Statistics_Packet(void)
 	static int	packet_size;
 	int			index;
 	bool			packet_later = false;	// Should the packet be sent later
-	void			*packet;
+	char			*packet;
 
 	static char	field_player_handle[5] 				= { "NAM?" };
 	static char	field_player_team[5] 				= { "SID?" };
@@ -230,7 +230,7 @@ void Send_Statistics_Packet(void)
 	static char field_player_crates_found[5]		= { "CRA?" };
 	static char field_player_harvested[5]			= { "HRV?" };
 
-	static char *houses[] = {
+	static const char *houses[] = {
 		"SPA",
 		"GRE",
 		"USS",
@@ -401,7 +401,7 @@ void Send_Statistics_Packet(void)
 			int completion = -1;
 
 			if (player1 && player2){			//	Can this ever fail?		ajw
-#ifdef FIXIT_VERSION_3
+#if defined(FIXIT_VERSION_3) && defined(WOLAPI_INTEGRATION)
 				//	Send IP addresses of both players.
 				NetNumType net;
 				NetNodeType node;
@@ -454,7 +454,7 @@ void Send_Statistics_Packet(void)
 				Session.Players[ 1 ]->Address.Get_Address( net, node );
 				sprintf( szIPAddress, "%i.%i.%i.%i", node[0], node[1], node[2], node[3] );
 				stats.Add_Field( FIELD_PLAYER2_IP, (char*)szIPAddress );
-#endif				
+#endif
 #ifdef FIXIT_VERSION_3		//	Stalemate games.
 				if( Scen.bLocalProposesDraw && Scen.bOtherProposesDraw )
 				{
@@ -611,14 +611,15 @@ void Send_Statistics_Packet(void)
 		sprintf (version, "V%s", VerNum.Version_Name() );
 		stats.Add_Field (FIELD_GAME_VERSION, (char*)version);
 
+#ifdef WOLAPI_INTEGRATION
 		char path_to_exe[280];
-		FILETIME write_time;		//File time is 64 bits
-
 		GetModuleFileName (ProgramInstance, path_to_exe, 280);
 		RawFileClass file;
 		file.Set_Name(path_to_exe);
 		file.Open();
 		HANDLE handle = file.Get_File_Handle();
+
+		FILETIME write_time;		//File time is 64 bits
 
 		if (handle != INVALID_HANDLE_VALUE){
 			if (GetFileTime (handle, NULL, NULL, &write_time)){
@@ -627,6 +628,7 @@ void Send_Statistics_Packet(void)
 				stats.Add_Field (FIELD_GAME_BUILD_DATE, (void*)&write_time, sizeof (write_time));
 			}
 		}
+#endif
 
 		/*
 		** Covert installed? (Yes/No)
@@ -850,10 +852,11 @@ void Send_Statistics_Packet(void)
 		/*
 		** Send the packet we calculated earlier when the disconnect occurred
 		*/
-		packet = PacketLater;
+		packet = (char*)PacketLater;
 		PacketLater = NULL;
 	}
 
+#ifdef WOLAPI_INTEGRATION
 	/*
 	** Send it.....
 	*/
@@ -876,6 +879,7 @@ void Send_Statistics_Packet(void)
 			//debugprint( "RequestGameresSend( %s, %i ) failed!!!\n", szGameResServer, iPort );
 			;
 	}
+#endif
 
 	/*
 	** Save it to disk as well so I can see it
