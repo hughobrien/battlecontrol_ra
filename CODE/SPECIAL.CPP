@@ -42,6 +42,8 @@
 
 #include	"FUNCTION.H"
 
+#include <algorithm>
+
 #ifdef WIN32
 #define	OPTION_WIDTH	236*2
 #define	OPTION_HEIGHT	162*2
@@ -165,7 +167,7 @@ void Special_Dialog(bool simple)
 			Dialog_Box(OPTION_X, OPTION_Y, OPTION_WIDTH, OPTION_HEIGHT);
 			Draw_Caption(TXT_SPECIAL_OPTIONS, OPTION_X, OPTION_Y, OPTION_WIDTH);
 
-			for (index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
+			for (int index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
 				Fancy_Text_Print(_options[index].Description, _options[index].Button->X+10*RESFACTOR, _options[index].Button->Y, GadgetClass::Get_Color_Scheme(), TBLACK, TPF_6PT_GRAD|TPF_USE_GRAD_PAL|TPF_NOSHADOW);
 			}
 			buttons->Draw_All();
@@ -173,11 +175,11 @@ void Special_Dialog(bool simple)
 		}
 
 		KeyNumType input = buttons->Input();
-		switch (input) {
+		switch ((int)input) {
 			case KN_ESC:
-			case 200|KN_BUTTON:
+			case (200|KN_BUTTON):
 				process = false;
-				for (index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
+				for (int index = 0; index < sizeof(_options)/sizeof(_options[0]); index++) {
 					bool setting = _options[index].Setting;
 					switch (_options[index].Description) {
 						case TXT_THREE_POINT:
@@ -196,19 +198,20 @@ void Special_Dialog(bool simple)
 				}
 				break;
 
-			case 201|KN_BUTTON:
+			case (201|KN_BUTTON):
 				process = false;
 				break;
 
 			case KN_NONE:
 				break;
 
-			default:
-				index = (input & ~KN_BUTTON) - 100;
+			default: {
+				int index = (input & ~KN_BUTTON) - 100;
 				if ((unsigned)index < sizeof(_options)/sizeof(_options[0])) {
 					_options[index].Setting = _options[index].Button->IsOn;
 				}
 				break;
+			}
 		}
 	}
 
@@ -319,7 +322,7 @@ char const * Fetch_Password(int caption, int message, int btext)
 
 	if (btext == TXT_NONE) btext = TXT_OK;
 
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
 
 	/*
 	**	Examine the optional button parameters. Fetch the width and starting
@@ -331,7 +334,7 @@ char const * Fetch_Password(int caption, int message, int btext)
 	**	Build the button list.
 	*/
 	bheight = FontHeight + FontYSpacing + 2*RESFACTOR;
-	bwidth = max((String_Pixel_Width(Text_String(btext)) + 8*RESFACTOR), 30*RESFACTOR);
+	bwidth = std::max<int>((String_Pixel_Width(Text_String(btext)) + 8*RESFACTOR), 30*RESFACTOR);
 
 	/*
 	**	Determine the dimensions of the text to be used for the dialog box.
@@ -339,12 +342,12 @@ char const * Fetch_Password(int caption, int message, int btext)
 	*/
 	buffer[BUFFSIZE-1] = 0;
 	strncpy(buffer, Text_String(message), BUFFSIZE-1);
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
 	int width;
 	int height;
 	Format_Window_String(buffer, 255, width, height);
 
-	width = max(width, 50*RESFACTOR);
+	width = std::max(width, 50*RESFACTOR);
 	width += 40*RESFACTOR;
 	height += (60+25)*RESFACTOR;
 
@@ -426,7 +429,7 @@ char const * Fetch_Password(int caption, int message, int btext)
 			button2.Flag_To_Redraw();
 			first = false;
 		}
-		switch (input) {
+		switch ((int)input) {
 			case (1|BUTTON_FLAG):
 				process = false;
 				break;
@@ -493,7 +496,7 @@ int Fetch_Difficulty(void)
 		}
 	}
 #endif
-	Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
+	Fancy_Text_Print(TXT_NONE, 0, 0, NULL, TBLACK, TPF_6PT_GRAD|TPF_NOSHADOW);
 	int width;
 	int height;
 	Format_Window_String(buffer, w-60*RESFACTOR, width, height);
@@ -577,7 +580,7 @@ int Fetch_Difficulty(void)
 		*/
 		KeyNumType input = buttonlist->Input();
 
-		switch (input) {
+		switch ((int)input) {
 			case KN_RETURN:
 			case (1|BUTTON_FLAG):
 				process = false;
