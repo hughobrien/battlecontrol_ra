@@ -1,4 +1,5 @@
 const std = @import("std");
+const builtin = @import("builtin");
 
 const GraphicViewPort = extern struct {
     offset: c_long,
@@ -12,6 +13,8 @@ const GraphicViewPort = extern struct {
     is_direct_draw: c_int,
     lock_count: c_int,
 };
+
+extern var SeenBuff: GraphicViewPort;
 
 const IControl = extern struct {
     width: u16,
@@ -53,6 +56,11 @@ fn byteOffsetConst(base: *const anyopaque, offset: c_int) [*]const u8 {
 
 fn bytesPerRow(view: *const GraphicViewPort) usize {
     return @intCast(@as(c_long, view.width) + @as(c_long, view.x_add) + view.pitch);
+}
+
+fn visiblePage() *GraphicViewPort {
+    if (builtin.is_test) return &test_visible_page;
+    return &SeenBuff;
 }
 
 const ClippedRect = struct {
@@ -149,6 +157,21 @@ fn copyForward(destination: [*]u8, source: [*]const u8, count: usize) void {
     var index: usize = 0;
     while (index != count) : (index += 1) {
         destination[index] = source[index];
+    }
+}
+
+fn copyRows(dest: *GraphicViewPort, source: *const GraphicViewPort, copy_width: c_int, copy_height: c_int) void {
+    const width: usize = @intCast(copy_width);
+    const source_stride = bytesPerRow(source);
+    const dest_stride = bytesPerRow(dest);
+    var source_row = basePointer(source);
+    var dest_row = basePointer(dest);
+
+    var row: c_int = 0;
+    while (row != copy_height) : (row += 1) {
+        copyForward(dest_row, source_row, width);
+        source_row += source_stride;
+        dest_row += dest_stride;
     }
 }
 
@@ -348,6 +371,186 @@ export fn Buffer_Print(this_object: *GraphicViewPort, str: ?[*:0]const u8, x_pix
     _ = foreground;
     _ = background;
     return 0;
+}
+
+export fn ModeX_Blit(source: *GraphicViewPort) callconv(.c) void {
+    const dest = visiblePage();
+    const copy_width = @min(source.width, dest.width);
+    const copy_height = @min(source.height, dest.height);
+    if (copy_width <= 0 or copy_height <= 0) return;
+    copyRows(dest, source, copy_width, copy_height);
+}
+
+const shape_center = 0x0020;
+const shape_trans = 0x0040;
+const shape_fading = 0x0100;
+const shape_predator = 0x0200;
+const shape_ghost = 0x1000;
+const shape_partial = 0x4000;
+
+const pred_mask = 0x0e;
+const pred_negative_table = [_]i16{ -1, -3, -2, -5, -2, -4, -3, -1 };
+const pred_table = [_]i16{ 1, 3, 2, 5, 2, 3, 4, 1 };
+
+const FrameOptions = struct {
+    ghost: ?[*]const u8 = null,
+    fading: ?[*]const u8 = null,
+    fading_count: c_int = 0,
+    predator_offset: c_int = 0,
+    partial_predator: c_int = 0x100,
+};
+
+fn fadePixel(pixel: u8, table: [*]const u8, count: c_int) u8 {
+    var result = pixel;
+    var remaining = count & 0x3f;
+    while (remaining != 0) : (remaining -= 1) {
+        result = table[result];
+    }
+    return result;
+}
+
+fn ghostPixel(pixel: u8, destination: u8, table: [*]const u8) u8 {
+    const translucent_index = table[pixel];
+    if (translucent_index == 0xff) return pixel;
+    const translucent_table = table + 0x100;
+    return translucent_table[@as(usize, translucent_index) * 0x100 + destination];
+}
+
+fn predatorPixel(destination: [*]const u8, dest_stride: usize, state: *c_int, partial_predator: c_int, predator_offset: *c_int) ?u8 {
+    var partial_count = state.* + partial_predator;
+    if ((partial_count & 0xff00) == 0) {
+        state.* = partial_count;
+        return null;
+    }
+
+    partial_count &= 0xff;
+    state.* = partial_count;
+    const uses_negative_table = predator_offset.* < 0;
+    const table_offset: usize = @intCast((predator_offset.* & pred_mask) >> 1);
+    predator_offset.* = (predator_offset.* & ~@as(c_int, 0xff)) | ((predator_offset.* + 2) & pred_mask);
+    const offset: usize = if (uses_negative_table)
+        dest_stride - @as(usize, @intCast(-pred_negative_table[table_offset]))
+    else
+        @intCast(pred_table[table_offset]);
+    const address = @intFromPtr(destination);
+    return (@as([*]const u8, @ptrFromInt(address + offset)))[0];
+}
+
+fn drawFramePixel(source_pixel: u8, destination: [*]u8, dest_stride: usize, flags: c_int, options: FrameOptions, partial_count: *c_int, predator_offset: *c_int) void {
+    if ((flags & shape_trans) != 0 and source_pixel == 0) return;
+
+    var pixel = source_pixel;
+    if ((flags & shape_predator) != 0) {
+        pixel = predatorPixel(destination, dest_stride, partial_count, options.partial_predator, predator_offset) orelse source_pixel;
+    }
+
+    if ((flags & shape_ghost) != 0) {
+        if (options.ghost) |ghost_table| {
+            pixel = ghostPixel(pixel, destination[0], ghost_table);
+        }
+    }
+
+    if ((flags & shape_fading) != 0 and options.fading_count != 0) {
+        if (options.fading) |fading_table| {
+            pixel = fadePixel(pixel, fading_table, options.fading_count);
+        }
+    }
+
+    destination[0] = pixel;
+}
+
+fn bufferFrameToPage(
+    x_pixel_arg: c_int,
+    y_pixel_arg: c_int,
+    pixel_width: c_int,
+    pixel_height: c_int,
+    source_ptr: ?*const anyopaque,
+    dest: *GraphicViewPort,
+    flags: c_int,
+    options: FrameOptions,
+) c_long {
+    const source_base: [*]const u8 = @ptrCast(source_ptr orelse return 0);
+    if (pixel_width <= 0 or pixel_height <= 0 or dest.width <= 0 or dest.height <= 0) return 0;
+
+    var x_pixel = x_pixel_arg;
+    var y_pixel = y_pixel_arg;
+    if ((flags & shape_center) != 0) {
+        x_pixel -= @divTrunc(pixel_width, 2);
+        y_pixel -= @divTrunc(pixel_height, 2);
+    }
+
+    var x0 = x_pixel;
+    var y0 = y_pixel;
+    var x1 = x_pixel +% pixel_width;
+    var y1 = y_pixel +% pixel_height;
+    var source_x: c_int = 0;
+    var source_y: c_int = 0;
+
+    if (x0 < 0) {
+        source_x = -x0;
+        x0 = 0;
+    }
+    if (y0 < 0) {
+        source_y = -y0;
+        y0 = 0;
+    }
+    if (x1 > dest.width) x1 = dest.width;
+    if (y1 > dest.height) y1 = dest.height;
+
+    const draw_width = x1 - x0;
+    const draw_height = y1 - y0;
+    if (draw_width <= 0 or draw_height <= 0) return 0;
+
+    const source_stride: usize = @intCast(pixel_width);
+    const dest_stride = bytesPerRow(dest);
+    var source_row = source_base + @as(usize, @intCast(source_y)) * source_stride + @as(usize, @intCast(source_x));
+    var dest_row = basePointer(dest) + @as(usize, @intCast(y0)) * dest_stride + @as(usize, @intCast(x0));
+
+    var predator_offset = options.predator_offset;
+    if (predator_offset < 0) {
+        predator_offset = @as(c_int, -256) | (-(predator_offset << 1) & pred_mask);
+    } else {
+        predator_offset = (predator_offset << 1) & pred_mask;
+    }
+    var partial_count: c_int = 0;
+
+    var row: c_int = 0;
+    while (row != draw_height) : (row += 1) {
+        var source_pixel = source_row;
+        var dest_pixel = dest_row;
+        var column: c_int = 0;
+        while (column != draw_width) : (column += 1) {
+            drawFramePixel(source_pixel[0], dest_pixel, dest_stride, flags, options, &partial_count, &predator_offset);
+            source_pixel += 1;
+            dest_pixel += 1;
+        }
+        source_row += source_stride;
+        dest_row += dest_stride;
+    }
+
+    return draw_width;
+}
+
+export fn Buffer_Frame_To_Page(x_pixel: c_int, y_pixel: c_int, pixel_width: c_int, pixel_height: c_int, source_ptr: ?*const anyopaque, dest: *GraphicViewPort, flags: c_int, ...) callconv(.c) c_long {
+    var options = FrameOptions{};
+    var args = @cVaStart();
+    defer @cVaEnd(&args);
+
+    if ((flags & shape_ghost) != 0) {
+        options.ghost = @ptrCast(@cVaArg(&args, ?*const anyopaque));
+    }
+    if ((flags & shape_fading) != 0) {
+        options.fading = @ptrCast(@cVaArg(&args, ?*const anyopaque));
+        options.fading_count = @cVaArg(&args, c_int);
+    }
+    if ((flags & shape_predator) != 0) {
+        options.predator_offset = @cVaArg(&args, c_int);
+    }
+    if ((flags & shape_partial) != 0) {
+        options.partial_predator = @cVaArg(&args, c_int) & 0xff;
+    }
+
+    return bufferFrameToPage(x_pixel, y_pixel, pixel_width, pixel_height, source_ptr, dest, flags, options);
 }
 
 export fn Buffer_Draw_Stamp_Clip(
@@ -650,6 +853,20 @@ fn testView(buffer: []u8, width: c_int, height: c_int, x_add: c_int, pitch: c_lo
         .lock_count = 0,
     };
 }
+
+var test_visible_storage = [_]u8{0} ** 32;
+var test_visible_page = GraphicViewPort{
+    .offset = 0,
+    .width = 0,
+    .height = 0,
+    .x_add = 0,
+    .x_pos = 0,
+    .y_pos = 0,
+    .pitch = 0,
+    .graphic_buffer = null,
+    .is_direct_draw = 0,
+    .lock_count = 0,
+};
 
 const TestIconSet = extern struct {
     width: u16,
@@ -1095,6 +1312,108 @@ test "Buffer_Print links as a non-mutating text draw stub" {
     try std.testing.expectEqual(@as(c_long, 0), Buffer_Print(&view, "READY", 0, 0, 15, 0));
     try std.testing.expectEqual(@as(c_long, 0), Buffer_Print(&view, null, 0, 0, 15, 0));
     try std.testing.expectEqualSlices(u8, &[_]u8{ 1, 2, 3, 4 }, &buffer);
+}
+
+test "ModeX_Blit copies source rows into the visible page viewport" {
+    var source_buffer = [_]u8{
+        1, 2, 3, 99,
+        4, 5, 6, 99,
+    };
+    test_visible_storage = [_]u8{0} ** 32;
+    var source = testView(&source_buffer, 3, 2, 1, 0);
+    test_visible_page = testView(&test_visible_storage, 3, 2, 2, 0);
+
+    ModeX_Blit(&source);
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        1, 2, 3, 0, 0,
+        4, 5, 6, 0, 0,
+    }, test_visible_storage[0..10]);
+}
+
+test "Buffer_Frame_To_Page clips a linear frame into a viewport" {
+    var source = [_]u8{
+        1, 2, 3,
+        4, 5, 6,
+        7, 8, 9,
+    };
+    var destination = [_]u8{0} ** 12;
+    var view = testView(&destination, 4, 3, 0, 0);
+
+    try std.testing.expectEqual(@as(c_long, 2), bufferFrameToPage(-1, 1, 3, 3, &source, &view, 0, .{}));
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        0, 0, 0, 0,
+        2, 3, 0, 0,
+        5, 6, 0, 0,
+    }, &destination);
+}
+
+test "Buffer_Frame_To_Page honors source transparency" {
+    var source = [_]u8{
+        1, 0,
+        0, 4,
+    };
+    var destination = [_]u8{9} ** 4;
+    var view = testView(&destination, 2, 2, 0, 0);
+
+    _ = bufferFrameToPage(0, 0, 2, 2, &source, &view, shape_trans, .{});
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        1, 9,
+        9, 4,
+    }, &destination);
+}
+
+test "Buffer_Frame_To_Page applies ghost tables before storing" {
+    var source = [_]u8{ 2, 3 };
+    var destination = [_]u8{ 7, 8 };
+    var ghost = [_]u8{0xff} ** (0x100 + 0x100 * 0x100);
+    ghost[2] = 4;
+    ghost[0x100 + 4 * 0x100 + 7] = 55;
+    var view = testView(&destination, 2, 1, 0, 0);
+
+    _ = bufferFrameToPage(0, 0, 2, 1, &source, &view, shape_ghost, .{ .ghost = &ghost });
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{ 55, 3 }, &destination);
+}
+
+test "Buffer_Frame_To_Page repeatedly applies the fading table" {
+    var source = [_]u8{ 1, 2, 0 };
+    var destination = [_]u8{0} ** 3;
+    var fading = [_]u8{0} ** 256;
+    for (&fading, 0..) |*value, index| value.* = @intCast((index + 1) & 0xff);
+    var view = testView(&destination, 3, 1, 0, 0);
+
+    _ = bufferFrameToPage(0, 0, 3, 1, &source, &view, shape_fading | shape_trans, .{ .fading = &fading, .fading_count = 2 });
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{ 3, 4, 0 }, &destination);
+}
+
+test "Buffer_Frame_To_Page samples destination pixels for predator draws" {
+    var source = [_]u8{ 5, 6 };
+    var destination = [_]u8{ 10, 11, 12, 13, 14, 15, 16, 17 };
+    var view = testView(&destination, 8, 1, 0, 0);
+
+    _ = bufferFrameToPage(1, 0, 2, 1, &source, &view, shape_predator, .{ .predator_offset = 0 });
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{ 10, 12, 15, 13, 14, 15, 16, 17 }, &destination);
+}
+
+test "Buffer_Frame_To_Page uses the negative predator offset table" {
+    var source = [_]u8{ 5, 6 };
+    var destination = [_]u8{
+        10, 11, 12, 13, 14, 15, 16, 17,
+        20, 21, 22, 23, 24, 25, 26, 27,
+    };
+    var view = testView(&destination, 8, 2, 0, 0);
+
+    _ = bufferFrameToPage(1, 0, 2, 1, &source, &view, shape_predator, .{ .predator_offset = -1 });
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        10, 16, 20, 13, 14, 15, 16, 17,
+        20, 21, 22, 23, 24, 25, 26, 27,
+    }, &destination);
 }
 
 test "Buffer_Draw_Stamp_Clip clips and draws a mapped transparent stamp" {

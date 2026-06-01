@@ -4,6 +4,7 @@ const BOOL = c_int;
 const DWORD = u32;
 const UINT = c_uint;
 const LONG = c_long;
+const HRESULT = LONG;
 const LRESULT = isize;
 const WORD = u16;
 const ATOM = WORD;
@@ -80,6 +81,7 @@ const MB_YESNO: UINT = 0x00000004;
 const SM_CXSCREEN: c_int = 0;
 const SM_CYSCREEN: c_int = 1;
 const TIME_PERIODIC: UINT = 0x0001;
+const DDERR_NODIRECTDRAWSUPPORT: HRESULT = 0x887600de;
 
 const DdeString = extern struct {
     next: ?*DdeString,
@@ -104,6 +106,13 @@ var cursor_x: LONG = 0;
 var cursor_y: LONG = 0;
 
 export var CPUType: u8 = 0;
+
+export fn DirectDrawCreate(guid: ?*const anyopaque, direct_draw: ?*?*anyopaque, outer: ?*anyopaque) callconv(.c) HRESULT {
+    _ = guid;
+    _ = outer;
+    if (direct_draw) |out| out.* = null;
+    return DDERR_NODIRECTDRAWSUPPORT;
+}
 
 const TimerEvent = struct {
     id: UINT,
@@ -1083,6 +1092,13 @@ test "procedure lookup fails for absent modules" {
 
 test "legacy CPU type starts unknown" {
     try std.testing.expectEqual(@as(u8, 0), CPUType);
+}
+
+test "DirectDrawCreate reports unsupported DirectDraw without leaving an object" {
+    var direct_draw: ?*anyopaque = @ptrFromInt(0x1234);
+
+    try std.testing.expectEqual(DDERR_NODIRECTDRAWSUPPORT, DirectDrawCreate(null, &direct_draw, null));
+    try std.testing.expectEqual(@as(?*anyopaque, null), direct_draw);
 }
 
 test "system time fills Win32 SYSTEMTIME ranges" {
