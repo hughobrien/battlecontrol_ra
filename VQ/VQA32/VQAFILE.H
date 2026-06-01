@@ -41,7 +41,7 @@
 *
 ****************************************************************************/
 
-#include <vqm32\IFF.H>
+#include <VQM32/IFF.H>
 
 #ifdef __WATCOMC__
 #pragma pack(1);
@@ -194,4 +194,3 @@ typedef struct _VQAHeader {
 #endif
 
 #endif /* VQAFILE_H */
-
