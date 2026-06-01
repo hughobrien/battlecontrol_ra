@@ -50,10 +50,44 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "FUNCTION.H"
+#include <algorithm>
 #include <dos.h>			// for station ID computation
 #include <time.h>			// for station ID computation
 
 //#include "WolDebug.h"
+
+#ifndef FILE_ATTRIBUTE_HIDDEN
+#define FILE_ATTRIBUTE_HIDDEN 0x00000002u
+#endif
+#ifndef FILE_ATTRIBUTE_SYSTEM
+#define FILE_ATTRIBUTE_SYSTEM 0x00000004u
+#endif
+#ifndef FILE_ATTRIBUTE_DIRECTORY
+#define FILE_ATTRIBUTE_DIRECTORY 0x00000010u
+#endif
+#ifndef FILE_ATTRIBUTE_TEMPORARY
+#define FILE_ATTRIBUTE_TEMPORARY 0x00000100u
+#endif
+
+#ifndef BATTLECONTROL_RA_WIN32_FIND_DATA_DECLARED
+#define BATTLECONTROL_RA_WIN32_FIND_DATA_DECLARED
+typedef struct _WIN32_FIND_DATA {
+	DWORD dwFileAttributes;
+	FILETIME ftCreationTime;
+	FILETIME ftLastAccessTime;
+	FILETIME ftLastWriteTime;
+	DWORD nFileSizeHigh;
+	DWORD nFileSizeLow;
+	DWORD dwReserved0;
+	DWORD dwReserved1;
+	char cFileName[MAX_PATH];
+	char cAlternateFileName[14];
+} WIN32_FIND_DATA, *LPWIN32_FIND_DATA;
+
+extern "C" HANDLE FindFirstFile(LPCSTR file_name, LPWIN32_FIND_DATA find_file_data);
+extern "C" BOOL FindNextFile(HANDLE find_file, LPWIN32_FIND_DATA find_file_data);
+extern "C" BOOL FindClose(HANDLE find_file);
+#endif
 
 /***************************** Globals *************************************/
 //---------------------------------------------------------------------------
@@ -94,45 +128,77 @@ char SessionClass::Descriptions[100][40];
 // These values are used purely for the Mono debug display.  They show the
 // names of the Global Channel packet types, and the event types.
 //---------------------------------------------------------------------------
+static char GlobalPacketNameQueryGame[] = "Game?";
+static char GlobalPacketNameAnswerGame[] = "Game!";
+static char GlobalPacketNameQueryPlayer[] = "Player?";
+static char GlobalPacketNameAnswerPlayer[] = "Player!";
+static char GlobalPacketNameQueryJoin[] = "Join?";
+static char GlobalPacketNameConfirmJoin[] = "Join!";
+static char GlobalPacketNameRejectJoin[] = "Reject";
+static char GlobalPacketNameGameOptions[] = "GameOptions";
+static char GlobalPacketNameSignOff[] = "Sign Off";
+static char GlobalPacketNameGo[] = "GO!";
+static char GlobalPacketNameMessage[] = "Message";
+static char GlobalPacketNamePing[] = "Ping";
+static char GlobalPacketNameLoad[] = "Load";
+
 char * SessionClass::GlobalPacketNames[] = {
-	"Game?",
-	"Game!",
-	"Player?",
-	"Player!",
-	"Join?",
-	"Join!",
-	"Reject",
-	"GameOptions",
-	"Sign Off",
-	"GO!",
-	"Message",
-	"Ping",
-	"Load"
+	GlobalPacketNameQueryGame,
+	GlobalPacketNameAnswerGame,
+	GlobalPacketNameQueryPlayer,
+	GlobalPacketNameAnswerPlayer,
+	GlobalPacketNameQueryJoin,
+	GlobalPacketNameConfirmJoin,
+	GlobalPacketNameRejectJoin,
+	GlobalPacketNameGameOptions,
+	GlobalPacketNameSignOff,
+	GlobalPacketNameGo,
+	GlobalPacketNameMessage,
+	GlobalPacketNamePing,
+	GlobalPacketNameLoad
 };
+
+static char SerialPacketNameConnect[] = "CONNECT";
+static char SerialPacketNameGameOptions[] = "GAME_OPTIONS";
+static char SerialPacketNameSignOff[] = "SIGN_OFF";
+static char SerialPacketNameGo[] = "GO";
+static char SerialPacketNameMessage[] = "MESSAGE";
+static char SerialPacketNameTiming[] = "TIMING";
+static char SerialPacketNameScoreScreen[] = "SCORE_SCREEN";
+static char SerialPacketNameLoadGame[] = "LOADGAME";
+static char SerialPacketNameLastCommand[] = "LAST_COMMAND";
 
 char * SessionClass::SerialPacketNames[] = {
-	"CONNECT",
-	"GAME_OPTIONS",
-	"SIGN_OFF",
-	"GO",
-	"MESSAGE",
-	"TIMING",
-	"SCORE_SCREEN",
-	"LOADGAME",
-	"LAST_COMMAND",
+	SerialPacketNameConnect,
+	SerialPacketNameGameOptions,
+	SerialPacketNameSignOff,
+	SerialPacketNameGo,
+	SerialPacketNameMessage,
+	SerialPacketNameTiming,
+	SerialPacketNameScoreScreen,
+	SerialPacketNameLoadGame,
+	SerialPacketNameLastCommand,
 };
 
+
+static char DialMethodTouchTone[] = "T";
+static char DialMethodPulse[] = "P";
 
 char * SessionClass::DialMethodCheck[ DIAL_METHODS ] = {
-	"T",
-	"P"
+	DialMethodTouchTone,
+	DialMethodPulse
 };
 
+static char CallWaitTone1[] = "*70,";
+static char CallWaitTone2[] = "70#,";
+static char CallWaitPulse[] = "1170,";
+static char CallWaitCustom[sizeof("CUSTOM - ") + CWAITSTRBUF_MAX] = "CUSTOM -                ";
+
 char *SessionClass::CallWaitStrings[ CALL_WAIT_STRINGS_NUM ] = {
-	"*70,",
-	"70#,",
-	"1170,",
-	"CUSTOM -                "
+	CallWaitTone1,
+	CallWaitTone2,
+	CallWaitPulse,
+	CallWaitCustom
 };
 
 /***************************************************************************
@@ -743,7 +809,8 @@ void SessionClass::Read_MultiPlayer_Settings (void)
 
 	//	Create filename and read the file.
 	INIClass ini;
-	if (ini.Load(RawFileClass(CONFIG_FILE_NAME))) {
+	RawFileClass config_file(CONFIG_FILE_NAME);
+	if (ini.Load(config_file)) {
 
 		//	Get the player's last-used Handle
 		ini.Get_String("MultiPlayer", "Handle", "Noname", Handle, sizeof(Handle));
@@ -752,7 +819,7 @@ void SessionClass::Read_MultiPlayer_Settings (void)
 		PrefColor = (PlayerColorType)ini.Get_Int("MultiPlayer", "Color", 0);
 #ifdef FIXIT_VERSION_3
 		int iSide = ini.Get_Int("MultiPlayer", "Side", HOUSE_USSR);
-		iSide = max( 2, min( 6, iSide ) );
+		iSide = std::max( 2, std::min( 6, iSide ) );
 		House = (HousesType)iSide;
 #else
 		House = (HousesType)ini.Get_Int("MultiPlayer", "Side", HOUSE_USSR);
@@ -829,12 +896,12 @@ void SessionClass::Read_MultiPlayer_Settings (void)
 
 		//	Read the entry names in
 		int phonecount = ini.Entry_Count("PhoneBook");
-		for (index = 0; index < phonecount; index++) {
+		for (int phone_index = 0; phone_index < phonecount; phone_index++) {
 			//	Create a new phone book entry
 			phone = new PhoneEntryClass();
 
 			//	Read the entire entry in
-			ini.Get_String("PhoneBook", ini.Get_Entry("PhoneBook", index), NULL, buf, sizeof(buf));
+			ini.Get_String("PhoneBook", ini.Get_Entry("PhoneBook", phone_index), NULL, buf, sizeof(buf));
 
 			//	Extract name, phone # & serial port settings
 			tokenptr = strtok( buf, "|" );
@@ -990,7 +1057,9 @@ void SessionClass::Read_MultiPlayer_Settings (void)
 		sscanf(buf,"%x",&TrapCoord);
 
 		ini.Get_String("SyncBug", "Target", "0", buf, 80);
-		sscanf(buf,"%x",&TrapTarget);
+		uint32_t trap_target = 0;
+		sscanf(buf,"%x",&trap_target);
+		TrapTarget = (TARGET)trap_target;
 
 		ini.Get_String("SyncBug", "Cell", "0", buf, 80);
 		cell = atoi(buf);
@@ -1361,6 +1430,9 @@ void SessionClass::Read_Scenario_Descriptions (void)
 
 		if (FindNextFile(handle, &block) == 0) break;
 	}
+	if (handle != INVALID_HANDLE_VALUE) {
+		FindClose(handle);
+	}
 
 
   #ifdef FIXIT_CSII		//	checked - ajw
@@ -1456,6 +1528,9 @@ void SessionClass::Read_Scenario_Descriptions (void)
 		}
 
 		if (FindNextFile(handle, &block) == 0) break;
+	}
+	if (handle != INVALID_HANDLE_VALUE) {
+		FindClose(handle);
 	}
 
 #else	//WIN32
