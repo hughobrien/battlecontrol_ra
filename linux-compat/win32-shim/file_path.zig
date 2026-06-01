@@ -67,7 +67,15 @@ const WIN32_FIND_DATA = extern struct {
 
 const DosFind = extern struct {
     attrib: c_uint,
+    wr_time: c_uint,
+    wr_date: c_uint,
+    size: c_ulong,
     name: [260]u8,
+    bc_match_index: c_uint,
+    bc_attrib: c_uint,
+    bc_active: c_int,
+    bc_dir_path: [1024]u8,
+    bc_pattern: [260]u8,
 };
 
 const FindHandle = extern struct {
@@ -329,8 +337,55 @@ fn findNext(handle: *FindHandle, info: *WIN32_FIND_DATA) bool {
     return false;
 }
 
+fn dosEntryAttributes(dir_path: []const u8, name: []const u8, file_type: u8) c_uint {
+    var attrib: c_uint = if (file_type == DT_DIR) FILE_ATTRIBUTE_DIRECTORY else 0;
+    var stat_buf: [1280]u8 = undefined;
+    const path = std.fmt.bufPrintZ(&stat_buf, "{s}/{s}", .{ dir_path, name }) catch return attrib;
+    var st: Stat = undefined;
+    if (stat(path.ptr, &st) == 0 and (st.st_mode & S_IFMT) == S_IFDIR) {
+        attrib |= FILE_ATTRIBUTE_DIRECTORY;
+    }
+    return attrib;
+}
+
+fn fillDosFind(info: *DosFind, dir_path: []const u8, name: []const u8, attrib: c_uint) void {
+    info.attrib = attrib;
+    info.wr_time = 0;
+    info.wr_date = 0;
+    info.size = 0;
+    copyFixedZ(info.name[0..], name);
+
+    var stat_buf: [1280]u8 = undefined;
+    const path = std.fmt.bufPrintZ(&stat_buf, "{s}/{s}", .{ dir_path, name }) catch return;
+    var st: Stat = undefined;
+    if (stat(path.ptr, &st) != 0) return;
+
+    if (st.st_size > 0) {
+        info.size = @intCast(st.st_size);
+    }
+
+    var date: WORD = 0;
+    var time: WORD = 0;
+    const file_time = unixSecondsToFileTime(@intCast(st.st_mtim.tv_sec));
+    if (FileTimeToDosDateTime(&file_time, &date, &time) != 0) {
+        info.wr_date = date;
+        info.wr_time = time;
+    }
+}
+
+fn matchesDosAttributes(search_attrib: c_uint, entry_attrib: c_uint) bool {
+    if ((entry_attrib & FILE_ATTRIBUTE_DIRECTORY) != 0) {
+        return (search_attrib & FILE_ATTRIBUTE_DIRECTORY) != 0;
+    }
+    return true;
+}
+
 export fn _dos_findfirst(filespec: [*:0]const u8, attrib: c_uint, fileinfo: ?*DosFind) callconv(.c) c_int {
-    _ = attrib;
+    const info = fileinfo orelse {
+        last_error = 87;
+        return -1;
+    };
+    info.bc_active = 0;
     var translated_buf: [1024]u8 = undefined;
     const translated = translatePath(filespec, &translated_buf) orelse {
         last_error = 1;
@@ -364,19 +419,61 @@ export fn _dos_findfirst(filespec: [*:0]const u8, attrib: c_uint, fileinfo: ?*Do
         if (std.mem.eql(u8, name, ".") or std.mem.eql(u8, name, "..")) {
             continue;
         }
-        if (wildcardMatch(effective_pattern, name)) {
-            if (fileinfo) |info| {
-                info.attrib = if (entry.d_type == DT_DIR) 0x10 else 0;
-                @memset(info.name[0..], 0);
-                const count = @min(name.len, info.name.len - 1);
-                @memcpy(info.name[0..count], name[0..count]);
-            }
+        const entry_attrib = dosEntryAttributes(dir_name, name, entry.d_type);
+        if (wildcardMatch(effective_pattern, name) and matchesDosAttributes(attrib, entry_attrib)) {
+            copyFixedZ(info.bc_dir_path[0..], dir_name);
+            copyFixedZ(info.bc_pattern[0..], effective_pattern);
+            info.bc_attrib = attrib;
+            info.bc_match_index = 0;
+            info.bc_active = 1;
+            fillDosFind(info, dir_name, name, entry_attrib);
             clearLastError();
             return 0;
         }
     }
 
     last_error = 2;
+    return -1;
+}
+
+export fn _dos_findnext(fileinfo: ?*DosFind) callconv(.c) c_int {
+    const info = fileinfo orelse {
+        last_error = 87;
+        return -1;
+    };
+    if (info.bc_active == 0) {
+        last_error = 18;
+        return -1;
+    }
+    const dir_name = std.mem.sliceTo(info.bc_dir_path[0..], 0);
+    const pattern = std.mem.sliceTo(info.bc_pattern[0..], 0);
+    const dir = opendir(info.bc_dir_path[0..dir_name.len :0].ptr) orelse {
+        info.bc_active = 0;
+        setLastErrorFromErrno();
+        return -1;
+    };
+    defer _ = closedir(dir);
+
+    var match_index: c_uint = 0;
+    while (readdir(dir)) |entry| {
+        const name = std.mem.sliceTo(entry.d_name[0..], 0);
+        if (std.mem.eql(u8, name, ".") or std.mem.eql(u8, name, "..")) {
+            continue;
+        }
+        const entry_attrib = dosEntryAttributes(dir_name, name, entry.d_type);
+        if (wildcardMatch(pattern, name) and matchesDosAttributes(info.bc_attrib, entry_attrib)) {
+            if (match_index > info.bc_match_index) {
+                info.bc_match_index = match_index;
+                fillDosFind(info, dir_name, name, entry_attrib);
+                clearLastError();
+                return 0;
+            }
+            match_index += 1;
+        }
+    }
+
+    info.bc_active = 0;
+    last_error = 18;
     return -1;
 }
 
