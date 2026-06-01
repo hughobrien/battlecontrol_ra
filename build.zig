@@ -268,5 +268,16 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(win32_misc);
 
+    const wwlib_clip_rect_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/wwlib/clip_rect.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const wwlib_clip_rect = b.addObject(.{
+        .name = "wwlib-clip-rect",
+        .root_module = wwlib_clip_rect_module,
+    });
+    exe.root_module.addObject(wwlib_clip_rect);
+
     b.installArtifact(exe);
 }
