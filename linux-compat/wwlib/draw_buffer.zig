@@ -84,6 +84,74 @@ fn copyForward(destination: [*]u8, source: [*]const u8, count: usize) void {
     }
 }
 
+fn addSigned(pointer: [*]u8, offset: isize) [*]u8 {
+    const address = @intFromPtr(pointer);
+    if (offset >= 0) return @ptrFromInt(address + @as(usize, @intCast(offset)));
+    return @ptrFromInt(address - @as(usize, @intCast(-offset)));
+}
+
+const clip_up: u4 = 1;
+const clip_down: u4 = 2;
+const clip_left: u4 = 4;
+const clip_right: u4 = 8;
+
+fn clipBits(x: c_int, y: c_int, max_x: c_int, max_y: c_int) u4 {
+    var bits: u4 = 0;
+    if (y < 0) bits |= clip_up;
+    if (y > max_y) bits |= clip_down;
+    if (x < 0) bits |= clip_left;
+    if (x > max_x) bits |= clip_right;
+    return bits;
+}
+
+fn clipVertical(x0: *c_int, y0: *c_int, x1: c_int, y1: c_int, boundary_y: c_int) void {
+    const numerator = @as(c_longlong, boundary_y - y0.*) * @as(c_longlong, x1 - x0.*);
+    const denominator = @as(c_longlong, y1 - y0.*);
+    x0.* += @intCast(@divTrunc(numerator, denominator));
+    y0.* = boundary_y;
+}
+
+fn clipHorizontal(x0: *c_int, y0: *c_int, x1: c_int, y1: c_int, boundary_x: c_int) void {
+    const numerator = @as(c_longlong, boundary_x - x0.*) * @as(c_longlong, y1 - y0.*);
+    const denominator = @as(c_longlong, x1 - x0.*);
+    y0.* += @intCast(@divTrunc(numerator, denominator));
+    x0.* = boundary_x;
+}
+
+fn clipPointAsm(x0: *c_int, y0: *c_int, x1: c_int, y1: c_int, bits: u4, max_x: c_int, max_y: c_int) bool {
+    switch (bits) {
+        1, 9 => clipVertical(x0, y0, x1, y1, 0),
+        2, 6 => clipVertical(x0, y0, x1, y1, max_y),
+        4, 5 => clipHorizontal(x0, y0, x1, y1, 0),
+        8, 10 => clipHorizontal(x0, y0, x1, y1, max_x),
+        else => return false,
+    }
+    return true;
+}
+
+fn clipLineToView(view: *const GraphicViewPort, x0_ptr: *c_int, y0_ptr: *c_int, x1_ptr: *c_int, y1_ptr: *c_int) bool {
+    if (view.width <= 0 or view.height <= 0) return false;
+
+    const max_x = view.width - 1;
+    const max_y = view.height - 1;
+
+    while (true) {
+        const start_bits = clipBits(x0_ptr.*, y0_ptr.*, max_x, max_y);
+        const end_bits = clipBits(x1_ptr.*, y1_ptr.*, max_x, max_y);
+
+        if ((start_bits | end_bits) == 0) return true;
+        if ((start_bits & end_bits) != 0) return false;
+
+        if (end_bits != 0) {
+            if (!clipPointAsm(x1_ptr, y1_ptr, x0_ptr.*, y0_ptr.*, end_bits, max_x, max_y)) return false;
+            std.mem.swap(c_int, x0_ptr, x1_ptr);
+            std.mem.swap(c_int, y0_ptr, y1_ptr);
+        } else if (!clipPointAsm(x0_ptr, y0_ptr, x1_ptr.*, y1_ptr.*, start_bits, max_x, max_y)) {
+            return false;
+        }
+    }
+}
+
 export fn Buffer_Fill_Rect(this_object: *GraphicViewPort, x1_pixel: c_int, y1_pixel: c_int, x2_pixel: c_int, y2_pixel: c_int, color: u8) callconv(.c) void {
     var x1 = truncateI16(x1_pixel);
     var y1 = truncateI16(y1_pixel);
@@ -202,6 +270,86 @@ export fn Buffer_To_Page(x_pixel: c_int, y_pixel: c_int, pixel_width: c_int, pix
     }
 
     return clipped.width();
+}
+
+export fn Buffer_Draw_Line(this_object: *GraphicViewPort, x1_pixel: c_int, y1_pixel: c_int, x2_pixel: c_int, y2_pixel: c_int, color: u8) callconv(.c) void {
+    var x0 = x1_pixel;
+    var y0 = y1_pixel;
+    var x1 = x2_pixel;
+    var y1 = y2_pixel;
+
+    if (!clipLineToView(this_object, &x0, &y0, &x1, &y1)) return;
+
+    if (y0 == y1) {
+        if (x0 > x1) std.mem.swap(c_int, &x0, &x1);
+
+        const row_width: usize = @intCast(x1 - x0 + 1);
+        const stride = bytesPerRow(this_object);
+        const row = basePointer(this_object) + @as(usize, @intCast(y0)) * stride + @as(usize, @intCast(x0));
+        @memset(row[0..row_width], color);
+        return;
+    }
+
+    if (y1 < y0) {
+        std.mem.swap(c_int, &x0, &x1);
+        std.mem.swap(c_int, &y0, &y1);
+    }
+
+    const stride = bytesPerRow(this_object);
+    var pixel = basePointer(this_object) + @as(usize, @intCast(y0)) * stride + @as(usize, @intCast(x0));
+
+    const delta_y = y1 - y0;
+    var delta_x = x1 - x0;
+    var step_x: isize = 1;
+    if (delta_x == 0) {
+        var remaining: c_int = delta_y + 1;
+        while (remaining != 0) : (remaining -= 1) {
+            pixel[0] = color;
+            pixel += stride;
+        }
+        return;
+    }
+
+    if (delta_x < 0) {
+        delta_x = -delta_x;
+        step_x = -1;
+    }
+
+    if (delta_x >= delta_y) {
+        const greater = delta_x;
+        const lesser = delta_y;
+        var accumulator = @divTrunc(greater, 2);
+        var remaining = greater;
+
+        while (true) {
+            pixel[0] = color;
+            remaining -= 1;
+            if (remaining < 0) break;
+            pixel = addSigned(pixel, step_x);
+            accumulator -= lesser;
+            if (accumulator < 0) {
+                accumulator += greater;
+                pixel += stride;
+            }
+        }
+    } else {
+        const greater = delta_y;
+        const lesser = delta_x;
+        var accumulator = @divTrunc(greater, 2);
+        var remaining = greater;
+
+        while (true) {
+            pixel[0] = color;
+            remaining -= 1;
+            if (remaining < 0) break;
+            pixel += stride;
+            accumulator -= lesser;
+            if (accumulator < 0) {
+                accumulator += greater;
+                pixel = addSigned(pixel, step_x);
+            }
+        }
+    }
 }
 
 test "GraphicViewPort layout matches the C++ object layout on the current target" {
@@ -518,4 +666,118 @@ test "Buffer_To_Page uses the asm forward copy order for overlapping ranges" {
 
     try std.testing.expectEqual(@as(c_long, 3), copied_width);
     try std.testing.expectEqualSlices(u8, &[_]u8{ 1, 1, 1, 1 }, &buffer);
+}
+
+test "Buffer_Draw_Line draws inclusive horizontal and vertical UI lines" {
+    var buffer = [_]u8{0} ** 25;
+    var view = testView(&buffer, 5, 5, 0, 0);
+
+    Buffer_Draw_Line(&view, 1, 2, 3, 2, 7);
+    Buffer_Draw_Line(&view, 4, 1, 4, 3, 9);
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        0, 0, 0, 0, 0,
+        0, 0, 0, 0, 9,
+        0, 7, 7, 7, 9,
+        0, 0, 0, 0, 9,
+        0, 0, 0, 0, 0,
+    }, &buffer);
+}
+
+test "Buffer_Draw_Line clips horizontal and vertical lines to the viewport" {
+    var buffer = [_]u8{0} ** 25;
+    var view = testView(&buffer, 5, 5, 0, 0);
+
+    Buffer_Draw_Line(&view, -2, 1, 2, 1, 4);
+    Buffer_Draw_Line(&view, 3, 3, 3, 8, 6);
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        0, 0, 0, 0, 0,
+        4, 4, 4, 0, 0,
+        0, 0, 0, 0, 0,
+        0, 0, 0, 6, 0,
+        0, 0, 0, 6, 0,
+    }, &buffer);
+}
+
+test "Buffer_Draw_Line draws diagonal lines with the asm accumulator behavior" {
+    var buffer = [_]u8{0} ** 25;
+    var view = testView(&buffer, 5, 5, 0, 0);
+
+    Buffer_Draw_Line(&view, 0, 0, 4, 2, 5);
+    Buffer_Draw_Line(&view, 4, 0, 2, 4, 8);
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        5, 5, 0, 0, 8,
+        0, 0, 5, 5, 8,
+        0, 0, 0, 8, 5,
+        0, 0, 0, 8, 0,
+        0, 0, 8, 0, 0,
+    }, &buffer);
+}
+
+test "Buffer_Draw_Line clips diagonal lines before rasterizing" {
+    var buffer = [_]u8{0} ** 25;
+    var view = testView(&buffer, 5, 5, 0, 0);
+
+    Buffer_Draw_Line(&view, -2, -2, 4, 4, 3);
+    Buffer_Draw_Line(&view, 0, 4, 6, -2, 2);
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        3, 0, 0, 0, 2,
+        0, 3, 0, 2, 0,
+        0, 0, 2, 0, 0,
+        0, 2, 0, 3, 0,
+        2, 0, 0, 0, 3,
+    }, &buffer);
+}
+
+test "Buffer_Draw_Line clipping follows the asm corner jump table" {
+    var x: c_int = -2;
+    var y: c_int = -1;
+    try std.testing.expect(clipPointAsm(&x, &y, 4, 3, clip_left | clip_up, 4, 4));
+    try std.testing.expectEqual(@as(c_int, 0), x);
+    try std.testing.expectEqual(@as(c_int, 0), y);
+
+    x = 6;
+    y = -2;
+    try std.testing.expect(clipPointAsm(&x, &y, -2, 1, clip_right | clip_up, 4, 4));
+    try std.testing.expectEqual(@as(c_int, 1), x);
+    try std.testing.expectEqual(@as(c_int, 0), y);
+
+    x = -2;
+    y = 6;
+    try std.testing.expect(clipPointAsm(&x, &y, 3, -2, clip_left | clip_down, 4, 4));
+    try std.testing.expectEqual(@as(c_int, -1), x);
+    try std.testing.expectEqual(@as(c_int, 4), y);
+
+    x = 6;
+    y = 6;
+    try std.testing.expect(clipPointAsm(&x, &y, -2, -1, clip_right | clip_down, 4, 4));
+    try std.testing.expectEqual(@as(c_int, 4), x);
+    try std.testing.expectEqual(@as(c_int, 5), y);
+}
+
+test "Buffer_Draw_Line clipping follows the asm endpoint order" {
+    var x0: c_int = -2;
+    var y0: c_int = 1;
+    var x1: c_int = 6;
+    var y1: c_int = -2;
+    var buffer = [_]u8{0} ** 25;
+    var view = testView(&buffer, 5, 5, 0, 0);
+
+    try std.testing.expect(clipLineToView(&view, &x0, &y0, &x1, &y1));
+    try std.testing.expectEqual(@as(c_int, 0), x0);
+    try std.testing.expectEqual(@as(c_int, 1), y0);
+    try std.testing.expectEqual(@as(c_int, 1), x1);
+    try std.testing.expectEqual(@as(c_int, 0), y1);
+}
+
+test "Buffer_Draw_Line ignores lines completely outside the viewport" {
+    var buffer = [_]u8{0} ** 9;
+    var view = testView(&buffer, 3, 3, 0, 0);
+
+    Buffer_Draw_Line(&view, -3, -1, -1, -3, 9);
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{0} ** 9, &buffer);
 }
