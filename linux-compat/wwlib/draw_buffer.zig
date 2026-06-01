@@ -13,6 +13,22 @@ const GraphicViewPort = extern struct {
     lock_count: c_int,
 };
 
+const IControl = extern struct {
+    width: u16,
+    height: u16,
+    count: u16,
+    allocated: u16,
+    map_width: u16,
+    map_height: u16,
+    size: c_int,
+    icons: c_int,
+    palettes: c_int,
+    remaps: c_int,
+    trans_flag: c_int,
+    color_map: c_int,
+    map: c_int,
+};
+
 fn truncateI16(value: c_int) i32 {
     return @as(i32, @as(i16, @bitCast(@as(u16, @truncate(@as(c_uint, @bitCast(value)))))));
 }
@@ -23,6 +39,16 @@ fn addressBits(value: c_long) usize {
 
 fn basePointer(view: *const GraphicViewPort) [*]u8 {
     return @ptrFromInt(addressBits(view.offset));
+}
+
+fn byteOffset(base: *const anyopaque, offset: c_int) [*]u8 {
+    const address = @intFromPtr(base);
+    if (offset >= 0) return @ptrFromInt(address + @as(usize, @intCast(offset)));
+    return @ptrFromInt(address - @as(usize, @intCast(-offset)));
+}
+
+fn byteOffsetConst(base: *const anyopaque, offset: c_int) [*]const u8 {
+    return @ptrCast(byteOffset(base, offset));
 }
 
 fn bytesPerRow(view: *const GraphicViewPort) usize {
@@ -314,6 +340,103 @@ export fn Buffer_To_Page(x_pixel: c_int, y_pixel: c_int, pixel_width: c_int, pix
     return clipped.width();
 }
 
+export fn Buffer_Print(this_object: *GraphicViewPort, str: ?[*:0]const u8, x_pixel: c_int, y_pixel: c_int, foreground: c_int, background: c_int) callconv(.c) c_long {
+    _ = this_object;
+    _ = str;
+    _ = x_pixel;
+    _ = y_pixel;
+    _ = foreground;
+    _ = background;
+    return 0;
+}
+
+export fn Buffer_Draw_Stamp_Clip(
+    this_object: *GraphicViewPort,
+    icon_data_ptr: ?*const anyopaque,
+    requested_icon: c_int,
+    icon_x_pixel: c_int,
+    icon_y_pixel: c_int,
+    remap_ptr: ?*const anyopaque,
+    clip_x: c_int,
+    clip_y: c_int,
+    clip_width: c_int,
+    clip_height: c_int,
+) callconv(.c) void {
+    const icon_data: *const IControl = @ptrCast(@alignCast(icon_data_ptr orelse return));
+    if (requested_icon < 0) return;
+
+    const icon_width: c_int = @intCast(icon_data.width);
+    const icon_height: c_int = @intCast(icon_data.height);
+    if (icon_width <= 0 or icon_height <= 0) return;
+
+    const map: ?[*]const u8 = if (icon_data.map == 0) null else byteOffsetConst(icon_data, icon_data.map);
+    const icon = if (map) |map_bytes| (requested_icon & ~@as(c_int, 0xff)) | map_bytes[@intCast(requested_icon)] else requested_icon;
+    if (icon < 0 or icon >= @as(c_int, @intCast(icon_data.count))) return;
+
+    const clip_x1 = clip_x +% clip_width;
+    const clip_y1 = clip_y +% clip_height;
+    var dest_x = icon_x_pixel +% clip_x;
+    var dest_y = icon_y_pixel +% clip_y;
+
+    if (dest_x >= clip_x1 or dest_y >= clip_y1) return;
+    if (dest_x +% icon_width <= clip_x or dest_y +% icon_height <= clip_y) return;
+
+    var source_x: c_int = 0;
+    var source_y: c_int = 0;
+    var draw_width = icon_width;
+    var draw_height = icon_height;
+
+    if (dest_x < clip_x) {
+        source_x = clip_x - dest_x;
+        draw_width -= source_x;
+        dest_x = clip_x;
+    }
+    if (dest_x +% draw_width > clip_x1) {
+        draw_width = clip_x1 - dest_x;
+    }
+
+    if (dest_y < clip_y) {
+        source_y = clip_y - dest_y;
+        draw_height -= source_y;
+        dest_y = clip_y;
+    }
+    if (dest_y +% draw_height > clip_y1) {
+        draw_height = clip_y1 - dest_y;
+    }
+    if (draw_width <= 0 or draw_height <= 0) return;
+
+    const icon_size: usize = @as(usize, @intCast(icon_width)) * @as(usize, @intCast(icon_height));
+    var source = byteOffsetConst(icon_data, icon_data.icons) + @as(usize, @intCast(icon)) * icon_size +
+        @as(usize, @intCast(source_y)) * @as(usize, @intCast(icon_width)) +
+        @as(usize, @intCast(source_x));
+    var destination = basePointer(this_object) + @as(usize, @intCast(dest_y)) * bytesPerRow(this_object) + @as(usize, @intCast(dest_x));
+
+    const remap: ?[*]const u8 = if (remap_ptr) |ptr| @ptrCast(ptr) else null;
+    const trans_flags: [*]const u8 = byteOffsetConst(icon_data, icon_data.trans_flag);
+    const is_transparent = trans_flags[@intCast(icon)] != 0;
+    const source_skip: usize = @intCast(icon_width - draw_width);
+    const dest_skip = bytesPerRow(this_object) - @as(usize, @intCast(draw_width));
+
+    var rows_remaining: c_int = draw_height;
+    while (rows_remaining != 0) : (rows_remaining -= 1) {
+        var columns_remaining: c_int = draw_width;
+        while (columns_remaining != 0) : (columns_remaining -= 1) {
+            const source_pixel = source[0];
+            if (remap) |table| {
+                const mapped = table[source_pixel];
+                if (mapped != 0) destination[0] = mapped;
+            } else if (!is_transparent or source_pixel != 0) {
+                destination[0] = source_pixel;
+            }
+
+            source += 1;
+            destination += 1;
+        }
+        source += source_skip;
+        destination += dest_skip;
+    }
+}
+
 export fn Buffer_Draw_Line(this_object: *GraphicViewPort, x1_pixel: c_int, y1_pixel: c_int, x2_pixel: c_int, y2_pixel: c_int, color: u8) callconv(.c) void {
     var x0 = x1_pixel;
     var y0 = y1_pixel;
@@ -496,6 +619,23 @@ test "GraphicViewPort layout matches the C++ object layout on the current target
     try std.testing.expectEqual(@as(usize, @sizeOf(c_long) + 48), @sizeOf(GraphicViewPort));
 }
 
+test "IControl layout matches the 32-bit STAMP.INC structure" {
+    try std.testing.expectEqual(@as(usize, 0), @offsetOf(IControl, "width"));
+    try std.testing.expectEqual(@as(usize, 2), @offsetOf(IControl, "height"));
+    try std.testing.expectEqual(@as(usize, 4), @offsetOf(IControl, "count"));
+    try std.testing.expectEqual(@as(usize, 6), @offsetOf(IControl, "allocated"));
+    try std.testing.expectEqual(@as(usize, 8), @offsetOf(IControl, "map_width"));
+    try std.testing.expectEqual(@as(usize, 10), @offsetOf(IControl, "map_height"));
+    try std.testing.expectEqual(@as(usize, 12), @offsetOf(IControl, "size"));
+    try std.testing.expectEqual(@as(usize, 16), @offsetOf(IControl, "icons"));
+    try std.testing.expectEqual(@as(usize, 20), @offsetOf(IControl, "palettes"));
+    try std.testing.expectEqual(@as(usize, 24), @offsetOf(IControl, "remaps"));
+    try std.testing.expectEqual(@as(usize, 28), @offsetOf(IControl, "trans_flag"));
+    try std.testing.expectEqual(@as(usize, 32), @offsetOf(IControl, "color_map"));
+    try std.testing.expectEqual(@as(usize, 36), @offsetOf(IControl, "map"));
+    try std.testing.expectEqual(@as(usize, 40), @sizeOf(IControl));
+}
+
 fn testView(buffer: []u8, width: c_int, height: c_int, x_add: c_int, pitch: c_long) GraphicViewPort {
     return .{
         .offset = @bitCast(@as(c_ulong, @intCast(@intFromPtr(buffer.ptr)))),
@@ -508,6 +648,65 @@ fn testView(buffer: []u8, width: c_int, height: c_int, x_add: c_int, pitch: c_lo
         .graphic_buffer = null,
         .is_direct_draw = 0,
         .lock_count = 0,
+    };
+}
+
+const TestIconSet = extern struct {
+    width: u16,
+    height: u16,
+    count: u16,
+    allocated: u16,
+    map_width: u16,
+    map_height: u16,
+    size: c_int,
+    icons: c_int,
+    palettes: c_int,
+    remaps: c_int,
+    trans_flag: c_int,
+    color_map: c_int,
+    map: c_int,
+    pixels: [8]u8,
+    trans: [2]u8,
+    map_bytes: [2]u8,
+};
+
+const HighIconTestSet = extern struct {
+    width: u16,
+    height: u16,
+    count: u16,
+    allocated: u16,
+    map_width: u16,
+    map_height: u16,
+    size: c_int,
+    icons: c_int,
+    palettes: c_int,
+    remaps: c_int,
+    trans_flag: c_int,
+    color_map: c_int,
+    map: c_int,
+    pixels: [0x103 * 4]u8,
+    trans: [0x103]u8,
+    map_bytes: [0x102]u8,
+};
+
+fn testIconSet(pixels: [8]u8, trans: [2]u8, map_bytes: [2]u8, has_map: bool) TestIconSet {
+    return .{
+        .width = 2,
+        .height = 2,
+        .count = 2,
+        .allocated = 2,
+        .map_width = 0,
+        .map_height = 0,
+        .size = @sizeOf(TestIconSet),
+        .icons = @offsetOf(TestIconSet, "pixels"),
+        .palettes = 0,
+        .remaps = 0,
+        .trans_flag = @offsetOf(TestIconSet, "trans"),
+        .color_map = 0,
+        .map = if (has_map) @offsetOf(TestIconSet, "map_bytes") else 0,
+        .pixels = pixels,
+        .trans = trans,
+        .map_bytes = map_bytes,
     };
 }
 
@@ -887,6 +1086,127 @@ test "Buffer_To_Page uses the asm forward copy order for overlapping ranges" {
 
     try std.testing.expectEqual(@as(c_long, 3), copied_width);
     try std.testing.expectEqualSlices(u8, &[_]u8{ 1, 1, 1, 1 }, &buffer);
+}
+
+test "Buffer_Print links as a non-mutating text draw stub" {
+    var buffer = [_]u8{ 1, 2, 3, 4 };
+    var view = testView(&buffer, 2, 2, 0, 0);
+
+    try std.testing.expectEqual(@as(c_long, 0), Buffer_Print(&view, "READY", 0, 0, 15, 0));
+    try std.testing.expectEqual(@as(c_long, 0), Buffer_Print(&view, null, 0, 0, 15, 0));
+    try std.testing.expectEqualSlices(u8, &[_]u8{ 1, 2, 3, 4 }, &buffer);
+}
+
+test "Buffer_Draw_Stamp_Clip clips and draws a mapped transparent stamp" {
+    var icon_set = testIconSet(
+        .{
+            1, 2,
+            3, 4,
+            0, 5,
+            6, 7,
+        },
+        .{ 0, 1 },
+        .{ 1, 0 },
+        true,
+    );
+    var remap = [_]u8{0} ** 256;
+    for (&remap, 0..) |*value, index| value.* = @intCast(index);
+    remap[5] = 50;
+    remap[6] = 0;
+    remap[7] = 70;
+
+    var screen = [_]u8{0xcc} ** 25;
+    var view = testView(&screen, 5, 5, 0, 0);
+
+    Buffer_Draw_Stamp_Clip(&view, &icon_set, 0, 0, 0, &remap, 1, 1, 3, 3);
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+        0xcc, 0xcc, 50,   0xcc, 0xcc,
+        0xcc, 0xcc, 70,   0xcc, 0xcc,
+        0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+        0xcc, 0xcc, 0xcc, 0xcc, 0xcc,
+    }, &screen);
+}
+
+test "Buffer_Draw_Stamp_Clip indexes mapped icons with the full requested icon" {
+    var icon_set = HighIconTestSet{
+        .width = 2,
+        .height = 2,
+        .count = 0x104,
+        .allocated = 0x104,
+        .map_width = 0,
+        .map_height = 0,
+        .size = @sizeOf(HighIconTestSet),
+        .icons = @offsetOf(HighIconTestSet, "pixels"),
+        .palettes = 0,
+        .remaps = 0,
+        .trans_flag = @offsetOf(HighIconTestSet, "trans"),
+        .color_map = 0,
+        .map = @offsetOf(HighIconTestSet, "map_bytes"),
+        .pixels = [_]u8{0} ** (0x103 * 4),
+        .trans = [_]u8{0} ** 0x103,
+        .map_bytes = [_]u8{0} ** 0x102,
+    };
+    icon_set.map_bytes[0x101] = 2;
+    @memset(icon_set.pixels[0x102 * 4 ..][0..4], 2);
+    var screen = [_]u8{0xcc} ** 4;
+    var view = testView(&screen, 2, 2, 0, 0);
+
+    Buffer_Draw_Stamp_Clip(&view, &icon_set, 0x101, 0, 0, null, 0, 0, 2, 2);
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        2, 2,
+        2, 2,
+    }, &screen);
+}
+
+test "Buffer_Draw_Stamp_Clip skips zero pixels in the transparent no-remap branch" {
+    var icon_set = testIconSet(
+        .{
+            0, 2,
+            3, 0,
+            0, 0,
+            0, 0,
+        },
+        .{ 1, 0 },
+        .{ 0, 1 },
+        false,
+    );
+    var screen = [_]u8{0xcc} ** 9;
+    var view = testView(&screen, 3, 3, 0, 0);
+
+    Buffer_Draw_Stamp_Clip(&view, &icon_set, 0, 0, 0, null, 0, 0, 3, 3);
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        0xcc, 2,    0xcc,
+        3,    0xcc, 0xcc,
+        0xcc, 0xcc, 0xcc,
+    }, &screen);
+}
+
+test "Buffer_Draw_Stamp_Clip copies zero pixels in the opaque no-remap branch" {
+    var icon_set = testIconSet(
+        .{
+            0, 2,
+            3, 0,
+            0, 0,
+            0, 0,
+        },
+        .{ 0, 0 },
+        .{ 0, 1 },
+        false,
+    );
+    var screen = [_]u8{0xcc} ** 9;
+    var view = testView(&screen, 3, 3, 0, 0);
+
+    Buffer_Draw_Stamp_Clip(&view, &icon_set, 0, 0, 0, null, 0, 0, 3, 3);
+
+    try std.testing.expectEqualSlices(u8, &[_]u8{
+        0,    2,    0xcc,
+        3,    0,    0xcc,
+        0xcc, 0xcc, 0xcc,
+    }, &screen);
 }
 
 test "Buffer_Draw_Line draws inclusive horizontal and vertical UI lines" {
