@@ -269,6 +269,17 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(win32_misc);
 
+    const win32_tcpip_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/win32-shim/tcpip.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const win32_tcpip = b.addObject(.{
+        .name = "win32-tcpip-shim",
+        .root_module = win32_tcpip_module,
+    });
+    exe.root_module.addObject(win32_tcpip);
+
     const wwlib_clip_rect_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/wwlib/clip_rect.zig"),
         .target = target,
