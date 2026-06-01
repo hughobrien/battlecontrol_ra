@@ -817,8 +817,8 @@ void Memory_Error_Handler(void)
 
 
 
-GraphicBufferClass* Read_PCX_File(char* name, char* Palette, void *Buff, long Size);
-void Load_Title_Screen(char *name, GraphicViewPortClass *video_page, uint8_t *palette)
+GraphicBufferClass* Read_PCX_File(char const *name, char* Palette, void *Buff, long Size);
+void Load_Title_Screen(char const *name, GraphicViewPortClass *video_page, uint8_t *palette)
 {
 
 	GraphicBufferClass *load_buffer;
@@ -870,7 +870,7 @@ void Load_Title_Screen(char *name, GraphicViewPortClass *video_page, uint8_t *pa
 							 }
 
 
-GraphicBufferClass* Read_PCX_File(char* name, char* palette, void *Buff, long Size)
+GraphicBufferClass* Read_PCX_File(char const *name, char* palette, void *Buff, long Size)
 {
 	unsigned					i, j;
 	unsigned					rle;

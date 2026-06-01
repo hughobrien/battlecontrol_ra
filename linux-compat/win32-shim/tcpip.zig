@@ -17,6 +17,31 @@ fn tcpipClose(this: ?*anyopaque) callconv(.c) void {
     _ = this;
 }
 
+fn tcpipInit(this: ?*anyopaque) callconv(.c) c_int {
+    _ = this;
+    return 0;
+}
+
+fn tcpipStartServer(this: ?*anyopaque) callconv(.c) void {
+    _ = this;
+}
+
+fn tcpipStartClient(this: ?*anyopaque) callconv(.c) void {
+    _ = this;
+}
+
+fn tcpipRead(this: ?*anyopaque, buffer: ?*anyopaque, buffer_len: c_int) callconv(.c) c_int {
+    _ = this;
+    _ = buffer;
+    _ = buffer_len;
+    return 0;
+}
+
+fn tcpipSetHostAddress(this: ?*anyopaque, address: ?[*:0]u8) callconv(.c) void {
+    _ = this;
+    _ = address;
+}
+
 fn tcpipMessageHandler(this: ?*anyopaque, window: ?*anyopaque, message: c_uint, wparam: c_uint, lparam: c_long) callconv(.c) void {
     _ = this;
     _ = window;
@@ -27,6 +52,11 @@ fn tcpipMessageHandler(this: ?*anyopaque, window: ?*anyopaque, message: c_uint, 
 
 comptime {
     @export(&tcpipClose, .{ .name = "_ZN17TcpipManagerClass5CloseEv", .linkage = .strong });
+    @export(&tcpipInit, .{ .name = "_ZN17TcpipManagerClass4InitEv", .linkage = .strong });
+    @export(&tcpipStartServer, .{ .name = "_ZN17TcpipManagerClass12Start_ServerEv", .linkage = .strong });
+    @export(&tcpipStartClient, .{ .name = "_ZN17TcpipManagerClass12Start_ClientEv", .linkage = .strong });
+    @export(&tcpipRead, .{ .name = "_ZN17TcpipManagerClass4ReadEPvi", .linkage = .strong });
+    @export(&tcpipSetHostAddress, .{ .name = "_ZN17TcpipManagerClass16Set_Host_AddressEPc", .linkage = .strong });
     @export(&tcpipMessageHandler, .{ .name = "_ZN17TcpipManagerClass15Message_HandlerEPvjjl", .linkage = .strong });
 }
 

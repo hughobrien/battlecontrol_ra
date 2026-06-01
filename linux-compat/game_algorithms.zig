@@ -1,5 +1,7 @@
 const std = @import("std");
 
+export var RandNumb: i32 = 0x12349876;
+
 // The original Win32 unsigned long accumulator was 32-bit; keep the wrap width.
 fn addCrc(crc: *u32, value: u32) void {
     const high_bit: u32 = if ((crc.* & 0x80000000) != 0) 1 else 0;

@@ -37,6 +37,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "FUNCTION.H"
+#include <algorithm>
 #ifdef WIN32
 #include "CCDDE.H"
 #else	//WIN32
@@ -403,7 +404,7 @@ int Do_Menu(char const ** strings, bool )
 	length = 0;
 	ptr = strings;
 	while (*ptr) {
-		length = max(length, (int)String_Pixel_Width(*ptr));
+		length = std::max(length, (int)String_Pixel_Width(*ptr));
 		ptr++;
 	}
 	length += 7;
@@ -833,7 +834,7 @@ int Main_Menu(unsigned long )
 		/*
 		**	Dispatch the input to be processed.
 		*/
-		switch (input) {
+		switch ((int)input) {
 			case (BUTTON_EXPAND | KN_BUTTON):
 				retval = (input & 0x7FFF) - BUTTON_EXPAND;
 				process = false;
