@@ -38,10 +38,10 @@
 *
 ****************************************************************************/
 
-#ifndef __WATCOMC__
-#include <pharlap.h>
-#else
+#if defined(__WATCOMC__) || defined(__linux__)
 #include "REALMODE.H"
+#else
+#include <pharlap.h>
 #endif
 
 /*---------------------------------------------------------------------------
@@ -179,4 +179,3 @@ VESAModeInfo *ReadVESAModeInfo(long mode);
 void SetVESAWindow(long grain_num);
 
 #endif /* VQMVESAVID_H */
-

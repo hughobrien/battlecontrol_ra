@@ -42,9 +42,10 @@
 *
 ****************************************************************************/
 
-#include <vqm32\VIDEO.H>
-#include <vqm32\SOSCOMP.H>
-#include <vqm32\CAPTOKEN.H>
+#include <windows.h>
+#include <VQM32/VIDEO.H>
+#include <VQM32/SOSCOMP.H>
+#include <VQM32/CAPTOKEN.H>
 #include "VQAFILE.H"
 #include "VQAPLAY.H"
 #include "CAPTION.H"
@@ -59,9 +60,9 @@
 
 /* Internal library version. */
 #define VQA_VERSION "2.41"
-#define VQA_DATE    __DATE__" "__TIME__
+#define VQA_DATE    __DATE__ " " __TIME__
 
-#define VQA_IDSTRING "VQA32 "VQA_VERSION" ("VQA_DATE")"
+#define VQA_IDSTRING "VQA32 " VQA_VERSION " (" VQA_DATE ")"
 #define VQA_REQUIRES "VQM32 2.12 or better."
 
 /* Block dimensions macro and identifiers. */
@@ -508,4 +509,3 @@ void VQA_InitMono(VQAHandleP *vqap);
 void VQA_UpdateMono(VQAHandleP *vqap);
 
 #endif /* VQAPLAYP_H */
-

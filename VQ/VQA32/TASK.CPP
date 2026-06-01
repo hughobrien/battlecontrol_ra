@@ -62,8 +62,9 @@
 #include <dos.h>
 #include <mem.h>
 #include <conio.h>
-#include <sys\timeb.h>
-#include <vqm32\ALL.H>
+#include <sys/timeb.h>
+#include <windows.h>
+#include <VQM32/ALL.H>
 #include "VQAPLAYP.H"
 
 
@@ -481,7 +482,7 @@ void VQA_GetStats(VQAHandle *vqa, VQAStatistics *stats)
 
 char *VQA_Version(void)
 {
-	return(VQA_VERSION);
+	return((char *)VQA_VERSION);
 }
 
 
@@ -508,7 +509,7 @@ char *VQA_Version(void)
 
 char *VQA_IDString(void)
 {
-	return (VQA_IDSTRING);
+	return ((char *)VQA_IDSTRING);
 }
 
 
@@ -555,4 +556,3 @@ long User_Update(VQAHandle *vqa)
 
 	return (rc);
 }
-

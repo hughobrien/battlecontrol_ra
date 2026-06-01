@@ -47,6 +47,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <direct.h>
+#include <WATCOM.H>
 #include "PROFILE.H"
 
 /*---------------------------------------------------------------------------
@@ -147,7 +149,7 @@ long Get_Frame_Pathname(char *inifile, long anim_frame, char *ext,
 	while (1) {
 
 		/* Get this scene's entry */
-		sprintf(entry_name, "Scene%d", scene_num);
+		sprintf(entry_name, "Scene%ld", scene_num);
 		rc = GetINIString("Scenes",entry_name,"",inibuf,80,inifile);
 
 		if (rc == 0) {
@@ -224,7 +226,7 @@ long GetINIInt(char const *section, char const *entry, long deflt,
 {
 	char buffer[20];
 
-	sprintf(buffer, "%d", deflt);
+	sprintf(buffer, "%ld", deflt);
 	GetINIString(section, entry, buffer, buffer, sizeof(buffer),
 			fname);
 
@@ -428,4 +430,3 @@ static long FileGets(FILE *fp, char *buf, long buflen)
 		return (-1);
 	}
 }
-

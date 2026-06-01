@@ -79,7 +79,7 @@
 #include "VQ.H"
 #include "UNVQ.H"
 #include "VQAPLAYP.H"
-#include <vqm32\ALL.H>
+#include <VQM32/ALL.H>
 
 /*---------------------------------------------------------------------------
  * PRIVATE DECLARATIONS
@@ -2244,4 +2244,3 @@ static void Mask_Pointers(VQAData *vqabuf)
 	}
 }
 #endif
-
