@@ -35,7 +35,7 @@
 #include <string.h>
 #include "FIELD.H"
 
-FieldClass::FieldClass(char *id, char data)
+FieldClass::FieldClass(const char *id, char data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_CHAR;
@@ -45,7 +45,7 @@ FieldClass::FieldClass(char *id, char data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, unsigned char data)
+FieldClass::FieldClass(const char *id, unsigned char data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_UNSIGNED_CHAR;
@@ -55,7 +55,7 @@ FieldClass::FieldClass(char *id, unsigned char data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, short data)
+FieldClass::FieldClass(const char *id, short data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_SHORT;
@@ -65,7 +65,7 @@ FieldClass::FieldClass(char *id, short data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, unsigned short data)
+FieldClass::FieldClass(const char *id, unsigned short data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_UNSIGNED_SHORT;
@@ -75,7 +75,7 @@ FieldClass::FieldClass(char *id, unsigned short data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, long data)
+FieldClass::FieldClass(const char *id, long data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_LONG;
@@ -85,7 +85,7 @@ FieldClass::FieldClass(char *id, long data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, unsigned long data)
+FieldClass::FieldClass(const char *id, unsigned long data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_UNSIGNED_LONG;
@@ -95,7 +95,7 @@ FieldClass::FieldClass(char *id, unsigned long data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, char *data)
+FieldClass::FieldClass(const char *id, const char *data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_STRING;
@@ -105,7 +105,7 @@ FieldClass::FieldClass(char *id, char *data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, void *data, int length)
+FieldClass::FieldClass(const char *id, const void *data, int length)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_CHUNK;
@@ -211,4 +211,3 @@ void FieldClass::Net_To_Host(void)
 			break;
 	}
 }
-

@@ -76,6 +76,8 @@ var timers = [_]?*TimerEvent{null} ** 64;
 var cursor_x: LONG = 0;
 var cursor_y: LONG = 0;
 
+export var CPUType: u8 = 0;
+
 const TimerEvent = struct {
     id: UINT,
     delay_ms: UINT,
@@ -995,4 +997,8 @@ test "legacy DLL loading reports absent modules" {
 
 test "procedure lookup fails for absent modules" {
     try std.testing.expectEqual(@as(FARPROC, null), GetProcAddress(null, "_IPX_Shut_Down95"));
+}
+
+test "legacy CPU type starts unknown" {
+    try std.testing.expectEqual(@as(u8, 0), CPUType);
 }
