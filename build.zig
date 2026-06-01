@@ -301,5 +301,16 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(wwlib_fading_table);
 
+    const wwlib_draw_buffer_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/wwlib/draw_buffer.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const wwlib_draw_buffer = b.addObject(.{
+        .name = "wwlib-draw-buffer",
+        .root_module = wwlib_draw_buffer_module,
+    });
+    exe.root_module.addObject(wwlib_draw_buffer);
+
     b.installArtifact(exe);
 }
