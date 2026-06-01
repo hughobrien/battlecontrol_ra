@@ -129,6 +129,17 @@ typedef struct _FILETIME {
     DWORD dwHighDateTime;
 } FILETIME, *LPFILETIME;
 
+typedef struct _SYSTEMTIME {
+    WORD wYear;
+    WORD wMonth;
+    WORD wDayOfWeek;
+    WORD wDay;
+    WORD wHour;
+    WORD wMinute;
+    WORD wSecond;
+    WORD wMilliseconds;
+} SYSTEMTIME, *LPSYSTEMTIME;
+
 typedef struct _BY_HANDLE_FILE_INFORMATION {
     DWORD dwFileAttributes;
     FILETIME ftCreationTime;
@@ -595,6 +606,8 @@ HANDLE GetCurrentProcess(void);
 HANDLE GetCurrentThread(void);
 BOOL DuplicateHandle(HANDLE source_process, HANDLE source_handle, HANDLE target_process, HANDLE *target_handle, DWORD desired_access, BOOL inherit_handle, DWORD options);
 void OutputDebugString(LPCSTR string);
+void GetSystemTime(LPSYSTEMTIME system_time);
+void GetLocalTime(LPSYSTEMTIME system_time);
 LONG RegOpenKeyEx(HKEY key, LPCSTR sub_key, DWORD options, DWORD sam_desired, HKEY *result);
 LONG RegQueryValue(HKEY key, LPCSTR sub_key, LPSTR data, LONG *size);
 LONG RegQueryValueEx(HKEY key, LPCSTR value_name, LPDWORD reserved, LPDWORD type, LPBYTE data, LPDWORD size);
