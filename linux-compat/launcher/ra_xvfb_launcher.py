@@ -10,7 +10,7 @@ RA_PATH = "./zig-out/bin/ra"
 launcher_state = None
 
 
-def pick_display(first=92, last=98):
+def pick_display(first=80, last=89):
     for number in range(first, last + 1):
         lock = Path(f"/tmp/battlecontrol-xdisplay-{number}.lock")
         if Path(f"/tmp/.X{number}-lock").exists():
@@ -24,7 +24,7 @@ def pick_display(first=92, last=98):
         with os.fdopen(fd, "w", encoding="utf-8") as handle:
             handle.write(f"{os.getpid()} {int(time.time())}\n")
         return number, lock
-    raise RuntimeError("no free X display in :92..:98")
+    raise RuntimeError("no free X display in :80..:89")
 
 
 def stop_process(process):
@@ -100,7 +100,7 @@ def main():
             signal.signal(signum, handle_signal)
 
         launcher_state["xvfb"] = subprocess.Popen(
-            [args.xvfb, display, "-screen", "0", "640x480x24", "-ac"]
+            [args.xvfb, display, "-screen", "0", "640x400x24", "-ac"]
         )
         time.sleep(1)
 
