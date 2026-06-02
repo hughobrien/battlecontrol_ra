@@ -25,6 +25,7 @@ const HDDEDATA = ?*anyopaque;
 const PCONVCONTEXT = ?*anyopaque;
 const BYTE = u8;
 const TimerCallback = *const fn (event_id: UINT, reserved: UINT, user: DWORD, reserved1: DWORD, reserved2: DWORD) callconv(.c) void;
+const WNDPROC = ?*const fn (window: HWND, message: UINT, wparam: WPARAM, lparam: LPARAM) callconv(.c) LRESULT;
 
 const Tm = extern struct {
     tm_sec: c_int,
@@ -58,11 +59,33 @@ const POINT = extern struct {
     y: LONG,
 };
 
+const MSG = extern struct {
+    hwnd: HWND,
+    message: UINT,
+    wParam: WPARAM,
+    lParam: LPARAM,
+    time: DWORD,
+    pt: POINT,
+};
+
 const RECT = extern struct {
     left: LONG,
     top: LONG,
     right: LONG,
     bottom: LONG,
+};
+
+const WNDCLASS = extern struct {
+    style: UINT,
+    lpfnWndProc: WNDPROC,
+    cbClsExtra: c_int,
+    cbWndExtra: c_int,
+    hInstance: HINSTANCE,
+    hIcon: HICON,
+    hCursor: ?*anyopaque,
+    hbrBackground: ?*anyopaque,
+    lpszMenuName: ?[*:0]const u8,
+    lpszClassName: ?[*:0]const u8,
 };
 
 const CriticalSectionState = struct {
@@ -78,6 +101,11 @@ const DMLERR_NO_ERROR: UINT = 0;
 const IDOK: c_int = 1;
 const IDYES: c_int = 6;
 const MB_YESNO: UINT = 0x00000004;
+const WM_QUIT: UINT = 0x0012;
+const WM_KEYDOWN: UINT = 0x0100;
+const WM_KEYUP: UINT = 0x0101;
+const PM_NOREMOVE: UINT = 0x0000;
+const PM_REMOVE: UINT = 0x0001;
 const SM_CXSCREEN: c_int = 0;
 const SM_CYSCREEN: c_int = 1;
 const TIME_PERIODIC: UINT = 0x0001;
@@ -98,6 +126,9 @@ const DDSCAPS_SYSTEMMEMORY: DWORD = 0x00000800;
 const DDBLT_COLORFILL: DWORD = 0x00000400;
 const DDCAPS_BLT: DWORD = 0x00000040;
 const DDCAPS_BLTCOLORFILL: DWORD = 0x04000000;
+const MESSAGE_QUEUE_CAPACITY: usize = 256;
+const INJECTED_KEY_CAPACITY: usize = 256;
+const MIN_INJECTED_KEY_DELAY_MS: i64 = 1000;
 
 const DdeString = extern struct {
     next: ?*DdeString,
@@ -348,6 +379,17 @@ var timer_mutex: std.atomic.Mutex = .unlocked;
 var timers = [_]?*TimerEvent{null} ** 64;
 var cursor_x: LONG = 0;
 var cursor_y: LONG = 0;
+var message_mutex: std.atomic.Mutex = .unlocked;
+var message_queue: [MESSAGE_QUEUE_CAPACITY]MSG = undefined;
+var message_count: usize = 0;
+var registered_window_proc: WNDPROC = null;
+var main_window_handle: HWND = @ptrFromInt(1);
+var injected_key_sequence_loaded = false;
+var injected_keys: [INJECTED_KEY_CAPACITY]UINT = undefined;
+var injected_key_count: usize = 0;
+var injected_key_index: usize = 0;
+var injected_key_delay_ms: i64 = MIN_INJECTED_KEY_DELAY_MS;
+var injected_key_next_due_ms: i64 = 0;
 
 export var CPUType: u8 = 0;
 
@@ -935,6 +977,7 @@ fn lockAtomic(mutex: *std.atomic.Mutex) void {
 extern fn readlink(path: [*:0]const u8, buffer: [*]u8, size: usize) isize;
 extern fn usleep(usec: c_uint) c_int;
 extern fn memmove(dest: ?*anyopaque, src: ?*const anyopaque, count: usize) ?*anyopaque;
+extern fn getenv(name: [*:0]const u8) ?[*:0]const u8;
 
 fn copyZ(dest: [*:0]u8, src: []const u8, max: usize) usize {
     if (max == 0) return 0;
@@ -942,6 +985,152 @@ fn copyZ(dest: [*:0]u8, src: []const u8, max: usize) usize {
     @memcpy(dest[0..count], src[0..count]);
     dest[count] = 0;
     return count;
+}
+
+fn makeMessage(window: HWND, message: UINT, wparam: WPARAM, lparam: LPARAM) MSG {
+    return .{
+        .hwnd = window,
+        .message = message,
+        .wParam = wparam,
+        .lParam = lparam,
+        .time = 0,
+        .pt = .{ .x = cursor_x, .y = cursor_y },
+    };
+}
+
+fn messageMatches(message: MSG, window: HWND, filter_min: UINT, filter_max: UINT) bool {
+    if (window != null and message.hwnd != window) return false;
+    if (filter_min == 0 and filter_max == 0) return true;
+    return message.message >= filter_min and message.message <= filter_max;
+}
+
+fn findMessageIndex(window: HWND, filter_min: UINT, filter_max: UINT) ?usize {
+    var index: usize = 0;
+    while (index < message_count) : (index += 1) {
+        if (messageMatches(message_queue[index], window, filter_min, filter_max)) return index;
+    }
+    return null;
+}
+
+fn removeMessageAt(index: usize) MSG {
+    const message = message_queue[index];
+    var copy_index = index;
+    while (copy_index + 1 < message_count) : (copy_index += 1) {
+        message_queue[copy_index] = message_queue[copy_index + 1];
+    }
+    message_count -= 1;
+    return message;
+}
+
+fn enqueueMessage(message: MSG) BOOL {
+    lockAtomic(&message_mutex);
+    defer message_mutex.unlock();
+
+    if (message_count == message_queue.len) return 0;
+    message_queue[message_count] = message;
+    message_count += 1;
+    return 1;
+}
+
+fn dequeueMessage(window: HWND, filter_min: UINT, filter_max: UINT, remove: bool) ?MSG {
+    lockAtomic(&message_mutex);
+    defer message_mutex.unlock();
+
+    const index = findMessageIndex(window, filter_min, filter_max) orelse return null;
+    if (remove) return removeMessageAt(index);
+    return message_queue[index];
+}
+
+fn resetMessageQueueForTest() void {
+    lockAtomic(&message_mutex);
+    defer message_mutex.unlock();
+
+    message_count = 0;
+    registered_window_proc = null;
+    main_window_handle = @ptrFromInt(1);
+    injected_key_sequence_loaded = true;
+    injected_key_count = 0;
+    injected_key_index = 0;
+    injected_key_delay_ms = MIN_INJECTED_KEY_DELAY_MS;
+    injected_key_next_due_ms = 0;
+}
+
+fn parseVirtualKey(token: []const u8) ?UINT {
+    const trimmed = std.mem.trim(u8, token, " \t\r\n");
+    if (trimmed.len == 0) return null;
+
+    if (trimmed.len == 1) {
+        const ch = trimmed[0];
+        if (ch >= 'a' and ch <= 'z') return @as(UINT, ch - ('a' - 'A'));
+        if (ch >= 'A' and ch <= 'Z') return @as(UINT, ch);
+    }
+
+    if (std.ascii.eqlIgnoreCase(trimmed, "ENTER") or std.ascii.eqlIgnoreCase(trimmed, "RETURN")) return 0x0d;
+    if (std.ascii.eqlIgnoreCase(trimmed, "ESC") or std.ascii.eqlIgnoreCase(trimmed, "ESCAPE")) return 0x1b;
+    if (std.ascii.eqlIgnoreCase(trimmed, "SPACE")) return 0x20;
+    if (std.ascii.eqlIgnoreCase(trimmed, "TAB")) return 0x09;
+    if (std.ascii.eqlIgnoreCase(trimmed, "UP")) return 0x26;
+    if (std.ascii.eqlIgnoreCase(trimmed, "DOWN")) return 0x28;
+    if (std.ascii.eqlIgnoreCase(trimmed, "LEFT")) return 0x25;
+    if (std.ascii.eqlIgnoreCase(trimmed, "RIGHT")) return 0x27;
+
+    if (trimmed.len > 2 and trimmed[0] == '0' and (trimmed[1] == 'x' or trimmed[1] == 'X')) {
+        return std.fmt.parseInt(UINT, trimmed[2..], 16) catch null;
+    }
+    return std.fmt.parseInt(UINT, trimmed, 10) catch null;
+}
+
+fn currentTimeMs() i64 {
+    return @intCast((monotonicNanoseconds() orelse 0) / std.time.ns_per_ms);
+}
+
+fn parseInjectedKeyDelayMs() i64 {
+    const raw_delay = getenv("BATTLECONTROL_KEY_DELAY_MS") orelse return MIN_INJECTED_KEY_DELAY_MS;
+    const parsed = std.fmt.parseInt(i64, std.mem.span(raw_delay), 10) catch return MIN_INJECTED_KEY_DELAY_MS;
+    return @max(parsed, MIN_INJECTED_KEY_DELAY_MS);
+}
+
+fn configureInjectedKeySequence(keys: []const UINT, delay_ms: i64, first_due_ms: i64) void {
+    injected_key_count = @min(keys.len, injected_keys.len);
+    @memcpy(injected_keys[0..injected_key_count], keys[0..injected_key_count]);
+    injected_key_index = 0;
+    injected_key_delay_ms = @max(delay_ms, MIN_INJECTED_KEY_DELAY_MS);
+    injected_key_next_due_ms = first_due_ms;
+}
+
+fn configureInjectedKeySequenceForTest(keys: []const UINT, delay_ms: i64, first_due_ms: i64) void {
+    injected_key_sequence_loaded = true;
+    configureInjectedKeySequence(keys, delay_ms, first_due_ms);
+}
+
+fn loadInjectedKeySequenceOnce(now_ms: i64) void {
+    if (injected_key_sequence_loaded) return;
+    injected_key_sequence_loaded = true;
+
+    const raw_sequence = getenv("BATTLECONTROL_KEY_SEQUENCE") orelse return;
+    var parsed_keys: [INJECTED_KEY_CAPACITY]UINT = undefined;
+    var parsed_count: usize = 0;
+    var tokens = std.mem.tokenizeAny(u8, std.mem.span(raw_sequence), ",; \t\r\n");
+    while (tokens.next()) |token| {
+        const virtual_key = parseVirtualKey(token) orelse continue;
+        if (parsed_count == parsed_keys.len) break;
+        parsed_keys[parsed_count] = virtual_key;
+        parsed_count += 1;
+    }
+    const delay_ms = parseInjectedKeyDelayMs();
+    configureInjectedKeySequence(parsed_keys[0..parsed_count], delay_ms, now_ms + delay_ms);
+}
+
+fn pumpInjectedKeySequence(now_ms: i64) void {
+    loadInjectedKeySequenceOnce(now_ms);
+    if (injected_key_index >= injected_key_count) return;
+    if (now_ms < injected_key_next_due_ms) return;
+
+    const virtual_key = injected_keys[injected_key_index];
+    injected_key_index += 1;
+    injected_key_next_due_ms = now_ms + injected_key_delay_ms;
+    _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYDOWN, virtual_key, 0));
+    _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYUP, virtual_key, 0));
 }
 
 fn readLe16(ptr: [*]const u8) usize {
@@ -998,37 +1187,35 @@ export fn IsWindow(window: HWND) callconv(.c) BOOL {
 }
 
 export fn PostMessage(window: HWND, message: UINT, wparam: WPARAM, lparam: LPARAM) callconv(.c) BOOL {
-    _ = window;
-    _ = message;
-    _ = wparam;
-    _ = lparam;
+    return enqueueMessage(makeMessage(window, message, wparam, lparam));
+}
+
+export fn PeekMessage(msg: ?*MSG, window: HWND, filter_min: UINT, filter_max: UINT, remove_msg: UINT) callconv(.c) BOOL {
+    pumpInjectedKeySequence(currentTimeMs());
+    const message = dequeueMessage(window, filter_min, filter_max, (remove_msg & PM_REMOVE) != PM_NOREMOVE) orelse return 0;
+    if (msg) |out| out.* = message;
     return 1;
 }
 
-export fn PeekMessage(msg: ?*anyopaque, window: HWND, filter_min: UINT, filter_max: UINT, remove_msg: UINT) callconv(.c) BOOL {
-    _ = msg;
-    _ = window;
-    _ = filter_min;
-    _ = filter_max;
-    _ = remove_msg;
-    return 0;
+export fn GetMessage(msg: ?*MSG, window: HWND, filter_min: UINT, filter_max: UINT) callconv(.c) BOOL {
+    pumpInjectedKeySequence(currentTimeMs());
+    const message = dequeueMessage(window, filter_min, filter_max, true) orelse return 0;
+    if (msg) |out| out.* = message;
+    if (message.message == WM_QUIT) return 0;
+    return 1;
 }
 
-export fn GetMessage(msg: ?*anyopaque, window: HWND, filter_min: UINT, filter_max: UINT) callconv(.c) BOOL {
-    _ = msg;
-    _ = window;
-    _ = filter_min;
-    _ = filter_max;
-    return 0;
-}
-
-export fn TranslateMessage(msg: ?*const anyopaque) callconv(.c) BOOL {
+export fn TranslateMessage(msg: ?*const MSG) callconv(.c) BOOL {
     _ = msg;
     return 1;
 }
 
-export fn DispatchMessage(msg: ?*const anyopaque) callconv(.c) LRESULT {
-    _ = msg;
+export fn DispatchMessage(msg: ?*const MSG) callconv(.c) LRESULT {
+    const message = msg orelse return 0;
+    if (message.hwnd == null) return 0;
+    if (registered_window_proc) |window_proc| {
+        return window_proc(message.hwnd, message.message, message.wParam, message.lParam);
+    }
     return 0;
 }
 
@@ -1041,7 +1228,7 @@ export fn DefWindowProc(window: HWND, message: UINT, wparam: WPARAM, lparam: LPA
 }
 
 export fn PostQuitMessage(exit_code: c_int) callconv(.c) void {
-    _ = exit_code;
+    _ = enqueueMessage(makeMessage(null, WM_QUIT, @intCast(exit_code), 0));
 }
 
 export fn ExitProcess(exit_code: UINT) callconv(.c) void {
@@ -1066,7 +1253,8 @@ export fn LoadIcon(instance: HINSTANCE, icon_name: ?[*:0]const u8) callconv(.c) 
 }
 
 export fn RegisterClass(window_class: ?*const anyopaque) callconv(.c) ATOM {
-    _ = window_class;
+    const class: *const WNDCLASS = @ptrCast(@alignCast(window_class orelse return 0));
+    registered_window_proc = class.lpfnWndProc;
     return 1;
 }
 
@@ -1096,7 +1284,8 @@ export fn CreateWindowEx(
     _ = menu;
     _ = instance;
     _ = param;
-    return @ptrFromInt(1);
+    main_window_handle = @ptrFromInt(1);
+    return main_window_handle;
 }
 
 export fn GetSystemMetrics(index: c_int) callconv(.c) c_int {
@@ -1888,6 +2077,93 @@ test "procedure lookup fails for absent modules" {
 
 test "legacy CPU type starts unknown" {
     try std.testing.expectEqual(@as(u8, 0), CPUType);
+}
+
+test "Win32 message queue preserves PeekMessage and GetMessage semantics" {
+    resetMessageQueueForTest();
+
+    try std.testing.expectEqual(@as(BOOL, 1), PostMessage(@ptrFromInt(1), 0x0100, 0x0d, 0x1234));
+
+    var peeked: MSG = undefined;
+    try std.testing.expectEqual(@as(BOOL, 1), PeekMessage(&peeked, null, 0, 0, PM_NOREMOVE));
+    try std.testing.expectEqual(@as(HWND, @ptrFromInt(1)), peeked.hwnd);
+    try std.testing.expectEqual(@as(UINT, 0x0100), peeked.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), peeked.wParam);
+    try std.testing.expectEqual(@as(LPARAM, 0x1234), peeked.lParam);
+
+    var popped: MSG = undefined;
+    try std.testing.expectEqual(@as(BOOL, 1), GetMessage(&popped, null, 0, 0));
+    try std.testing.expectEqual(peeked, popped);
+    try std.testing.expectEqual(@as(BOOL, 0), PeekMessage(&peeked, null, 0, 0, PM_NOREMOVE));
+}
+
+test "key sequence parser accepts menu-driving virtual key names and values" {
+    try std.testing.expectEqual(@as(UINT, 0x0d), parseVirtualKey("ENTER").?);
+    try std.testing.expectEqual(@as(UINT, 0x1b), parseVirtualKey("escape").?);
+    try std.testing.expectEqual(@as(UINT, 0x41), parseVirtualKey("a").?);
+    try std.testing.expectEqual(@as(UINT, 0x28), parseVirtualKey("0x28").?);
+    try std.testing.expectEqual(@as(UINT, 27), parseVirtualKey("27").?);
+    try std.testing.expectEqual(@as(?UINT, null), parseVirtualKey("not-a-key"));
+}
+
+test "injected key sequence is paced by at least the configured delay" {
+    resetMessageQueueForTest();
+    configureInjectedKeySequenceForTest(&.{ 0x0d, 0x1b }, 1000, 1000);
+
+    pumpInjectedKeySequence(999);
+    try std.testing.expectEqual(@as(?MSG, null), dequeueMessage(null, 0, 0, false));
+
+    pumpInjectedKeySequence(1000);
+    var message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYDOWN, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), message.wParam);
+    message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYUP, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), message.wParam);
+
+    pumpInjectedKeySequence(1999);
+    try std.testing.expectEqual(@as(?MSG, null), dequeueMessage(null, 0, 0, false));
+
+    pumpInjectedKeySequence(2000);
+    message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYDOWN, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x1b), message.wParam);
+}
+
+var dispatched_message_for_test: UINT = 0;
+var dispatched_wparam_for_test: WPARAM = 0;
+
+fn testWindowProc(window: HWND, message: UINT, wparam: WPARAM, lparam: LPARAM) callconv(.c) LRESULT {
+    _ = window;
+    _ = lparam;
+    dispatched_message_for_test = message;
+    dispatched_wparam_for_test = wparam;
+    return 7;
+}
+
+test "DispatchMessage calls the window procedure registered by RegisterClass" {
+    resetMessageQueueForTest();
+    dispatched_message_for_test = 0;
+    dispatched_wparam_for_test = 0;
+
+    var class = WNDCLASS{
+        .style = 0,
+        .lpfnWndProc = testWindowProc,
+        .cbClsExtra = 0,
+        .cbWndExtra = 0,
+        .hInstance = null,
+        .hIcon = null,
+        .hCursor = null,
+        .hbrBackground = null,
+        .lpszMenuName = null,
+        .lpszClassName = null,
+    };
+    try std.testing.expectEqual(@as(ATOM, 1), RegisterClass(&class));
+
+    var message = makeMessage(@ptrFromInt(1), WM_KEYDOWN, 0x0d, 0);
+    try std.testing.expectEqual(@as(LRESULT, 7), DispatchMessage(&message));
+    try std.testing.expectEqual(WM_KEYDOWN, dispatched_message_for_test);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), dispatched_wparam_for_test);
 }
 
 test "DirectDrawCreate returns a DirectDraw object" {
