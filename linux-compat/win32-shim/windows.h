@@ -425,6 +425,9 @@ typedef struct _RTL_CRITICAL_SECTION {
 #ifndef PM_NOREMOVE
 #define PM_NOREMOVE 0x0000
 #endif
+#ifndef PM_REMOVE
+#define PM_REMOVE 0x0001
+#endif
 #ifndef PM_NOYIELD
 #define PM_NOYIELD 0x0002
 #endif
