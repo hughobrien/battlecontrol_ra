@@ -281,8 +281,8 @@ export fn _splitpath(path: [*:0]const u8, drive: ?[*:0]u8, dir: ?[*:0]u8, fname:
 
 export fn _makepath(path: [*:0]u8, drive: ?[*:0]const u8, dir: ?[*:0]const u8, fname: ?[*:0]const u8, ext: ?[*:0]const u8) callconv(.c) void {
     var index: usize = 0;
-    const parts = [_]?[*:0]const u8{ drive, dir, fname, ext };
-    for (parts) |part| {
+    const path_parts = [_]?[*:0]const u8{ drive, dir, fname };
+    for (path_parts) |part| {
         if (part) |p| {
             for (std.mem.span(p)) |ch| {
                 path[index] = ch;
@@ -290,7 +290,34 @@ export fn _makepath(path: [*:0]u8, drive: ?[*:0]const u8, dir: ?[*:0]const u8, f
             }
         }
     }
+    if (ext) |e| {
+        const extension = std.mem.span(e);
+        if (extension.len != 0 and extension[0] != '.') {
+            path[index] = '.';
+            index += 1;
+        }
+        for (extension) |ch| {
+            path[index] = ch;
+            index += 1;
+        }
+    }
     path[index] = 0;
+}
+
+test "_makepath preserves dotted extensions" {
+    var path: [64:0]u8 = undefined;
+
+    _makepath(@ptrCast(&path), null, null, "MOUSE", ".SHP");
+
+    try std.testing.expectEqualStrings("MOUSE.SHP", std.mem.span(@as([*:0]const u8, @ptrCast(&path))));
+}
+
+test "_makepath adds separator before extension without dot" {
+    var path: [64:0]u8 = undefined;
+
+    _makepath(@ptrCast(&path), null, null, "BRIDGE1H", "SNO");
+
+    try std.testing.expectEqualStrings("BRIDGE1H.SNO", std.mem.span(@as([*:0]const u8, @ptrCast(&path))));
 }
 
 fn wildcardMatch(pattern: []const u8, name: []const u8) bool {

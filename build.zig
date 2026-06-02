@@ -355,6 +355,24 @@ pub fn build(b: *std.Build) void {
     const test_step = b.step("test", "Run Nix-backed Zig tests");
     test_step.dependOn(&run_ddraw_sdl_backend_tests.step);
 
+    const ddraw_mini_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/ddraw-mini/ddraw.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const ddraw_mini_tests = b.addTest(.{
+        .root_module = ddraw_mini_test_module,
+    });
+    ddraw_mini_tests.root_module.addObject(ddraw_sdl_backend);
+    if (sdl3_lib) |path| {
+        ddraw_mini_tests.root_module.addLibraryPath(.{ .cwd_relative = path });
+        ddraw_mini_tests.root_module.addRPath(.{ .cwd_relative = path });
+    }
+    ddraw_mini_tests.root_module.linkSystemLibrary("SDL3", .{});
+    const run_ddraw_mini_tests = b.addRunArtifact(ddraw_mini_tests);
+    test_step.dependOn(&run_ddraw_mini_tests.step);
+
     const win32_misc_test_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/win32_misc.zig"),
         .target = target,
@@ -372,6 +390,18 @@ pub fn build(b: *std.Build) void {
     win32_misc_tests.root_module.linkSystemLibrary("SDL3", .{});
     const run_win32_misc_tests = b.addRunArtifact(win32_misc_tests);
     test_step.dependOn(&run_win32_misc_tests.step);
+
+    const win32_file_path_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/win32-shim/file_path.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const win32_file_path_tests = b.addTest(.{
+        .root_module = win32_file_path_test_module,
+    });
+    const run_win32_file_path_tests = b.addRunArtifact(win32_file_path_tests);
+    test_step.dependOn(&run_win32_file_path_tests.step);
 
     const timer_contract_test_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/timer_contract.zig"),
@@ -427,6 +457,47 @@ pub fn build(b: *std.Build) void {
     });
     const run_random_contract = b.addRunArtifact(random_contract);
     test_step.dependOn(&run_random_contract.step);
+
+    const keynum_contract_module = b.createModule(.{
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+        .link_libcpp = true,
+    });
+    keynum_contract_module.addCMacro("WIN32", "1");
+    keynum_contract_module.addCMacro("_WIN32", "1");
+    keynum_contract_module.addIncludePath(b.path("linux-compat/win32-shim"));
+    keynum_contract_module.addIncludePath(b.path("linux-compat"));
+    keynum_contract_module.addIncludePath(b.path("CODE"));
+    keynum_contract_module.addCSourceFile(.{
+        .file = b.path("linux-compat/keynum_contract.cpp"),
+        .flags = cxx_flags,
+    });
+    const keynum_contract = b.addExecutable(.{
+        .name = "keynum-contract",
+        .root_module = keynum_contract_module,
+    });
+    const run_keynum_contract = b.addRunArtifact(keynum_contract);
+    test_step.dependOn(&run_keynum_contract.step);
+
+    const iconset_contract_module = b.createModule(.{
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+        .link_libcpp = true,
+    });
+    iconset_contract_module.addIncludePath(b.path("CODE"));
+    iconset_contract_module.addIncludePath(b.path("WIN32LIB/INCLUDE"));
+    iconset_contract_module.addCSourceFile(.{
+        .file = b.path("linux-compat/iconset_contract.cpp"),
+        .flags = cxx_flags,
+    });
+    const iconset_contract = b.addExecutable(.{
+        .name = "iconset-contract",
+        .root_module = iconset_contract_module,
+    });
+    const run_iconset_contract = b.addRunArtifact(iconset_contract);
+    test_step.dependOn(&run_iconset_contract.step);
 
     const win32_mpeg_movie_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/mpeg_movie.zig"),

@@ -534,7 +534,7 @@ typedef enum KeyASCIIType {
 } KeyASCIIType;
 
 
-typedef enum KeyNumType {
+typedef enum KeyNumType : int {
 	KN_NONE				= 0,
 
 	KN_0 					= VK_0,
