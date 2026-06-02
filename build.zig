@@ -334,8 +334,17 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(ddraw_sdl_backend);
 
+    const ddraw_sdl_backend_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/ddraw-mini/sdl_backend.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    if (sdl3_include) |path| {
+        ddraw_sdl_backend_test_module.addIncludePath(.{ .cwd_relative = path });
+    }
     const ddraw_sdl_backend_tests = b.addTest(.{
-        .root_module = ddraw_sdl_backend_module,
+        .root_module = ddraw_sdl_backend_test_module,
     });
     if (sdl3_lib) |path| {
         ddraw_sdl_backend_tests.root_module.addLibraryPath(.{ .cwd_relative = path });
@@ -345,6 +354,24 @@ pub fn build(b: *std.Build) void {
     const run_ddraw_sdl_backend_tests = b.addRunArtifact(ddraw_sdl_backend_tests);
     const test_step = b.step("test", "Run Nix-backed Zig tests");
     test_step.dependOn(&run_ddraw_sdl_backend_tests.step);
+
+    const win32_misc_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/win32-shim/win32_misc.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const win32_misc_tests = b.addTest(.{
+        .root_module = win32_misc_test_module,
+    });
+    win32_misc_tests.root_module.addObject(ddraw_sdl_backend);
+    if (sdl3_lib) |path| {
+        win32_misc_tests.root_module.addLibraryPath(.{ .cwd_relative = path });
+        win32_misc_tests.root_module.addRPath(.{ .cwd_relative = path });
+    }
+    win32_misc_tests.root_module.linkSystemLibrary("SDL3", .{});
+    const run_win32_misc_tests = b.addRunArtifact(win32_misc_tests);
+    test_step.dependOn(&run_win32_misc_tests.step);
 
     const win32_mpeg_movie_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/mpeg_movie.zig"),

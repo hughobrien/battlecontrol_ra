@@ -17,6 +17,11 @@ pub const PaletteEntry = extern struct {
     peFlags: u8,
 };
 
+const PumpEventCallback = *const fn (kind: u32, key: u32) callconv(.c) void;
+const PUMP_EVENT_KEY_DOWN: u32 = 1;
+const PUMP_EVENT_KEY_UP: u32 = 2;
+const PUMP_EVENT_QUIT: u32 = 3;
+
 pub const Backend = struct {
     width: u32 = 0,
     height: u32 = 0,
@@ -117,6 +122,51 @@ export fn ddrawMiniSdlPresentIndexedSurface(
     return 1;
 }
 
+export fn ddrawMiniSdlPumpEvents(callback: PumpEventCallback) callconv(.c) c_int {
+    var event_count: c_int = 0;
+    var event: c.SDL_Event = undefined;
+    while (c.SDL_PollEvent(&event)) {
+        switch (event.type) {
+            c.SDL_EVENT_KEY_DOWN => {
+                if (sdlKeyToVirtualKey(event.key.key)) |virtual_key| {
+                    callback(PUMP_EVENT_KEY_DOWN, virtual_key);
+                    event_count += 1;
+                }
+            },
+            c.SDL_EVENT_KEY_UP => {
+                if (sdlKeyToVirtualKey(event.key.key)) |virtual_key| {
+                    callback(PUMP_EVENT_KEY_UP, virtual_key);
+                    event_count += 1;
+                }
+            },
+            c.SDL_EVENT_QUIT => {
+                callback(PUMP_EVENT_QUIT, 0);
+                event_count += 1;
+            },
+            else => {},
+        }
+    }
+    return event_count;
+}
+
+fn sdlKeyToVirtualKey(key: c.SDL_Keycode) ?u32 {
+    if (key >= 'a' and key <= 'z') return @intCast(key - ('a' - 'A'));
+    if (key >= 'A' and key <= 'Z') return @intCast(key);
+    if (key >= '0' and key <= '9') return @intCast(key);
+
+    return switch (key) {
+        c.SDLK_RETURN => 0x0d,
+        c.SDLK_ESCAPE => 0x1b,
+        c.SDLK_SPACE => 0x20,
+        c.SDLK_TAB => 0x09,
+        c.SDLK_LEFT => 0x25,
+        c.SDLK_UP => 0x26,
+        c.SDLK_RIGHT => 0x27,
+        c.SDLK_DOWN => 0x28,
+        else => null,
+    };
+}
+
 pub fn expandIndexedToArgb(indexed_pixels: []const u8, pitch: usize, palette: []const PaletteEntry, argb_pixels: []u32) void {
     expandIndexedRectToArgb(indexed_pixels, pitch, @min(pitch, argb_pixels.len), 1, palette, argb_pixels);
 }
@@ -202,4 +252,55 @@ test "backend creates SDL resources and presents indexed pixels" {
     try std.testing.expectEqual(@as(u32, 0xff445566), backend.argb_pixels[1]);
     try std.testing.expectEqual(@as(u32, 0xff778899), backend.argb_pixels[2]);
     try std.testing.expectEqual(@as(u32, 0xffaabbcc), backend.argb_pixels[3]);
+}
+
+const TestPumpedEvent = struct {
+    kind: u32,
+    key: u32,
+};
+
+var test_pumped_events = [_]TestPumpedEvent{.{ .kind = 0, .key = 0 }} ** 8;
+var test_pumped_event_count: usize = 0;
+
+fn recordPumpedEvent(kind: u32, key: u32) callconv(.c) void {
+    test_pumped_events[test_pumped_event_count] = .{ .kind = kind, .key = key };
+    test_pumped_event_count += 1;
+}
+
+test "backend pumps SDL keyboard and quit events" {
+    _ = c.SDL_SetHint(c.SDL_HINT_VIDEO_DRIVER, "dummy");
+    try std.testing.expect(c.SDL_Init(c.SDL_INIT_VIDEO));
+    defer c.SDL_QuitSubSystem(c.SDL_INIT_VIDEO);
+
+    var key_down: c.SDL_Event = std.mem.zeroes(c.SDL_Event);
+    key_down.type = c.SDL_EVENT_KEY_DOWN;
+    key_down.key.key = c.SDLK_RETURN;
+    try std.testing.expect(c.SDL_PushEvent(&key_down));
+
+    var key_up: c.SDL_Event = std.mem.zeroes(c.SDL_Event);
+    key_up.type = c.SDL_EVENT_KEY_UP;
+    key_up.key.key = c.SDLK_RETURN;
+    try std.testing.expect(c.SDL_PushEvent(&key_up));
+
+    var quit: c.SDL_Event = std.mem.zeroes(c.SDL_Event);
+    quit.type = c.SDL_EVENT_QUIT;
+    try std.testing.expect(c.SDL_PushEvent(&quit));
+
+    test_pumped_event_count = 0;
+    try std.testing.expectEqual(@as(c_int, 3), ddrawMiniSdlPumpEvents(recordPumpedEvent));
+    try std.testing.expectEqual(@as(u32, 1), test_pumped_events[0].kind);
+    try std.testing.expectEqual(@as(u32, 0x0d), test_pumped_events[0].key);
+    try std.testing.expectEqual(@as(u32, 2), test_pumped_events[1].kind);
+    try std.testing.expectEqual(@as(u32, 0x0d), test_pumped_events[1].key);
+    try std.testing.expectEqual(@as(u32, 3), test_pumped_events[2].kind);
+}
+
+test "backend maps SDL keycodes to Win32 virtual keys" {
+    try std.testing.expectEqual(@as(?u32, 0x41), sdlKeyToVirtualKey('a'));
+    try std.testing.expectEqual(@as(?u32, 0x39), sdlKeyToVirtualKey('9'));
+    try std.testing.expectEqual(@as(?u32, 0x25), sdlKeyToVirtualKey(c.SDLK_LEFT));
+    try std.testing.expectEqual(@as(?u32, 0x26), sdlKeyToVirtualKey(c.SDLK_UP));
+    try std.testing.expectEqual(@as(?u32, 0x27), sdlKeyToVirtualKey(c.SDLK_RIGHT));
+    try std.testing.expectEqual(@as(?u32, 0x28), sdlKeyToVirtualKey(c.SDLK_DOWN));
+    try std.testing.expectEqual(@as(?u32, null), sdlKeyToVirtualKey(c.SDLK_F1));
 }
