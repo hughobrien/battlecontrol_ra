@@ -300,6 +300,18 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(win32_misc);
 
+    const ddraw_mini_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/ddraw-mini/ddraw.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const ddraw_mini = b.addObject(.{
+        .name = "ddraw-mini",
+        .root_module = ddraw_mini_module,
+    });
+    exe.root_module.addObject(ddraw_mini);
+
     const win32_mpeg_movie_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/mpeg_movie.zig"),
         .target = target,
