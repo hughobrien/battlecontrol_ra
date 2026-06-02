@@ -3,6 +3,8 @@ const std = @import("std");
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
+    const sdl3_include = b.option([]const u8, "sdl3-include", "Path to SDL3 include directory");
+    const sdl3_lib = b.option([]const u8, "sdl3-lib", "Path to SDL3 library directory");
     const exe_module = b.createModule(.{
         .target = target,
         .optimize = optimize,
@@ -18,6 +20,11 @@ pub fn build(b: *std.Build) void {
     exe_module.addIncludePath(b.path("CODE"));
     exe_module.addIncludePath(b.path("WIN32LIB/INCLUDE"));
     exe_module.addIncludePath(b.path("VQ/INCLUDE"));
+    if (sdl3_lib) |path| {
+        exe_module.addLibraryPath(.{ .cwd_relative = path });
+        exe_module.addRPath(.{ .cwd_relative = path });
+    }
+    exe_module.linkSystemLibrary("SDL3", .{});
     const cxx_flags = &.{
         "-std=c++17",
     };
@@ -316,7 +323,11 @@ pub fn build(b: *std.Build) void {
         .root_source_file = b.path("linux-compat/ddraw-mini/sdl_backend.zig"),
         .target = target,
         .optimize = optimize,
+        .link_libc = true,
     });
+    if (sdl3_include) |path| {
+        ddraw_sdl_backend_module.addIncludePath(.{ .cwd_relative = path });
+    }
     const ddraw_sdl_backend = b.addObject(.{
         .name = "ddraw-sdl-backend",
         .root_module = ddraw_sdl_backend_module,
