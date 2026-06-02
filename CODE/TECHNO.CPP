@@ -1751,8 +1751,8 @@ bool TechnoClass::Evaluate_Object(ThreatType method, int mask, int range, Techno
 	if (value) {
 //	if (rawval) {
 
-		value = (value * 32000) / ((dist/ICON_LEPTON_W)+1);
-//		value = (value * 32000) / (((dist/ICON_LEPTON_W)*(dist/ICON_LEPTON_W))+1);
+		int32_t scaled_value = (int32_t)((uint32_t)value * 32000U);
+		value = scaled_value / ((dist/ICON_LEPTON_W)+1);
 
 //		if (value < MAP_CELL_W*2) value = dist/ICON_LEPTON_W;
 		value = std::max(value, 1);

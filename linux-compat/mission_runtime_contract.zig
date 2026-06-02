@@ -34,3 +34,11 @@ test "AI team formation speed does not use player team arrays for generated grou
     try std.testing.expect(std.mem.indexOf(u8, body, "TeamSpeed[group]") == null);
     try std.testing.expect(std.mem.indexOf(u8, body, "TeamMaxSpeed[group]") == null);
 }
+
+test "threat distance scaling keeps legacy 32-bit wrap explicit" {
+    const source = try readFile(std.testing.allocator, "CODE/TECHNO.CPP");
+    defer std.testing.allocator.free(source);
+
+    try std.testing.expect(std.mem.indexOf(u8, source, "value = (value * 32000)") == null);
+    try std.testing.expect(std.mem.indexOf(u8, source, "(uint32_t)value * 32000U") != null);
+}
