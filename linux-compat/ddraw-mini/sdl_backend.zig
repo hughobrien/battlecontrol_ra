@@ -1,5 +1,15 @@
 const std = @import("std");
 
+const c = @cImport({
+    @cInclude("SDL3/SDL.h");
+});
+
+comptime {
+    if (c.SDL_VERSION < c.SDL_VERSIONNUM(3, 0, 0)) {
+        @compileError("ddraw-mini SDL backend requires SDL3 headers");
+    }
+}
+
 pub const PaletteEntry = extern struct {
     peRed: u8,
     peGreen: u8,
