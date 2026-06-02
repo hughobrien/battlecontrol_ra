@@ -511,6 +511,28 @@ pub fn build(b: *std.Build) void {
     const run_iconset_contract = b.addRunArtifact(iconset_contract);
     test_step.dependOn(&run_iconset_contract.step);
 
+    const boolean_vector_contract_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/boolean_vector_contract.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const boolean_vector_contract_tests = b.addTest(.{
+        .root_module = boolean_vector_contract_module,
+    });
+    const run_boolean_vector_contract_tests = b.addRunArtifact(boolean_vector_contract_tests);
+    test_step.dependOn(&run_boolean_vector_contract_tests.step);
+
+    const iff_contract_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/iff_contract.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const iff_contract_tests = b.addTest(.{
+        .root_module = iff_contract_module,
+    });
+    const run_iff_contract_tests = b.addRunArtifact(iff_contract_tests);
+    test_step.dependOn(&run_iff_contract_tests.step);
+
     const win32_mpeg_movie_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/mpeg_movie.zig"),
         .target = target,

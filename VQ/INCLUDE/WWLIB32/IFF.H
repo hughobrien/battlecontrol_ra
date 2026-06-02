@@ -47,7 +47,9 @@
 
 #ifndef GBUFFER_H
 #include <GBUFFER.H>
-#endif 
+#endif
+
+#include <stdint.h>
 
 #define LZW_SUPPORTED			FALSE
 
@@ -88,12 +90,14 @@ typedef enum {
 **	leading bytes that indicate the size of the entire file.
 */
 //lint -strong(AJX,CompHeaderType)
+#pragma pack(push, 1)
 typedef struct {
-	BYTE	Method;		// Compression method (CompressionType).
-	BYTE	pad;			// Reserved pad byte (always 0).
-	LONG	Size;			// Size of the uncompressed data.
-	WORD	Skip;			// Number of bytes to skip before data.
+	uint8_t	Method;		// Compression method (CompressionType).
+	uint8_t	pad;			// Reserved pad byte (always 0).
+	uint32_t	Size;			// Size of the uncompressed data.
+	uint16_t	Skip;			// Number of bytes to skip before data.
 } CompHeaderType;
+#pragma pack(pop)
 
 
 /*=========================================================================*/

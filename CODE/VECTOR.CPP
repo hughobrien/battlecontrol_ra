@@ -407,6 +407,19 @@ template class VectorClass<CellClass>;
 
 //----------------------------------------------------------------------------------------------
 
+static int Boolean_Vector_Storage_Size(unsigned size)
+{
+	return(((size + (32-1)) / 32) * 4);
+}
+
+static void Boolean_Vector_Clear_Padding(VectorClass<unsigned char> & bit_array, unsigned bit_count)
+{
+	int storage_bits = bit_array.Length() * 8;
+	for (int index = bit_count; index < storage_bits; index++) {
+		Set_Bit(&bit_array[0], index, 0);
+	}
+}
+
 /***********************************************************************************************
  * BooleanVectorClass::BooleanVectorClass -- Explicit data buffer constructor.                 *
  *                                                                                             *
@@ -427,9 +440,12 @@ template class VectorClass<CellClass>;
  *=============================================================================================*/
 BooleanVectorClass::BooleanVectorClass(unsigned size, unsigned char * array)
 {
-	BitArray.Resize(((size + (8-1)) / 8), array);
+	BitArray.Resize(Boolean_Vector_Storage_Size(size), array);
 	LastIndex = -1;
 	BitCount = size;
+	if (size) {
+		Boolean_Vector_Clear_Padding(BitArray, BitCount);
+	}
 }
 
 
@@ -533,20 +549,26 @@ int BooleanVectorClass::Resize(unsigned size)
 		int oldsize = BitCount;
 
 		/*
-		**	Actually resize the bit array. Since this is a bit packed array,
-		**	there are 8 elements per byte (rounded up).
+		**	Actually resize the bit array. The bit helpers operate on 32-bit
+		**	words, so keep the byte storage rounded to whole words.
 		*/
-		int success = BitArray.Resize(((size + (8-1)) / 8));
+		int old_storage = Boolean_Vector_Storage_Size(oldsize);
+		int new_storage = Boolean_Vector_Storage_Size(size);
+		int success = BitArray.Resize(new_storage);
 
 		/*
 		**	Since there is no default constructor for bit packed integers, a manual
 		**	clearing of the bits is required.
 		*/
 		BitCount = size;
-		if (success && oldsize < size) {
-			for (int index = oldsize; index < size; index++) {
+		if (success) {
+			if (new_storage > old_storage) {
+				memset(&BitArray[old_storage], '\0', new_storage - old_storage);
+			}
+			for (int index = oldsize; index < (int)size; index++) {
 				(*this)[index] = 0;
 			}
+			Boolean_Vector_Clear_Padding(BitArray, BitCount);
 		}
 
 		return(success);
@@ -627,6 +649,7 @@ void BooleanVectorClass::Set(void)
 	LastIndex = -1;
 	if (BitArray.Length()) {
 		memset(&BitArray[0], '\xFF', BitArray.Length());
+		Boolean_Vector_Clear_Padding(BitArray, BitCount);
 	}
 }
 
