@@ -20,13 +20,48 @@ pub const PaletteEntry = extern struct {
 pub const Backend = struct {
     width: u32 = 0,
     height: u32 = 0,
+    window: ?*c.SDL_Window = null,
+    renderer: ?*c.SDL_Renderer = null,
+    texture: ?*c.SDL_Texture = null,
+    argb_pixels: []u32 = &.{},
+    sdl_initialized: bool = false,
 
-    pub fn initialize(self: *Backend, width: u32, height: u32) void {
+    pub fn initialize(self: *Backend, width: u32, height: u32) !void {
+        if (width == 0 or height == 0) return error.InvalidDimensions;
+        if (self.window != null and self.width == width and self.height == height) return;
+
+        self.shutdown();
+
+        if (!c.SDL_Init(c.SDL_INIT_VIDEO)) return error.SdlFailed;
+        self.sdl_initialized = true;
+
+        errdefer self.shutdown();
+
+        const pixel_count = try std.math.mul(usize, width, height);
+        self.argb_pixels = try std.heap.c_allocator.alloc(u32, pixel_count);
+        @memset(self.argb_pixels, 0);
+
+        self.window = c.SDL_CreateWindow("BattleControl Red Alert", @intCast(width), @intCast(height), 0) orelse return error.SdlFailed;
+        self.renderer = c.SDL_CreateRenderer(self.window.?, null) orelse return error.SdlFailed;
+        _ = c.SDL_SetRenderLogicalPresentation(self.renderer.?, @intCast(width), @intCast(height), c.SDL_LOGICAL_PRESENTATION_INTEGER_SCALE);
+        self.texture = c.SDL_CreateTexture(
+            self.renderer.?,
+            c.SDL_PIXELFORMAT_ARGB8888,
+            c.SDL_TEXTUREACCESS_STREAMING,
+            @intCast(width),
+            @intCast(height),
+        ) orelse return error.SdlFailed;
+
         self.width = width;
         self.height = height;
     }
 
     pub fn shutdown(self: *Backend) void {
+        if (self.texture) |texture| c.SDL_DestroyTexture(texture);
+        if (self.renderer) |renderer| c.SDL_DestroyRenderer(renderer);
+        if (self.window) |window| c.SDL_DestroyWindow(window);
+        if (self.argb_pixels.len != 0) std.heap.c_allocator.free(self.argb_pixels);
+        if (self.sdl_initialized) c.SDL_QuitSubSystem(c.SDL_INIT_VIDEO);
         self.* = .{};
     }
 
@@ -37,12 +72,50 @@ pub const Backend = struct {
         width: usize,
         height: usize,
         palette: []const PaletteEntry,
-        argb_pixels: []u32,
-    ) void {
-        _ = self;
-        expandIndexedRectToArgb(indexed_pixels, pitch, width, height, palette, argb_pixels);
+    ) !void {
+        if (self.texture == null or self.renderer == null) return error.NotInitialized;
+        if (width != self.width or height != self.height) return error.InvalidDimensions;
+        if (palette.len < 256) return error.InvalidPalette;
+        if (height != 0) {
+            const source_len = try std.math.add(usize, try std.math.mul(usize, height - 1, pitch), width);
+            if (source_len > indexed_pixels.len) return error.InvalidDimensions;
+        }
+
+        expandIndexedRectToArgb(indexed_pixels, pitch, width, height, palette, self.argb_pixels);
+        if (!c.SDL_UpdateTexture(self.texture.?, null, self.argb_pixels.ptr, @intCast(width * @sizeOf(u32)))) {
+            return error.SdlFailed;
+        }
+        _ = c.SDL_RenderClear(self.renderer.?);
+        if (!c.SDL_RenderTexture(self.renderer.?, self.texture.?, null, null)) return error.SdlFailed;
+        if (!c.SDL_RenderPresent(self.renderer.?)) return error.SdlFailed;
     }
 };
+
+var global_backend = Backend{};
+
+export fn ddrawMiniSdlSetDisplayMode(width: u32, height: u32, bits_per_pixel: u32) callconv(.c) c_int {
+    if (bits_per_pixel != 8) return 0;
+    global_backend.initialize(width, height) catch return 0;
+    return 1;
+}
+
+export fn ddrawMiniSdlShutdown() callconv(.c) void {
+    global_backend.shutdown();
+}
+
+export fn ddrawMiniSdlPresentIndexedSurface(
+    indexed_pixels: ?[*]const u8,
+    pitch: usize,
+    width: usize,
+    height: usize,
+    palette: ?[*]const PaletteEntry,
+) callconv(.c) c_int {
+    const pixels = indexed_pixels orelse return 0;
+    const entries = palette orelse return 0;
+    const source_len = if (height == 0) 0 else std.math.add(usize, std.math.mul(usize, height - 1, pitch) catch return 0, width) catch return 0;
+    global_backend.presentIndexedSurface(pixels[0..source_len], pitch, width, height, entries[0..256]) catch return 0;
+    return 1;
+}
 
 pub fn expandIndexedToArgb(indexed_pixels: []const u8, pitch: usize, palette: []const PaletteEntry, argb_pixels: []u32) void {
     expandIndexedRectToArgb(indexed_pixels, pitch, @min(pitch, argb_pixels.len), 1, palette, argb_pixels);
@@ -106,4 +179,27 @@ test "indexed pixels expand by visible width while honoring source pitch" {
     try std.testing.expectEqual(@as(u32, 0xff020000), argb[1]);
     try std.testing.expectEqual(@as(u32, 0xff030000), argb[2]);
     try std.testing.expectEqual(@as(u32, 0xff040000), argb[3]);
+}
+
+test "backend creates SDL resources and presents indexed pixels" {
+    _ = c.SDL_SetHint(c.SDL_HINT_VIDEO_DRIVER, "dummy");
+    _ = c.SDL_SetHint(c.SDL_HINT_RENDER_DRIVER, "software");
+
+    var backend = Backend{};
+    try backend.initialize(2, 2);
+    defer backend.shutdown();
+
+    var palette = [_]PaletteEntry{.{ .peRed = 0, .peGreen = 0, .peBlue = 0, .peFlags = 0 }} ** 256;
+    palette[1] = .{ .peRed = 0x11, .peGreen = 0x22, .peBlue = 0x33, .peFlags = 0 };
+    palette[2] = .{ .peRed = 0x44, .peGreen = 0x55, .peBlue = 0x66, .peFlags = 0 };
+    palette[3] = .{ .peRed = 0x77, .peGreen = 0x88, .peBlue = 0x99, .peFlags = 0 };
+    palette[4] = .{ .peRed = 0xaa, .peGreen = 0xbb, .peBlue = 0xcc, .peFlags = 0 };
+
+    const indexed = [_]u8{ 1, 2, 3, 4 };
+    try backend.presentIndexedSurface(indexed[0..], 2, 2, 2, palette[0..]);
+
+    try std.testing.expectEqual(@as(u32, 0xff112233), backend.argb_pixels[0]);
+    try std.testing.expectEqual(@as(u32, 0xff445566), backend.argb_pixels[1]);
+    try std.testing.expectEqual(@as(u32, 0xff778899), backend.argb_pixels[2]);
+    try std.testing.expectEqual(@as(u32, 0xffaabbcc), backend.argb_pixels[3]);
 }
