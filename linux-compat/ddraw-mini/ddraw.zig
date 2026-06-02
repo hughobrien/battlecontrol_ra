@@ -660,8 +660,13 @@ fn surfaceFlip(self: *Surface, _: ?*Surface, _: DWORD) callconv(.c) HRESULT {
 
 fn surfaceGetAttachedSurface(self: *Surface, _: ?*DDSCAPS, out: ?*?*Surface) callconv(.c) HRESULT {
     const surface_out = out orelse return DDERR_INVALIDPARAMS;
-    surface_out.* = self.attached;
-    return if (self.attached != null) DD_OK else E_NOTIMPL;
+    const attached = self.attached orelse {
+        surface_out.* = null;
+        return E_NOTIMPL;
+    };
+    _ = surfaceAddRef(attached);
+    surface_out.* = attached;
+    return DD_OK;
 }
 
 fn surfaceGetBltStatus(_: *Surface, _: DWORD) callconv(.c) HRESULT {
@@ -942,4 +947,50 @@ test "DirectDraw creates lockable memory-backed surfaces" {
     try std.testing.expectEqual(@as(DWORD, 4), locked.dwHeight);
     try std.testing.expectEqual(@as(i32, 8), locked.lPitch);
     try std.testing.expect(locked.lpSurface != null);
+}
+
+test "GetAttachedSurface returns a releaseable surface reference" {
+    var direct_draw_any: ?*anyopaque = null;
+    try std.testing.expectEqual(DD_OK, DirectDrawCreate(null, &direct_draw_any, null));
+    const direct_draw: *DirectDraw = @ptrCast(@alignCast(direct_draw_any.?));
+    defer _ = direct_draw.vtable.Release(direct_draw);
+
+    var desc = DDSURFACEDESC{
+        .dwSize = @sizeOf(DDSURFACEDESC),
+        .dwFlags = DDSD_CAPS | DDSD_WIDTH | DDSD_HEIGHT,
+        .dwHeight = 4,
+        .dwWidth = 8,
+        .lPitch = 0,
+        .dwBackBufferCount = 0,
+        .dwRefreshRate = 0,
+        .dwAlphaBitDepth = 0,
+        .dwReserved = 0,
+        .lpSurface = null,
+        .ddckCKDestOverlay = .{ .dwColorSpaceLowValue = 0, .dwColorSpaceHighValue = 0 },
+        .ddckCKDestBlt = .{ .dwColorSpaceLowValue = 0, .dwColorSpaceHighValue = 0 },
+        .ddckCKSrcOverlay = .{ .dwColorSpaceLowValue = 0, .dwColorSpaceHighValue = 0 },
+        .ddckCKSrcBlt = .{ .dwColorSpaceLowValue = 0, .dwColorSpaceHighValue = 0 },
+        .ddpfPixelFormat = .{ .dwSize = 0, .dwFlags = 0, .dwFourCC = 0, .dwRGBBitCount = 0, .dwRBitMask = 0, .dwGBitMask = 0, .dwBBitMask = 0, .dwRGBAlphaBitMask = 0 },
+        .ddsCaps = .{ .dwCaps = DDSCAPS_OFFSCREENPLAIN },
+    };
+    var surface: ?*Surface = null;
+    try std.testing.expectEqual(DD_OK, direct_draw.vtable.CreateSurface(direct_draw, &desc, &surface, null));
+    defer {
+        if (surface) |value| _ = value.vtable.Release(value);
+    }
+
+    var attached: ?*Surface = null;
+    try std.testing.expectEqual(DD_OK, direct_draw.vtable.CreateSurface(direct_draw, &desc, &attached, null));
+    defer {
+        if (attached) |value| _ = value.vtable.Release(value);
+    }
+
+    try std.testing.expectEqual(DD_OK, surface.?.vtable.AddAttachedSurface(surface.?, attached.?));
+
+    var caps = DDSCAPS{ .dwCaps = DDSCAPS_OFFSCREENPLAIN };
+    var fetched: ?*Surface = null;
+    try std.testing.expectEqual(DD_OK, surface.?.vtable.GetAttachedSurface(surface.?, &caps, &fetched));
+    try std.testing.expectEqual(attached.?, fetched.?);
+    try std.testing.expectEqual(@as(c_ulong, 2), attached.?.ref_count);
+    try std.testing.expectEqual(@as(c_ulong, 1), fetched.?.vtable.Release(fetched.?));
 }

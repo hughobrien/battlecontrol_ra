@@ -184,6 +184,10 @@ void *  Load_Icon_Set(char const *filename, void *iconsetptr, long buffsize)
 				idata->Map = idata->Icons + size;
 					idata->TransFlag = sizeof(IControl_Type) + size + mapsize;
 				idata->Size = buffsize;
+				if (mapsize && sinf.Width > 0) {
+					idata->MapWidth = (short)sinf.Width;
+					idata->MapHeight = (short)(mapsize / sinf.Width);
+				}
 
 					{
 						long	val;

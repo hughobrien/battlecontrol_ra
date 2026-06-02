@@ -54,3 +54,11 @@ test "Linux smoke controls are explicit command-line flags" {
     try std.testing.expect(std.mem.indexOf(u8, win32, "BATTLECONTROL_KEY_SEQUENCE") == null);
     try std.testing.expect(std.mem.indexOf(u8, win32, "BATTLECONTROL_KEY_DELAY_MS") == null);
 }
+
+test "iconset loader preserves template map dimensions" {
+    const source = try readFile(std.testing.allocator, "WIN32LIB/TILE/ICONSET.CPP");
+    defer std.testing.allocator.free(source);
+
+    try std.testing.expect(std.mem.indexOf(u8, source, "idata->MapWidth") != null);
+    try std.testing.expect(std.mem.indexOf(u8, source, "idata->MapHeight") != null);
+}
