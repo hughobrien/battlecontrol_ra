@@ -15,6 +15,7 @@
 
   outputs =
     {
+      self,
       nixpkgs,
       redalert-allied-iso,
       redalert-soviet-iso,
@@ -37,6 +38,18 @@
             "$@"
         '';
       };
+      mkRunApp =
+        assets:
+        pkgs.writeShellApplication {
+          name = "battlecontrol-ra";
+          text = ''
+            exec ${pkgs.python3}/bin/python3 ${./linux-compat/launcher/ra_xvfb_launcher.py} \
+              --assets ${builtins.toJSON "${assets}"} \
+              --build-app ${builtins.toJSON "${buildApp}/bin/battlecontrol-ra-zig-build"} \
+              --xvfb ${builtins.toJSON "${pkgs.xvfb}/bin/Xvfb"} \
+              -- "$@"
+          '';
+        };
       mkRaData =
         name: iso:
         pkgs.runCommand name
@@ -70,10 +83,20 @@
             type = "app";
             program = "${buildApp}/bin/battlecontrol-ra-zig-build";
           };
+          runAlliedApp = mkRunApp self.packages.${system}.ra-data-allied;
+          runSovietApp = mkRunApp self.packages.${system}.ra-data-soviet;
         in
         {
           default = build;
           inherit build;
+          run-allied = {
+            type = "app";
+            program = "${runAlliedApp}/bin/battlecontrol-ra";
+          };
+          run-soviet = {
+            type = "app";
+            program = "${runSovietApp}/bin/battlecontrol-ra";
+          };
         };
 
       packages.${system} = rec {
@@ -81,5 +104,24 @@
         ra-data-allied = mkRaData "ra-data-allied" redalert-allied-iso;
         ra-data-soviet = mkRaData "ra-data-soviet" redalert-soviet-iso;
       };
+
+      checks.${system}.xvfb-run-app = pkgs.runCommand "xvfb-run-app-check" { } ''
+        ${pkgs.ruff}/bin/ruff format --check ${./linux-compat/launcher/ra_xvfb_launcher.py}
+        ${pkgs.ruff}/bin/ruff check ${./linux-compat/launcher/ra_xvfb_launcher.py}
+        grep -q -- "--assets" ${./linux-compat/launcher/ra_xvfb_launcher.py}
+        grep -q "battlecontrol-xdisplay" ${./linux-compat/launcher/ra_xvfb_launcher.py}
+        allied="${mkRunApp self.packages.${system}.ra-data-allied}/bin/battlecontrol-ra"
+        soviet="${mkRunApp self.packages.${system}.ra-data-soviet}/bin/battlecontrol-ra"
+        test -x "$allied"
+        test -x "$soviet"
+        for launcher in "$allied" "$soviet"; do
+          grep -q -- "--assets" "$launcher"
+          grep -q -- "--build-app" "$launcher"
+          grep -q -- "--xvfb" "$launcher"
+        done
+        grep -a -q "ra-data-allied" "$allied"
+        grep -a -q "ra-data-soviet" "$soviet"
+        touch "$out"
+      '';
     };
 }
