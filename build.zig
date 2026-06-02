@@ -395,6 +395,17 @@ pub fn build(b: *std.Build) void {
     const run_win32_shim_contract_tests = b.addRunArtifact(win32_shim_contract_tests);
     test_step.dependOn(&run_win32_shim_contract_tests.step);
 
+    const init_contract_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/init_contract.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const init_contract_tests = b.addTest(.{
+        .root_module = init_contract_test_module,
+    });
+    const run_init_contract_tests = b.addRunArtifact(init_contract_tests);
+    test_step.dependOn(&run_init_contract_tests.step);
+
     const win32_mpeg_movie_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/mpeg_movie.zig"),
         .target = target,

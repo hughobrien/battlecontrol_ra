@@ -194,8 +194,17 @@ static void Load_Prolog_Page(void)
  *=============================================================================================*/
 #include	"SHA.H"
 //#include    <locale.h>
-bool Init_Game(int , char * [])
+bool Init_Game(int argc, char * argv[])
 {
+#ifndef _MSC_VER
+	bool skip_intro = false;
+	for (int index = 1; index < argc; index++) {
+		if (stricmp(argv[index], "--skip-intro") == 0) {
+			skip_intro = true;
+		}
+	}
+#endif
+
 	/*
 	**	Allocate the benchmark tracking objects only if the machine and
 	**	compile flags indicate.
@@ -324,7 +333,7 @@ bool Init_Game(int , char * [])
 	*/
 	if (!Special.IsFromInstall && !Special.IsFromWChat
 #ifndef _MSC_VER
-		&& !getenv("RA_AUTOSTART")
+		&& !skip_intro
 #endif
 		) {
 		VisiblePage.Clear();
