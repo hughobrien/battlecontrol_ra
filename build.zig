@@ -373,6 +373,61 @@ pub fn build(b: *std.Build) void {
     const run_win32_misc_tests = b.addRunArtifact(win32_misc_tests);
     test_step.dependOn(&run_win32_misc_tests.step);
 
+    const timer_contract_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/timer_contract.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const timer_contract_tests = b.addTest(.{
+        .root_module = timer_contract_test_module,
+    });
+    const run_timer_contract_tests = b.addRunArtifact(timer_contract_tests);
+    test_step.dependOn(&run_timer_contract_tests.step);
+
+    const win32_shim_contract_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/win32_shim_contract.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const win32_shim_contract_tests = b.addTest(.{
+        .root_module = win32_shim_contract_test_module,
+    });
+    const run_win32_shim_contract_tests = b.addRunArtifact(win32_shim_contract_tests);
+    test_step.dependOn(&run_win32_shim_contract_tests.step);
+
+    const init_contract_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/init_contract.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const init_contract_tests = b.addTest(.{
+        .root_module = init_contract_test_module,
+    });
+    const run_init_contract_tests = b.addRunArtifact(init_contract_tests);
+    test_step.dependOn(&run_init_contract_tests.step);
+
+    const random_contract_module = b.createModule(.{
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+        .link_libcpp = true,
+    });
+    random_contract_module.addIncludePath(b.path("CODE"));
+    random_contract_module.addCSourceFile(.{
+        .file = b.path("linux-compat/random_contract.cpp"),
+        .flags = cxx_flags,
+    });
+    random_contract_module.addCSourceFile(.{
+        .file = b.path("CODE/RANDOM.CPP"),
+        .flags = cxx_flags,
+    });
+    const random_contract = b.addExecutable(.{
+        .name = "random-contract",
+        .root_module = random_contract_module,
+    });
+    const run_random_contract = b.addRunArtifact(random_contract);
+    test_step.dependOn(&run_random_contract.step);
+
     const win32_mpeg_movie_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/mpeg_movie.zig"),
         .target = target,

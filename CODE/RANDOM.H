@@ -38,6 +38,8 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 
+#include <stdint.h>
+
 /**********************************************************************
 ** Enable this define to turn on the random # counters.  This must not
 ** be defined for the release version, or saved games won't work!
@@ -64,7 +66,7 @@ class RandomClass {
 			SIGNIFICANT_BITS=15				// Random number bit significance.
 		};
 
-		unsigned long Seed;
+		uint32_t Seed;
 
 #ifdef RANDOM_COUNT
 		unsigned long Count1;

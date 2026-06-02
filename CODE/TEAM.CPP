@@ -1411,7 +1411,7 @@ void TeamClass::Calc_Center(TARGET & center, TARGET & close_member) const
 	**	team's "center" will actually be that unit. Otherwise, calculated the
 	**	average center location for the team.
 	*/
-	if (Class->MissionList[CurrentMission].Mission == TMISSION_HOUND_DOG) {
+	if (CurrentMission >= 0 && Class->MissionList[CurrentMission].Mission == TMISSION_HOUND_DOG) {
 
 		/*
 		**	First pick a member of the team. The closest friendly object to that member

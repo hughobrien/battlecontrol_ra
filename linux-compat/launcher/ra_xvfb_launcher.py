@@ -78,7 +78,7 @@ def parse_args():
 
 
 def game_args(args):
-    return [RA_PATH, "--assets", args.assets, *args.game_args]
+    return [RA_PATH, "--assets", args.assets, "--skip-intro", *args.game_args]
 
 
 def main():

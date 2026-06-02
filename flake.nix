@@ -109,6 +109,7 @@
         ${pkgs.ruff}/bin/ruff format --check ${./linux-compat/launcher/ra_xvfb_launcher.py}
         ${pkgs.ruff}/bin/ruff check ${./linux-compat/launcher/ra_xvfb_launcher.py}
         grep -q -- "--assets" ${./linux-compat/launcher/ra_xvfb_launcher.py}
+        grep -q -- "--skip-intro" ${./linux-compat/launcher/ra_xvfb_launcher.py}
         grep -q "battlecontrol-xdisplay" ${./linux-compat/launcher/ra_xvfb_launcher.py}
         allied="${mkRunApp self.packages.${system}.ra-data-allied}/bin/battlecontrol-ra"
         soviet="${mkRunApp self.packages.${system}.ra-data-soviet}/bin/battlecontrol-ra"
