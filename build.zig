@@ -426,6 +426,17 @@ pub fn build(b: *std.Build) void {
     const run_scenario_ready_tests = b.addRunArtifact(scenario_ready_tests);
     test_step.dependOn(&run_scenario_ready_tests.step);
 
+    const mission_runtime_contract_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/mission_runtime_contract.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const mission_runtime_contract_tests = b.addTest(.{
+        .root_module = mission_runtime_contract_test_module,
+    });
+    const run_mission_runtime_contract_tests = b.addRunArtifact(mission_runtime_contract_tests);
+    test_step.dependOn(&run_mission_runtime_contract_tests.step);
+
     const timer_contract_test_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/timer_contract.zig"),
         .target = target,

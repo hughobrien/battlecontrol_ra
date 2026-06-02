@@ -2610,8 +2610,8 @@ int TeamClass::TMission_Formation(void)
 	** Now calculate the group's movement type and speed
 	*/
 	if (Formation != FORMATION_NONE) {
-		TeamSpeed[group] = SPEED_WHEEL;
-		TeamMaxSpeed[group] = MPH_LIGHT_SPEED;
+		SpeedType team_speed = SPEED_WHEEL;
+		MPHType team_max_speed = MPH_LIGHT_SPEED;
 		member = Member;
 		while (member != NULL) {
 			RTTIType mytype = member->What_Am_I();
@@ -2637,9 +2637,9 @@ int TeamClass::TMission_Formation(void)
 			}
 
 			if (speedcheck) {
-				if (memmax < TeamMaxSpeed[group]) {
-					TeamMaxSpeed[group] = memmax;
-					TeamSpeed[group] = memspeed;
+				if (memmax < team_max_speed) {
+					team_max_speed = memmax;
+					team_speed = memspeed;
 				}
 			}
 			member = member->Member;
@@ -2651,8 +2651,8 @@ int TeamClass::TMission_Formation(void)
 		*/
 		member = Member;
 		while (member != NULL) {
-			member->FormationSpeed = TeamSpeed[group];
-			member->FormationMaxSpeed = TeamMaxSpeed[group];
+			member->FormationSpeed = team_speed;
+			member->FormationMaxSpeed = team_max_speed;
 			if (member->What_Am_I() == RTTI_INFANTRY) {
 				member->FormationSpeed = SPEED_FOOT;
 				member->FormationMaxSpeed = MPH_SLOW_ISH;

@@ -1475,7 +1475,7 @@ bool TechnoClass::Evaluate_Object(ThreatType method, int mask, int range, Techno
 	**	If the object is in a "harmless" state, then don't bother to consider it
 	**	a threat.
 	*/
-	if (MissionControl[object->Mission].IsNoThreat) {
+	if (object->Mission != MISSION_NONE && MissionControl[object->Mission].IsNoThreat) {
 		BEnd(BENCH_EVAL_OBJECT);
 		return(false);
 	}
@@ -4704,7 +4704,7 @@ void TechnoClass::Base_Is_Attacked(TechnoClass const * enemy)
 			**	Never recruit sticky guard units to defend a base.
 			*/
 			if (!infantry->Is_Weapon_Equipped() ||
-					(!MissionControl[infantry->Mission].IsRecruitable && Session.Type == GAME_NORMAL)) continue;
+					(!MissionClass::Is_Recruitable_Mission(infantry->Mission) && Session.Type == GAME_NORMAL)) continue;
 //					(Mission != MISSION_GUARD_AREA || Session.Type == GAME_NORMAL)) continue;
 
 			/*
@@ -4789,7 +4789,7 @@ void TechnoClass::Base_Is_Attacked(TechnoClass const * enemy)
 			**	Never recruit sticky guard units to defend a base.
 			*/
 			if (!unit->Is_Weapon_Equipped() ||
-				(!MissionControl[unit->Mission].IsRecruitable && Session.Type == GAME_NORMAL)) continue;
+				(!MissionClass::Is_Recruitable_Mission(unit->Mission) && Session.Type == GAME_NORMAL)) continue;
 
 			/*
 			**	Don't allow a response if it doesn't have a weapon that will affect the
