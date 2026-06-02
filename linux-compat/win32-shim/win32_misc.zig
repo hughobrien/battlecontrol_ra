@@ -127,6 +127,8 @@ const DDBLT_COLORFILL: DWORD = 0x00000400;
 const DDCAPS_BLT: DWORD = 0x00000040;
 const DDCAPS_BLTCOLORFILL: DWORD = 0x04000000;
 const MESSAGE_QUEUE_CAPACITY: usize = 256;
+const INJECTED_KEY_CAPACITY: usize = 256;
+const MIN_INJECTED_KEY_DELAY_MS: i64 = 1000;
 
 const DdeString = extern struct {
     next: ?*DdeString,
@@ -383,6 +385,11 @@ var message_count: usize = 0;
 var registered_window_proc: WNDPROC = null;
 var main_window_handle: HWND = @ptrFromInt(1);
 var injected_key_sequence_loaded = false;
+var injected_keys: [INJECTED_KEY_CAPACITY]UINT = undefined;
+var injected_key_count: usize = 0;
+var injected_key_index: usize = 0;
+var injected_key_delay_ms: i64 = MIN_INJECTED_KEY_DELAY_MS;
+var injected_key_next_due_ms: i64 = 0;
 
 export var CPUType: u8 = 0;
 
@@ -1042,6 +1049,10 @@ fn resetMessageQueueForTest() void {
     registered_window_proc = null;
     main_window_handle = @ptrFromInt(1);
     injected_key_sequence_loaded = true;
+    injected_key_count = 0;
+    injected_key_index = 0;
+    injected_key_delay_ms = MIN_INJECTED_KEY_DELAY_MS;
+    injected_key_next_due_ms = 0;
 }
 
 fn parseVirtualKey(token: []const u8) ?UINT {
@@ -1069,17 +1080,57 @@ fn parseVirtualKey(token: []const u8) ?UINT {
     return std.fmt.parseInt(UINT, trimmed, 10) catch null;
 }
 
-fn loadInjectedKeySequenceOnce() void {
+fn currentTimeMs() i64 {
+    return @intCast((monotonicNanoseconds() orelse 0) / std.time.ns_per_ms);
+}
+
+fn parseInjectedKeyDelayMs() i64 {
+    const raw_delay = getenv("BATTLECONTROL_KEY_DELAY_MS") orelse return MIN_INJECTED_KEY_DELAY_MS;
+    const parsed = std.fmt.parseInt(i64, std.mem.span(raw_delay), 10) catch return MIN_INJECTED_KEY_DELAY_MS;
+    return @max(parsed, MIN_INJECTED_KEY_DELAY_MS);
+}
+
+fn configureInjectedKeySequence(keys: []const UINT, delay_ms: i64, first_due_ms: i64) void {
+    injected_key_count = @min(keys.len, injected_keys.len);
+    @memcpy(injected_keys[0..injected_key_count], keys[0..injected_key_count]);
+    injected_key_index = 0;
+    injected_key_delay_ms = @max(delay_ms, MIN_INJECTED_KEY_DELAY_MS);
+    injected_key_next_due_ms = first_due_ms;
+}
+
+fn configureInjectedKeySequenceForTest(keys: []const UINT, delay_ms: i64, first_due_ms: i64) void {
+    injected_key_sequence_loaded = true;
+    configureInjectedKeySequence(keys, delay_ms, first_due_ms);
+}
+
+fn loadInjectedKeySequenceOnce(now_ms: i64) void {
     if (injected_key_sequence_loaded) return;
     injected_key_sequence_loaded = true;
 
     const raw_sequence = getenv("BATTLECONTROL_KEY_SEQUENCE") orelse return;
+    var parsed_keys: [INJECTED_KEY_CAPACITY]UINT = undefined;
+    var parsed_count: usize = 0;
     var tokens = std.mem.tokenizeAny(u8, std.mem.span(raw_sequence), ",; \t\r\n");
     while (tokens.next()) |token| {
         const virtual_key = parseVirtualKey(token) orelse continue;
-        _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYDOWN, virtual_key, 0));
-        _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYUP, virtual_key, 0));
+        if (parsed_count == parsed_keys.len) break;
+        parsed_keys[parsed_count] = virtual_key;
+        parsed_count += 1;
     }
+    const delay_ms = parseInjectedKeyDelayMs();
+    configureInjectedKeySequence(parsed_keys[0..parsed_count], delay_ms, now_ms + delay_ms);
+}
+
+fn pumpInjectedKeySequence(now_ms: i64) void {
+    loadInjectedKeySequenceOnce(now_ms);
+    if (injected_key_index >= injected_key_count) return;
+    if (now_ms < injected_key_next_due_ms) return;
+
+    const virtual_key = injected_keys[injected_key_index];
+    injected_key_index += 1;
+    injected_key_next_due_ms = now_ms + injected_key_delay_ms;
+    _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYDOWN, virtual_key, 0));
+    _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYUP, virtual_key, 0));
 }
 
 fn readLe16(ptr: [*]const u8) usize {
@@ -1140,14 +1191,14 @@ export fn PostMessage(window: HWND, message: UINT, wparam: WPARAM, lparam: LPARA
 }
 
 export fn PeekMessage(msg: ?*MSG, window: HWND, filter_min: UINT, filter_max: UINT, remove_msg: UINT) callconv(.c) BOOL {
-    loadInjectedKeySequenceOnce();
+    pumpInjectedKeySequence(currentTimeMs());
     const message = dequeueMessage(window, filter_min, filter_max, (remove_msg & PM_REMOVE) != PM_NOREMOVE) orelse return 0;
     if (msg) |out| out.* = message;
     return 1;
 }
 
 export fn GetMessage(msg: ?*MSG, window: HWND, filter_min: UINT, filter_max: UINT) callconv(.c) BOOL {
-    loadInjectedKeySequenceOnce();
+    pumpInjectedKeySequence(currentTimeMs());
     const message = dequeueMessage(window, filter_min, filter_max, true) orelse return 0;
     if (msg) |out| out.* = message;
     if (message.message == WM_QUIT) return 0;
@@ -2053,6 +2104,30 @@ test "key sequence parser accepts menu-driving virtual key names and values" {
     try std.testing.expectEqual(@as(UINT, 0x28), parseVirtualKey("0x28").?);
     try std.testing.expectEqual(@as(UINT, 27), parseVirtualKey("27").?);
     try std.testing.expectEqual(@as(?UINT, null), parseVirtualKey("not-a-key"));
+}
+
+test "injected key sequence is paced by at least the configured delay" {
+    resetMessageQueueForTest();
+    configureInjectedKeySequenceForTest(&.{ 0x0d, 0x1b }, 1000, 1000);
+
+    pumpInjectedKeySequence(999);
+    try std.testing.expectEqual(@as(?MSG, null), dequeueMessage(null, 0, 0, false));
+
+    pumpInjectedKeySequence(1000);
+    var message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYDOWN, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), message.wParam);
+    message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYUP, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), message.wParam);
+
+    pumpInjectedKeySequence(1999);
+    try std.testing.expectEqual(@as(?MSG, null), dequeueMessage(null, 0, 0, false));
+
+    pumpInjectedKeySequence(2000);
+    message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYDOWN, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x1b), message.wParam);
 }
 
 var dispatched_message_for_test: UINT = 0;
