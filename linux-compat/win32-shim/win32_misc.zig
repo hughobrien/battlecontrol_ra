@@ -109,6 +109,9 @@ const PM_REMOVE: UINT = 0x0001;
 const SM_CXSCREEN: c_int = 0;
 const SM_CYSCREEN: c_int = 1;
 const TIME_PERIODIC: UINT = 0x0001;
+const SDL_PUMP_EVENT_KEY_DOWN: u32 = 1;
+const SDL_PUMP_EVENT_KEY_UP: u32 = 2;
+const SDL_PUMP_EVENT_QUIT: u32 = 3;
 const MESSAGE_QUEUE_CAPACITY: usize = 256;
 const INJECTED_KEY_CAPACITY: usize = 256;
 const MIN_INJECTED_KEY_DELAY_MS: i64 = 1000;
@@ -174,6 +177,7 @@ extern fn readlink(path: [*:0]const u8, buffer: [*]u8, size: usize) isize;
 extern fn usleep(usec: c_uint) c_int;
 extern fn memmove(dest: ?*anyopaque, src: ?*const anyopaque, count: usize) ?*anyopaque;
 extern fn getenv(name: [*:0]const u8) ?[*:0]const u8;
+extern fn ddrawMiniSdlPumpEvents(callback: *const fn (kind: u32, key: u32) callconv(.c) void) callconv(.c) c_int;
 
 fn copyZ(dest: [*:0]u8, src: []const u8, max: usize) usize {
     if (max == 0) return 0;
@@ -329,6 +333,19 @@ fn pumpInjectedKeySequence(now_ms: i64) void {
     _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYUP, virtual_key, 0));
 }
 
+fn queueSdlPumpEvent(kind: u32, key: u32) callconv(.c) void {
+    switch (kind) {
+        SDL_PUMP_EVENT_KEY_DOWN => _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYDOWN, key, 0)),
+        SDL_PUMP_EVENT_KEY_UP => _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYUP, key, 0)),
+        SDL_PUMP_EVENT_QUIT => _ = enqueueMessage(makeMessage(null, WM_QUIT, 0, 0)),
+        else => {},
+    }
+}
+
+fn pumpSdlEvents() void {
+    _ = ddrawMiniSdlPumpEvents(queueSdlPumpEvent);
+}
+
 fn readLe16(ptr: [*]const u8) usize {
     return @as(usize, ptr[0]) | (@as(usize, ptr[1]) << 8);
 }
@@ -387,6 +404,7 @@ export fn PostMessage(window: HWND, message: UINT, wparam: WPARAM, lparam: LPARA
 }
 
 export fn PeekMessage(msg: ?*MSG, window: HWND, filter_min: UINT, filter_max: UINT, remove_msg: UINT) callconv(.c) BOOL {
+    pumpSdlEvents();
     pumpInjectedKeySequence(currentTimeMs());
     const message = dequeueMessage(window, filter_min, filter_max, (remove_msg & PM_REMOVE) != PM_NOREMOVE) orelse return 0;
     if (msg) |out| out.* = message;
@@ -394,6 +412,7 @@ export fn PeekMessage(msg: ?*MSG, window: HWND, filter_min: UINT, filter_max: UI
 }
 
 export fn GetMessage(msg: ?*MSG, window: HWND, filter_min: UINT, filter_max: UINT) callconv(.c) BOOL {
+    pumpSdlEvents();
     pumpInjectedKeySequence(currentTimeMs());
     const message = dequeueMessage(window, filter_min, filter_max, true) orelse return 0;
     if (msg) |out| out.* = message;
@@ -1324,6 +1343,25 @@ test "injected key sequence is paced by at least the configured delay" {
     message = dequeueMessage(null, 0, 0, true).?;
     try std.testing.expectEqual(WM_KEYDOWN, message.message);
     try std.testing.expectEqual(@as(WPARAM, 0x1b), message.wParam);
+}
+
+test "SDL pump callback queues Win32 keyboard and quit messages" {
+    resetMessageQueueForTest();
+
+    queueSdlPumpEvent(SDL_PUMP_EVENT_KEY_DOWN, 0x0d);
+    queueSdlPumpEvent(SDL_PUMP_EVENT_KEY_UP, 0x0d);
+    queueSdlPumpEvent(SDL_PUMP_EVENT_QUIT, 0);
+
+    var message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYDOWN, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), message.wParam);
+
+    message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYUP, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), message.wParam);
+
+    message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_QUIT, message.message);
 }
 
 var dispatched_message_for_test: UINT = 0;
