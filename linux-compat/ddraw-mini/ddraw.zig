@@ -8,6 +8,16 @@ const BYTE = u8;
 const HANDLE = ?*anyopaque;
 const HWND = ?*anyopaque;
 
+extern fn ddrawMiniSdlSetDisplayMode(width: DWORD, height: DWORD, bits_per_pixel: DWORD) callconv(.c) c_int;
+extern fn ddrawMiniSdlShutdown() callconv(.c) void;
+extern fn ddrawMiniSdlPresentIndexedSurface(
+    indexed_pixels: ?[*]const u8,
+    pitch: usize,
+    width: usize,
+    height: usize,
+    palette: ?[*]const PALETTEENTRY,
+) callconv(.c) c_int;
+
 const RECT = extern struct {
     left: LONG,
     top: LONG,
@@ -261,6 +271,8 @@ const Surface = extern struct {
     palette: ?*Palette,
 };
 
+var primary_surface: ?*Surface = null;
+
 export fn DirectDrawCreate(guid: ?*const anyopaque, direct_draw: ?*?*anyopaque, outer: ?*anyopaque) callconv(.c) HRESULT {
     _ = guid;
     _ = outer;
@@ -307,7 +319,10 @@ fn directDrawAddRef(self: *DirectDraw) callconv(.c) c_ulong {
 fn directDrawRelease(self: *DirectDraw) callconv(.c) c_ulong {
     if (self.ref_count > 0) self.ref_count -= 1;
     const remaining = self.ref_count;
-    if (remaining == 0) std.c.free(self);
+    if (remaining == 0) {
+        ddrawMiniSdlShutdown();
+        std.c.free(self);
+    }
     return remaining;
 }
 
@@ -376,6 +391,7 @@ fn directDrawCreateSurface(self: *DirectDraw, desc: ?*DDSURFACEDESC, out: ?*?*Su
         .attached = null,
         .palette = null,
     };
+    if ((caps & DDSCAPS_PRIMARYSURFACE) != 0) primary_surface = surface;
     surface_out.* = surface;
     return DD_OK;
 }
@@ -446,6 +462,8 @@ fn directDrawInitialize(_: *DirectDraw, _: ?*const anyopaque) callconv(.c) HRESU
 }
 
 fn directDrawRestoreDisplayMode(_: *DirectDraw) callconv(.c) HRESULT {
+    primary_surface = null;
+    ddrawMiniSdlShutdown();
     return DD_OK;
 }
 
@@ -454,6 +472,8 @@ fn directDrawSetCooperativeLevel(_: *DirectDraw, _: HWND, _: DWORD) callconv(.c)
 }
 
 fn directDrawSetDisplayMode(self: *DirectDraw, width: DWORD, height: DWORD, bits_per_pixel: DWORD) callconv(.c) HRESULT {
+    if (ddrawMiniSdlSetDisplayMode(width, height, bits_per_pixel) == 0) return DDERR_GENERIC;
+    primary_surface = null;
     self.width = width;
     self.height = height;
     self.bits_per_pixel = bits_per_pixel;
@@ -507,6 +527,9 @@ fn paletteSetEntries(self: *Palette, _: DWORD, start: DWORD, count: DWORD, entri
     const len: usize = count;
     if (begin + len > self.entries.len) return DDERR_INVALIDPARAMS;
     @memcpy(self.entries[begin .. begin + len], source[0..len]);
+    if (primary_surface) |surface| {
+        if (surface.palette == self) presentSurface(surface);
+    }
     return DD_OK;
 }
 
@@ -525,6 +548,7 @@ fn surfaceRelease(self: *Surface) callconv(.c) c_ulong {
     if (self.ref_count > 0) self.ref_count -= 1;
     const remaining = self.ref_count;
     if (remaining == 0) {
+        if (primary_surface == self) primary_surface = null;
         if (self.buffer) |buffer| std.c.free(buffer);
         std.c.free(self);
     }
@@ -553,6 +577,20 @@ fn clampRect(rect: RECT, width: DWORD, height: DWORD) RECT {
     };
 }
 
+fn presentSurface(surface: *Surface) void {
+    if ((surface.caps & DDSCAPS_PRIMARYSURFACE) == 0) return;
+    const buffer = surface.buffer orelse return;
+    const palette = surface.palette orelse return;
+    if (surface.pitch < 0) return;
+    _ = ddrawMiniSdlPresentIndexedSurface(
+        buffer,
+        @intCast(surface.pitch),
+        surface.width,
+        surface.height,
+        &palette.entries,
+    );
+}
+
 fn surfaceBlt(self: *Surface, dest_rect: ?*RECT, source: ?*Surface, source_rect: ?*RECT, flags: DWORD, effects: ?*DDBLTFX) callconv(.c) HRESULT {
     const dest_buffer = self.buffer orelse return DDERR_GENERIC;
     const dest = clampRect(rectOrFull(dest_rect, self.width, self.height), self.width, self.height);
@@ -565,6 +603,7 @@ fn surfaceBlt(self: *Surface, dest_rect: ?*RECT, source: ?*Surface, source_rect:
             const row: usize = @as(usize, @intCast(y)) * @as(usize, @intCast(self.pitch));
             @memset(dest_buffer[row + @as(usize, @intCast(dest.left)) .. row + @as(usize, @intCast(dest.right))], fill);
         }
+        presentSurface(self);
         return DD_OK;
     }
 
@@ -581,6 +620,7 @@ fn surfaceBlt(self: *Surface, dest_rect: ?*RECT, source: ?*Surface, source_rect:
         const dest_start = dest_y * @as(usize, @intCast(self.pitch)) + @as(usize, @intCast(dest.left));
         std.mem.copyForwards(u8, dest_buffer[dest_start .. dest_start + copy_width], src_buffer[src_start .. src_start + copy_width]);
     }
+    presentSurface(self);
     return DD_OK;
 }
 
@@ -613,7 +653,8 @@ fn surfaceEnumOverlayZOrders(_: *Surface, _: DWORD, _: ?*anyopaque, _: ?*anyopaq
     return E_NOTIMPL;
 }
 
-fn surfaceFlip(_: *Surface, _: ?*Surface, _: DWORD) callconv(.c) HRESULT {
+fn surfaceFlip(self: *Surface, _: ?*Surface, _: DWORD) callconv(.c) HRESULT {
+    presentSurface(self);
     return DD_OK;
 }
 
@@ -726,10 +767,12 @@ fn surfaceSetOverlayPosition(_: *Surface, _: LONG, _: LONG) callconv(.c) HRESULT
 
 fn surfaceSetPalette(self: *Surface, palette: ?*Palette) callconv(.c) HRESULT {
     self.palette = palette;
+    presentSurface(self);
     return DD_OK;
 }
 
-fn surfaceUnlock(_: *Surface, _: ?*anyopaque) callconv(.c) HRESULT {
+fn surfaceUnlock(self: *Surface, _: ?*anyopaque) callconv(.c) HRESULT {
+    presentSurface(self);
     return DD_OK;
 }
 

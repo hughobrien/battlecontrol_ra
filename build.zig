@@ -334,6 +334,18 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(ddraw_sdl_backend);
 
+    const ddraw_sdl_backend_tests = b.addTest(.{
+        .root_module = ddraw_sdl_backend_module,
+    });
+    if (sdl3_lib) |path| {
+        ddraw_sdl_backend_tests.root_module.addLibraryPath(.{ .cwd_relative = path });
+        ddraw_sdl_backend_tests.root_module.addRPath(.{ .cwd_relative = path });
+    }
+    ddraw_sdl_backend_tests.root_module.linkSystemLibrary("SDL3", .{});
+    const run_ddraw_sdl_backend_tests = b.addRunArtifact(ddraw_sdl_backend_tests);
+    const test_step = b.step("test", "Run Nix-backed Zig tests");
+    test_step.dependOn(&run_ddraw_sdl_backend_tests.step);
+
     const win32_mpeg_movie_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/mpeg_movie.zig"),
         .target = target,
