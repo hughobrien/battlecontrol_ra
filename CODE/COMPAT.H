@@ -140,7 +140,11 @@ typedef enum MenuIndexType {
 
 class IconsetClass;
 #ifndef WIN32
+#if defined(__GNUC__) || defined(__clang__)
+typedef struct __attribute__((packed)) {
+#else
 typedef struct {
+#endif
 	short	Width;			// Width of icons (pixels).
 	short	Height;			// Height of icons (pixels).
 	short	Count;			// Number of (logical) icons in this set.
