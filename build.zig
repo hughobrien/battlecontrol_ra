@@ -312,6 +312,17 @@ pub fn build(b: *std.Build) void {
     });
     exe.root_module.addObject(ddraw_mini);
 
+    const ddraw_sdl_backend_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/ddraw-mini/sdl_backend.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const ddraw_sdl_backend = b.addObject(.{
+        .name = "ddraw-sdl-backend",
+        .root_module = ddraw_sdl_backend_module,
+    });
+    exe.root_module.addObject(ddraw_sdl_backend);
+
     const win32_mpeg_movie_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/mpeg_movie.zig"),
         .target = target,
