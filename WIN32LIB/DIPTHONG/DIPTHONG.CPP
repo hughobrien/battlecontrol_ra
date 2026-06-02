@@ -315,14 +315,17 @@ static char InternetTxt[22][40]={
 	"Resolving address of host..."
 };
 
+static unsigned short Read_String_Offset_LE(void const *data, int string)
+{
+	unsigned char const *bytes = (unsigned char const *)data + string * 2;
+	return (unsigned short)(bytes[0] | ((unsigned short)bytes[1] << 8));
+}
+
 char *Extract_String(void const *data, int string)
 {
-	unsigned short int	const *ptr;
-
 	if (!data || string < 0) return(NULL);
 
 	if (string >= 4567) return (InternetTxt[string-4567]);
 
-	ptr = (unsigned short int const *)data;
-	return (((char*)data) + ptr[string]);
+	return (((char*)data) + Read_String_Offset_LE(data, string));
 }

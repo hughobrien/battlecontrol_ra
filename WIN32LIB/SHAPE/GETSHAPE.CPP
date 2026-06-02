@@ -48,7 +48,23 @@
 */
 #include "WWSTD.H"
 #include	"SHAPE.H"
+#include <stdint.h>
 
+static unsigned short Read_Shape_U16_LE(void const *ptr)
+{
+	unsigned char const *bytes = (unsigned char const *)ptr;
+	return (unsigned short)(bytes[0] | ((unsigned short)bytes[1] << 8));
+}
+
+static int32_t Read_Shape_I32_LE(void const *ptr)
+{
+	unsigned char const *bytes = (unsigned char const *)ptr;
+	uint32_t value = (uint32_t)bytes[0] |
+		((uint32_t)bytes[1] << 8) |
+		((uint32_t)bytes[2] << 16) |
+		((uint32_t)bytes[3] << 24);
+	return (int32_t)value;
+}
 
 /***************************************************************************
  * Get_Shape_Size -- Fetch the size of the shape in memory.                *
@@ -171,9 +187,7 @@ WORD cdecl Get_Shape_Data(VOID const *shape, WORD data)
  *=========================================================================*/
 int cdecl Extract_Shape_Count(VOID const *buffer)
 {
-	ShapeBlock_Type *block = (ShapeBlock_Type *)buffer;
-
-	return (block->NumShapes);
+	return buffer ? Read_Shape_U16_LE(buffer) : 0;
 
 }	/* end of Extract_Shape_Count */
 
@@ -198,7 +212,6 @@ int cdecl Extract_Shape_Count(VOID const *buffer)
  *=========================================================================*/
 VOID * cdecl Extract_Shape(VOID const *buffer, int shape)
 {
-	ShapeBlock_Type *block = (ShapeBlock_Type*) buffer;
 	int numshapes;		// Number of shapes
 	long offset;			// Offset of shape data, from start of block
 	char *bytebuf = (char*) buffer;
@@ -206,10 +219,14 @@ VOID * cdecl Extract_Shape(VOID const *buffer, int shape)
 	/*
 	----------------------- Return if invalid argument -----------------------
 	*/
-	if (!buffer || shape < 0 || shape >= block->NumShapes)
+	if (!buffer || shape < 0)
 		return(NULL);
 
-	offset = block->Offsets[shape];
+	numshapes = Read_Shape_U16_LE(buffer);
+	if (shape >= numshapes)
+		return(NULL);
+
+	offset = Read_Shape_I32_LE(bytebuf + 2 + shape * 4);
 
 	return(bytebuf + 2 + offset);
 
@@ -359,4 +376,3 @@ int Get_Shape_Original_Height(VOID const *shape)
 
 
 /************************* end of getshape.cpp *****************************/
-

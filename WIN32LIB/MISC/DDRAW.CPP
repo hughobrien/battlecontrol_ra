@@ -723,13 +723,13 @@ void Set_DD_Palette ( void *palette )
 
 	int	j;
 	int	k;
-	char	*palette_get;
+	unsigned char	*palette_get;
 
 	if ( DirectDrawObject && PaletteSurface ){
 
 		k=0;
 
-		palette_get = (char*)palette;
+		palette_get = (unsigned char*)palette;
 
 		for( j=0 ; j<768 ; j+=3 )
 		{
@@ -997,4 +997,3 @@ void SurfaceMonitorClass::Release(void)
 	}
 
 }
-

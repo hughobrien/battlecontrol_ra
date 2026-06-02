@@ -74,8 +74,34 @@ BOOL Remove_Timer_System(VOID);
 const char* Game_Registry_Key();
 
 #if defined(WIN32) && !defined(_MSC_VER)
+extern "C" void battlecontrolSetCaptureBmpFile(char const * path);
+extern "C" void battlecontrolSetCaptureReadyFile(char const * path);
+extern "C" void battlecontrolSetInjectedKeySequence(char const * sequence, int delay_ms);
+
 static char const * LinuxAssetsArg = NULL;
 static bool LinuxAssetsArgMissingPath = false;
+
+static bool Consume_Linux_Option_Value(int argc, char * argv[], int * index, char const * option, char const ** value, char const ** missing)
+{
+	size_t option_length = strlen(option);
+
+	if (strcmp(argv[*index], option) == 0) {
+		if (*index + 1 >= argc) {
+			*missing = option;
+			return(true);
+		}
+		*value = argv[*index + 1];
+		(*index)++;
+		return(true);
+	}
+
+	if (strncmp(argv[*index], option, option_length) == 0 && argv[*index][option_length] == '=') {
+		*value = argv[*index] + option_length + 1;
+		return(true);
+	}
+
+	return(false);
+}
 
 static bool Is_Absolute_Path(char const * path)
 {
@@ -1151,6 +1177,11 @@ int main(int argc, char * argv[])
 	command_line[0] = '\0';
 	LinuxAssetsArg = NULL;
 	LinuxAssetsArgMissingPath = false;
+	char const * capture_bmp_file = NULL;
+	char const * capture_ready_file = NULL;
+	char const * injected_key_sequence = NULL;
+	char const * injected_key_delay = NULL;
+	char const * missing_option = NULL;
 
 	for (int index = 1; index < argc; index++) {
 		if (strcmp(argv[index], "--assets") == 0) {
@@ -1168,6 +1199,11 @@ int main(int argc, char * argv[])
 			continue;
 		}
 
+		if (Consume_Linux_Option_Value(argc, argv, &index, "--capture-bmp", &capture_bmp_file, &missing_option)) continue;
+		if (Consume_Linux_Option_Value(argc, argv, &index, "--capture-ready", &capture_ready_file, &missing_option)) continue;
+		if (Consume_Linux_Option_Value(argc, argv, &index, "--inject-keys", &injected_key_sequence, &missing_option)) continue;
+		if (Consume_Linux_Option_Value(argc, argv, &index, "--inject-key-delay-ms", &injected_key_delay, &missing_option)) continue;
+
 		if (used + 1 >= sizeof(command_line)) {
 			continue;
 		}
@@ -1181,6 +1217,15 @@ int main(int argc, char * argv[])
 		}
 		command_line[used] = '\0';
 	}
+
+	if (missing_option != NULL) {
+		printf("Missing value after %s.\n", missing_option);
+		return(EXIT_FAILURE);
+	}
+
+	battlecontrolSetCaptureBmpFile(capture_bmp_file);
+	battlecontrolSetCaptureReadyFile(capture_ready_file);
+	battlecontrolSetInjectedKeySequence(injected_key_sequence, injected_key_delay != NULL ? atoi(injected_key_delay) : 1000);
 
 	return WinMain(NULL, NULL, command_line, 0);
 }

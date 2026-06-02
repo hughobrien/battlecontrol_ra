@@ -194,8 +194,17 @@ static void Load_Prolog_Page(void)
  *=============================================================================================*/
 #include	"SHA.H"
 //#include    <locale.h>
-bool Init_Game(int , char * [])
+bool Init_Game(int argc, char * argv[])
 {
+#ifndef _MSC_VER
+	bool skip_intro = false;
+	for (int index = 1; index < argc; index++) {
+		if (stricmp(argv[index], "--skip-intro") == 0) {
+			skip_intro = true;
+		}
+	}
+#endif
+
 	/*
 	**	Allocate the benchmark tracking objects only if the machine and
 	**	compile flags indicate.
@@ -322,7 +331,11 @@ bool Init_Game(int , char * [])
 	/*
 	**	Play the startup animation.
 	*/
-	if (!Special.IsFromInstall && !Special.IsFromWChat) {
+	if (!Special.IsFromInstall && !Special.IsFromWChat
+#ifndef _MSC_VER
+		&& !skip_intro
+#endif
+		) {
 		VisiblePage.Clear();
 //		Mono_Printf("Playing Intro\n");
 		Play_Intro();
@@ -1490,7 +1503,7 @@ bool Select_Game(bool fade)
 		}
 		Show_Mouse();
 //Mono_Printf("About to call Start Scenario with %s\n", Scen.ScenarioName);
-		if (!Start_Scenario(Scen.ScenarioName)) {
+		if (!Start_Scenario(Scen.ScenarioName, true)) {
 			return(false);
 		}
 		if (Special.IsFromInstall) Show_Mouse();
@@ -2829,6 +2842,11 @@ static void Init_CDROM_Access(void)
 	VisiblePage.Clear();
 	HidPage.Clear();
 
+#ifndef _MSC_VER
+	RequiredCD = -2;
+	return;
+#endif
+
 #ifdef FIXIT_VERSION_3
 	//	Determine if we're going to be running from a DVD.
 	//	The entire session will either require a DVD, or the regular CDs. Never both.
@@ -3111,7 +3129,7 @@ static void Bootstrap(void)
 	** Process the message loop until we are in focus. We need to be in focus to read pixels from
 	** the screen.
 	*/
-	#ifdef WIN32
+	#if defined(WIN32) && defined(_MSC_VER)
 	do {
 		Keyboard->Check();
 	} while (!GameInFocus);

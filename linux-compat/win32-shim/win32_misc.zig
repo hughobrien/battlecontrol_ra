@@ -89,8 +89,8 @@ const WNDCLASS = extern struct {
 };
 
 const CriticalSectionState = struct {
-    gate: std.atomic.Mutex = .unlocked,
-    state_lock: std.atomic.Mutex = .unlocked,
+    gate: std.Io.Mutex = .init,
+    state_lock: std.Io.Mutex = .init,
     owner: std.Thread.Id = undefined,
     owner_valid: bool = false,
     recursion: usize = 0,
@@ -146,14 +146,14 @@ const MemoryStatus = extern struct {
 };
 
 var dde_strings: ?*DdeString = null;
-var timer_mutex: std.atomic.Mutex = .unlocked;
+var timer_mutex: std.Io.Mutex = .init;
 var timers = [_]?*TimerEvent{null} ** 64;
 var cursor_x = std.atomic.Value(LONG).init(0);
 var cursor_y = std.atomic.Value(LONG).init(0);
 var left_mouse_down = std.atomic.Value(bool).init(false);
 var right_mouse_down = std.atomic.Value(bool).init(false);
 var middle_mouse_down = std.atomic.Value(bool).init(false);
-var message_mutex: std.atomic.Mutex = .unlocked;
+var message_mutex: std.Io.Mutex = .init;
 var message_queue: [MESSAGE_QUEUE_CAPACITY]MSG = undefined;
 var message_count: usize = 0;
 var registered_window_proc: WNDPROC = null;
@@ -164,6 +164,8 @@ var injected_key_count: usize = 0;
 var injected_key_index: usize = 0;
 var injected_key_delay_ms: i64 = MIN_INJECTED_KEY_DELAY_MS;
 var injected_key_next_due_ms: i64 = 0;
+var configured_injected_key_sequence: ?[*:0]const u8 = null;
+var configured_injected_key_delay_ms: i64 = MIN_INJECTED_KEY_DELAY_MS;
 
 export var CPUType: u8 = 0;
 
@@ -177,22 +179,17 @@ const TimerEvent = struct {
     thread: std.Thread,
 };
 
-fn lockTimerTable() void {
-    while (!timer_mutex.tryLock()) {
-        std.Thread.yield() catch {};
-    }
+fn lockMutex(mutex: *std.Io.Mutex) void {
+    mutex.lockUncancelable(std.Io.Threaded.global_single_threaded.io());
 }
 
-fn lockAtomic(mutex: *std.atomic.Mutex) void {
-    while (!mutex.tryLock()) {
-        std.Thread.yield() catch {};
-    }
+fn unlockMutex(mutex: *std.Io.Mutex) void {
+    mutex.unlock(std.Io.Threaded.global_single_threaded.io());
 }
 
 extern fn readlink(path: [*:0]const u8, buffer: [*]u8, size: usize) isize;
 extern fn usleep(usec: c_uint) c_int;
 extern fn memmove(dest: ?*anyopaque, src: ?*const anyopaque, count: usize) ?*anyopaque;
-extern fn getenv(name: [*:0]const u8) ?[*:0]const u8;
 extern fn ddrawMiniSdlPumpEvents(callback: *const fn (kind: u32, value: u32, x: i32, y: i32) callconv(.c) void) callconv(.c) c_int;
 
 fn copyZ(dest: [*:0]u8, src: []const u8, max: usize) usize {
@@ -239,8 +236,8 @@ fn removeMessageAt(index: usize) MSG {
 }
 
 fn enqueueMessage(message: MSG) BOOL {
-    lockAtomic(&message_mutex);
-    defer message_mutex.unlock();
+    lockMutex(&message_mutex);
+    defer unlockMutex(&message_mutex);
 
     if (message_count == message_queue.len) return 0;
     message_queue[message_count] = message;
@@ -249,8 +246,8 @@ fn enqueueMessage(message: MSG) BOOL {
 }
 
 fn dequeueMessage(window: HWND, filter_min: UINT, filter_max: UINT, remove: bool) ?MSG {
-    lockAtomic(&message_mutex);
-    defer message_mutex.unlock();
+    lockMutex(&message_mutex);
+    defer unlockMutex(&message_mutex);
 
     const index = findMessageIndex(window, filter_min, filter_max) orelse return null;
     if (remove) return removeMessageAt(index);
@@ -258,8 +255,8 @@ fn dequeueMessage(window: HWND, filter_min: UINT, filter_max: UINT, remove: bool
 }
 
 fn resetMessageQueueForTest() void {
-    lockAtomic(&message_mutex);
-    defer message_mutex.unlock();
+    lockMutex(&message_mutex);
+    defer unlockMutex(&message_mutex);
 
     message_count = 0;
     registered_window_proc = null;
@@ -305,12 +302,6 @@ fn currentTimeMs() i64 {
     return @intCast((monotonicNanoseconds() orelse 0) / std.time.ns_per_ms);
 }
 
-fn parseInjectedKeyDelayMs() i64 {
-    const raw_delay = getenv("BATTLECONTROL_KEY_DELAY_MS") orelse return MIN_INJECTED_KEY_DELAY_MS;
-    const parsed = std.fmt.parseInt(i64, std.mem.span(raw_delay), 10) catch return MIN_INJECTED_KEY_DELAY_MS;
-    return @max(parsed, MIN_INJECTED_KEY_DELAY_MS);
-}
-
 fn configureInjectedKeySequence(keys: []const UINT, delay_ms: i64, first_due_ms: i64) void {
     injected_key_count = @min(keys.len, injected_keys.len);
     @memcpy(injected_keys[0..injected_key_count], keys[0..injected_key_count]);
@@ -324,11 +315,21 @@ fn configureInjectedKeySequenceForTest(keys: []const UINT, delay_ms: i64, first_
     configureInjectedKeySequence(keys, delay_ms, first_due_ms);
 }
 
+export fn battlecontrolSetInjectedKeySequence(sequence: ?[*:0]const u8, delay_ms: c_int) callconv(.c) void {
+    configured_injected_key_sequence = sequence;
+    configured_injected_key_delay_ms = @max(@as(i64, delay_ms), MIN_INJECTED_KEY_DELAY_MS);
+    injected_key_sequence_loaded = false;
+    injected_key_count = 0;
+    injected_key_index = 0;
+    injected_key_delay_ms = MIN_INJECTED_KEY_DELAY_MS;
+    injected_key_next_due_ms = 0;
+}
+
 fn loadInjectedKeySequenceOnce(now_ms: i64) void {
     if (injected_key_sequence_loaded) return;
     injected_key_sequence_loaded = true;
 
-    const raw_sequence = getenv("BATTLECONTROL_KEY_SEQUENCE") orelse return;
+    const raw_sequence = configured_injected_key_sequence orelse return;
     var parsed_keys: [INJECTED_KEY_CAPACITY]UINT = undefined;
     var parsed_count: usize = 0;
     var tokens = std.mem.tokenizeAny(u8, std.mem.span(raw_sequence), ",; \t\r\n");
@@ -338,8 +339,7 @@ fn loadInjectedKeySequenceOnce(now_ms: i64) void {
         parsed_keys[parsed_count] = virtual_key;
         parsed_count += 1;
     }
-    const delay_ms = parseInjectedKeyDelayMs();
-    configureInjectedKeySequence(parsed_keys[0..parsed_count], delay_ms, now_ms + delay_ms);
+    configureInjectedKeySequence(parsed_keys[0..parsed_count], configured_injected_key_delay_ms, now_ms + configured_injected_key_delay_ms);
 }
 
 fn pumpInjectedKeySequence(now_ms: i64) void {
@@ -678,23 +678,23 @@ export fn EnterCriticalSection(critical_section: ?*anyopaque) callconv(.c) void 
     const out = section orelse return;
     const state: *CriticalSectionState = @ptrCast(@alignCast(out.DebugInfo orelse return));
     const thread_id = std.Thread.getCurrentId();
-    lockAtomic(&state.state_lock);
+    lockMutex(&state.state_lock);
     if (state.owner_valid and state.owner == thread_id) {
         state.recursion += 1;
         out.RecursionCount = @intCast(state.recursion);
-        state.state_lock.unlock();
+        unlockMutex(&state.state_lock);
         return;
     }
-    state.state_lock.unlock();
+    unlockMutex(&state.state_lock);
 
-    lockAtomic(&state.gate);
-    lockAtomic(&state.state_lock);
+    lockMutex(&state.gate);
+    lockMutex(&state.state_lock);
     state.owner = thread_id;
     state.owner_valid = true;
     state.recursion = 1;
     out.LockCount = 0;
     out.RecursionCount = 1;
-    state.state_lock.unlock();
+    unlockMutex(&state.state_lock);
 }
 
 export fn LeaveCriticalSection(critical_section: ?*anyopaque) callconv(.c) void {
@@ -708,9 +708,9 @@ export fn LeaveCriticalSection(critical_section: ?*anyopaque) callconv(.c) void 
     } = @ptrCast(@alignCast(critical_section));
     const out = section orelse return;
     const state: *CriticalSectionState = @ptrCast(@alignCast(out.DebugInfo orelse return));
-    lockAtomic(&state.state_lock);
+    lockMutex(&state.state_lock);
     if (state.recursion == 0) {
-        state.state_lock.unlock();
+        unlockMutex(&state.state_lock);
         return;
     }
     state.recursion -= 1;
@@ -718,11 +718,11 @@ export fn LeaveCriticalSection(critical_section: ?*anyopaque) callconv(.c) void 
     if (state.recursion == 0) {
         state.owner_valid = false;
         out.LockCount = -1;
-        state.state_lock.unlock();
-        state.gate.unlock();
+        unlockMutex(&state.state_lock);
+        unlockMutex(&state.gate);
         return;
     }
-    state.state_lock.unlock();
+    unlockMutex(&state.state_lock);
 }
 
 export fn RegisterWindowMessage(string: ?[*:0]const u8) callconv(.c) UINT {
@@ -914,7 +914,7 @@ export fn timeSetEvent(delay: UINT, resolution: UINT, callback: ?TimerCallback, 
     _ = resolution;
     const cb = callback orelse return 0;
 
-    lockTimerTable();
+    lockMutex(&timer_mutex);
     var slot: ?usize = null;
     for (timers, 0..) |timer, index| {
         if (timer == null) {
@@ -923,12 +923,12 @@ export fn timeSetEvent(delay: UINT, resolution: UINT, callback: ?TimerCallback, 
         }
     }
     if (slot == null) {
-        timer_mutex.unlock();
+        unlockMutex(&timer_mutex);
         return 0;
     }
 
     const event = std.heap.c_allocator.create(TimerEvent) catch {
-        timer_mutex.unlock();
+        unlockMutex(&timer_mutex);
         return 0;
     };
     event.* = .{
@@ -942,11 +942,11 @@ export fn timeSetEvent(delay: UINT, resolution: UINT, callback: ?TimerCallback, 
     };
     event.thread = std.Thread.spawn(.{}, timerThread, .{event}) catch {
         std.heap.c_allocator.destroy(event);
-        timer_mutex.unlock();
+        unlockMutex(&timer_mutex);
         return 0;
     };
     timers[slot.?] = event;
-    timer_mutex.unlock();
+    unlockMutex(&timer_mutex);
     return event.id;
 }
 
@@ -954,14 +954,14 @@ export fn timeKillEvent(timer_id: UINT) callconv(.c) UINT {
     if (timer_id == 0 or timer_id > timers.len) return 1;
     const index: usize = @intCast(timer_id - 1);
 
-    lockTimerTable();
+    lockMutex(&timer_mutex);
     const event = timers[index] orelse {
-        timer_mutex.unlock();
+        unlockMutex(&timer_mutex);
         return 1;
     };
     timers[index] = null;
     event.active.store(false, .release);
-    timer_mutex.unlock();
+    unlockMutex(&timer_mutex);
 
     event.thread.join();
     std.heap.c_allocator.destroy(event);
@@ -1390,6 +1390,35 @@ test "key sequence parser accepts menu-driving virtual key names and values" {
     try std.testing.expectEqual(@as(UINT, 0x28), parseVirtualKey("0x28").?);
     try std.testing.expectEqual(@as(UINT, 27), parseVirtualKey("27").?);
     try std.testing.expectEqual(@as(?UINT, null), parseVirtualKey("not-a-key"));
+}
+
+test "injected key path is disabled without explicit configuration" {
+    resetMessageQueueForTest();
+    battlecontrolSetInjectedKeySequence(null, 1000);
+
+    pumpInjectedKeySequence(1000);
+    pumpInjectedKeySequence(2000);
+    try std.testing.expectEqual(@as(?MSG, null), dequeueMessage(null, 0, 0, false));
+}
+
+test "exported injected key configuration feeds the message queue" {
+    resetMessageQueueForTest();
+    battlecontrolSetInjectedKeySequence("ENTER", 10);
+    defer battlecontrolSetInjectedKeySequence(null, 1000);
+
+    pumpInjectedKeySequence(999);
+    try std.testing.expectEqual(@as(?MSG, null), dequeueMessage(null, 0, 0, false));
+
+    pumpInjectedKeySequence(1998);
+    try std.testing.expectEqual(@as(?MSG, null), dequeueMessage(null, 0, 0, false));
+
+    pumpInjectedKeySequence(1999);
+    var message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYDOWN, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), message.wParam);
+    message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYUP, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), message.wParam);
 }
 
 test "injected key sequence is paced by at least the configured delay" {
