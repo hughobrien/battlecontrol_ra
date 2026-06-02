@@ -123,8 +123,14 @@ WinTimerClass::WinTimerClass (UINT freq, BOOL partial)
 	//
 	// Install the timer callback event handler
 	//
+#ifndef _MSC_VER
+	SysTicks = timeGetTime();
+	UserTicks = SysTicks;
+	TimerSystemOn = success = TRUE;
+#else
 	TimerHandle = timeSetEvent ( 1000/freq , 1 , Timer_Callback , 0 , TIME_PERIODIC);
 	TimerSystemOn = success = ( TimerHandle !=0 );
+#endif
 
 	if (success)  {
 		if (!partial) {
@@ -226,6 +232,9 @@ void CALLBACK Timer_Callback (UINT , UINT , DWORD , DWORD , DWORD)
 
 void WinTimerClass::Update_Tick_Count ( void )
 {
+#ifndef _MSC_VER
+	return;
+#else
 /*
  *
  *  Increment westwood timers
@@ -233,6 +242,7 @@ void WinTimerClass::Update_Tick_Count ( void )
  */
 	SysTicks++;
 	UserTicks++;
+#endif
 
 }
 
@@ -291,7 +301,11 @@ void WinTimerClass::Update_Tick_Count ( void )
 
 unsigned WinTimerClass::Get_System_Tick_Count ( void )
 {
+#ifndef _MSC_VER
+	return((unsigned)((((unsigned long long)(timeGetTime() - SysTicks)) * Frequency) / 1000));
+#else
 	return ( SysTicks );
+#endif
 }
 
 
@@ -311,5 +325,9 @@ unsigned WinTimerClass::Get_System_Tick_Count ( void )
 
 unsigned WinTimerClass::Get_User_Tick_Count ( void )
 {
+#ifndef _MSC_VER
+	return((unsigned)((((unsigned long long)(timeGetTime() - UserTicks)) * Frequency) / 1000));
+#else
 	return ( UserTicks );
+#endif
 }

@@ -1119,8 +1119,10 @@ bool BuildingClass::Unlimbo(COORDINATE coord, DirType dir)
 		**	Ensure that the owning house knows about the
 		**	new object.
 		*/
-		House->BScan |= (1L << Class->Type);
-		House->ActiveBScan |= (1L << Class->Type);
+		if (Class->Type < 32) {
+			House->BScan |= (1L << Class->Type);
+			House->ActiveBScan |= (1L << Class->Type);
+		}
 
 		/*
 		**	Recalculate the center point of the house's base.

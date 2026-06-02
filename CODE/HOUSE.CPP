@@ -3229,6 +3229,9 @@ bool HouseClass::Does_Enemy_Building_Exist(StructType btype) const
 {
 	assert(Houses.ID(this) == ID);
 
+	if (btype < 0 || btype >= 32) {
+		return(false);
+	}
 	int bflag = 1L << btype;
 	for (HousesType index = HOUSE_FIRST; index < HOUSE_COUNT; index++) {
 		HouseClass * house = HouseClass::As_Pointer(index);
@@ -6437,7 +6440,9 @@ void HouseClass::Tracking_Add(TechnoClass const * techno)
 			CurBuildings++;
 			building = ((BuildingTypeClass const &)techno->Class_Of()).Type;
 			BQuantity[building]++;
-			BScan |= (1L << building);
+			if (building < 32) {
+				BScan |= (1L << building);
+			}
 			if (Session.Type == GAME_INTERNET) {
 				BuildingTotals->Increment_Unit_Total(techno->Class_Of().ID);
 			}

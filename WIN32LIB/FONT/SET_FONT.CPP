@@ -38,8 +38,15 @@
 
 #include "FONT.H"
 #include <WWSTD.H>
+#include <stdint.h>
 
 
+
+static uint16_t Read_Font_U16_LE(void const *ptr)
+{
+	uint8_t const *bytes = (uint8_t const *)ptr;
+	return (uint16_t)(bytes[0] | ((uint16_t)bytes[1] << 8));
+}
 
 /***************************************************************************
  * SET_FONT -- Changes the default text printing font.                     *
@@ -73,8 +80,8 @@ void * __cdecl Set_Font(void const *fontptr)
 		**	Inform the system about the new font.
 		*/
 
-		FontWidthBlockPtr = (char*)fontptr + *(unsigned short *)((char*)fontptr + FONTWIDTHBLOCK);
-		blockptr  = (char*)fontptr + *(unsigned short *)((char*)fontptr + FONTINFOBLOCK);
+		FontWidthBlockPtr = (char*)fontptr + Read_Font_U16_LE((char*)fontptr + FONTWIDTHBLOCK);
+		blockptr  = (char*)fontptr + Read_Font_U16_LE((char*)fontptr + FONTINFOBLOCK);
 		FontHeight = *(blockptr + FONTINFOMAXHEIGHT);
 		FontWidth  = *(blockptr + FONTINFOMAXWIDTH);
 		//Draw_Char_Setup();

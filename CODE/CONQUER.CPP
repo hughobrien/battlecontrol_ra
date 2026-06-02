@@ -4374,6 +4374,10 @@ bool Force_CD_Available( int cd_desired )				//	ajw
 	};
 #endif
 
+#ifndef _MSC_VER
+	return(true);
+#endif
+
 	int new_cd_drive = 0;
 	int cd_current;
 	int current_drive;
@@ -4696,6 +4700,10 @@ bool Force_CD_Available(int cd)
 		"RED ALERT DVD",
 		#endif
 	};
+#endif
+
+#ifndef _MSC_VER
+	return(true);
 #endif
 
 	int new_cd_drive = 0;

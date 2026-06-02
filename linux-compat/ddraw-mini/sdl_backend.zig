@@ -25,6 +25,8 @@ const PUMP_EVENT_MOUSE_MOTION: u32 = 4;
 const PUMP_EVENT_MOUSE_BUTTON_DOWN: u32 = 5;
 const PUMP_EVENT_MOUSE_BUTTON_UP: u32 = 6;
 
+extern fn getenv(name: [*:0]const u8) ?[*:0]const u8;
+
 pub const Backend = struct {
     width: u32 = 0,
     height: u32 = 0,
@@ -32,6 +34,7 @@ pub const Backend = struct {
     renderer: ?*c.SDL_Renderer = null,
     texture: ?*c.SDL_Texture = null,
     argb_pixels: []u32 = &.{},
+    capture_written: bool = false,
     sdl_initialized: bool = false,
 
     pub fn initialize(self: *Backend, width: u32, height: u32) !void {
@@ -90,12 +93,27 @@ pub const Backend = struct {
         }
 
         expandIndexedRectToArgb(indexed_pixels, pitch, width, height, palette, self.argb_pixels);
+        self.captureFrameOnce();
         if (!c.SDL_UpdateTexture(self.texture.?, null, self.argb_pixels.ptr, @intCast(width * @sizeOf(u32)))) {
             return error.SdlFailed;
         }
         _ = c.SDL_RenderClear(self.renderer.?);
         if (!c.SDL_RenderTexture(self.renderer.?, self.texture.?, null, null)) return error.SdlFailed;
         if (!c.SDL_RenderPresent(self.renderer.?)) return error.SdlFailed;
+    }
+
+    fn captureFrameOnce(self: *Backend) void {
+        if (self.capture_written) return;
+
+        const raw_path = getenv("RA_CAPTURE_BMP_FILE") orelse return;
+        const path = std.mem.span(raw_path);
+        if (path.len == 0) return;
+        if (!argbPixelsHaveVisibleColor(self.argb_pixels)) return;
+
+        self.capture_written = true;
+        const io = std.Io.Threaded.global_single_threaded.io();
+        writeBmpFromArgb(io, std.Io.Dir.cwd(), path, self.argb_pixels, self.width, self.height) catch return;
+        writeCaptureReady() catch {};
     }
 };
 
@@ -233,6 +251,71 @@ pub fn expandIndexedRectToArgb(
     }
 }
 
+fn writeCaptureReady() !void {
+    const raw_path = getenv("RA_CAPTURE_READY_FILE") orelse return;
+    const path = std.mem.span(raw_path);
+    if (path.len == 0) return;
+
+    const io = std.Io.Threaded.global_single_threaded.io();
+    var file = try std.Io.Dir.cwd().createFile(io, path, .{ .truncate = true });
+    defer file.close(io);
+    try file.writeStreamingAll(io, "frame=present\n");
+}
+
+fn argbPixelsHaveVisibleColor(argb_pixels: []const u32) bool {
+    for (argb_pixels) |pixel| {
+        if ((pixel & 0x00ffffff) != 0) return true;
+    }
+    return false;
+}
+
+fn writeBmpFromArgb(io: std.Io, dir: std.Io.Dir, path: []const u8, argb_pixels: []const u32, width: usize, height: usize) !void {
+    if (width == 0 or height == 0) return error.InvalidDimensions;
+    const pixel_count = try std.math.mul(usize, width, height);
+    if (argb_pixels.len < pixel_count) return error.InvalidDimensions;
+
+    const row_bytes = try std.math.mul(usize, width, 3);
+    const row_stride = std.mem.alignForward(usize, row_bytes, 4);
+    const pixel_bytes = try std.math.mul(usize, row_stride, height);
+    const file_size = try std.math.add(usize, 54, pixel_bytes);
+    if (file_size > std.math.maxInt(u32)) return error.InvalidDimensions;
+    if (width > std.math.maxInt(i32) or height > std.math.maxInt(i32)) return error.InvalidDimensions;
+
+    var file = try dir.createFile(io, path, .{ .truncate = true });
+    defer file.close(io);
+
+    var header = [_]u8{0} ** 54;
+    header[0] = 'B';
+    header[1] = 'M';
+    std.mem.writeInt(u32, header[2..6], @intCast(file_size), .little);
+    std.mem.writeInt(u32, header[10..14], 54, .little);
+    std.mem.writeInt(u32, header[14..18], 40, .little);
+    std.mem.writeInt(i32, header[18..22], @intCast(width), .little);
+    std.mem.writeInt(i32, header[22..26], @intCast(height), .little);
+    std.mem.writeInt(u16, header[26..28], 1, .little);
+    std.mem.writeInt(u16, header[28..30], 24, .little);
+    std.mem.writeInt(u32, header[34..38], @intCast(pixel_bytes), .little);
+    try file.writeStreamingAll(io, &header);
+
+    const padding_len = row_stride - row_bytes;
+    const padding = [_]u8{0} ** 3;
+    var y = height;
+    while (y > 0) {
+        y -= 1;
+        var x: usize = 0;
+        while (x < width) : (x += 1) {
+            const pixel = argb_pixels[y * width + x];
+            const bgr = [_]u8{
+                @intCast(pixel & 0xff),
+                @intCast((pixel >> 8) & 0xff),
+                @intCast((pixel >> 16) & 0xff),
+            };
+            try file.writeStreamingAll(io, &bgr);
+        }
+        try file.writeStreamingAll(io, padding[0..padding_len]);
+    }
+}
+
 test "indexed pixels expand through palette to ARGB pixels" {
     var palette = [_]PaletteEntry{.{ .peRed = 0, .peGreen = 0, .peBlue = 0, .peFlags = 0 }} ** 256;
     palette[1] = .{ .peRed = 0x11, .peGreen = 0x22, .peBlue = 0x33, .peFlags = 0 };
@@ -290,6 +373,39 @@ test "backend creates SDL resources and presents indexed pixels" {
     try std.testing.expectEqual(@as(u32, 0xff445566), backend.argb_pixels[1]);
     try std.testing.expectEqual(@as(u32, 0xff778899), backend.argb_pixels[2]);
     try std.testing.expectEqual(@as(u32, 0xffaabbcc), backend.argb_pixels[3]);
+}
+
+test "BMP writer stores ARGB pixels as bottom-up BGR rows" {
+    var tmp = std.testing.tmpDir(.{});
+    defer tmp.cleanup();
+
+    const pixels = [_]u32{
+        0xff112233, 0xff445566,
+        0xff778899, 0xffaabbcc,
+    };
+
+    try writeBmpFromArgb(std.testing.io, tmp.dir, "capture.bmp", pixels[0..], 2, 2);
+
+    const file = try tmp.dir.openFile(std.testing.io, "capture.bmp", .{});
+    defer file.close(std.testing.io);
+
+    var bytes: [70]u8 = undefined;
+    try std.testing.expectEqual(bytes.len, try file.readPositionalAll(std.testing.io, &bytes, 0));
+
+    try std.testing.expectEqualSlices(u8, "BM", bytes[0..2]);
+    try std.testing.expectEqual(@as(u32, 70), std.mem.readInt(u32, bytes[2..6], .little));
+    try std.testing.expectEqual(@as(u32, 54), std.mem.readInt(u32, bytes[10..14], .little));
+    try std.testing.expectEqual(@as(i32, 2), std.mem.readInt(i32, bytes[18..22], .little));
+    try std.testing.expectEqual(@as(i32, 2), std.mem.readInt(i32, bytes[22..26], .little));
+    try std.testing.expectEqual(@as(u16, 24), std.mem.readInt(u16, bytes[28..30], .little));
+
+    try std.testing.expectEqualSlices(u8, &.{ 0x99, 0x88, 0x77, 0xcc, 0xbb, 0xaa, 0, 0 }, bytes[54..62]);
+    try std.testing.expectEqualSlices(u8, &.{ 0x33, 0x22, 0x11, 0x66, 0x55, 0x44, 0, 0 }, bytes[62..70]);
+}
+
+test "capture visibility check ignores alpha-only black frames" {
+    try std.testing.expect(!argbPixelsHaveVisibleColor(&.{ 0xff000000, 0x00000000 }));
+    try std.testing.expect(argbPixelsHaveVisibleColor(&.{ 0xff000000, 0xff000001 }));
 }
 
 const TestPumpedEvent = struct {

@@ -176,6 +176,9 @@ void MapClass::Alloc_Cells(void)
 	*/
 	new (&Array) VectorClass<CellClass>;
 	Array.Resize(Size);
+	for (int index = 0; index < Size; index++) {
+		Array[index].ID = index;
+	}
 }
 
 

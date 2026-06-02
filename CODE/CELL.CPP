@@ -101,7 +101,7 @@
  *   02/20/1996 JLB : Uses initializer list.                                                   *
  *=============================================================================================*/
 CellClass::CellClass(void) :
-	ID(Map.ID(this)),
+	ID(0),
 	IsPlot(false),
 	IsCursorHere(false),
 	IsMapped(false),
