@@ -104,6 +104,15 @@ const MB_YESNO: UINT = 0x00000004;
 const WM_QUIT: UINT = 0x0012;
 const WM_KEYDOWN: UINT = 0x0100;
 const WM_KEYUP: UINT = 0x0101;
+const WM_LBUTTONDOWN: UINT = 0x0201;
+const WM_LBUTTONUP: UINT = 0x0202;
+const WM_RBUTTONDOWN: UINT = 0x0204;
+const WM_RBUTTONUP: UINT = 0x0205;
+const WM_MBUTTONDOWN: UINT = 0x0207;
+const WM_MBUTTONUP: UINT = 0x0208;
+const VK_LBUTTON: UINT = 0x01;
+const VK_RBUTTON: UINT = 0x02;
+const VK_MBUTTON: UINT = 0x04;
 const PM_NOREMOVE: UINT = 0x0000;
 const PM_REMOVE: UINT = 0x0001;
 const SM_CXSCREEN: c_int = 0;
@@ -112,6 +121,10 @@ const TIME_PERIODIC: UINT = 0x0001;
 const SDL_PUMP_EVENT_KEY_DOWN: u32 = 1;
 const SDL_PUMP_EVENT_KEY_UP: u32 = 2;
 const SDL_PUMP_EVENT_QUIT: u32 = 3;
+const SDL_PUMP_EVENT_MOUSE_MOTION: u32 = 4;
+const SDL_PUMP_EVENT_MOUSE_BUTTON_DOWN: u32 = 5;
+const SDL_PUMP_EVENT_MOUSE_BUTTON_UP: u32 = 6;
+const KEY_DOWN_STATE: i16 = @bitCast(@as(u16, 0x8000));
 const MESSAGE_QUEUE_CAPACITY: usize = 256;
 const INJECTED_KEY_CAPACITY: usize = 256;
 const MIN_INJECTED_KEY_DELAY_MS: i64 = 1000;
@@ -135,8 +148,11 @@ const MemoryStatus = extern struct {
 var dde_strings: ?*DdeString = null;
 var timer_mutex: std.atomic.Mutex = .unlocked;
 var timers = [_]?*TimerEvent{null} ** 64;
-var cursor_x: LONG = 0;
-var cursor_y: LONG = 0;
+var cursor_x = std.atomic.Value(LONG).init(0);
+var cursor_y = std.atomic.Value(LONG).init(0);
+var left_mouse_down = std.atomic.Value(bool).init(false);
+var right_mouse_down = std.atomic.Value(bool).init(false);
+var middle_mouse_down = std.atomic.Value(bool).init(false);
 var message_mutex: std.atomic.Mutex = .unlocked;
 var message_queue: [MESSAGE_QUEUE_CAPACITY]MSG = undefined;
 var message_count: usize = 0;
@@ -177,7 +193,7 @@ extern fn readlink(path: [*:0]const u8, buffer: [*]u8, size: usize) isize;
 extern fn usleep(usec: c_uint) c_int;
 extern fn memmove(dest: ?*anyopaque, src: ?*const anyopaque, count: usize) ?*anyopaque;
 extern fn getenv(name: [*:0]const u8) ?[*:0]const u8;
-extern fn ddrawMiniSdlPumpEvents(callback: *const fn (kind: u32, key: u32) callconv(.c) void) callconv(.c) c_int;
+extern fn ddrawMiniSdlPumpEvents(callback: *const fn (kind: u32, value: u32, x: i32, y: i32) callconv(.c) void) callconv(.c) c_int;
 
 fn copyZ(dest: [*:0]u8, src: []const u8, max: usize) usize {
     if (max == 0) return 0;
@@ -194,7 +210,7 @@ fn makeMessage(window: HWND, message: UINT, wparam: WPARAM, lparam: LPARAM) MSG 
         .wParam = wparam,
         .lParam = lparam,
         .time = 0,
-        .pt = .{ .x = cursor_x, .y = cursor_y },
+        .pt = .{ .x = cursor_x.load(.monotonic), .y = cursor_y.load(.monotonic) },
     };
 }
 
@@ -248,6 +264,11 @@ fn resetMessageQueueForTest() void {
     message_count = 0;
     registered_window_proc = null;
     main_window_handle = @ptrFromInt(1);
+    cursor_x.store(0, .monotonic);
+    cursor_y.store(0, .monotonic);
+    left_mouse_down.store(false, .monotonic);
+    right_mouse_down.store(false, .monotonic);
+    middle_mouse_down.store(false, .monotonic);
     injected_key_sequence_loaded = true;
     injected_key_count = 0;
     injected_key_index = 0;
@@ -333,11 +354,57 @@ fn pumpInjectedKeySequence(now_ms: i64) void {
     _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYUP, virtual_key, 0));
 }
 
-fn queueSdlPumpEvent(kind: u32, key: u32) callconv(.c) void {
+fn updateCursorPosition(x: i32, y: i32) void {
+    cursor_x.store(x, .monotonic);
+    cursor_y.store(y, .monotonic);
+}
+
+fn packMouseLParam(x: i32, y: i32) LPARAM {
+    const low: u16 = @truncate(@as(u32, @bitCast(x)));
+    const high: u16 = @truncate(@as(u32, @bitCast(y)));
+    return @intCast(@as(u32, low) | (@as(u32, high) << 16));
+}
+
+fn updateMouseButtonState(key: u32, down: bool) void {
+    switch (key) {
+        VK_LBUTTON => left_mouse_down.store(down, .monotonic),
+        VK_RBUTTON => right_mouse_down.store(down, .monotonic),
+        VK_MBUTTON => middle_mouse_down.store(down, .monotonic),
+        else => {},
+    }
+}
+
+fn mouseButtonMessage(kind: u32, key: u32) ?UINT {
+    return switch (kind) {
+        SDL_PUMP_EVENT_MOUSE_BUTTON_DOWN => switch (key) {
+            VK_LBUTTON => WM_LBUTTONDOWN,
+            VK_RBUTTON => WM_RBUTTONDOWN,
+            VK_MBUTTON => WM_MBUTTONDOWN,
+            else => null,
+        },
+        SDL_PUMP_EVENT_MOUSE_BUTTON_UP => switch (key) {
+            VK_LBUTTON => WM_LBUTTONUP,
+            VK_RBUTTON => WM_RBUTTONUP,
+            VK_MBUTTON => WM_MBUTTONUP,
+            else => null,
+        },
+        else => null,
+    };
+}
+
+fn queueSdlPumpEvent(kind: u32, value: u32, x: i32, y: i32) callconv(.c) void {
     switch (kind) {
-        SDL_PUMP_EVENT_KEY_DOWN => _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYDOWN, key, 0)),
-        SDL_PUMP_EVENT_KEY_UP => _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYUP, key, 0)),
+        SDL_PUMP_EVENT_KEY_DOWN => _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYDOWN, value, 0)),
+        SDL_PUMP_EVENT_KEY_UP => _ = enqueueMessage(makeMessage(main_window_handle, WM_KEYUP, value, 0)),
         SDL_PUMP_EVENT_QUIT => _ = enqueueMessage(makeMessage(null, WM_QUIT, 0, 0)),
+        SDL_PUMP_EVENT_MOUSE_MOTION => updateCursorPosition(x, y),
+        SDL_PUMP_EVENT_MOUSE_BUTTON_DOWN, SDL_PUMP_EVENT_MOUSE_BUTTON_UP => {
+            if (mouseButtonMessage(kind, value)) |message| {
+                updateCursorPosition(x, y);
+                updateMouseButtonState(value, kind == SDL_PUMP_EVENT_MOUSE_BUTTON_DOWN);
+                _ = enqueueMessage(makeMessage(main_window_handle, message, 0, packMouseLParam(x, y)));
+            }
+        },
         else => {},
     }
 }
@@ -522,8 +589,8 @@ export fn SetFocus(window: HWND) callconv(.c) HWND {
 
 export fn GetCursorPos(point: ?*POINT) callconv(.c) BOOL {
     const out = point orelse return 0;
-    out.x = cursor_x;
-    out.y = cursor_y;
+    out.x = cursor_x.load(.monotonic);
+    out.y = cursor_y.load(.monotonic);
     return 1;
 }
 
@@ -556,8 +623,12 @@ export fn GetKeyState(key: c_int) callconv(.c) i16 {
 }
 
 export fn GetAsyncKeyState(key: c_int) callconv(.c) i16 {
-    _ = key;
-    return 0;
+    return switch (@as(UINT, @intCast(key & 0xff))) {
+        VK_LBUTTON => if (left_mouse_down.load(.monotonic)) KEY_DOWN_STATE else 0,
+        VK_RBUTTON => if (right_mouse_down.load(.monotonic)) KEY_DOWN_STATE else 0,
+        VK_MBUTTON => if (middle_mouse_down.load(.monotonic)) KEY_DOWN_STATE else 0,
+        else => 0,
+    };
 }
 
 export fn InitializeCriticalSection(critical_section: ?*anyopaque) callconv(.c) void {
@@ -1348,9 +1419,9 @@ test "injected key sequence is paced by at least the configured delay" {
 test "SDL pump callback queues Win32 keyboard and quit messages" {
     resetMessageQueueForTest();
 
-    queueSdlPumpEvent(SDL_PUMP_EVENT_KEY_DOWN, 0x0d);
-    queueSdlPumpEvent(SDL_PUMP_EVENT_KEY_UP, 0x0d);
-    queueSdlPumpEvent(SDL_PUMP_EVENT_QUIT, 0);
+    queueSdlPumpEvent(SDL_PUMP_EVENT_KEY_DOWN, 0x0d, 0, 0);
+    queueSdlPumpEvent(SDL_PUMP_EVENT_KEY_UP, 0x0d, 0, 0);
+    queueSdlPumpEvent(SDL_PUMP_EVENT_QUIT, 0, 0, 0);
 
     var message = dequeueMessage(null, 0, 0, true).?;
     try std.testing.expectEqual(WM_KEYDOWN, message.message);
@@ -1362,6 +1433,51 @@ test "SDL pump callback queues Win32 keyboard and quit messages" {
 
     message = dequeueMessage(null, 0, 0, true).?;
     try std.testing.expectEqual(WM_QUIT, message.message);
+}
+
+test "SDL mouse pump updates cursor and queues button messages" {
+    resetMessageQueueForTest();
+
+    queueSdlPumpEvent(SDL_PUMP_EVENT_MOUSE_MOTION, 0, 12, 34);
+
+    var point: POINT = undefined;
+    try std.testing.expectEqual(@as(BOOL, 1), GetCursorPos(&point));
+    try std.testing.expectEqual(@as(LONG, 12), point.x);
+    try std.testing.expectEqual(@as(LONG, 34), point.y);
+    try std.testing.expectEqual(@as(?MSG, null), dequeueMessage(null, 0, 0, true));
+
+    queueSdlPumpEvent(SDL_PUMP_EVENT_MOUSE_BUTTON_DOWN, VK_LBUTTON, 12, 34);
+    try std.testing.expectEqual(@as(i16, @bitCast(@as(u16, 0x8000))), GetAsyncKeyState(VK_LBUTTON));
+
+    var message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_LBUTTONDOWN, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0), message.wParam);
+    try std.testing.expectEqual(@as(LPARAM, 0x0022000c), message.lParam);
+    try std.testing.expectEqual(@as(LONG, 12), message.pt.x);
+    try std.testing.expectEqual(@as(LONG, 34), message.pt.y);
+
+    queueSdlPumpEvent(SDL_PUMP_EVENT_MOUSE_BUTTON_UP, VK_LBUTTON, 13, 35);
+    try std.testing.expectEqual(@as(i16, 0), GetAsyncKeyState(VK_LBUTTON));
+
+    message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_LBUTTONUP, message.message);
+    try std.testing.expectEqual(@as(LPARAM, 0x0023000d), message.lParam);
+}
+
+test "SDL mouse pump maps right and middle button messages" {
+    resetMessageQueueForTest();
+
+    queueSdlPumpEvent(SDL_PUMP_EVENT_MOUSE_BUTTON_DOWN, VK_RBUTTON, 56, 78);
+    try std.testing.expectEqual(@as(i16, @bitCast(@as(u16, 0x8000))), GetAsyncKeyState(VK_RBUTTON));
+    var message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_RBUTTONDOWN, message.message);
+    try std.testing.expectEqual(@as(LPARAM, 0x004e0038), message.lParam);
+
+    queueSdlPumpEvent(SDL_PUMP_EVENT_MOUSE_BUTTON_UP, VK_MBUTTON, 90, 123);
+    try std.testing.expectEqual(@as(i16, 0), GetAsyncKeyState(VK_MBUTTON));
+    message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_MBUTTONUP, message.message);
+    try std.testing.expectEqual(@as(LPARAM, 0x007b005a), message.lParam);
 }
 
 var dispatched_message_for_test: UINT = 0;
