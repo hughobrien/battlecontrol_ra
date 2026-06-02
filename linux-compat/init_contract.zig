@@ -23,3 +23,23 @@ test "xvfb launcher passes explicit skip-intro flag" {
 
     try std.testing.expect(std.mem.indexOf(u8, source, "\"--skip-intro\"") != null);
 }
+
+test "Linux smoke controls are explicit command-line flags" {
+    const startup = try readFile(std.testing.allocator, "CODE/STARTUP.CPP");
+    defer std.testing.allocator.free(startup);
+
+    try std.testing.expect(std.mem.indexOf(u8, startup, "\"--capture-bmp\"") != null);
+    try std.testing.expect(std.mem.indexOf(u8, startup, "\"--capture-ready\"") != null);
+    try std.testing.expect(std.mem.indexOf(u8, startup, "\"--inject-keys\"") != null);
+    try std.testing.expect(std.mem.indexOf(u8, startup, "\"--inject-key-delay-ms\"") != null);
+
+    const ddraw = try readFile(std.testing.allocator, "linux-compat/ddraw-mini/sdl_backend.zig");
+    defer std.testing.allocator.free(ddraw);
+    try std.testing.expect(std.mem.indexOf(u8, ddraw, "RA_CAPTURE_BMP_FILE") == null);
+    try std.testing.expect(std.mem.indexOf(u8, ddraw, "RA_CAPTURE_READY_FILE") == null);
+
+    const win32 = try readFile(std.testing.allocator, "linux-compat/win32-shim/win32_misc.zig");
+    defer std.testing.allocator.free(win32);
+    try std.testing.expect(std.mem.indexOf(u8, win32, "BATTLECONTROL_KEY_SEQUENCE") == null);
+    try std.testing.expect(std.mem.indexOf(u8, win32, "BATTLECONTROL_KEY_DELAY_MS") == null);
+}

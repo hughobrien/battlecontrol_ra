@@ -25,8 +25,6 @@ const PUMP_EVENT_MOUSE_MOTION: u32 = 4;
 const PUMP_EVENT_MOUSE_BUTTON_DOWN: u32 = 5;
 const PUMP_EVENT_MOUSE_BUTTON_UP: u32 = 6;
 
-extern fn getenv(name: [*:0]const u8) ?[*:0]const u8;
-
 pub const Backend = struct {
     width: u32 = 0,
     height: u32 = 0,
@@ -105,7 +103,7 @@ pub const Backend = struct {
     fn captureFrameOnce(self: *Backend) void {
         if (self.capture_written) return;
 
-        const raw_path = getenv("RA_CAPTURE_BMP_FILE") orelse return;
+        const raw_path = capture_bmp_file orelse return;
         const path = std.mem.span(raw_path);
         if (path.len == 0) return;
         if (!argbPixelsHaveVisibleColor(self.argb_pixels)) return;
@@ -118,6 +116,16 @@ pub const Backend = struct {
 };
 
 var global_backend = Backend{};
+var capture_bmp_file: ?[*:0]const u8 = null;
+var capture_ready_file: ?[*:0]const u8 = null;
+
+export fn battlecontrolSetCaptureBmpFile(path: ?[*:0]const u8) callconv(.c) void {
+    capture_bmp_file = path;
+}
+
+export fn battlecontrolSetCaptureReadyFile(path: ?[*:0]const u8) callconv(.c) void {
+    capture_ready_file = path;
+}
 
 export fn ddrawMiniSdlSetDisplayMode(width: u32, height: u32, bits_per_pixel: u32) callconv(.c) c_int {
     if (bits_per_pixel != 8) return 0;
@@ -252,7 +260,7 @@ pub fn expandIndexedRectToArgb(
 }
 
 fn writeCaptureReady() !void {
-    const raw_path = getenv("RA_CAPTURE_READY_FILE") orelse return;
+    const raw_path = capture_ready_file orelse return;
     const path = std.mem.span(raw_path);
     if (path.len == 0) return;
 

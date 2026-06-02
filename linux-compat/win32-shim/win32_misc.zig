@@ -164,6 +164,8 @@ var injected_key_count: usize = 0;
 var injected_key_index: usize = 0;
 var injected_key_delay_ms: i64 = MIN_INJECTED_KEY_DELAY_MS;
 var injected_key_next_due_ms: i64 = 0;
+var configured_injected_key_sequence: ?[*:0]const u8 = null;
+var configured_injected_key_delay_ms: i64 = MIN_INJECTED_KEY_DELAY_MS;
 
 export var CPUType: u8 = 0;
 
@@ -188,7 +190,6 @@ fn unlockMutex(mutex: *std.Io.Mutex) void {
 extern fn readlink(path: [*:0]const u8, buffer: [*]u8, size: usize) isize;
 extern fn usleep(usec: c_uint) c_int;
 extern fn memmove(dest: ?*anyopaque, src: ?*const anyopaque, count: usize) ?*anyopaque;
-extern fn getenv(name: [*:0]const u8) ?[*:0]const u8;
 extern fn ddrawMiniSdlPumpEvents(callback: *const fn (kind: u32, value: u32, x: i32, y: i32) callconv(.c) void) callconv(.c) c_int;
 
 fn copyZ(dest: [*:0]u8, src: []const u8, max: usize) usize {
@@ -301,12 +302,6 @@ fn currentTimeMs() i64 {
     return @intCast((monotonicNanoseconds() orelse 0) / std.time.ns_per_ms);
 }
 
-fn parseInjectedKeyDelayMs() i64 {
-    const raw_delay = getenv("BATTLECONTROL_KEY_DELAY_MS") orelse return MIN_INJECTED_KEY_DELAY_MS;
-    const parsed = std.fmt.parseInt(i64, std.mem.span(raw_delay), 10) catch return MIN_INJECTED_KEY_DELAY_MS;
-    return @max(parsed, MIN_INJECTED_KEY_DELAY_MS);
-}
-
 fn configureInjectedKeySequence(keys: []const UINT, delay_ms: i64, first_due_ms: i64) void {
     injected_key_count = @min(keys.len, injected_keys.len);
     @memcpy(injected_keys[0..injected_key_count], keys[0..injected_key_count]);
@@ -320,11 +315,21 @@ fn configureInjectedKeySequenceForTest(keys: []const UINT, delay_ms: i64, first_
     configureInjectedKeySequence(keys, delay_ms, first_due_ms);
 }
 
+export fn battlecontrolSetInjectedKeySequence(sequence: ?[*:0]const u8, delay_ms: c_int) callconv(.c) void {
+    configured_injected_key_sequence = sequence;
+    configured_injected_key_delay_ms = @max(@as(i64, delay_ms), MIN_INJECTED_KEY_DELAY_MS);
+    injected_key_sequence_loaded = false;
+    injected_key_count = 0;
+    injected_key_index = 0;
+    injected_key_delay_ms = MIN_INJECTED_KEY_DELAY_MS;
+    injected_key_next_due_ms = 0;
+}
+
 fn loadInjectedKeySequenceOnce(now_ms: i64) void {
     if (injected_key_sequence_loaded) return;
     injected_key_sequence_loaded = true;
 
-    const raw_sequence = getenv("BATTLECONTROL_KEY_SEQUENCE") orelse return;
+    const raw_sequence = configured_injected_key_sequence orelse return;
     var parsed_keys: [INJECTED_KEY_CAPACITY]UINT = undefined;
     var parsed_count: usize = 0;
     var tokens = std.mem.tokenizeAny(u8, std.mem.span(raw_sequence), ",; \t\r\n");
@@ -334,8 +339,7 @@ fn loadInjectedKeySequenceOnce(now_ms: i64) void {
         parsed_keys[parsed_count] = virtual_key;
         parsed_count += 1;
     }
-    const delay_ms = parseInjectedKeyDelayMs();
-    configureInjectedKeySequence(parsed_keys[0..parsed_count], delay_ms, now_ms + delay_ms);
+    configureInjectedKeySequence(parsed_keys[0..parsed_count], configured_injected_key_delay_ms, now_ms + configured_injected_key_delay_ms);
 }
 
 fn pumpInjectedKeySequence(now_ms: i64) void {
@@ -1386,6 +1390,26 @@ test "key sequence parser accepts menu-driving virtual key names and values" {
     try std.testing.expectEqual(@as(UINT, 0x28), parseVirtualKey("0x28").?);
     try std.testing.expectEqual(@as(UINT, 27), parseVirtualKey("27").?);
     try std.testing.expectEqual(@as(?UINT, null), parseVirtualKey("not-a-key"));
+}
+
+test "exported injected key configuration feeds the message queue" {
+    resetMessageQueueForTest();
+    battlecontrolSetInjectedKeySequence("ENTER", 10);
+    defer battlecontrolSetInjectedKeySequence(null, 1000);
+
+    pumpInjectedKeySequence(999);
+    try std.testing.expectEqual(@as(?MSG, null), dequeueMessage(null, 0, 0, false));
+
+    pumpInjectedKeySequence(1998);
+    try std.testing.expectEqual(@as(?MSG, null), dequeueMessage(null, 0, 0, false));
+
+    pumpInjectedKeySequence(1999);
+    var message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYDOWN, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), message.wParam);
+    message = dequeueMessage(null, 0, 0, true).?;
+    try std.testing.expectEqual(WM_KEYUP, message.message);
+    try std.testing.expectEqual(@as(WPARAM, 0x0d), message.wParam);
 }
 
 test "injected key sequence is paced by at least the configured delay" {
