@@ -45,6 +45,7 @@ test "Linux smoke controls are explicit command-line flags" {
     try std.testing.expect(std.mem.indexOf(u8, mission_cli, "\"--side\"") != null);
     try std.testing.expect(std.mem.indexOf(u8, startup, "\"--capture-bmp\"") != null);
     try std.testing.expect(std.mem.indexOf(u8, startup, "\"--capture-ready\"") != null);
+    try std.testing.expect(std.mem.indexOf(u8, startup, "\"--scenario-ready\"") != null);
     try std.testing.expect(std.mem.indexOf(u8, startup, "\"--inject-keys\"") != null);
     try std.testing.expect(std.mem.indexOf(u8, startup, "\"--inject-key-delay-ms\"") != null);
 
@@ -57,6 +58,20 @@ test "Linux smoke controls are explicit command-line flags" {
     defer std.testing.allocator.free(win32);
     try std.testing.expect(std.mem.indexOf(u8, win32, "BATTLECONTROL_KEY_SEQUENCE") == null);
     try std.testing.expect(std.mem.indexOf(u8, win32, "BATTLECONTROL_KEY_DELAY_MS") == null);
+}
+
+test "mission-loaded smoke readiness is reported after scenario start succeeds" {
+    const init = try readFile(std.testing.allocator, "CODE/INIT.CPP");
+    defer std.testing.allocator.free(init);
+    const startup = try readFile(std.testing.allocator, "CODE/STARTUP.CPP");
+    defer std.testing.allocator.free(startup);
+    const ready = try readFile(std.testing.allocator, "linux-compat/scenario_ready.zig");
+    defer std.testing.allocator.free(ready);
+
+    try std.testing.expect(std.mem.indexOf(u8, startup, "battlecontrolSetScenarioReadyFile") != null);
+    try std.testing.expect(std.mem.indexOf(u8, init, "battlecontrolScenarioStarted(Scen.ScenarioName)") != null);
+    try std.testing.expect(std.mem.indexOf(u8, init, "if (!Start_Scenario(Scen.ScenarioName, true))") != null);
+    try std.testing.expect(std.mem.indexOf(u8, ready, "scenario=") != null);
 }
 
 test "mission smoke launch is selected by command-line arguments" {

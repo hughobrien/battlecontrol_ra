@@ -13,6 +13,22 @@ export fn battlecontrolMissionCliReset() callconv(.c) void {
 export fn battlecontrolMissionCliConsume(arg_ptr: ?[*:0]const u8, next_ptr: ?[*:0]const u8) callconv(.c) c_int {
     const arg = span(arg_ptr) orelse return 0;
 
+    if (std.ascii.eqlIgnoreCase(arg, "--scenario")) {
+        if (span(next_ptr)) |next| {
+            setExactScenario(next);
+            return 2;
+        }
+        mission_number = 0;
+        mission_side = 0;
+        scenario_name[0] = 0;
+        return 1;
+    }
+
+    if (startsWithIgnoreCase(arg, "--scenario=")) {
+        setExactScenario(arg["--scenario=".len..]);
+        return 1;
+    }
+
     if (std.ascii.eqlIgnoreCase(arg, "--mission")) {
         if (span(next_ptr)) |next| {
             mission_number = parseMission(next);
@@ -78,7 +94,33 @@ fn parseSide(value: []const u8) u8 {
     return 0;
 }
 
+fn setExactScenario(value: []const u8) void {
+    mission_number = 0;
+    mission_side = 0;
+    scenario_name[0] = 0;
+
+    if (!isScenarioFileName(value)) return;
+    for (value, 0..) |character, index| {
+        scenario_name[index] = std.ascii.toUpper(character);
+    }
+    scenario_name[value.len] = 0;
+}
+
+fn isScenarioFileName(value: []const u8) bool {
+    if (value.len != "SCG01EA.INI".len) return false;
+    if (!std.ascii.eqlIgnoreCase(value[0..2], "SC")) return false;
+    const side = std.ascii.toUpper(value[2]);
+    if (side != 'G' and side != 'U') return false;
+    if (!std.ascii.isDigit(value[3]) or !std.ascii.isDigit(value[4])) return false;
+    if (std.ascii.toUpper(value[5]) != 'E' and std.ascii.toUpper(value[5]) != 'W') return false;
+    const variant = std.ascii.toUpper(value[6]);
+    if (variant < 'A' or variant > 'D') return false;
+    return std.ascii.eqlIgnoreCase(value[7..], ".INI");
+}
+
 fn buildScenarioName() bool {
+    if (scenario_name[0] != 0) return true;
+
     if (mission_number <= 0 or mission_number > 99 or (mission_side != 'G' and mission_side != 'U')) {
         scenario_name[0] = 0;
         return false;
@@ -121,6 +163,55 @@ test "invalid mission does not request launch" {
 
     _ = battlecontrolMissionCliConsume("--side", "allied");
     _ = battlecontrolMissionCliConsume("--mission", "100");
+
+    try std.testing.expect(!battlecontrolMissionCliRequested());
+    try std.testing.expectEqualStrings("", std.mem.span(battlecontrolMissionCliScenarioName()));
+}
+
+test "exact scenario argument bypasses mission formatting" {
+    battlecontrolMissionCliReset();
+
+    try std.testing.expectEqual(@as(c_int, 2), battlecontrolMissionCliConsume("--scenario", "SCG05EB.INI"));
+
+    try std.testing.expect(battlecontrolMissionCliRequested());
+    try std.testing.expectEqualStrings("SCG05EB.INI", std.mem.span(battlecontrolMissionCliScenarioName()));
+}
+
+test "exact scenario supports equals argument" {
+    battlecontrolMissionCliReset();
+
+    try std.testing.expectEqual(@as(c_int, 1), battlecontrolMissionCliConsume("--scenario=SCU09WD.INI", null));
+
+    try std.testing.expect(battlecontrolMissionCliRequested());
+    try std.testing.expectEqualStrings("SCU09WD.INI", std.mem.span(battlecontrolMissionCliScenarioName()));
+}
+
+test "invalid exact scenario does not request launch" {
+    battlecontrolMissionCliReset();
+
+    try std.testing.expectEqual(@as(c_int, 2), battlecontrolMissionCliConsume("--scenario", "../SCG05EB.INI"));
+
+    try std.testing.expect(!battlecontrolMissionCliRequested());
+    try std.testing.expectEqualStrings("", std.mem.span(battlecontrolMissionCliScenarioName()));
+}
+
+test "missing exact scenario value clears prior mission request" {
+    battlecontrolMissionCliReset();
+
+    _ = battlecontrolMissionCliConsume("--side", "allied");
+    _ = battlecontrolMissionCliConsume("--mission", "4");
+    try std.testing.expect(battlecontrolMissionCliRequested());
+
+    try std.testing.expectEqual(@as(c_int, 1), battlecontrolMissionCliConsume("--scenario", null));
+
+    try std.testing.expect(!battlecontrolMissionCliRequested());
+    try std.testing.expectEqualStrings("", std.mem.span(battlecontrolMissionCliScenarioName()));
+}
+
+test "exact scenario only accepts allied and soviet campaign prefixes" {
+    battlecontrolMissionCliReset();
+
+    try std.testing.expectEqual(@as(c_int, 1), battlecontrolMissionCliConsume("--scenario=SCZ99WD.INI", null));
 
     try std.testing.expect(!battlecontrolMissionCliRequested());
     try std.testing.expectEqualStrings("", std.mem.span(battlecontrolMissionCliScenarioName()));

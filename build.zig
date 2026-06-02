@@ -415,6 +415,17 @@ pub fn build(b: *std.Build) void {
     const run_mission_cli_tests = b.addRunArtifact(mission_cli_tests);
     test_step.dependOn(&run_mission_cli_tests.step);
 
+    const scenario_ready_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/scenario_ready.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const scenario_ready_tests = b.addTest(.{
+        .root_module = scenario_ready_test_module,
+    });
+    const run_scenario_ready_tests = b.addRunArtifact(scenario_ready_tests);
+    test_step.dependOn(&run_scenario_ready_tests.step);
+
     const timer_contract_test_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/timer_contract.zig"),
         .target = target,
@@ -688,6 +699,17 @@ pub fn build(b: *std.Build) void {
         .root_module = mission_cli_module,
     });
     exe.root_module.addObject(mission_cli);
+
+    const scenario_ready_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/scenario_ready.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const scenario_ready = b.addObject(.{
+        .name = "scenario-ready",
+        .root_module = scenario_ready_module,
+    });
+    exe.root_module.addObject(scenario_ready);
 
     b.installArtifact(exe);
 }

@@ -76,6 +76,7 @@ const char* Game_Registry_Key();
 #if defined(WIN32) && !defined(_MSC_VER)
 extern "C" void battlecontrolSetCaptureBmpFile(char const * path);
 extern "C" void battlecontrolSetCaptureReadyFile(char const * path);
+extern "C" void battlecontrolSetScenarioReadyFile(char const * path);
 extern "C" void battlecontrolSetInjectedKeySequence(char const * sequence, int delay_ms);
 
 static char const * LinuxAssetsArg = NULL;
@@ -1179,6 +1180,7 @@ int main(int argc, char * argv[])
 	LinuxAssetsArgMissingPath = false;
 	char const * capture_bmp_file = NULL;
 	char const * capture_ready_file = NULL;
+	char const * scenario_ready_file = NULL;
 	char const * injected_key_sequence = NULL;
 	char const * injected_key_delay = NULL;
 	char const * missing_option = NULL;
@@ -1201,6 +1203,7 @@ int main(int argc, char * argv[])
 
 		if (Consume_Linux_Option_Value(argc, argv, &index, "--capture-bmp", &capture_bmp_file, &missing_option)) continue;
 		if (Consume_Linux_Option_Value(argc, argv, &index, "--capture-ready", &capture_ready_file, &missing_option)) continue;
+		if (Consume_Linux_Option_Value(argc, argv, &index, "--scenario-ready", &scenario_ready_file, &missing_option)) continue;
 		if (Consume_Linux_Option_Value(argc, argv, &index, "--inject-keys", &injected_key_sequence, &missing_option)) continue;
 		if (Consume_Linux_Option_Value(argc, argv, &index, "--inject-key-delay-ms", &injected_key_delay, &missing_option)) continue;
 
@@ -1225,6 +1228,7 @@ int main(int argc, char * argv[])
 
 	battlecontrolSetCaptureBmpFile(capture_bmp_file);
 	battlecontrolSetCaptureReadyFile(capture_ready_file);
+	battlecontrolSetScenarioReadyFile(scenario_ready_file);
 	battlecontrolSetInjectedKeySequence(injected_key_sequence, injected_key_delay != NULL ? atoi(injected_key_delay) : 1000);
 
 	return WinMain(NULL, NULL, command_line, 0);

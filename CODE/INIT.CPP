@@ -124,6 +124,7 @@ void battlecontrolMissionCliReset(void);
 int battlecontrolMissionCliConsume(char const * arg, char const * next);
 bool battlecontrolMissionCliRequested(void);
 char const * battlecontrolMissionCliScenarioName(void);
+void battlecontrolScenarioStarted(char const * name);
 #endif
 }
 #ifndef WIN32
@@ -1537,6 +1538,9 @@ bool Select_Game(bool fade)
 		if (!Start_Scenario(Scen.ScenarioName, true)) {
 			return(false);
 		}
+#ifndef _MSC_VER
+		battlecontrolScenarioStarted(Scen.ScenarioName);
+#endif
 		if (Special.IsFromInstall) Show_Mouse();
 		Special.IsFromInstall = false;
 	}
