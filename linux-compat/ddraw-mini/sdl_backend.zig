@@ -17,10 +17,13 @@ pub const PaletteEntry = extern struct {
     peFlags: u8,
 };
 
-const PumpEventCallback = *const fn (kind: u32, key: u32) callconv(.c) void;
+const PumpEventCallback = *const fn (kind: u32, value: u32, x: i32, y: i32) callconv(.c) void;
 const PUMP_EVENT_KEY_DOWN: u32 = 1;
 const PUMP_EVENT_KEY_UP: u32 = 2;
 const PUMP_EVENT_QUIT: u32 = 3;
+const PUMP_EVENT_MOUSE_MOTION: u32 = 4;
+const PUMP_EVENT_MOUSE_BUTTON_DOWN: u32 = 5;
+const PUMP_EVENT_MOUSE_BUTTON_UP: u32 = 6;
 
 pub const Backend = struct {
     width: u32 = 0,
@@ -129,24 +132,59 @@ export fn ddrawMiniSdlPumpEvents(callback: PumpEventCallback) callconv(.c) c_int
         switch (event.type) {
             c.SDL_EVENT_KEY_DOWN => {
                 if (sdlKeyToVirtualKey(event.key.key)) |virtual_key| {
-                    callback(PUMP_EVENT_KEY_DOWN, virtual_key);
+                    callback(PUMP_EVENT_KEY_DOWN, virtual_key, 0, 0);
                     event_count += 1;
                 }
             },
             c.SDL_EVENT_KEY_UP => {
                 if (sdlKeyToVirtualKey(event.key.key)) |virtual_key| {
-                    callback(PUMP_EVENT_KEY_UP, virtual_key);
+                    callback(PUMP_EVENT_KEY_UP, virtual_key, 0, 0);
                     event_count += 1;
                 }
             },
             c.SDL_EVENT_QUIT => {
-                callback(PUMP_EVENT_QUIT, 0);
+                callback(PUMP_EVENT_QUIT, 0, 0, 0);
                 event_count += 1;
+            },
+            c.SDL_EVENT_MOUSE_MOTION => {
+                callback(PUMP_EVENT_MOUSE_MOTION, 0, sdlCoordinateToI32(event.motion.x), sdlCoordinateToI32(event.motion.y));
+                event_count += 1;
+            },
+            c.SDL_EVENT_MOUSE_BUTTON_DOWN => {
+                if (sdlMouseButtonToVirtualKey(event.button.button)) |virtual_key| {
+                    callback(PUMP_EVENT_MOUSE_BUTTON_DOWN, virtual_key, sdlCoordinateToI32(event.button.x), sdlCoordinateToI32(event.button.y));
+                    event_count += 1;
+                }
+            },
+            c.SDL_EVENT_MOUSE_BUTTON_UP => {
+                if (sdlMouseButtonToVirtualKey(event.button.button)) |virtual_key| {
+                    callback(PUMP_EVENT_MOUSE_BUTTON_UP, virtual_key, sdlCoordinateToI32(event.button.x), sdlCoordinateToI32(event.button.y));
+                    event_count += 1;
+                }
             },
             else => {},
         }
     }
     return event_count;
+}
+
+fn sdlCoordinateToI32(value: f32) i32 {
+    if (!std.math.isFinite(value)) return 0;
+
+    const min: f32 = @floatFromInt(std.math.minInt(i32));
+    const max: f32 = @floatFromInt(std.math.maxInt(i32));
+    if (value <= min) return std.math.minInt(i32);
+    if (value >= max) return std.math.maxInt(i32);
+    return @intFromFloat(value);
+}
+
+fn sdlMouseButtonToVirtualKey(button: u8) ?u32 {
+    return switch (button) {
+        c.SDL_BUTTON_LEFT => 0x01,
+        c.SDL_BUTTON_RIGHT => 0x02,
+        c.SDL_BUTTON_MIDDLE => 0x04,
+        else => null,
+    };
 }
 
 fn sdlKeyToVirtualKey(key: c.SDL_Keycode) ?u32 {
@@ -256,14 +294,16 @@ test "backend creates SDL resources and presents indexed pixels" {
 
 const TestPumpedEvent = struct {
     kind: u32,
-    key: u32,
+    value: u32,
+    x: i32,
+    y: i32,
 };
 
-var test_pumped_events = [_]TestPumpedEvent{.{ .kind = 0, .key = 0 }} ** 8;
+var test_pumped_events = [_]TestPumpedEvent{.{ .kind = 0, .value = 0, .x = 0, .y = 0 }} ** 8;
 var test_pumped_event_count: usize = 0;
 
-fn recordPumpedEvent(kind: u32, key: u32) callconv(.c) void {
-    test_pumped_events[test_pumped_event_count] = .{ .kind = kind, .key = key };
+fn recordPumpedEvent(kind: u32, value: u32, x: i32, y: i32) callconv(.c) void {
+    test_pumped_events[test_pumped_event_count] = .{ .kind = kind, .value = value, .x = x, .y = y };
     test_pumped_event_count += 1;
 }
 
@@ -289,10 +329,57 @@ test "backend pumps SDL keyboard and quit events" {
     test_pumped_event_count = 0;
     try std.testing.expectEqual(@as(c_int, 3), ddrawMiniSdlPumpEvents(recordPumpedEvent));
     try std.testing.expectEqual(@as(u32, 1), test_pumped_events[0].kind);
-    try std.testing.expectEqual(@as(u32, 0x0d), test_pumped_events[0].key);
+    try std.testing.expectEqual(@as(u32, 0x0d), test_pumped_events[0].value);
     try std.testing.expectEqual(@as(u32, 2), test_pumped_events[1].kind);
-    try std.testing.expectEqual(@as(u32, 0x0d), test_pumped_events[1].key);
+    try std.testing.expectEqual(@as(u32, 0x0d), test_pumped_events[1].value);
     try std.testing.expectEqual(@as(u32, 3), test_pumped_events[2].kind);
+}
+
+test "backend maps SDL mouse buttons to Win32 virtual keys" {
+    try std.testing.expectEqual(@as(?u32, 0x01), sdlMouseButtonToVirtualKey(c.SDL_BUTTON_LEFT));
+    try std.testing.expectEqual(@as(?u32, 0x02), sdlMouseButtonToVirtualKey(c.SDL_BUTTON_RIGHT));
+    try std.testing.expectEqual(@as(?u32, 0x04), sdlMouseButtonToVirtualKey(c.SDL_BUTTON_MIDDLE));
+    try std.testing.expectEqual(@as(?u32, null), sdlMouseButtonToVirtualKey(99));
+}
+
+test "backend pumps SDL mouse motion and button events" {
+    _ = c.SDL_SetHint(c.SDL_HINT_VIDEO_DRIVER, "dummy");
+    try std.testing.expect(c.SDL_Init(c.SDL_INIT_VIDEO));
+    defer c.SDL_QuitSubSystem(c.SDL_INIT_VIDEO);
+
+    var motion: c.SDL_Event = std.mem.zeroes(c.SDL_Event);
+    motion.type = c.SDL_EVENT_MOUSE_MOTION;
+    motion.motion.x = 12.5;
+    motion.motion.y = 34.75;
+    try std.testing.expect(c.SDL_PushEvent(&motion));
+
+    var left_down: c.SDL_Event = std.mem.zeroes(c.SDL_Event);
+    left_down.type = c.SDL_EVENT_MOUSE_BUTTON_DOWN;
+    left_down.button.button = c.SDL_BUTTON_LEFT;
+    left_down.button.x = 12.0;
+    left_down.button.y = 34.0;
+    try std.testing.expect(c.SDL_PushEvent(&left_down));
+
+    var right_up: c.SDL_Event = std.mem.zeroes(c.SDL_Event);
+    right_up.type = c.SDL_EVENT_MOUSE_BUTTON_UP;
+    right_up.button.button = c.SDL_BUTTON_RIGHT;
+    right_up.button.x = 56.0;
+    right_up.button.y = 78.0;
+    try std.testing.expect(c.SDL_PushEvent(&right_up));
+
+    test_pumped_event_count = 0;
+    try std.testing.expectEqual(@as(c_int, 3), ddrawMiniSdlPumpEvents(recordPumpedEvent));
+    try std.testing.expectEqual(PUMP_EVENT_MOUSE_MOTION, test_pumped_events[0].kind);
+    try std.testing.expectEqual(@as(i32, 12), test_pumped_events[0].x);
+    try std.testing.expectEqual(@as(i32, 34), test_pumped_events[0].y);
+    try std.testing.expectEqual(PUMP_EVENT_MOUSE_BUTTON_DOWN, test_pumped_events[1].kind);
+    try std.testing.expectEqual(@as(u32, 0x01), test_pumped_events[1].value);
+    try std.testing.expectEqual(@as(i32, 12), test_pumped_events[1].x);
+    try std.testing.expectEqual(@as(i32, 34), test_pumped_events[1].y);
+    try std.testing.expectEqual(PUMP_EVENT_MOUSE_BUTTON_UP, test_pumped_events[2].kind);
+    try std.testing.expectEqual(@as(u32, 0x02), test_pumped_events[2].value);
+    try std.testing.expectEqual(@as(i32, 56), test_pumped_events[2].x);
+    try std.testing.expectEqual(@as(i32, 78), test_pumped_events[2].y);
 }
 
 test "backend maps SDL keycodes to Win32 virtual keys" {
