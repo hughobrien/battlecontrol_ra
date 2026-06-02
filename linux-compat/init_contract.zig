@@ -14,7 +14,7 @@ test "intro skipping is controlled by explicit command-line flag" {
     defer std.testing.allocator.free(source);
 
     try std.testing.expect(std.mem.indexOf(u8, source, "stricmp(argv[index], \"--skip-intro\") == 0") != null);
-    try std.testing.expect(std.mem.indexOf(u8, source, "&& !getenv(\"RA_AUTOSTART\")") == null);
+    try std.testing.expect(std.mem.indexOf(u8, source, "RA_AUTOSTART") == null);
 }
 
 test "xvfb launcher passes explicit skip-intro flag" {

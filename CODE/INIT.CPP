@@ -618,33 +618,6 @@ bool Select_Game(bool fade)
 #endif	//WIN32
 #endif
 
-#ifndef _MSC_VER
-		{
-			static bool ra_autostart_completed = false;
-			const char *autostart = getenv("RA_AUTOSTART");
-			if (autostart && autostart[0]) {
-				if (ra_autostart_completed) {
-					return false;
-				}
-				ra_autostart_completed = true;
-				Scen.CDifficulty = DIFF_NORMAL;
-				Scen.Difficulty = DIFF_NORMAL;
-				Scen.CarryOverMoney = 0;
-				BuildLevel = 10;
-				IsTanyaDead = false;
-				SaveTanya = false;
-				Special.IsFromInstall = true;
-				Whom = HOUSE_GOOD;
-				Session.Type = GAME_NORMAL;
-				selection = SEL_START_NEW_GAME;
-				process = false;
-				display = false;
-				const char *scenario = getenv("RA_AUTOSTART_SCENARIO");
-				Scen.Set_Scenario_Name((scenario && scenario[0]) ? scenario : "SCG01EA.INI");
-			}
-		}
-#endif
-
 		while (process) {
 
 			/*
@@ -1530,14 +1503,7 @@ bool Select_Game(bool fade)
 		}
 		Show_Mouse();
 //Mono_Printf("About to call Start Scenario with %s\n", Scen.ScenarioName);
-		bool autostart_skip_briefing = false;
-#ifndef _MSC_VER
-		{
-			const char *skip_briefing = getenv("RA_AUTOSTART_SKIP_BRIEFING");
-			autostart_skip_briefing = skip_briefing && skip_briefing[0] && strcmp(skip_briefing, "0") != 0;
-		}
-#endif
-		if (!Start_Scenario(Scen.ScenarioName, !autostart_skip_briefing)) {
+		if (!Start_Scenario(Scen.ScenarioName, true)) {
 			return(false);
 		}
 		if (Special.IsFromInstall) Show_Mouse();
