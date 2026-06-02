@@ -25,12 +25,16 @@
       pkgs = import nixpkgs { inherit system; };
       packages = with pkgs; [
         zig
+        sdl3
       ];
       buildApp = pkgs.writeShellApplication {
         name = "battlecontrol-ra-zig-build";
         runtimeInputs = packages;
         text = ''
-          exec zig build "$@"
+          exec zig build \
+            -Dsdl3-include=${pkgs.sdl3.dev}/include \
+            -Dsdl3-lib=${pkgs.sdl3}/lib \
+            "$@"
         '';
       };
       mkRaData =
