@@ -38,7 +38,11 @@ test "xvfb launcher passes explicit skip-intro flag" {
 test "Linux smoke controls are explicit command-line flags" {
     const startup = try readFile(std.testing.allocator, "CODE/STARTUP.CPP");
     defer std.testing.allocator.free(startup);
+    const mission_cli = try readFile(std.testing.allocator, "linux-compat/mission_cli.zig");
+    defer std.testing.allocator.free(mission_cli);
 
+    try std.testing.expect(std.mem.indexOf(u8, mission_cli, "\"--mission\"") != null);
+    try std.testing.expect(std.mem.indexOf(u8, mission_cli, "\"--side\"") != null);
     try std.testing.expect(std.mem.indexOf(u8, startup, "\"--capture-bmp\"") != null);
     try std.testing.expect(std.mem.indexOf(u8, startup, "\"--capture-ready\"") != null);
     try std.testing.expect(std.mem.indexOf(u8, startup, "\"--inject-keys\"") != null);
@@ -53,6 +57,32 @@ test "Linux smoke controls are explicit command-line flags" {
     defer std.testing.allocator.free(win32);
     try std.testing.expect(std.mem.indexOf(u8, win32, "BATTLECONTROL_KEY_SEQUENCE") == null);
     try std.testing.expect(std.mem.indexOf(u8, win32, "BATTLECONTROL_KEY_DELAY_MS") == null);
+}
+
+test "mission smoke launch is selected by command-line arguments" {
+    const init = try readFile(std.testing.allocator, "CODE/INIT.CPP");
+    defer std.testing.allocator.free(init);
+    const mission_cli = try readFile(std.testing.allocator, "linux-compat/mission_cli.zig");
+    defer std.testing.allocator.free(mission_cli);
+    const launcher = try readFile(std.testing.allocator, "linux-compat/launcher/ra_xvfb_launcher.py");
+    defer std.testing.allocator.free(launcher);
+    const flake = try readFile(std.testing.allocator, "flake.nix");
+    defer std.testing.allocator.free(flake);
+
+    try std.testing.expect(std.mem.indexOf(u8, init, "battlecontrolMissionCliReset") != null);
+    try std.testing.expect(std.mem.indexOf(u8, init, "battlecontrolMissionCliConsume") != null);
+    try std.testing.expect(std.mem.indexOf(u8, init, "battlecontrolMissionCliRequested") != null);
+    try std.testing.expect(std.mem.indexOf(u8, init, "battlecontrolMissionCliScenarioName") != null);
+    try std.testing.expect(std.mem.indexOf(u8, init, "SC%c%02dEA.INI") == null);
+    try std.testing.expect(std.mem.indexOf(u8, init, "stricmp(argv[index], \"--mission\") == 0") == null);
+    try std.testing.expect(std.mem.indexOf(u8, init, "stricmp(argv[index], \"--side\") == 0") == null);
+    try std.testing.expect(std.mem.indexOf(u8, mission_cli, "SC{c}{d}{d}EA.INI") != null);
+    try std.testing.expect(std.mem.indexOf(u8, mission_cli, "--mission") != null);
+    try std.testing.expect(std.mem.indexOf(u8, mission_cli, "--side") != null);
+    try std.testing.expect(std.mem.indexOf(u8, init, "RA_AUTOSTART") == null);
+    try std.testing.expect(std.mem.indexOf(u8, launcher, "args.side") != null);
+    try std.testing.expect(std.mem.indexOf(u8, flake, "mkRunApp \"allied\"") != null);
+    try std.testing.expect(std.mem.indexOf(u8, flake, "mkRunApp \"soviet\"") != null);
 }
 
 test "iconset loader preserves template map dimensions" {
