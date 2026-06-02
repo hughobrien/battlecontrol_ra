@@ -373,6 +373,17 @@ pub fn build(b: *std.Build) void {
     const run_win32_misc_tests = b.addRunArtifact(win32_misc_tests);
     test_step.dependOn(&run_win32_misc_tests.step);
 
+    const timer_contract_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/timer_contract.zig"),
+        .target = target,
+        .optimize = optimize,
+    });
+    const timer_contract_tests = b.addTest(.{
+        .root_module = timer_contract_test_module,
+    });
+    const run_timer_contract_tests = b.addRunArtifact(timer_contract_tests);
+    test_step.dependOn(&run_timer_contract_tests.step);
+
     const win32_mpeg_movie_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/win32-shim/mpeg_movie.zig"),
         .target = target,
