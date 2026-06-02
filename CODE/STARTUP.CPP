@@ -73,6 +73,32 @@ BOOL Remove_Timer_System(VOID);
 
 const char* Game_Registry_Key();
 
+#if defined(WIN32) && !defined(_MSC_VER)
+static char const * LinuxAssetsArg = NULL;
+static bool LinuxAssetsArgMissingPath = false;
+
+static bool Is_Absolute_Path(char const * path)
+{
+	if (path == NULL || path[0] == '\0') return(false);
+	if (path[0] == '/') return(true);
+	if (isalpha((unsigned char)path[0]) && path[1] == ':') return(true);
+	return(false);
+}
+
+static bool Copy_Assets_Path(char * output, size_t output_size, char const * oldpath, char const * assets)
+{
+	if (output_size == 0 || assets == NULL || assets[0] == '\0') return(false);
+
+	if (Is_Absolute_Path(assets)) {
+		int length = snprintf(output, output_size, "%s", assets);
+		return(length >= 0 && (size_t)length < output_size);
+	}
+
+	int length = snprintf(output, output_size, "%s/%s", oldpath, assets);
+	return(length >= 0 && (size_t)length < output_size);
+}
+#endif
+
 #if (ENGLISH)
 #define WINDOW_NAME		"Red Alert"
 #endif
@@ -241,6 +267,40 @@ int main(int argc, char * argv[])
 
 #endif	//WIN32
 
+#if defined(WIN32) && !defined(_MSC_VER)
+	char const * assets_arg = LinuxAssetsArg;
+	if (LinuxAssetsArgMissingPath) {
+		puts("Missing path after --assets.");
+		return(EXIT_FAILURE);
+	}
+
+	for (int index = 1; index < argc; index++) {
+		if (strcmp(argv[index], "--assets") == 0) {
+			if (index + 1 >= argc) {
+				puts("Missing path after --assets.");
+				return(EXIT_FAILURE);
+			}
+			assets_arg = argv[index + 1];
+			for (int compact = index; compact + 2 < argc; compact++) {
+				argv[compact] = argv[compact + 2];
+			}
+			argc -= 2;
+			index--;
+			continue;
+		}
+
+		if (strncmp(argv[index], "--assets=", 9) == 0) {
+			assets_arg = argv[index] + 9;
+			for (int compact = index; compact + 1 < argc; compact++) {
+				argv[compact] = argv[compact + 1];
+			}
+			argc--;
+			index--;
+			continue;
+		}
+	}
+#endif
+
 	/*
 	**	Remember the current working directory and drive.
 	*/
@@ -248,6 +308,14 @@ int main(int argc, char * argv[])
 	char oldpath[PATH_MAX];
 	getcwd(oldpath, sizeof(oldpath));
 	_dos_getdrive(&olddrive);
+
+#if defined(WIN32) && !defined(_MSC_VER)
+	char assets_path[PATH_MAX];
+	if (assets_arg != NULL && !Copy_Assets_Path(assets_path, sizeof(assets_path), oldpath, assets_arg)) {
+		puts("Invalid --assets path.");
+		return(EXIT_FAILURE);
+	}
+#endif
 
 	/*
 	**	Change directory to the where the executable is located. Handle the
@@ -268,6 +336,13 @@ int main(int argc, char * argv[])
 		path[strlen(path)-1] = '\0';
 	}
 	chdir(path);
+
+#if defined(WIN32) && !defined(_MSC_VER)
+	if (assets_arg != NULL && chdir(assets_path) != 0) {
+		printf("Unable to access --assets path: %s\n", assets_path);
+		return(EXIT_FAILURE);
+	}
+#endif
 
 #ifdef WOLAPI_INTEGRATION
 	//	Look for special wolapi install program, used after the patch to version 3, to install "Shared Internet Components".
@@ -1074,9 +1149,30 @@ int main(int argc, char * argv[])
 	char command_line[4096];
 	size_t used = 0;
 	command_line[0] = '\0';
+	LinuxAssetsArg = NULL;
+	LinuxAssetsArgMissingPath = false;
 
-	for (int index = 1; index < argc && used + 1 < sizeof(command_line); index++) {
-		if (index > 1) {
+	for (int index = 1; index < argc; index++) {
+		if (strcmp(argv[index], "--assets") == 0) {
+			if (index + 1 >= argc) {
+				LinuxAssetsArgMissingPath = true;
+				continue;
+			}
+			LinuxAssetsArg = argv[index + 1];
+			index++;
+			continue;
+		}
+
+		if (strncmp(argv[index], "--assets=", 9) == 0) {
+			LinuxAssetsArg = argv[index] + 9;
+			continue;
+		}
+
+		if (used + 1 >= sizeof(command_line)) {
+			continue;
+		}
+
+		if (used > 0) {
 			command_line[used++] = ' ';
 		}
 
