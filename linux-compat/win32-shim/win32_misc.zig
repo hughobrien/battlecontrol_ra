@@ -1392,6 +1392,15 @@ test "key sequence parser accepts menu-driving virtual key names and values" {
     try std.testing.expectEqual(@as(?UINT, null), parseVirtualKey("not-a-key"));
 }
 
+test "injected key path is disabled without explicit configuration" {
+    resetMessageQueueForTest();
+    battlecontrolSetInjectedKeySequence(null, 1000);
+
+    pumpInjectedKeySequence(1000);
+    pumpInjectedKeySequence(2000);
+    try std.testing.expectEqual(@as(?MSG, null), dequeueMessage(null, 0, 0, false));
+}
+
 test "exported injected key configuration feeds the message queue" {
     resetMessageQueueForTest();
     battlecontrolSetInjectedKeySequence("ENTER", 10);

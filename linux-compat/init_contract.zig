@@ -17,6 +17,17 @@ test "intro skipping is controlled by explicit command-line flag" {
     try std.testing.expect(std.mem.indexOf(u8, source, "RA_AUTOSTART") == null);
 }
 
+test "default scenario start still requests briefing playback" {
+    const init = try readFile(std.testing.allocator, "CODE/INIT.CPP");
+    defer std.testing.allocator.free(init);
+    const function_header = try readFile(std.testing.allocator, "CODE/FUNCTION.H");
+    defer std.testing.allocator.free(function_header);
+
+    try std.testing.expect(std.mem.indexOf(u8, function_header, "bool Start_Scenario(char *root, bool briefing=true);") != null);
+    try std.testing.expect(std.mem.indexOf(u8, init, "Start_Scenario(Scen.ScenarioName, true)") != null);
+    try std.testing.expect(std.mem.indexOf(u8, init, "Start_Scenario(Scen.ScenarioName, false)") == null);
+}
+
 test "xvfb launcher passes explicit skip-intro flag" {
     const source = try readFile(std.testing.allocator, "linux-compat/launcher/ra_xvfb_launcher.py");
     defer std.testing.allocator.free(source);
