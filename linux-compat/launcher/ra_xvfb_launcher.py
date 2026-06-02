@@ -69,6 +69,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--assets", required=True)
     parser.add_argument("--build-app", required=True)
+    parser.add_argument("--side", choices=("allied", "soviet"), required=True)
     parser.add_argument("--xvfb", required=True)
     parser.add_argument("game_args", nargs=argparse.REMAINDER)
     args = parser.parse_args()
@@ -78,7 +79,15 @@ def parse_args():
 
 
 def game_args(args):
-    return [RA_PATH, "--assets", args.assets, "--skip-intro", *args.game_args]
+    return [
+        RA_PATH,
+        "--assets",
+        args.assets,
+        "--side",
+        args.side,
+        "--skip-intro",
+        *args.game_args,
+    ]
 
 
 def main():

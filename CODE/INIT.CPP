@@ -119,6 +119,12 @@ extern int UnitBuildPenalty;
 
 extern "C" {
 extern int32_t RandNumb;
+#ifndef _MSC_VER
+void battlecontrolMissionCliReset(void);
+int battlecontrolMissionCliConsume(char const * arg, char const * next);
+bool battlecontrolMissionCliRequested(void);
+char const * battlecontrolMissionCliScenarioName(void);
+#endif
 }
 #ifndef WIN32
 static int UsePageFaultHandler = 1;				// 1 = install PFH
@@ -334,6 +340,7 @@ bool Init_Game(int argc, char * argv[])
 	if (!Special.IsFromInstall && !Special.IsFromWChat
 #ifndef _MSC_VER
 		&& !skip_intro
+		&& !battlecontrolMissionCliRequested()
 #endif
 		) {
 		VisiblePage.Clear();
@@ -365,7 +372,11 @@ bool Init_Game(int argc, char * argv[])
 	**	If not automatically launching into the intro, then display the title
 	**	page while the bulk data is cached.
 	*/
-	if (!Special.IsFromInstall) {
+	if (!Special.IsFromInstall
+#ifndef _MSC_VER
+		&& !battlecontrolMissionCliRequested()
+#endif
+		) {
 		Load_Title_Page(true);
 
 		Hide_Mouse();
@@ -650,7 +661,11 @@ bool Select_Game(bool fade)
 			/*
 			**	Display menu and fetch selection from player.
 			*/
-			if (Special.IsFromInstall) selection = SEL_START_NEW_GAME;
+			if (Special.IsFromInstall
+#ifndef _MSC_VER
+				|| battlecontrolMissionCliRequested()
+#endif
+				) selection = SEL_START_NEW_GAME;
 
 #ifndef WOLAPI_INTEGRATION
 #if defined(WIN32) && !defined(INTERNET_OFF) // Denzil 5/1/98 - Internet play
@@ -800,7 +815,11 @@ bool Select_Game(bool fade)
 				**	SEL_START_NEW_GAME: Play the game
 				*/
 				case SEL_START_NEW_GAME:
-					if (Special.IsFromInstall) {
+					if (Special.IsFromInstall
+#ifndef _MSC_VER
+						|| battlecontrolMissionCliRequested()
+#endif
+						) {
 						Scen.CDifficulty = DIFF_NORMAL;
 						Scen.Difficulty = DIFF_NORMAL;
 					} else {
@@ -837,7 +856,11 @@ bool Select_Game(bool fade)
 					SaveTanya = false;
 					Whom = HOUSE_GOOD;
 
-					if (!Special.IsFromInstall) {
+					if (!Special.IsFromInstall
+#ifndef _MSC_VER
+						&& !battlecontrolMissionCliRequested()
+#endif
+						) {
 #ifdef FIXIT_ANTS
 						if (AntsEnabled)  {
 							Scen.Set_Scenario_Name("SCA01EA.INI");
@@ -870,18 +893,26 @@ bool Select_Game(bool fade)
 						Load_Title_Page();
 					} else {
 						Theme.Fade_Out();
-#ifdef DVD // Denzil			ajw Presumably a bug fix.
-						Choose_Side();
-						Hide_Mouse();
-#else
-						Hide_Mouse();
-						Choose_Side();
-#endif
-						if (CurrentCD == 0) {
-							Scen.Set_Scenario_Name("SCG01EA.INI");
+#ifndef _MSC_VER
+						if (battlecontrolMissionCliRequested()) {
+							Scen.Set_Scenario_Name(battlecontrolMissionCliScenarioName());
 						} else {
-							Scen.Set_Scenario_Name("SCU01EA.INI");
+#endif
+#ifdef DVD // Denzil			ajw Presumably a bug fix.
+							Choose_Side();
+							Hide_Mouse();
+#else
+							Hide_Mouse();
+							Choose_Side();
+#endif
+							if (CurrentCD == 0) {
+								Scen.Set_Scenario_Name("SCG01EA.INI");
+							} else {
+								Scen.Set_Scenario_Name("SCU01EA.INI");
+							}
+#ifndef _MSC_VER
 						}
+#endif
 					}
 
 					Session.Type = GAME_NORMAL;
@@ -1773,9 +1804,21 @@ bool Parse_Command_Line(int argc, char * argv[])
 	Debug_Map = false;
 	Debug_Unshroud = false;
 
+#ifndef _MSC_VER
+	battlecontrolMissionCliReset();
+#endif
+
 	for (int index = 1; index < argc; index++) {
 		char * string;		// Pointer to argument.
 		long code = 0;
+
+#ifndef _MSC_VER
+		int consumed = battlecontrolMissionCliConsume(argv[index], index + 1 < argc ? argv[index + 1] : NULL);
+		if (consumed > 0) {
+			index += consumed - 1;
+			continue;
+		}
+#endif
 
 		string = strupr(argv[index]);
 
@@ -2185,6 +2228,7 @@ bool Parse_Command_Line(int argc, char * argv[])
 			continue;
 		}
 	}
+
 	return(true);
 }
 

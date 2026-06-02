@@ -39,13 +39,14 @@
         '';
       };
       mkRunApp =
-        assets:
+        side: assets:
         pkgs.writeShellApplication {
           name = "battlecontrol-ra";
           text = ''
             exec ${pkgs.python3}/bin/python3 ${./linux-compat/launcher/ra_xvfb_launcher.py} \
               --assets ${builtins.toJSON "${assets}"} \
               --build-app ${builtins.toJSON "${buildApp}/bin/battlecontrol-ra-zig-build"} \
+              --side ${builtins.toJSON side} \
               --xvfb ${builtins.toJSON "${pkgs.xvfb}/bin/Xvfb"} \
               -- "$@"
           '';
@@ -83,8 +84,8 @@
             type = "app";
             program = "${buildApp}/bin/battlecontrol-ra-zig-build";
           };
-          runAlliedApp = mkRunApp self.packages.${system}.ra-data-allied;
-          runSovietApp = mkRunApp self.packages.${system}.ra-data-soviet;
+          runAlliedApp = mkRunApp "allied" self.packages.${system}.ra-data-allied;
+          runSovietApp = mkRunApp "soviet" self.packages.${system}.ra-data-soviet;
         in
         {
           default = build;
@@ -111,13 +112,14 @@
         grep -q -- "--assets" ${./linux-compat/launcher/ra_xvfb_launcher.py}
         grep -q -- "--skip-intro" ${./linux-compat/launcher/ra_xvfb_launcher.py}
         grep -q "battlecontrol-xdisplay" ${./linux-compat/launcher/ra_xvfb_launcher.py}
-        allied="${mkRunApp self.packages.${system}.ra-data-allied}/bin/battlecontrol-ra"
-        soviet="${mkRunApp self.packages.${system}.ra-data-soviet}/bin/battlecontrol-ra"
+        allied="${mkRunApp "allied" self.packages.${system}.ra-data-allied}/bin/battlecontrol-ra"
+        soviet="${mkRunApp "soviet" self.packages.${system}.ra-data-soviet}/bin/battlecontrol-ra"
         test -x "$allied"
         test -x "$soviet"
         for launcher in "$allied" "$soviet"; do
           grep -q -- "--assets" "$launcher"
           grep -q -- "--build-app" "$launcher"
+          grep -q -- "--side" "$launcher"
           grep -q -- "--xvfb" "$launcher"
         done
         grep -a -q "ra-data-allied" "$allied"

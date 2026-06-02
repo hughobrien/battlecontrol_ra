@@ -403,6 +403,18 @@ pub fn build(b: *std.Build) void {
     const run_win32_file_path_tests = b.addRunArtifact(win32_file_path_tests);
     test_step.dependOn(&run_win32_file_path_tests.step);
 
+    const mission_cli_test_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/mission_cli.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const mission_cli_tests = b.addTest(.{
+        .root_module = mission_cli_test_module,
+    });
+    const run_mission_cli_tests = b.addRunArtifact(mission_cli_tests);
+    test_step.dependOn(&run_mission_cli_tests.step);
+
     const timer_contract_test_module = b.createModule(.{
         .root_source_file = b.path("linux-compat/timer_contract.zig"),
         .target = target,
@@ -642,6 +654,18 @@ pub fn build(b: *std.Build) void {
         .root_module = game_algorithms_module,
     });
     exe.root_module.addObject(game_algorithms);
+
+    const mission_cli_module = b.createModule(.{
+        .root_source_file = b.path("linux-compat/mission_cli.zig"),
+        .target = target,
+        .optimize = optimize,
+        .link_libc = true,
+    });
+    const mission_cli = b.addObject(.{
+        .name = "mission-cli",
+        .root_module = mission_cli_module,
+    });
+    exe.root_module.addObject(mission_cli);
 
     b.installArtifact(exe);
 }
