@@ -10,13 +10,73 @@ RA_PATH = "./zig-out/bin/ra"
 launcher_state = None
 
 
-def pick_display(first=80, last=89):
+def process_owns_lock(pid):
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+
+    try:
+        status = Path(f"/proc/{pid}/status").read_text(encoding="utf-8")
+    except OSError:
+        return True
+    for line in status.splitlines():
+        if line.startswith("State:"):
+            return "\tZ" not in line and "zombie" not in line
+    return True
+
+
+def reclaim_stale_display_lock(lock):
+    try:
+        contents = lock.read_text(encoding="utf-8").split()
+    except FileNotFoundError:
+        return True
+    except OSError:
+        return False
+
+    if not contents:
+        return False
+
+    try:
+        owner = int(contents[0])
+    except ValueError:
+        return False
+
+    if not process_owns_lock(owner):
+        try:
+            lock.unlink()
+        except FileNotFoundError:
+            return True
+        except OSError:
+            return False
+        return True
+
+    return False
+
+
+def unlink_if_exists(path):
+    try:
+        path.unlink()
+    except FileNotFoundError:
+        pass
+
+
+def try_pick_display(first, last, tmp_dir):
+    socket_dir = tmp_dir / ".X11-unix"
     for number in range(first, last + 1):
-        lock = Path(f"/tmp/battlecontrol-xdisplay-{number}.lock")
-        if Path(f"/tmp/.X{number}-lock").exists():
+        lock = tmp_dir / f"battlecontrol-xdisplay-{number}.lock"
+        x_lock = tmp_dir / f".X{number}-lock"
+        x_socket = socket_dir / f"X{number}"
+        if x_lock.exists():
+            if reclaim_stale_display_lock(x_lock):
+                unlink_if_exists(x_socket)
+            else:
+                continue
+        if x_socket.exists():
             continue
-        if Path(f"/tmp/.X11-unix/X{number}").exists():
-            continue
+        reclaim_stale_display_lock(lock)
         try:
             fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
         except FileExistsError:
@@ -24,7 +84,17 @@ def pick_display(first=80, last=89):
         with os.fdopen(fd, "w", encoding="utf-8") as handle:
             handle.write(f"{os.getpid()} {int(time.time())}\n")
         return number, lock
-    raise RuntimeError("no free X display in :80..:89")
+    return None
+
+
+def pick_display(first=80, last=99, tmp_dir=Path("/tmp"), attempts=20, retry_delay=0.5):
+    for attempt in range(attempts):
+        picked = try_pick_display(first, last, tmp_dir)
+        if picked is not None:
+            return picked
+        if attempt + 1 < attempts:
+            time.sleep(retry_delay)
+    raise RuntimeError("no free X display in :80..:99")
 
 
 def stop_process(process):

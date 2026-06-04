@@ -108,7 +108,10 @@
 
       checks.${system}.xvfb-run-app = pkgs.runCommand "xvfb-run-app-check" { } ''
         ${pkgs.ruff}/bin/ruff format --check ${./linux-compat/launcher/ra_xvfb_launcher.py}
+        ${pkgs.ruff}/bin/ruff format --check ${./linux-compat/launcher/ra_xvfb_launcher_test.py}
         ${pkgs.ruff}/bin/ruff check ${./linux-compat/launcher/ra_xvfb_launcher.py}
+        ${pkgs.ruff}/bin/ruff check ${./linux-compat/launcher/ra_xvfb_launcher_test.py}
+        PYTHONPATH=${./linux-compat/launcher} ${pkgs.python3}/bin/python3 ${./linux-compat/launcher/ra_xvfb_launcher_test.py}
         grep -q -- "--assets" ${./linux-compat/launcher/ra_xvfb_launcher.py}
         grep -q -- "--skip-intro" ${./linux-compat/launcher/ra_xvfb_launcher.py}
         grep -q "battlecontrol-xdisplay" ${./linux-compat/launcher/ra_xvfb_launcher.py}
